@@ -1,12 +1,14 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  @vite('resources/css/app.css')
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @vite('resources/css/app.css')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
-<body class="flex flex-col items-center gap-5">
+<body class="flex flex-col items-center gap-5 font-montserrat">
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
         <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
         <p class="text-xl md:text-2xl font-montserrat text-white font-bold">PASABUY</p>
