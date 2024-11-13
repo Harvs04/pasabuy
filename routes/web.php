@@ -9,3 +9,7 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('livewire.login');
 })->name('login');
+
+Route::get('/register', function () {
+    return view('livewire.signup');
+})->name('signup');

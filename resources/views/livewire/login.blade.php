@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="md:flex flex-row font-montserrat">
+<div class="flex flex-col md:flex-row font-montserrat">
     <div class="bg-[#014421] flex flex-row gap-2 md:h-screen md:w-1/2 md:flex-col md:gap-0 md:justify-center items-center">
         <img src="{{ asset('assets/Pasabuy-logo-no-name.png') }}" class="ml-5 w-16 py-2 md:ml-0 md:w-1/2 md:py-0">
         <p class="text-white text-xl font-bold md:text-6xl">PASABUY</p>
     </div>
-    <div class="bg-white flex flex-row gap-2 h-screen md:w-1/2 md:flex-col md:gap-0 items-center justify-center">
-        <div class="flex flex-col w-5/6 md:w-3/6 justify-center items-center md:gap-10">
-            <p class="text-[#7b1113] font-bold text-3xl md:text-5xl self-start">Sign up</p>
-            <div class="flex flex-col w-full gap-2">
+    <div class="bg-white flex flex-row gap-2 h-screen md:w-1/2 md:flex-col md:gap-0 md:items-center items-start mt-16 md:mt-0 justify-center">   
+        <div class="flex flex-col w-5/6 md:w-3/6 justify-center items-center gap-10">
+            <p class="text-[#7b1113] font-bold text-4xl md:text-5xl self-start">Sign in</p>
+            <div class="flex flex-col w-full gap-4 md:gap-2">
                 <div class="flex flex-col w-full gap-1">
                     <label for="email" class="font-medium">Email</label>
                     <input type="email" id="email" class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
@@ -19,16 +19,16 @@
                     <input type="password" id="password" class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
                 </div>
             </div>
-            <div class="flex flex-col w-full items-center justify-center">
+            <div class="flex flex-col w-full items-center justify-center gap-2">
                 <button class="w-full h-12 bg-[#014421] rounded-md text-white hover:bg-green-800">
                     Sign in
                 </button>
                 <div class="flex flex-row justify-center items-center w-full">
-                    <hr class="w-1/2 h-px mx-auto my-4 bg-[#898989] border-0 rounded md:my-10 ">
+                    <hr class="w-1/2 h-px mx-auto my-4 bg-[#898989] border-0 rounded">
                     <p class="text-black mx-5">or</p>
-                    <hr class="w-1/2 h-px mx-auto my-4 bg-[#898989] border-0 rounded md:my-10 ">
+                    <hr class="w-1/2 h-px mx-auto my-4 bg-[#898989] border-0 rounded">
                 </div>
-                <button class="w-full h-12 text-black rounded-md border border-[#898989]">
+                <button class="w-full h-12 text-black rounded-md border border-[#898989] hover:bg-slate-100">
                     <div class="flex flex-row justify-center items-center gap-5">
                         <svg width="23" height="23" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_4_48)">
@@ -49,7 +49,7 @@
                 </button>
                 <div class="flex text-sm md:text-base flex-row gap-2 mt-2">
                     <p>Don't have an account?</p>
-                    <a href="" class="text-[#7b1113] font-bold">Register here</a>
+                    <a href={{ route('signup') }}  class="text-[#7b1113] font-bold">Register here</a>
                 </div>
             </div>
         </div>
