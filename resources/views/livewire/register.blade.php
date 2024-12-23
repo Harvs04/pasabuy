@@ -1,4 +1,4 @@
-<div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-montserrat h-screen">
+<div x-data="{ signupPartOne: false, signupPartTwo: true, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-montserrat h-screen">
     <!-- Top div (Header) -->
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
         <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
@@ -24,6 +24,7 @@
                         <label for="fname" class="font-medium">First Name</label>
                         <input type="text" id="fname" x-model="fname" wire:model="fname" 
                             x-bind:class="{'border-red-500': errors.fname || ((fname.length < 3 || fname.length > 30 || !/^[a-zA-Z]+$/.test(fname)) && fname.length > 0)}" class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
+                        <p x-show="errors.fname" class="text-red-500 text-sm mt-1">Firstname is required.</p>
                         <p x-show="(fname.length < 3 || fname.length > 30) && fname.length > 0" class="text-red-500 text-sm mt-1"> Firstname must be between 3 and 30 characters long. </p>
                         <p x-show="!/^[a-zA-Z]+$/.test(fname) && fname.length > 0" class="text-red-500 text-sm mt-1"> Firstname must contain only alphabetic characters. </p>
                     </div>
@@ -32,6 +33,7 @@
                         <label for="lname" class="font-medium">Last Name</label>
                         <input type="text" id="lname" x-model="lname" wire:model="lname" 
                             x-bind:class="{'border-red-500': errors.lname || ((lname.length < 3 || lname.length > 30 ||  !/^[a-zA-Z]+$/.test(lname)) && lname.length > 0)}" class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
+                        <p x-show="errors.lname" class="text-red-500 text-sm mt-1">Lastname is required.</p>
                         <p x-show="(lname.length < 3 || lname.length > 30) && lname.length > 0" class="text-red-500 text-sm mt-1"> Lastname must be between 3 and 30 characters long. </p>
                         <p x-show="!/^[a-zA-Z]+$/.test(lname) && lname.length > 0" class="text-red-500 text-sm mt-1"> Lastname must contain only alphabetic characters. </p>
                     </div>
