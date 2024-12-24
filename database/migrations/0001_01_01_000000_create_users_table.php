@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('contact_number');
+            $table->enum('constituent', ['student', 'faculty', 'staff', 'alumni']);
+            $table->string('college');
+            $table->string('degree_program');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('google_id')->nullable();
