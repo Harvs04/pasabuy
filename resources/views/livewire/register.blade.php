@@ -1,4 +1,4 @@
-<div x-data="{ signupPartOne: false, signupPartTwo: false, signupPartThree: true, isModalOpen: false }" class="flex flex-col font-montserrat h-screen">
+<div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-montserrat h-screen">
     <!-- Top div (Header) -->
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
         <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
@@ -259,7 +259,7 @@
                         Users understand and acknowledge that PASABUY is not liable for any issues, disputes, or damages that may arise from transactions between Providers and Customers. Both Providers and Customers are encouraged to communicate directly and resolve any issues regarding the transaction. PASABUY reserves the right to modify these terms at any time, and continued use of the platform constitutes your acceptance of the revised terms.</p>
                         <div class="mt-4 flex justify-end gap-2">
                             <button @click="isModalOpen = false" class="px-4 py-2 bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
-                            <button @click="isModalOpen = false" wire:click="verify_questions" class="px-4 py-2 bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                            <button wire:click="verifyQuestions" class="px-4 py-2 bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                         </div>
                     </div>
                 </div>
