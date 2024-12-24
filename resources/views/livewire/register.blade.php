@@ -1,4 +1,4 @@
-<div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-montserrat h-screen">
+<div x-data="{ signupPartOne: false, signupPartTwo: true, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-montserrat h-screen">
     <!-- Top div (Header) -->
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
         <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
@@ -119,7 +119,7 @@
 
 
             <!-- 2nd part -->
-            <div x-show="signupPartTwo" x-data = "{ email: $wire.entangle('up_email'), role: $wire.entangle('role'), password: $wire.entangle('password'), repeat_password: $wire.entangle('repeat_password'), errors:{} }" class="flex flex-col w-full justify-center items-center gap-8 md:gap-10">
+            <div x-show="signupPartTwo" x-data = "{ email: $wire.entangle('up_email'), role: $wire.entangle('role'), password: $wire.entangle('password'), repeat_password: $wire.entangle('repeat_password'), showPassword: false, showRepeatPassword: false, errors:{} }" class="flex flex-col w-full justify-center items-center gap-8 md:gap-10">
                 <form class="flex flex-col md:grid md:grid-cols-2 w-5/6 gap-4 md:gap-8">
                     <div class="flex flex-col w-full gap-1">
                         <label for="email" class="font-medium">UP Email</label>
@@ -140,16 +140,43 @@
                     </div>
                     <div class="flex flex-col w-full gap-1">
                         <label for="password" class="font-medium">Password</label>
-                        <input type="password" id="password" x-model="password" wire:model="password" @input="if (password.length > 0) { delete errors.password; }" @change="if (password.length === 0) { errors.password = true; } "  class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-                            x-bind:class="{'border-red-500': errors.password || (password.length > 0 && password.length < 8) || password.length > 40}">
+                        <div class="relative w-full" >
+                            <input :type="showPassword ? 'text' : 'password'" id="password" x-model="password" wire:model="password" @input="if (password.length > 0) { delete errors.password; }" @change="if (password.length === 0) { errors.password = true; } "  class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                                x-bind:class="{'border-red-500': errors.password || (password.length > 0 && password.length < 8) || password.length > 40}" > 
+                                <!-- Show/Hide Password Icon -->
+                            <button type="button" @click="showPassword = !showPassword" class="absolute top-1/2 right-3 transform -translate-y-1/2 text-slate-400 focus:outline-none">
+                                <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                                <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                </svg>
+                            </button>
+                        </div>
                         <p x-show="errors.password" class="text-red-500 text-sm mt-1">Password is required.</p>
                         <p x-show="password.length > 0 && password.length < 8" class="text-red-500 text-sm mt-1">Password must be at least 8 characters long.</p>
                         <p x-show="password.length > 40" class="text-red-500 text-sm mt-1">Password must be between 8 and 40 characters long.</p>
                     </div>
                     <div class="flex flex-col w-full gap-1">
                         <label for="repeat_password" class="font-medium">Confirm Password</label>
-                        <input type="password" id="repeat_password" x-model="repeat_password" wire:model="repeat_password" @input="if (repeat_password.length > 0) { delete errors.repeat_password; }" @change="if (repeat_password.length === 0) { errors.repeat_password = true; } "  class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-                            x-bind:class="{'border-red-500': errors.repeat_password || (repeat_password !== password && repeat_password.length > 0)}">
+                        <div class="relative w-full">
+                            <input :type="showRepeatPassword ? 'text' : 'password'" id="repeat_password" x-model="repeat_password" wire:model="repeat_password" @input="if (repeat_password.length > 0) { delete errors.repeat_password; }" @change="if (repeat_password.length === 0) { errors.repeat_password = true; } "  class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                                x-bind:class="{'border-red-500': errors.repeat_password || (repeat_password !== password && repeat_password.length > 0)}">
+                            <button type="button" @click="showRepeatPassword = !showRepeatPassword" class="absolute top-1/2 right-3 transform -translate-y-1/2 text-slate-400 focus:outline-none">
+                                <svg x-show="!showRepeatPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                                <svg x-show="showRepeatPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                </svg>
+                            </button>
+                        </div>
                         <p x-show="errors.repeat_password" class="text-red-500 text-sm mt-1">Password confirmation is required.</p>
                         <p x-show="repeat_password !== password && repeat_password.length > 0" class="text-red-500 text-sm mt-1">Passwords must match.</p>
                     </div>
