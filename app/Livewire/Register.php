@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class Register extends Component
 {
@@ -162,7 +163,7 @@ class Register extends Component
         ]
     ];
 
-    public function verify_questions()
+    public function verifyQuestions()
     {
         // Initialize score to 0
         $score = 0;
@@ -174,11 +175,11 @@ class Register extends Component
         $question_four_answer = $this->question_four; // This can be handled similarly if you want
 
         // Check if the answers are correct and increase the score accordingly
-        if (strtolower(trim($question_one_answer)) === 'You will get delayed') {
+        if (strtolower(trim($question_one_answer)) === 'delay') {
             $score++;
         }
 
-        if (strtolower(trim($question_two_answer)) === 'Animal science arch') {
+        if (strtolower(trim($question_two_answer)) === 'ansci') {
             $score++;
         }
 
@@ -186,13 +187,34 @@ class Register extends Component
             $score++;
         }
 
-        if (strtolower(trim($question_three_answer)) === 'DLTB Co.') {
+        if (strtolower(trim($question_four_answer)) === 'dltb') {
             $score++;
         }
 
         if ($score >= 3) {
-            User::create();
+            // check if the email already exists
+            $search = User::where('email', $this->up_email)->first();
+            if ($search) {
+                session()->flash('register_error', 'Your registration was disapproved because your email is already used.');
+                return redirect()->route('login');
+            }
+            User::create([
+                'name' => $this->first_name . ' ' . $this->last_name,
+                'contact_number' => $this->contact_number,
+                'constituent' => $this->constituent,
+                'college' => $this->college,
+                'degree_program' => $this->degree_program,
+                'email' => $this->up_email,
+                'role' => $this->role,
+                'password' => Hash::make($this->password)
+            ]);
+            session()->flash('register_success', 'Your registration was approved! You may log in to continue.');
+            return redirect()->route('login');
+        } else {
+            session()->flash('register_error', 'Your registration was disapproved during evaluation. Try again.');
+            return redirect()->route('login');
         }
+        
     }
 
 
