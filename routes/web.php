@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CloudinaryController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Middleware\RoleBasedMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,10 @@ Route::middleware(['auth', RoleBasedMiddleware::class])->group(function () {
     Route::get('/dashboard', function () {
     })->name('dashboard');
 });
+
+Route::get('/upload', function() {
+    return view('upload');
+})->name('upload');
+
+
+Route::resource('cloudinary', CloudinaryController::class);
