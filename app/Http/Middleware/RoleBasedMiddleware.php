@@ -20,9 +20,9 @@ class RoleBasedMiddleware
             $role = Auth::user()->role;
 
             if ($role === 'customer') {
-                return response()->view('livewire.customer-dashboard');
+                return response()->view('customer.dashboard');
             } elseif ($role === 'provider') {
-                return response()->view('livewire.provider-dashboard');
+                return response()->view('provider.dashboard');
             }
         }
 
