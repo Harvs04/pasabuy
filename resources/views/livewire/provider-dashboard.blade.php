@@ -61,7 +61,7 @@
             <span class="sr-only">Open user menu</span>
             <img
               class="w-8 h-8 rounded-full"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
+              src={{ $user->profile_pic }}
               alt="user photo"
             />
           </button>
@@ -107,8 +107,8 @@
           <li>
             <a href="#" class="flex items-center p-2 text-base font-medium rounded-lg border border-transparent group my-1 mb-3">
               <img
-                src={{ asset('assets/Pasabuy-logo-no-name.png') }}
-                class="mr-3 h-10"
+                src={{ $user->profile_pic }}
+                class="mr-3 h-10 rounded-full"
                 alt="User photo"
               />
               <span class="self-center text-base text-[#014421] font-medium whitespace-nowrap ">{{ $user->name }}</span>

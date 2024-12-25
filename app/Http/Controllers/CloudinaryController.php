@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -28,12 +29,17 @@ class CloudinaryController extends Controller
      */
     public function store(Request $request)
     {
-        $file = $request->file('file');
-        if ($file) {
-            $uploadedFileUrl = Cloudinary::uploadFile($file->getRealPath())->getSecurePath();
-            return dd($uploadedFileUrl);
-        }
-        return dd('No file uploaded');
+        $uploadedFile = $request->file('file');
+        $uploadResult = Cloudinary::upload($uploadedFile->getRealPath(), [
+            'folder' => 'Upload Images'
+        ]);
+
+        Image::create([
+            'image_url' => $uploadResult->getSecurePath(),
+            'public_id' => $uploadResult->getPublicId()
+        ]);
+
+        return dd($uploadResult);
     }
 
 

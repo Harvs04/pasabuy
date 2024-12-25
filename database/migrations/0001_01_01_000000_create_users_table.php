@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->enum('role', ['customer', 'provider', 'admin']);
             $table->string('password');
+            $table->string('profile_pic_url')->default('https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif');
             $table->rememberToken();
             $table->timestamps();
         });

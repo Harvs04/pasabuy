@@ -1,4 +1,4 @@
-<div x-data="{ signupPartOne: false, signupPartTwo: true, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-montserrat h-screen">
+<div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-montserrat h-screen">
     <!-- Top div (Header) -->
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
         <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
