@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use Illuminate\Support\Facades\Auth; // Correct namespace for Auth
+use Illuminate\Support\Facades\Auth; 
 use Livewire\Component;
 
 class CustomerDashboard extends Component
