@@ -32,9 +32,14 @@ Route::middleware(['auth', RoleBasedMiddleware::class])->group(function () {
 });
 
 Route::get('{name}/profile', function($name) {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
     if (Auth::user()->name !== $name) {
         abort(403, 'Unauthorized access');
     }
+
     return view('profile', ['name' => $name]);
 })->name('profile');
 
