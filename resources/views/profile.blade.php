@@ -10,6 +10,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <nav class="fixed top-0 z-50 w-full bg-[#014421] border-b border-gray-200 ">
+        <div class="px-3 py-3 lg:px-5 lg:pl-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center justify-start rtl:justify-end">
+            <a href={{ route('dashboard') }}  class="flex ms-2 md:me-24">
+                <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="h-8 me-3" alt="FlowBite Logo" />
+                <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">PASABUY</span>
+            </a>
+            </div>
+        </div>
+        </div>
+    </nav>
     <livewire:profile />
 </body>
 </html>
