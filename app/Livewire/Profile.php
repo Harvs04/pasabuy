@@ -2,14 +2,16 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
 class Profile extends Component
 {
+    public $contact = "";
     public $constituent = "";
-    public $college = "";
-    public $degree_program = "";
+    public $selectedCollege = "";
+    public $degprog = "";
     public $types = [
         'Student' => 'student',
         'Faculty Member' => 'faculty',
@@ -153,6 +155,38 @@ class Profile extends Component
             "Professional Masters in Tropical Marine Ecosystems Management"
         ]
     ];
+    public function check()
+    {
+        dd("hey");
+    }
+    public function saveInfo()
+    {
+
+    }
+    public function logOut()
+    {
+        Auth::logout();
+        return redirect('login');
+    }
+
+    public function deleteAccount()
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+        $user->delete();
+        Auth::logout();
+        session()->flash('delete_account_success', "Account successfully deleted.");
+        return redirect('login');
+    }
+
+    public function changeRole()
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+        $user->role = $user->role === "customer" ? 'provider' : 'customer';
+        $user->save();
+
+        session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
+        return redirect()->route('profile', ['name' => $user->name]);
+    }
     public function render()
     {
         $user = Auth::user();
