@@ -155,9 +155,10 @@ class Profile extends Component
             "Professional Masters in Tropical Marine Ecosystems Management"
         ]
     ];
-    public function check()
+    public function saveInfoChanges()
     {
-        dd("hey");
+        $user = User::where('id', Auth::user()->id)->first();
+        
     }
     public function saveInfo()
     {

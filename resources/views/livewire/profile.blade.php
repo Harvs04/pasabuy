@@ -172,7 +172,7 @@
       <div class="flex flex-col gap-4">
         <!-- GENERAL INFO -->
         <div class="bg-white rounded-lg shadow-sm sm:shadow-md w-full">
-          <div class="flex flex-col p-8 justify-center" x-data="{ contact: $wire.entangle('contact'), constituent: $wire.entangle('constituent'), college: '{{ $user->college }}', selectedCollege: '{{ $user->college }}', degprog: '{{ $user->degree_program }}', degProgs: {{ json_encode($degprogs) }}, isModalOpen: false }">
+          <div class="flex flex-col p-8 justify-center" x-data="{ contact: $wire.entangle('contact'), constituent: $wire.entangle('constituent'), college: '{{ $user->college }}', selectedCollege: '{{ $user->college }}', degprog: '{{ $user->degree_program }}', selectedDegprog: '{{ $user->degree_program }}', degProgs: {{ json_encode($degprogs) }}, isModalOpen: false, infoModalOpen: false, errors: {} }" x-cloak>
             <div class="flex flex-row items-center">
               <p class="text-lg sm:text-xl font-semibold">General Information</p>
               <button @click="isModalOpen = true" class="font-medium ml-auto py-1 px-2 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md"> Change role </button>
@@ -227,7 +227,7 @@
               </div>
               <div class="flex flex-col mt-4">
                 <label for="constituent" class="block mb-2 text-sm font-medium text-gray-900 ">Type of Constituent</label>
-                <select x-model="constituent" type="text" id="constituent" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" >
+                <select x-model="constituent" type="text" id="constituent" @change="if (constituent === 'staff') { degprog = ''; } " class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" >
                   <option value="" selected>
                     @if ($user->constituent === 'student')
                         Student
@@ -248,8 +248,8 @@
               </div>
               <div class="flex flex-col mt-4">
                 <label class="block mb-2 text-sm font-medium text-gray-900" for="college">College</label>
-                <select x-model="college" wire:model="selectedCollege" id="college" @change="if(college !== '') { delete errors.college; } if(college === '' && constituent !== 'staff') { errors.college = true; errors.degprog = true; } degprog = ''; errors.degprog = true; degprog = ''" x-bind:class="{'border-red-500': errors.college }" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5">
-                  <option value="" selected>{{ $user->college }}</option>
+                <select x-model="college" wire:model="selectedCollege" id="college" @change="if(college !== selectedCollege) { degprog = ''; } if (college === selectedCollege) { degprog = selectedDegprog; }" x-bind:class="{'border-red-500': errors.college }" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5">
+                  <option value="{{ $user->college }}" selected>{{ $user->college }}</option>
                   @foreach ($colleges as $college)
                     @if($college !== $user->college)
                       <option value="{{ $college }}">{{ $college }}</option>
@@ -258,27 +258,62 @@
                 </select>
               </div>
               <div class="flex flex-col mt-4">
-                <p x-text="college"></p>
-                <p x-text="selectedCollege"></p>
-                <!-- <p x-text="college === selectedCollege"></p> -->
+                <!-- <p x-text="degprog"></p>
+                <p>HI</p>
+                <p x-text="selectedDegprog"></p> -->
                 <label for="degprog" class="block mb-2 text-sm font-medium text-gray-900">Degree Program</label>
-                <select x-model="degprog" wire:model="degprog" id="degprog" 
-                        x-bind:class="{'border-red-500': errors.degprog && constituent !== 'staff'}" 
-                        class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" 
-                        @change="degprog = ''"> <!-- Reset degprog when college changes -->
-                    <!-- Show empty option or default option if no college is selected -->
-                    <option x-show="college === selectedCollege" x-text="heheh" value="" selected></option>
-                    <!-- Render the degree programs based on the selected college -->
-                    <template x-if="college !== '' && degProgs[college]" x-for="program in degProgs[college]" :key="program">
+                <select 
+                    x-model="degprog" 
+                    wire:model="degprog" 
+                    id="degprog" 
+                    x-bind:class="{'border-red-500': errors.degprog && constituent !== 'staff'}" 
+                    class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5">
+                    
+                    <!-- Placeholder option when no degree program is selected -->
+                    <option value="" disabled x-show="!degProgs[college] || degprog === '' || college !== selectedCollege ">
+                        Select a degree program
+                    </option>
+                    
+                    <!-- Default option when college matches the original registered value -->
+                    <option x-text="selectedDegprog" :value="selectedDegprog" x-show="college === selectedCollege && degprog === selectedDegprog">
+                    </option>
+                    
+                    <!-- Render degree programs dynamically based on selected college -->
+                    <template x-for="program in degProgs[college]" :key="program">
                       <option x-text="program" :value="program"></option>
                     </template>
                 </select>
-
-
+                <p x-show="(degprog === undefined || degprog === '') && constituent !== 'staff'" class="text-red-500 text-sm mt-1">A new degree program is required.</p>
               </div>
             </div>
             <div class="mt-6 flex justify-start">
-              <button wire:click="check" class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="!contact && !constituent && !college && !degprog" >Save changes</button>
+              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="!contact && !constituent && college === selectedCollege && degprog === selectedDegprog || (selectedCollege !== college && degprog === '')" @click="
+                                errors = {};
+                                if (degprog === undefined || degprog === '') errors.deg_undefined = true;
+                                if (Object.keys(errors).length === 0) {
+                                  infoModalOpen = true;
+                                }
+                            " 
+                            class="w-full md:w-1/6 h-12 bg-[#014421] rounded-md text-white hover:bg-green-800 flex items-center justify-center">Save changes</button>
+            </div>
+            <div x-show="infoModalOpen" x-transition:enter.duration.5-ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
+                    <div class="flex flex-row items-center gap-2 sm:gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                      </svg>
+                      <p class="text-xl font-semibold text-[#014421]">Reminder</p>
+                    </div>
+                    <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">Do you wish to save your changes?</p>
+                    <p x-text="contact"></p>
+                    <p x-text="constituent"></p>
+                    <p x-text="college"></p>
+                    <p x-text="degprog"></p>
+                    <div class="mt-5 flex justify-end gap-2">
+                        <button @click="infoModalOpen = false" class="font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
+                        <button wire:click="saveInfoChanges" class=" font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                    </div>
+                </div>
             </div>
           </div>
         </div>

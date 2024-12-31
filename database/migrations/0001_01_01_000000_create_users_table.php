@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('contact_number');
             $table->enum('constituent', ['student', 'faculty', 'staff', 'alumni']);
             $table->string('college');
-            $table->string('degree_program');
+            $table->string('degree_program')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('google_id')->nullable();
