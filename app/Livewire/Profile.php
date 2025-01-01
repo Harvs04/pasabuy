@@ -12,6 +12,8 @@ class Profile extends Component
     public $constituent = "";
     public $selectedCollege = "";
     public $degprog = "";
+    public $current_password = "";
+    public $new_password = "";
     public $types = [
         'Student' => 'student',
         'Faculty Member' => 'faculty',
@@ -157,8 +159,17 @@ class Profile extends Component
     ];
     public function saveInfoChanges()
     {
+        // dd(['contact' => $this->contact, 'constituent' => $this->constituent, 'college' => $this->selectedCollege, 'degprog' => $this->degprog]);
         $user = User::where('id', Auth::user()->id)->first();
-        
+        if ($this->contact !== '') $user->contact_number = $this->contact;
+        if ($this->constituent !== '') $user->constituent = $this->constituent;
+        if ($this->constituent === 'staff') $user->degree_program = "";
+        if ($this->selectedCollege !== '') $user->college = $this->selectedCollege;
+        if ($this->degprog !== '') $user->degree_program = $this->degprog;
+
+        $user->save();
+        session()->flash('change_info_success', "Changes successfully saved.");
+        return redirect()->route('profile', ['name' => $user->name]);
     }
     public function saveInfo()
     {
