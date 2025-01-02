@@ -36,9 +36,8 @@ class SocialiteController extends Controller
                     $userData = User::create([
                         'name' => $googleUser->name, 
                         'email' => $googleUser->email,
-                        'password' => Hash::make('Password@1234'),
                         'role' => 'customer',
-                        'google_id' => $googleUser->id,
+                        'google_id' => $googleUser->id
                     ]);
         
                     if ($userData) {
