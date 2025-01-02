@@ -5,14 +5,17 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class Profile extends Component
 {
+    public $count = 0;
     public $contact = "";
     public $constituent = "";
     public $selectedCollege = "";
     public $degprog = "";
     public $current_password = "";
+    public $wrong_password = "";
     public $new_password = "";
     public $types = [
         'Student' => 'student',
@@ -171,9 +174,18 @@ class Profile extends Component
         session()->flash('change_info_success', "Changes successfully saved.");
         return redirect()->route('profile', ['name' => $user->name]);
     }
-    public function saveInfo()
-    {
-
+    public function checkPassword()
+    {   
+        $this->count++;
+        if ($this->count === 10) dd("10 na po");
+        // dd($this->current_password);
+        $user = User::where('id', Auth::user()->id)->first();
+        if (Hash::check($this->current_password, $user->password)) {
+            $this->wrong_password = "";
+        } else {
+            $this->wrong_password = "Current password is incorrect.";
+        }
+        // dd($this->wrong_password);
     }
     public function logOut()
     {

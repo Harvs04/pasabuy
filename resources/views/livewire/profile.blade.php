@@ -102,7 +102,7 @@
                   </p>
                 </div>
               </div>
-              <p>: 1</p>
+              <p>: {{ $user->pasabuy_points }}</p>
             </div>
             <hr class="my-5" />
             <div class="flex flex-col gap-2">
@@ -223,9 +223,10 @@
               </div>
               <div class="flex flex-col mt-4">
                 <label for="contact" class="block mb-2 text-sm font-medium text-gray-900 ">Contact Number</label>
-                <input x-model="contact" type="tel" id="contact" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': ((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || contact === originalContact }" placeholder="{{ $user->contact_number }}"/>
+                <input x-model="contact" wire:model="contact" type="tel" id="contact" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': ((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || (contact === originalContact && contact !== '') || (contact === '' && originalContact === '')}" placeholder="{{ $user->contact_number }}"/>
                 <p x-show="((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0) && contact !== originalContact" class="text-red-500 text-sm mt-1">Invalid contact number format (09***).</p>
-                <p x-show="contact === originalContact" class="text-red-500 text-sm mt-1">Contact number is already in use.</p>
+                <p x-show="contact === originalContact && contact !== ''" class="text-red-500 text-sm mt-1">Contact number is already in use.</p>
+                <p x-show="contact === '' && originalContact === ''"  class="text-red-500 text-sm mt-1">Contact number is required for transactions.</p>
               </div>
               <div class="flex flex-col mt-4">
                 <label for="constituent" class="block mb-2 text-sm font-medium text-gray-900 ">Type of Constituent</label>
@@ -250,7 +251,7 @@
               </div>
               <div class="flex flex-col mt-4">
                 <label class="block mb-2 text-sm font-medium text-gray-900" for="college">College</label>
-                <select x-model="college" wire:model="selectedCollege" id="college" @change="if(college !== selectedCollege) { degprog = ''; } if (college === selectedCollege) { degprog = selectedDegprog; }" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5">
+                <select x-model="college" wire:model="selectedCollege" id="college" @change="if(college !== selectedCollege) { degprog = ''; } if (college === selectedCollege) { degprog = selectedDegprog; }" x-bind:class="{'border-red-500': (college === '' && selectedCollege === '')}" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5">
                   <option value="{{ $user->college }}" selected>{{ $user->college }}</option>
                   @foreach ($colleges as $college)
                     @if($college !== $user->college)
@@ -258,6 +259,7 @@
                     @endif
                   @endforeach
                 </select>
+                <p x-show="college === '' && selectedCollege === ''"  class="text-red-500 text-sm mt-1">College is required for transactions.</p>
               </div>
               <div class="flex flex-col mt-4">
                 <!-- <p x-text="constituent"></p> -->
@@ -290,7 +292,7 @@
               </div>
             </div>
             <div class="mt-6 flex justify-start">
-              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="(!contact && constituent === selectedConstituent && college === selectedCollege && degprog === selectedDegprog) || ((degprog === 'Not Applicable' || degprog === '') && constituent !== 'staff')" @click="
+              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="((((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || contact === originalContact) || constituent === selectedConstituent && college === selectedCollege && degprog === selectedDegprog) || ((degprog === 'Not Applicable' || degprog === '') && constituent !== 'staff')" @click="
                                 errors = {};
                                 if ((degprog === undefined || degprog === '') && constituent !== 'staff') errors.deg_undefined = true;
                                 if (((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 )) errors.contact_length = true;
@@ -333,33 +335,34 @@
           </div>
         </div>
         <!-- PASSWORD INFO --> 
-        <div x-data="{ current_password: $wire.entangle('current_password'), originalPassword: '{{ $user->password }}', new_password: $wire.entangle('new_password'), confirm_new_pass: '', showCurrentPassword: false, showNewPassword: false, showConfirmPassword: false }" class="mb-4">
+        <div x-data="{ current_password: $wire.entangle('current_password'), wrong_password: $wire.entangle('wrong_password'), new_password: $wire.entangle('new_password'), confirm_new_pass: '', showCurrentPassword: false, showNewPassword: false, showConfirmPassword: false, passModalOpen: false }" x-cloak class="mb-4">
           <div class="bg-white rounded-lg shadow-sm sm:shadow-md p-8">
-            <p x-text="originalPassword"></p>
             <p class="text-lg sm:text-xl font-semibold">Password Information</p>
             <div class="flex flex-col sm:flex-row">
               <div class="flex flex-col w-full mt-4">
                 <label for="current_password" class="block mb-2 text-sm font-medium text-gray-900 ">Current Password</label>
-                  <div class="relative w-full">
-                    <input :type="showCurrentPassword ? 'text' : 'password'" id="current_password" x-model="current_password" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
-                                    x-bind:class="{'border-red-500': errors.repeat_password || (repeat_password !== password && repeat_password.length > 0)}">
-                    <button type="button" @click="showCurrentPassword = !showCurrentPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
-                        <svg x-show="!showCurrentPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
-                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                        <svg x-show="showCurrentPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
-                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-                        </svg>
-                    </button>
-                  </div>
+                <div class="relative w-full">
+                  <input :type="showCurrentPassword ? 'text' : 'password'" id="current_password" x-model="current_password"  class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                                  x-bind:class="{'border-red-500': wrong_password">
+                  <button type="button" @click="showCurrentPassword = !showCurrentPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
+                      <svg x-show="!showCurrentPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                          stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                      </svg>
+                      <svg x-show="showCurrentPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                          stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                      </svg>
+                  </button>
+                </div>
+                <p class="text-red-500 text-sm mt-1">{{ $wrong_password }}</p>
+                <p>Count: {{ $count }}</p>
               </div>
               <div class="flex flex-col w-full mt-4">
                 <label for="new_password" class="block mb-2 text-sm font-medium text-gray-900 ">New Password</label>
                 <div class="relative w-full">
-                    <input :type="showNewPassword ? 'text' : 'password'" id="new_password" x-model="new_password" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                    <input :type="showNewPassword ? 'text' : 'password'" id="new_password" x-model="new_password" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
                                     x-bind:class="{'border-red-500': errors.repeat_password || (repeat_password !== password && repeat_password.length > 0)}">
                     <button type="button" @click="showNewPassword = !showNewPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                         <svg x-show="!showNewPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
@@ -372,15 +375,15 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
                         </svg>
                     </button>
-                  </div>
+                </div>
               </div>
             </div>
             <div class="flex flex-col sm:flex-row mt-4">
               <div class="flex flex-col w-full">
                 <label for="confirm_new_pass" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm New Password</label>
                 <div class="relative w-full">
-                    <input :type="showConfirmPassword ? 'text' : 'password'" id="confirm_new_pass" x-model="confirm_new_pass " class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
-                                    x-bind:class="{'border-red-500': errors.repeat_password || (repeat_password !== password && repeat_password.length > 0)}">
+                    <input :type="showConfirmPassword ? 'text' : 'password'" id="confirm_new_pass" x-model="confirm_new_pass" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                                    x-bind:class="{'border-red-500': errors.repeat_password || (repeat_password !== password && repeat_password.length > 0)}" >
                     <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                         <svg x-show="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -392,7 +395,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
                         </svg>
                     </button>
-                  </div>
+                </div>
               </div>
               <!-- HIDDEN -->
               <div class="flex flex-col w-full">
@@ -412,7 +415,24 @@
 
             </div>
             <div class="mt-6 flex justify-start">
-              <button class="font-medium py-2 px-3 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md" :disabled="">Save changes</button>
+              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="new_password !== confirm_new_pass || (new_password.length < 8 && new_password.length > 0) || (confirm_new_pass.length < 8 && confirm_new_pass.length > 0) || current_password === '' || (!current_password || !new_password || !confirm_new_pass)" type="button" wire:click="checkPassword" >Save changes</button>
+            </div>
+            <div x-show="wrong_password === 'Current password is incorrect.'" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
+                    <div class="flex flex-col">
+                      <div class="flex flex-row items-center gap-2 sm:gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg>
+                        <p class="text-xl font-semibold text-[#014421]">Reminder</p>
+                      </div>
+                      <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to change your password?</p>
+                    </div>
+                    <div class="mt-5 flex justify-end gap-2">
+                        <button @click="passModalOpen = false" class="font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
+                        <button wire:click="savePassChanges" class=" font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                    </div>
+                </div>
             </div>
           </div>
         </div>
