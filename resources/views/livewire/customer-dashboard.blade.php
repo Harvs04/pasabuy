@@ -1,19 +1,20 @@
-<div class="font-montserrat">
+<div class="font-montserrat bg-gray-100" x-data="{ openBurger: true }">
   <!-- <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 "> -->
-  <nav class="fixed top-0 z-50 w-full bg-[#014421] border-b border-gray-200 ">
+  <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start rtl:justify-end">
-          <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-              <span class="sr-only">Open sidebar</span>
-              <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                 <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-              </svg>
-           </button>
-          <a href={{ route('dashboard') }}  class="flex ms-2 md:me-24">
-            <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="h-8 me-3" alt="FlowBite Logo" />
-            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">PASABUY</span>
-          </a>
+            <div class="flex flex-row gap-2 items-center ml-2 sm:ml-5">
+               <button @click="openBurger = !openBurger">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                  </svg>
+               </button>
+               <a href={{ route('dashboard') }}  class="flex ms-2 md:me-24">
+                  <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="h-8 me-3" alt="FlowBite Logo" />
+                  <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-gray-700">PASABUY</span>
+               </a>
+            </div>
         </div>
         <div class="relative flex items-center" x-data="{ open: false }">
             <div class="flex items-center ms-3" >
@@ -49,9 +50,18 @@
       </div>
     </div>
   </nav>
-  
-  <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0" aria-label="Sidebar">
-     <div class="h-full px-3 pb-4 overflow-y-auto bg-white ">
+  <aside id="logo-sidebar" 
+    class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 bg-white border-r border-gray-200 transform transition-transform duration-300"
+    :class="openBurger ? 'translate-x-0' : '-translate-x-full'" 
+    aria-label="Sidebar" 
+    x-show="true" 
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="-translate-x-full"
+    x-transition:enter-end="translate-x-0"
+    x-transition:leave="transition ease-in duration-300"
+    x-transition:leave-start="translate-x-0"
+    x-transition:leave-end="-translate-x-full">
+     <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
         <ul class="space-y-2 font-medium">
            <li>
               <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
