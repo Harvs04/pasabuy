@@ -16,8 +16,26 @@
           &times;
       </button>
     </div>
-
   @endif
+
+  @if(session('change_pass_success'))
+    <div class="fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-3 py-2 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+      <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+
+          <div class="text-center">
+              {{ session('change_pass_success') }}
+          </div>
+      </div>
+      <!-- Close Button -->
+      <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-4">
+          &times;
+      </button>
+    </div>
+  @endif
+
   @if(session('change_info_success'))
     <div class="fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-3 py-2 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
       <div class="flex items-center gap-2">
@@ -292,7 +310,14 @@
               </div>
             </div>
             <div class="mt-6 flex justify-start">
-              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="((((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || contact === originalContact) || constituent === selectedConstituent && college === selectedCollege && degprog === selectedDegprog) || ((degprog === 'Not Applicable' || degprog === '') && constituent !== 'staff')" @click="
+              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" 
+                :disabled="
+                  (((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || 
+                  (contact === '' && constituent === selectedConstituent && college === selectedCollege && degprog === selectedDegprog)) ||
+                  (degprog === '' && constituent !== 'staff')
+                "
+
+               @click="
                                 errors = {};
                                 if ((degprog === undefined || degprog === '') && constituent !== 'staff') errors.deg_undefined = true;
                                 if (((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 )) errors.contact_length = true;
@@ -335,14 +360,14 @@
           </div>
         </div>
         <!-- PASSWORD INFO --> 
-        <div x-data="{ current_password: $wire.entangle('current_password'), wrong_password: $wire.entangle('wrong_password'), new_password: $wire.entangle('new_password'), confirm_new_pass: '', showCurrentPassword: false, showNewPassword: false, showConfirmPassword: false, passModalOpen: false }" x-cloak class="mb-4">
+        <div x-data="{ current_password: $wire.entangle('current_password'), new_password: $wire.entangle('new_password'), confirm_new_pass: '', showCurrentPassword: false, showNewPassword: false, showConfirmPassword: false, wrong_password: $wire.entangle('wrong_password'), passModalOpen: $wire.entangle('open_modal') }" x-cloak class="mb-4">
           <div class="bg-white rounded-lg shadow-sm sm:shadow-md p-8">
             <p class="text-lg sm:text-xl font-semibold">Password Information</p>
             <div class="flex flex-col sm:flex-row">
               <div class="flex flex-col w-full mt-4">
                 <label for="current_password" class="block mb-2 text-sm font-medium text-gray-900 ">Current Password</label>
                 <div class="relative w-full">
-                  <input :type="showCurrentPassword ? 'text' : 'password'" id="current_password" x-model="current_password"  class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                  <input :type="showCurrentPassword ? 'text' : 'password'" id="current_password" x-model="current_password"   class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
                                   x-bind:class="{'border-red-500': wrong_password">
                   <button type="button" @click="showCurrentPassword = !showCurrentPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                       <svg x-show="!showCurrentPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
@@ -356,14 +381,13 @@
                       </svg>
                   </button>
                 </div>
-                <p class="text-red-500 text-sm mt-1">{{ $wrong_password }}</p>
-                <p>Count: {{ $count }}</p>
+                <p x-show="wrong_password" class="text-red-500 text-sm mt-1">Current password is incorrect.</p>
               </div>
               <div class="flex flex-col w-full mt-4">
                 <label for="new_password" class="block mb-2 text-sm font-medium text-gray-900 ">New Password</label>
                 <div class="relative w-full">
                     <input :type="showNewPassword ? 'text' : 'password'" id="new_password" x-model="new_password" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
-                                    x-bind:class="{'border-red-500': errors.repeat_password || (repeat_password !== password && repeat_password.length > 0)}">
+                                    x-bind:class="{'border-red-500': ((new_password.length < 8 || !/[A-Z]/.test(new_password)) && new_password.length > 0) || new_password.length > 40}">
                     <button type="button" @click="showNewPassword = !showNewPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                         <svg x-show="!showNewPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -376,6 +400,9 @@
                         </svg>
                     </button>
                 </div>
+                <p x-show="new_password.length < 8 && new_password.length > 0" class="text-red-500 text-sm mt-1">New password must be at least 8 characters long.</p>
+                <p x-show="new_password.length > 40" class="text-red-500 text-sm mt-1">New password length limit of 40 is reached.</p>
+                <p x-show="!/[A-Z]/.test(new_password) && new_password.length > 0" class="text-red-500 text-sm mt-1">New password must contain at least 1 uppercase letter.</p>
               </div>
             </div>
             <div class="flex flex-col sm:flex-row mt-4">
@@ -383,7 +410,7 @@
                 <label for="confirm_new_pass" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm New Password</label>
                 <div class="relative w-full">
                     <input :type="showConfirmPassword ? 'text' : 'password'" id="confirm_new_pass" x-model="confirm_new_pass" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
-                                    x-bind:class="{'border-red-500': errors.repeat_password || (repeat_password !== password && repeat_password.length > 0)}" >
+                                    x-bind:class="{'border-red-500': new_password !== confirm_new_pass && (new_password.length > 0 && confirm_new_pass.length > 0)}" >
                     <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                         <svg x-show="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -396,6 +423,7 @@
                         </svg>
                     </button>
                 </div>
+                <p x-show="new_password !== confirm_new_pass && (new_password.length > 0 && confirm_new_pass.length > 0)" class="text-red-500 text-sm mt-1">Passwords do not match.</p>
               </div>
               <!-- HIDDEN -->
               <div class="flex flex-col w-full">
@@ -415,9 +443,9 @@
 
             </div>
             <div class="mt-6 flex justify-start">
-              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="new_password !== confirm_new_pass || (new_password.length < 8 && new_password.length > 0) || (confirm_new_pass.length < 8 && confirm_new_pass.length > 0) || current_password === '' || (!current_password || !new_password || !confirm_new_pass)" type="button" wire:click="checkPassword" >Save changes</button>
+              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="(new_password !== confirm_new_pass && new_password.length > 0 && confirm_new_pass.length > 0) || (new_password.length < 8 && new_password.length > 0) || new_password.length > 40 || current_password === '' || (!current_password || !new_password || !confirm_new_pass) || !/[A-Z]/.test(new_password)" type="button" wire:click="checkPassword" >Save changes</button>
             </div>
-            <div x-show="wrong_password === 'Current password is incorrect.'" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div x-show="passModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
                     <div class="flex flex-col">
                       <div class="flex flex-row items-center gap-2 sm:gap-3">

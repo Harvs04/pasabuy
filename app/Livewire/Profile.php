@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Hash;
 
 class Profile extends Component
 {
-    public $count = 0;
+    public User $user;
     public $contact = "";
     public $constituent = "";
     public $selectedCollege = "";
     public $degprog = "";
     public $current_password = "";
     public $wrong_password = "";
+    public $open_modal = "";
     public $new_password = "";
     public $types = [
         'Student' => 'student',
@@ -160,10 +161,26 @@ class Profile extends Component
             "Professional Masters in Tropical Marine Ecosystems Management"
         ]
     ];
+
+    public function __construct()
+    {
+        $this->user = User::where('id', Auth::user()->id)->firstOrFail();
+    }
+
+    public function changeRole()
+    {
+        $user = $this->user;
+        $user->role = $user->role === "customer" ? 'provider' : 'customer';
+        $user->save();
+
+        session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
+        return redirect()->route('profile', ['name' => $user->name]);
+    }
+
     public function saveInfoChanges()
     {
         // dd(['contact' => $this->contact, 'constituent' => $this->constituent, 'college' => $this->selectedCollege, 'degprog' => $this->degprog]);
-        $user = User::where('id', Auth::user()->id)->first();
+        $user = $this->user;
         if ($this->contact !== '') $user->contact_number = $this->contact;
         if ($this->constituent !== '') $user->constituent = $this->constituent;
         if ($this->constituent === 'staff') $user->degree_program = "";
@@ -176,17 +193,26 @@ class Profile extends Component
     }
     public function checkPassword()
     {   
-        $this->count++;
-        if ($this->count === 10) dd("10 na po");
-        // dd($this->current_password);
-        $user = User::where('id', Auth::user()->id)->first();
+        $user = $this->user;
         if (Hash::check($this->current_password, $user->password)) {
-            $this->wrong_password = "";
+            $this->wrong_password = false;
+            $this->open_modal = true;
         } else {
-            $this->wrong_password = "Current password is incorrect.";
+            $this->wrong_password = true;
+            $this->open_modal = false;
         }
-        // dd($this->wrong_password);
     }
+
+    public function savePassChanges()
+    {
+        $user = $this->user;
+
+        $user->password = Hash::make($this->new_password);
+        $user->save();
+        session()->flash('change_pass_success', "Password successfully changed.");
+        return redirect()->route('profile', ['name' => $user->name]);
+    }
+
     public function logOut()
     {
         Auth::logout();
@@ -195,22 +221,13 @@ class Profile extends Component
 
     public function deleteAccount()
     {
-        $user = User::where('id', Auth::user()->id)->first();
+        $user = $this->user;
         $user->delete();
         Auth::logout();
         session()->flash('delete_account_success', "Account successfully deleted.");
         return redirect('login');
     }
 
-    public function changeRole()
-    {
-        $user = User::where('id', Auth::user()->id)->first();
-        $user->role = $user->role === "customer" ? 'provider' : 'customer';
-        $user->save();
-
-        session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
-        return redirect()->route('profile', ['name' => $user->name]);
-    }
     public function render()
     {
         $user = Auth::user();
