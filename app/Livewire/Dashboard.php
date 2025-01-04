@@ -6,12 +6,19 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\User;
 
-class ProviderDashboard extends Component
+class Dashboard extends Component
 {
+    public User $user;
+
+    public function __construct()
+    {
+        $this->user = User::where('id', Auth::user()->id)->firstOrFail();
+    }
+
     public function switchRole()
     {
-        $user = User::where('id', Auth::user()->id)->first();
-        $user->role = 'customer';
+        $user = $this->user;
+        $user->role === 'customer' ? $user->role = 'provider' : $user->role = 'customer'; 
         $user->save();
         return redirect(to: 'dashboard');
     }
@@ -23,6 +30,6 @@ class ProviderDashboard extends Component
     public function render()
     {
         $user = Auth::user(); 
-        return view('livewire.provider-dashboard', ['user' => $user]);
+        return view('livewire.dashboard', ['user' => $user]);
     }
 }

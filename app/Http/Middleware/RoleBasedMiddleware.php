@@ -17,13 +17,7 @@ class RoleBasedMiddleware
     public function handle($request, Closure $next)
     {
         if (Auth::check()) {
-            $role = Auth::user()->role;
-
-            if ($role === 'customer') {
-                return response()->view('customer.dashboard');
-            } elseif ($role === 'provider') {
-                return response()->view('provider.dashboard');
-            }
+            return response()->view('dashboard');
         }
 
         return redirect()->route('login')->with('error', 'Unauthorized access.');
