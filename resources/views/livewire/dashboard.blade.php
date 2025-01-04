@@ -1,26 +1,38 @@
-<div class="font-montserrat bg-gray-100" x-data="{ openBurger: true}">
+<div class="font-montserrat bg-gray-100" x-data="{ openBurger: true }">
   <!-- <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 "> -->
-  <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+  <nav class="fixed top-0 z-50 w-full bg-[#014421] border-b border-gray-200">
     <div class="px-3 py-1.5 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
-         <div class="flex items-center justify-start rtl:justify-end">
+         <div class="flex items-center justify-start rtl:justify-end w-4/6">
             <div class="flex flex-row gap-2 items-center ml-2 sm:ml-5">
                <button @click="openBurger = !openBurger">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" class="size-6 sm:size-8">
                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                   </svg>
                </button>
                <a href={{ route('dashboard') }}  class="flex ms-2 md:me-24">
                   <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="h-14 me-3" alt="FlowBite Logo" />
-                  <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-gray-700">PASABUY</span>
+                  <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">PASABUY</span>
                </a>
             </div>
-        </div>
-        <div class="relative flex items-center" x-data="{ open: false }">
+            <div class="relative hidden sm:block w-1/2">
+               <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+               <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+               </svg>
+               </div>
+               <input type="text" id="search-navbar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search items, stores, ...">
+            </div>
+         </div>
+        <div class="relative flex items-center gap-2" x-data="{ open: false }">
+            <button class="sm:hidden block" @click="openBurger = true">
+               <svg class="w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+               </svg>
+            </button>
             <div class="flex items-center ms-3">
               <div>
                 <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" @click="open = !open">
-                  <span class="sr-only">Open user menu</span>
                   <img class="size-9 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                 </button>
               </div>
@@ -37,10 +49,10 @@
                 </div>
                 <ul class="py-1">
                   <li>
-                    <button type="button" wire:click="switchRole" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Switch to customer</button>
+                    <button type="button" wire:click="switchRole" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Switch to {{ $user->role === 'customer' ? 'Provider' : 'Customer' }} </button>
                   </li>
                   <li>
-                    <button type="button" wire:click="signOut" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</button>
+                    <button type="button" wire:click="signOut" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Log out</button>
                   </li>
                 </ul>
               </div>
@@ -63,6 +75,16 @@
     x-transition:leave-end="-translate-x-full">
      <div class="h-full px-3 pb-4 overflow-y-auto bg-white ">
         <ul class="space-y-2 font-medium">
+            <li>
+               <div class="relative block w-full sm:hidden mt-2">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                  </svg>
+                  </div>
+                  <input type="text" id="search-navbar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search items, stores, ...">
+               </div>
+            </li>
            <li>
               <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
                  <!-- <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
