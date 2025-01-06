@@ -1,4 +1,4 @@
-<div class="font-poppins bg-gray-100" x-data="{ openBurger: true }">
+<div class="font-poppins bg-gray-50" x-data="{ openBurger: true }">
    <!-- <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 "> -->
    <nav class="fixed top-0 z-50 w-full bg-[#014421] border-b">
       <div class="px-3 py-1.5 lg:px-5 lg:pl-3">
@@ -15,18 +15,10 @@
                      <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">PASABUY</span>
                   </a>
                </div>
-               <div class="relative hidden sm:block w-1/2">
-                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                  </svg>
-                  </div>
-                  <input type="text" id="search-navbar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search items, stores, ...">
-               </div>
             </div>
          <div class="relative flex items-center gap-2" x-data="{ open: false }">
                <button class="sm:hidden block" @click="openBurger = true">
-                  <svg class="w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <svg class="w-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                      <path stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                   </svg>
                </button>
@@ -63,7 +55,7 @@
    </nav>
    
    <aside id="logo-sidebar" 
-      class="fixed top-0 left-0 z-40 w-64 sm:w-96 h-screen pt-20 bg-white border-r border-gray-200 transform transition-transform duration-300"
+      class="fixed top-0 left-0 z-40 w-64 xl:w-96 h-screen pt-20 bg-gray-50 border-r border-gray-200 transform transition-transform duration-300"
       :class="openBurger ? 'translate-x-0' : '-translate-x-full'" 
       aria-label="Sidebar" 
       x-show="true" 
@@ -73,12 +65,12 @@
       x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="translate-x-0"
       x-transition:leave-end="-translate-x-full">
-      <div class="h-full px-3 pb-4 overflow-y-auto bg-white ">
+      <div class="h-full px-3 pb-4 overflow-y-auto">
          <ul class="space-y-2">
                <li>
                   <div class="relative block w-full sm:hidden mt-2">
                      <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                     <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                      </svg>
                      </div>
@@ -159,17 +151,106 @@
          </ul>
       </div>
    </aside>
-   <div class="flex flex-row">
-      <div class="p-4 sm:transition-all sm:duration-300 sm:transform" :class="openBurger ? 'sm:ml-96' : 'sm:ml-0'" style="margin-top: 4.3rem;">
+   <div class="sm:flex sm:flex-row sm:transition-all sm:duration-300 sm:transform" :class="openBurger ? 'sm:ml-64 xl:ml-96' : 'md:ml-0'" style="margin-top: 4.3rem;">
+      <div class="p-4 h-svh sm:w-4/6  border-r border-zinc-300">
          <div class="flex flex-col gap-4">
-            <div class="p-4 border border-white rounded-md bg-white shadow-sm h-svh">
-               hi
+            <div class="p-4 bg-white border border-gray-50 shadow-sm rounded-md">
+               Post something
+            </div>
+            <div class="flex flex-col gap-4">
+               <div class="p-2 bg-white border border-gray-50 shadow-sm rounded-md">POST 1</div>
+               <div class="p-2 bg-white border border-gray-50 shadow-sm rounded-md">POST 2</div>
+               <div class="p-2 bg-white border border-gray-50 shadow-sm rounded-md">POST 3</div>
             </div>
          </div>
       </div>
-      <div class="hidden sm:block sm:fixed sm:right-0 sm:p-4 sm:bg-white sm:border-l sm:ml-auto" style="margin-top: 4.3rem">
+      <div class="hidden sm:block sm:fixed sm:right-0 sm:p-4 sm:ml-auto sm:w-1/3">
          <div class="flex flex-col">
-            <p>Filters:</p>
+            <p class="text-lg font-medium">Filters</p>
+            <div class="mt-2 relative hidden sm:block w-full">
+               <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+               <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+               </svg>
+               </div>
+               <input type="text" id="search-navbar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]" placeholder="Search items, stores, ...">
+            </div>
+            <hr class="mt-4">
+            <div class="mt-2">
+               <p class="text-lg font-medium">Post type</p>
+               <div class="ml-3" :class="openBurger ? 'flex flex-col' : 'xl:flex xl:flex-row xl:gap-4'">
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="radio" id="all" value="all" name="post_type">
+                     <label for="all">All Posts</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="radio" id="transaction" value="transaction" name="post_type">
+                     <label for="transaction">Transactions</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="radio" id="item_request" value="item_request" name="post_type">
+                     <label for="item_request">Item Requests</label>
+                  </div>
+               </div>
+            </div>
+            <hr class="mt-4">
+            <div class="mt-2">
+               <p class="text-lg font-medium">Item type</p>
+               <div class="xl:grid xl:grid-cols-2 ml-3">
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="food" value="food">
+                     <label for="food">Food</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="grocery" value="grocery">
+                     <label for="grocery">Grocery items</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="produce" value="produce">
+                     <label for="produce">Local produce</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="pet" value="pet">
+                     <label for="pet">Pet needs</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="apparel" value="apparel">
+                     <label for="apparel">Apparel</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="footwear" value="footwear">
+                     <label for="footwear">Footwear</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="merchandise" value="merchandise">
+                     <label for="merchandise">Merchandise</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="cosmetics" value="cosmetics">
+                     <label for="cosmetics">Cosmetics</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="celebratory" value="celebratory">
+                     <label for="celebratory">Celebratory</label>
+                  </div>
+                  <div class="flex flex-row items-center gap-2 mt-2">
+                     <input type="checkbox" id="hobbies" value="hobbies">
+                     <label for="hobbies">Hobbies</label>
+                  </div>
+               </div>
+            </div>
+            <hr class="mt-4">
+            <div class="mt-2">
+               <p class="text-lg font-medium">Date of delivery</p>
+               <div class="relative max-w-sm mt-2">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                     <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                     </svg>
+                  </div>
+                  <input id="datepicker-actions" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]" placeholder="Select date">
+               </div>
+            </div>
          </div>
          <div>
             Pasabuy chatbot
