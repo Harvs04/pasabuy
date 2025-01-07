@@ -9,6 +9,11 @@ use App\Models\User;
 class Dashboard extends Component
 {
     public User $user;
+    public $post_type = "";
+    public $item_type = [];
+    public $mode_of_payment = [];
+    public $delivery_date = "";
+
 
     public function __construct()
     {

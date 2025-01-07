@@ -189,8 +189,7 @@
    <div class="hidden sm:mb-4 lg:mb-0 sm:z-30 md:block sm:fixed sm:right-0 sm:top-0 sm:p-4 sm:ml-auto sm:w-1/3 bg-gray-100 sm:transition-all sm:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
      :class="openBurger ? 'sm:hidden md:block md:w-[250px] lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : ''" 
      style="margin-top: 4.3rem;">
-      <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden">
-         <p class="font-medium">Filters</p>
+      <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
          <div class="mt-2 relative hidden sm:block w-full">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -199,20 +198,19 @@
             </div>
             <input type="text" id="search-navbar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
          </div>
-         <hr class="mt-4">
          <div class="mt-2">
             <p class="font-medium">Post type</p>
             <div class="ml-4 text-sm" :class="openBurger ? 'flex flex-col' : 'xl:flex xl:flex-row xl:gap-4'">
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="radio" id="all" value="all" name="post_type">
+                  <input type="radio" id="all" value="all" name="post_type" x-model="post_type">
                   <label for="all">All Posts</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="radio" id="transaction" value="transaction" name="post_type">
+                  <input type="radio" id="transaction" value="transaction" name="post_type" x-model="post_type">
                   <label for="transaction">Transactions</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="radio" id="item_request" value="item_request" name="post_type">
+                  <input type="radio" id="item_request" value="item_request" name="post_type" x-model="post_type">
                   <label for="item_request">Item Requests</label>
                </div>
             </div>
@@ -222,43 +220,43 @@
             <p class="font-medium">Item type</p>
             <div class="lg:grid lg:grid-cols-2 ml-3 text-sm">
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="food" value="food">
+                  <input type="checkbox" id="food" value="food" x-model="item_type">
                   <label for="food">Food</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="grocery" value="grocery">
+                  <input type="checkbox" id="grocery" value="grocery" x-model="item_type">
                   <label for="grocery">Grocery items</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="produce" value="produce">
+                  <input type="checkbox" id="produce" value="produce" x-model="item_type">
                   <label for="produce">Local produce</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="pet" value="pet">
+                  <input type="checkbox" id="pet" value="pet" x-model="item_type">
                   <label for="pet">Pet needs</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="apparel" value="apparel">
+                  <input type="checkbox" id="apparel" value="apparel" x-model="item_type">
                   <label for="apparel">Apparel</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="footwear" value="footwear">
+                  <input type="checkbox" id="footwear" value="footwear" x-model="item_type">
                   <label for="footwear">Footwear</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="merchandise" value="merchandise">
+                  <input type="checkbox" id="merchandise" value="merchandise" x-model="item_type">
                   <label for="merchandise">Merchandise</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="personal_care" value="personal_care">
+                  <input type="checkbox" id="personal_care" value="personal_care" x-model="item_type">
                   <label for="personal_care">Personal care</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="celebratory" value="celebratory">
+                  <input type="checkbox" id="celebratory" value="celebratory" x-model="item_type">
                   <label for="celebratory">Celebratory</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="hobbies" value="hobbies">
+                  <input type="checkbox" id="hobbies" value="hobbies" x-model="item_type">
                   <label for="hobbies">Hobbies</label>
                </div>
             </div>
@@ -268,19 +266,19 @@
             <p class="font-medium">Mode of payment</p>
             <div class="lg:grid lg:grid-cols-2 ml-3 text-sm">
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="cash" value="cash">
+                  <input type="checkbox" id="cash" value="cash" x-model="mode_of_payment">
                   <label for="cash">Cash</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="digital_wallet" value="digital_wallet">
+                  <input type="checkbox" id="digital_wallet" value="digital_wallet" x-model="mode_of_payment">
                   <label for="digital_wallet">Digital wallet</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="debit_credit" value="debit_credit">
+                  <input type="checkbox" id="debit_credit" value="debit_credit" x-model="mode_of_payment">
                   <label for="debit_credit">Debit/Credit card</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="bank_transfer" value="bank_transfer">
+                  <input type="checkbox" id="bank_transfer" value="bank_transfer" x-model="mode_of_payment">
                   <label for="bank_transfer">Bank transfer</label>
                </div>
             </div>
@@ -288,14 +286,14 @@
          <hr class="mt-4">
          <div class="mt-2">
             <p class="font-medium">Date of delivery</p>
-            <div class="mt-2 relative hidden sm:block w-full">
-               <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                  </svg>
-               </div>
-               <input id="datepicker-actions" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]" placeholder="Select date">
-            </div>
+            <livewire:calendar />
+         </div>
+         <p x-text="post_type"></p>
+         <p x-text="item_type"></p>
+         <p x-text="mode_of_payment"></p>
+         <div class="flex flex-row w-full ml-auto mt-2 gap-2">
+            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="" class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" >Apply</button>
+            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1 text-sm disabled:bg-gray-500 bg-white enabled:text-[#7b1113] disabled:text-white border enabled:border-[#7b1113] rounded-md enabled:hover:bg-red-500 enabled:hover:text-white">Clear</button>
          </div>
       </div>
    </div>
