@@ -14,7 +14,6 @@ class Dashboard extends Component
     public $mode_of_payment = [];
     public $delivery_date = "";
 
-
     public function __construct()
     {
         $this->user = User::where('id', Auth::user()->id)->firstOrFail();

@@ -286,14 +286,36 @@
          <hr class="mt-4">
          <div class="mt-2">
             <p class="font-medium">Date of delivery</p>
-            <livewire:calendar />
+            <div class="relative mt-2">
+               <svg class="absolute left-3 top-2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+               </svg>
+               <input id="datepicker"
+                     x-data
+                     x-ref="input"
+                     x-init="new Pikaday({ 
+                        field: $refs.input, 
+                        format: 'MM/DD/YYYY', 
+                        minDate: new Date(),
+                        onSelect: function() {
+                           console.log(this.getDate());
+                           let date = new Date(this.getDate());
+                           date.setHours(date.getHours() + 8);  // Adjusting for GMT+8
+
+                           $wire.set('delivery_date', date.toISOString().split('T')[0], false);
+
+                        }
+                     })"
+                     type="text"
+                     wire:model="delivery_date"
+                     class="block w-full pl-10 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
+                     placeholder="Select date"
+               />
+            </div>
          </div>
-         <p x-text="post_type"></p>
-         <p x-text="item_type"></p>
-         <p x-text="mode_of_payment"></p>
-         <div class="flex flex-row w-full ml-auto mt-2 gap-2">
-            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="" class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" >Apply</button>
-            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1 text-sm disabled:bg-gray-500 bg-white enabled:text-[#7b1113] disabled:text-white border enabled:border-[#7b1113] rounded-md enabled:hover:bg-red-500 enabled:hover:text-white">Clear</button>
+         <div class="flex flex-row w-full mt-3 gap-2">
+            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="" class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md ml-auto" >Apply</button>
+            <button @click="post_type = ''; item_type = []; mode_of_payment = []; delivery_date = '';" x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1 text-sm disabled:bg-gray-500 bg-white enabled:text-[#7b1113] disabled:text-white border enabled:border-[#7b1113] rounded-md enabled:hover:bg-red-500 enabled:hover:text-white">Clear</button>
          </div>
       </div>
    </div>
