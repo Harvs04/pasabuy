@@ -164,7 +164,7 @@
             </div>
           </div>
         </div>
-        <div class="flex justify-start rounded-lg bg-white shadow-sm sm:shadow-md w-full sm:w-96 gap-4">
+        <div class="flex justify-start rounded-lg bg-white shadow-sm sm:shadow-md w-full sm:w-96 gap-4" x-data="{ deleteAccountModalOpen: false }">
           <div class="flex flex-col p-8 gap-2">
             <p class="text-lg sm:text-xl font-semibold">Account Management</p>
             <button>
@@ -183,8 +183,38 @@
               Proceed with caution
             </p>
             <p class="text-sm">This action will completely delete your data in our database.</p>
-            <button wire:click="deleteAccount" class="w-1/2 font-medium px-2 sm:px-3 py-1 text-sm bg-white text-[#7b1113] border border-[#7b1113] rounded-md hover:bg-rose-300">Delete Account</button>
+            <button @click="deleteAccountModalOpen = !deleteAccountModalOpen" class="w-1/2 font-medium px-2 sm:px-3 py-1 text-sm bg-white text-[#7b1113] border border-[#7b1113] rounded-md hover:bg-rose-300">Delete Account</button>
           </div>
+          <!-- DELETE ACCOUNT MODAL -->
+          <div x-data="{ confirm: '', errors: {} }" x-show="deleteAccountModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
+                    <div class="flex flex-col items-center gap-2 sm:gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff4545" class="size-12">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <p class="text-lg sm:text-xl font-semibold text-black">Are you sure?</p>
+                      <p class="text-sm sm:text-base">Deleting your account will remove all of your information from our database. This cannot be undone.</p>
+                      <p class="text-xs sm:text-sm text-gray-600 self-start">To confirm this action, type "CONFIRM"</p>
+                      <input type="text" id="name" x-model="confirm" class="self-start w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-black block p-2.5" x-bind:class="{'border-red-500': errors.confirm}"/>
+                    </div>
+                    <div class="mt-5 flex gap-2">
+                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="font-medium px-2 sm:px-3 py-1.5 text-sm sm:text-base border rounded-md hover:bg-slate-100 ml-auto">Cancel</button>
+                        <button 
+                            @click="
+                                if (confirm === 'CONFIRM') {
+                                    $wire.deleteAccount();
+                                } else {
+                                    errors.confirm = true;
+                                }
+                            " 
+                            class="font-medium px-2 sm:px-3 py-1.5 text-sm sm:text-base bg-red-800 text-white rounded-md hover:bg-[#7b1113]"
+                        >
+                            Confirm
+                        </button>
+
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
       <div class="flex flex-col gap-4">
