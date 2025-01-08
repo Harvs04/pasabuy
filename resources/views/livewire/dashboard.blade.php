@@ -154,9 +154,7 @@
    <div class="sm:transition-all sm:duration-300 sm:transform relative z-20" :class="openBurger ? 'sm:ml-64 xl:ml-96' : 'md:ml-0'" style="margin-top: 4.3rem;">
       <div class="p-4 sm:w-4/6 overflow-y-auto border-r border-gray-200" :class="'sm:w-full md:w-4/6'">
          <div class="flex flex-col gap-4">
-            <div class="p-4 bg-white border border-gray-50 shadow-sm rounded-md">
-               Post something
-            </div>
+            <livewire:make-post />
             <div class="flex flex-col gap-4">
                <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
                <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
