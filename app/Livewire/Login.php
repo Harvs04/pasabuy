@@ -10,8 +10,8 @@ use Illuminate\Validation\ValidationException;
 
 class Login extends Component
 {
-    public $email;
-    public $password;
+    public $email = '';
+    public $password = '';
 
     public function login()
     {
