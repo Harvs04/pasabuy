@@ -1,6 +1,5 @@
-<div class="font-poppins bg-gray-100" x-data="{ openBurger: true }">
-   <!-- <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 "> -->
-   <nav class="fixed top-0 z-50 w-full bg-[#014421] border-b">
+<div class="font-poppins bg-gray-100" x-data="{ openBurger: true, createPostModalOpen:false }">
+   <nav class="fixed top-0 z-40 w-full bg-[#014421] border-b">
       <div class="px-3 py-1.5 lg:px-5 lg:pl-3">
          <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end w-4/6">
@@ -28,7 +27,7 @@
                      <img class="size-9 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                   </button>
                </div>
-               <div class="absolute right-0 top-5  z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
+               <div class="absolute right-0 top-5  z-40 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
                   <div class="px-4 py-3">
                      <a href="{{ route('profile', ['name' => $user->name]) }}">
                      <p class="text-sm text-gray-900 ">
@@ -54,9 +53,13 @@
       </div>
    </nav>
    
-   <aside id="logo-sidebar" 
-      class="fixed top-0 left-0 z-40 w-64 xl:w-96 h-screen pt-20 bg-gray-50 border-r border-gray-200 transform transition-transform duration-300"
-      :class="openBurger ? 'translate-x-0' : '-translate-x-full'" 
+   <div id="logo-sidebar" 
+      class="fixed top-0 left-0 z-30 w-64 xl:w-96 h-screen pt-20 bg-gray-50 border-r border-gray-200 transform transition-transform duration-300"
+      :class="{
+         'translate-x-0': openBurger, 
+         '-translate-x-full': !openBurger
+      }"
+
       aria-label="Sidebar" 
       x-show="true" 
       x-transition:enter="transition ease-out duration-300"
@@ -150,11 +153,26 @@
             </li>
          </ul>
       </div>
-   </aside>
-   <div class="sm:transition-all sm:duration-300 sm:transform relative z-20" :class="openBurger ? 'sm:ml-64 xl:ml-96' : 'md:ml-0'" style="margin-top: 4.3rem;">
+   </div>
+   <div class="sm:transition-all sm:duration-300 sm:transform relative" style="margin-top: 4.3rem;":class="{
+      'sm:ml-64 xl:ml-96': openBurger,
+      'md:ml-0': !openBurger
+   }"
+   >
       <div class="p-4 sm:w-4/6 overflow-y-auto border-r border-gray-200" :class="'sm:w-full md:w-4/6'">
          <div class="flex flex-col gap-4">
-            <livewire:make-post />
+            <div class="p-4 bg-white border border-gray-50 shadow-sm rounded-md" x-cloak>
+               <div class="p-2 flex flex-row gap-4">
+                  <img class="size-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                  <button @click="createPostModalOpen = true; openBurger = false;" class="text-gray-600 text-start text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-1.5 border bg-gray-100 rounded-full w-full">
+                        @if ($user->role === 'customer')
+                           Looking for items, {{ $user->name }}?
+                        @else
+                           Planning to buy items in bulk, {{ $user->name }}?
+                        @endif
+                  </button>
+               </div>
+            </div>
             <div class="flex flex-col gap-4">
                <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
                <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
@@ -184,7 +202,7 @@
          </div>
       </div>
    </div>
-   <div class="hidden sm:mb-4 lg:mb-0 sm:z-30 md:block sm:fixed sm:right-0 sm:top-0 sm:p-4 sm:ml-auto sm:w-1/3 bg-gray-100 sm:transition-all sm:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
+   <div class="hidden sm:mb-4 lg:mb-0 sm:z-10 md:block sm:fixed sm:right-0 sm:top-0 sm:p-4 sm:ml-auto sm:w-1/3 bg-gray-100 sm:transition-all sm:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
      :class="openBurger ? 'sm:hidden md:block md:w-[250px] lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : ''" 
      style="margin-top: 4.3rem;">
       <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
@@ -316,6 +334,15 @@
             <button @click="post_type = ''; item_type = []; mode_of_payment = []; delivery_date = '';" x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1 text-sm disabled:bg-gray-500 bg-white enabled:text-black disabled:text-white border enabled:border-black rounded-md enabled:hover:bg-slate-100 enabled:hover:text-black">Clear</button>
          </div>
       </div>
+   </div>
+   <div 
+      x-show="createPostModalOpen" 
+      @keydown.escape.window="createPostModalOpen = false; openBurger = true;" 
+      x-transition:enter.duration.50ms 
+      x-transition:leave.duration.50ms 
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+   >
+      <livewire:make-post />
    </div>
 </div>
 
