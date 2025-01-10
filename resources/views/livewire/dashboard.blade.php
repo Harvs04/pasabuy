@@ -282,19 +282,19 @@
             <p class="font-medium">Mode of payment</p>
             <div class="lg:grid lg:grid-cols-2 ml-3 text-sm">
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="cash" value="cash" x-model="mode_of_payment">
+                  <input type="checkbox" id="cash" value="Cash" x-model="mode_of_payment">
                   <label for="cash">Cash</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="digital_wallet" value="digital_wallet" x-model="mode_of_payment">
+                  <input type="checkbox" id="digital_wallet" value="Digital Wallet" x-model="mode_of_payment">
                   <label for="digital_wallet">Digital wallet</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="debit_credit" value="debit_credit" x-model="mode_of_payment">
+                  <input type="checkbox" id="debit_credit" value="Debit/Credit" x-model="mode_of_payment">
                   <label for="debit_credit">Debit/Credit card</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="bank_transfer" value="bank_transfer" x-model="mode_of_payment">
+                  <input type="checkbox" id="bank_transfer" value="Bank Transfer" x-model="mode_of_payment">
                   <label for="bank_transfer">Bank transfer</label>
                </div>
             </div>
@@ -337,7 +337,7 @@
    </div>
    <div 
       x-show="createPostModalOpen" 
-      @keydown.escape.window="createPostModalOpen = false; openBurger = true;" 
+      @keydown.escape.window="createPostModalOpen = false; if (window.innerWidth > 640) { openBurger = true };" 
       x-transition:enter.duration.50ms 
       x-transition:leave.duration.50ms 
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
