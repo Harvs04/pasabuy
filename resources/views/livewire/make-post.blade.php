@@ -20,6 +20,7 @@
                 item_name_post: $wire.entangle('item_name'), 
                 item_origin_post: $wire.entangle('item_origin'), 
                 item_type_post: $wire.entangle('item_type'), 
+                item_subtype_post: $wire.entangle('subtype'),
                 item_image_post: $wire.entangle('item_image'), 
                 delivery_date_post: $wire.entangle('delivery_date'), 
                 notes_post: $wire.entangle('notes'), 
@@ -238,9 +239,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-full flex flex-col">
-                                <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Image</p>
-                                <input type="file" id="item_image_post" x-model="item_image_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-1"  placeholder="What are store's name and location?"/>
+                            <div class="w-full flex flex-col sm:flex-row gap-4">
+                                <div class="w-full flex flex-col">
+                                    <label for="subtag" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item subtag</label>
+                                    <input type="text" id="subtag" x-model="item_subtype_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="e.g., fruits, baguio, imported"/>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                    <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Image</p>
+                                    <input type="file" id="item_image_post" x-model="item_image_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -286,7 +293,7 @@
                             <div class="flex flex-col sm:flex-row gap-2 md:gap-4 mt-2 md:mt-4">
                                 <div class="w-full flex flex-col">
                                     <label for="transaction_fee" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Transaction fee</label>
-                                    <input type="text" id="transaction_fee" x-model="transaction_fee" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="How much? e.g. 50% down payment" />
+                                    <input type="text" id="transaction_fee" x-model="transaction_fee" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="How much? e.g., 50% down payment" />
                                 </div>
                                 <div class="w-full">
                                     <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 " @click="openDropdown = !openDropdown">Mode of payment</p>
@@ -416,17 +423,21 @@
                             (!item_name_post || !item_origin_post || item_type_post.length === 0)) 
                             || (transaction_details && 
                             (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place))"
-                    @click="
-                        if (role === 'provider') {
-                            if (item_details) { 
-                                item_details = false; 
-                                transaction_details = true; 
-                            } else if (transaction_details) { 
-                                $wire.createPost(); 
-                            }
+                @click="
+                    if (role === 'customer') {
+                        $wire.createPost(); 
+                        createPostModalOpen = false;
+                    } else if (role === 'provider') {
+                        if (item_details) { 
+                            item_details = false; 
+                            transaction_details = true; 
+                        } else if (transaction_details) { 
+                            $wire.createPost();
+                            createPostModalOpen = false;
                         }
-                        " 
-                    x-text="item_details ? 'Next' : 'Post'" class="font-medium w-20 py-1 sm:py-1.5 text-sm enabled:bg-[#014421] disabled:bg-gray-500 text-white rounded-md enabled:hover:bg-green-800"></button>
+                    }
+                    " 
+                x-text="item_details ? 'Next' : 'Post'" class="font-medium w-20 py-1 sm:py-1.5 text-sm enabled:bg-[#014421] disabled:bg-gray-500 text-white rounded-md enabled:hover:bg-green-800"></button>
             </div>
         </div>
     </div>

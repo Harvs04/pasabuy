@@ -1,4 +1,36 @@
 <div class="font-poppins bg-gray-100" x-data="{ openBurger: true, createPostModalOpen:false }">
+   @if(session('create_post_success'))
+      <div class="fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-3 py-2 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+         <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <div class="text-center">
+               {{ session('create_post_success') }}
+            </div>
+         </div>
+         <!-- Close Button -->
+         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-4">
+            &times;
+         </button>
+      </div>
+   @endif
+   @if(session('create_post_error'))
+      <div class="fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-3 py-2 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+         <div class="flex items-center gap-2">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+               </svg>
+               <div class="text-center">
+                  {{ session('create_post_error') }}
+               </div>
+         </div>
+         <!-- Close Button -->
+         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-4">
+               &times;
+         </button>
+      </div>
+   @endif
    <nav class="fixed top-0 z-40 w-full bg-[#014421] border-b">
       <div class="px-3 py-1.5 lg:px-5 lg:pl-3">
          <div class="flex items-center justify-between">
