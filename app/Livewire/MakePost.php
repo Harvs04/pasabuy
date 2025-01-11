@@ -20,7 +20,11 @@ class MakePost extends Component
     public $cutoff_date_orders = '';
     public $transaction_fee = '';
     public $meetup_place = '';
-
+    public $arrival_time = '';
+    public function createPost()
+    {
+        dd('hi');
+    }
     public function render()
     {
         $user = Auth::user();

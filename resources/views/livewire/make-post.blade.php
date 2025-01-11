@@ -15,7 +15,9 @@
 
         </div>
         <div class="mt-4" 
-        x-data="{ item_name_post: $wire.entangle('item_name'), 
+        x-data="{ 
+                role: '{{ $user->role }}',
+                item_name_post: $wire.entangle('item_name'), 
                 item_origin_post: $wire.entangle('item_origin'), 
                 item_type_post: $wire.entangle('item_type'), 
                 item_image_post: $wire.entangle('item_image'), 
@@ -25,7 +27,11 @@
                 max_orders: $wire.entangle('max_orders'),
                 cutoff_date_orders: $wire.entangle('cutoff_date_orders'),
                 transaction_fee: $wire.entangle('transaction_fee'),
-                openDropdown:false }">
+                arrival_time: $wire.entangle('arrival_time'),
+                meetup_place: $wire.entangle('meetup_place'),
+                openDropdown:false,
+                item_details: true,
+                transaction_details: false }">
             @if($user->role === 'customer')
                 <div class="w-full border p-4 border-gray-300 bg-white rounded-md">
                     <div class="flex flex-col sm:flex-row gap-4">
@@ -169,10 +175,16 @@
                     </div>
                 </div>
             @elseif($user->role === 'provider')
-                <div class="flex flex-col gap-2">
-                    <div x-show="transaction_details" class="w-full border p-4 border-gray-300 bg-white rounded-md">
-                        <p class="text-lg sm:text-xl font-medium text-[#014421]">Item Details</p>
-                        <div class="mt-4 flex flex-col gap-2">
+                <div class="flex flex-col gap-2 w-full border p-4 border-gray-300 bg-white rounded-md">
+                    <div class="flex flex-row gap-2 items-center">
+                        <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'underline' : 'no-underline'">Item Details</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                        </svg>
+                        <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'no-underline' : 'underline'">Transaction Details</p>
+                    </div>
+                    <div x-show="item_details && !transaction_details" class="">
+                        <div class="mt-4 flex flex-col gap-4">
                             <div class="w-full flex flex-col">
                                 <label for="item_name_post" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Name</label>
                                 <input type="text" id="item_name_post" x-model="item_name_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What items are you going to buy?" />
@@ -232,9 +244,9 @@
                             </div>
                         </div>
                     </div>
-                    <div  class="w-full border p-4 border-gray-300 bg-white rounded-md">
-                        <p class="text-lg sm:text-xl font-medium text-[#014421]">Transaction Details</p>
+                    <div x-show="transaction_details && !item_details" class="">
                         <div class="mt-4 flex flex-col">
+                            <!-- MAX ORDERS AND CUTOFF DATE -->
                             <div class="flex flex-col sm:flex-row gap-2 md:gap-4">
                                 <div class="w-full flex flex-col">
                                     <label for="transaction_max_orders" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Orders to cater</label>
@@ -270,6 +282,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- TRANSACTION FEE AND MODE OF PAYMENT -->
                             <div class="flex flex-col sm:flex-row gap-2 md:gap-4 mt-2 md:mt-4">
                                 <div class="w-full flex flex-col">
                                     <label for="transaction_fee" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Transaction fee</label>
@@ -320,6 +333,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- DATE OF DELIVERY AND ARRIVAL TIME -->
                             <div class="flex flex-col sm:flex-row gap-2 md:gap-4 mt-2 md:mt-4">
                                 <div class="w-full">
                                     <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Date of delivery</p>
@@ -351,17 +365,18 @@
                                     </div>
                                 </div>
                                 <div class="w-full">
-                                    <label for="time" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Select time:</label>
+                                    <label for="time" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Arrival Time</label>
                                     <div class="relative">
                                         <div class="fixed inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"/>
                                             </svg>
                                         </div>
-                                        <input type="time" id="time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" min="09:00" max="18:00" value="00:00" />
+                                        <input type="time" id="time" wire:model="arrival_time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" min="09:00" max="18:00" value="00:00" />
                                     </div>
                                 </div>
                             </div>
+                            <!-- MEETUP PLACE -->
                             <div class="flex flex-col mt-2 md:mt-4">
                                 <label for="transaction_meetup_place" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Meetup place</label>
                                 <input type="text" id="transaction_meetup_place" x-model="meetup_place" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" placeholder="Where do you deliver the items?"/>  
@@ -370,10 +385,49 @@
                     </div>
                 </div>
             @endif
+            <div class="mt-5 flex justify-end gap-2">
+                <button 
+                    @click="
+                        if (role === 'provider') {
+                            if (item_details) { 
+                                createPostModalOpen = false; 
+                                if (window.innerWidth > 640) {
+                                    openBurger = true;
+                                } 
+                            } else if (transaction_details) { 
+                                item_details = true; transaction_details = false; 
+                            }
+                        } else {
+                            if (window.innerWidth > 640) {
+                                openBurger = true;
+                                createPostModalOpen = false;
+                            } else {
+                                createPostModalOpen = false;
+                            }
+                        }      
+                    " 
+                    x-text="item_details ? 'Cancel' : 'Return'"  class="font-medium w-20 py-1 sm:py-1.5 text-sm bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">
+                </button>
+                <button 
+                :disabled="role === 'customer' 
+                        ? (item_details && 
+                            (!item_name_post || !item_origin_post || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post))
+                        : (item_details && 
+                            (!item_name_post || !item_origin_post || item_type_post.length === 0)) 
+                            || (transaction_details && 
+                            (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place))"
+                    @click="
+                        if (role === 'provider') {
+                            if (item_details) { 
+                                item_details = false; 
+                                transaction_details = true; 
+                            } else if (transaction_details) { 
+                                $wire.createPost(); 
+                            }
+                        }
+                        " 
+                    x-text="item_details ? 'Next' : 'Post'" class="font-medium w-20 py-1 sm:py-1.5 text-sm enabled:bg-[#014421] disabled:bg-gray-500 text-white rounded-md enabled:hover:bg-green-800"></button>
+            </div>
         </div>
-    </div>
-    <div class="mt-5 flex justify-end gap-2">
-        <button @click="createPostModalOpen = false; if (window.innerWidth > 640) {openBurger = true};" class="font-medium w-20 py-1 sm:py-1.5 text-sm bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
-        <button class="font-medium w-20 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Post</button>
     </div>
 </div>
