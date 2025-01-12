@@ -17,6 +17,7 @@
         <div class="mt-4" 
         x-data="{ 
                 role: '{{ $user->role }}',
+                points: '{{ $user->pasabuy_points }}',
                 item_name_post: $wire.entangle('item_name'), 
                 item_origin_post: $wire.entangle('item_origin'), 
                 item_type_post: $wire.entangle('item_type'), 
@@ -416,10 +417,11 @@
                     x-text="item_details ? 'Cancel' : 'Return'"  class="font-medium w-20 py-1 sm:py-1.5 text-sm bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">
                 </button>
                 <button 
-                :disabled="role === 'customer' 
-                        ? (item_details && 
+                :disabled="
+                    role === 'customer' 
+                        ? (points < 80 || item_details && 
                             (!item_name_post || !item_origin_post || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post))
-                        : (item_details && 
+                        : (points < 80 || item_details && 
                             (!item_name_post || !item_origin_post || item_type_post.length === 0)) 
                             || (transaction_details && 
                             (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place))"
