@@ -58,6 +58,7 @@ class MakePost extends Component
             $data = [
                 'type' => $this->type,
                 'user_id' => $this->user->id,
+                'poster_name' => $this->user->name,
                 'item_name' => $this->item_name,
                 'item_origin' => $this->item_origin,
                 'item_type' => json_encode($this->item_type),

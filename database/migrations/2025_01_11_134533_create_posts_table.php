@@ -17,6 +17,7 @@ return new class extends Migration
                 $table->enum('type', ['item_request', 'transaction']);
                 $table->unsignedBigInteger('user_id');
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->string('poster_name');
                 $table->string('item_name');
                 $table->string('item_origin');
                 $table->json('item_type');
