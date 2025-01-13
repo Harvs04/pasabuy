@@ -188,7 +188,7 @@
       'md:ml-0': !openBurger
    }"
    >
-      <div class="p-4 sm:w-4/6 overflow-y-auto border-r border-gray-200" :class="'sm:w-full md:w-4/6'">
+      <div class="p-4 sm:w-4/6 border-r border-gray-200" :class="'sm:w-full md:w-4/6'">
          <div class="flex flex-col gap-4">
             @if ($user->contact_number === null || $user->college === null || $user->degree_program === null)
                <div class="flex flex-col w-full rounded-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">
@@ -217,9 +217,9 @@
                   <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
-            <div class="p-1.5 sm:p-4 bg-white border border-gray-50 shadow-sm rounded-md" x-cloak>
-               <div class="p-2 flex flex-row gap-4">
-                  <img class="size-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+            <div class="p-1.5 sm:p-3 bg-white border border-gray-50 shadow-sm rounded-md" x-cloak>
+               <div class="p-2 flex flex-row gap-3 md:gap-4">
+                  <img class="w-9 md:w-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                   <button @click="createPostModalOpen = true;" class="text-gray-600 text-start text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-1.5 border bg-gray-100 rounded-full w-full">
                         @if ($user->role === 'customer')
                            Looking for items, {{ $user->name }}?
@@ -229,7 +229,11 @@
                   </button>
                </div>
             </div>
-            <div class="flex flex-col gap-4 h-[calc(100vh-13rem)]">
+            <div class="flex flex-col gap-4" 
+            :class="{
+               'h-[calc(100vh-13rem)]': $posts->count() === 0,
+               'h-full': $posts->count() > 0
+               }">
                <!-- <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
                <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
                <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div>
@@ -261,21 +265,27 @@
                   </div>
                @else
                   @foreach($posts as $post)
-                     <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">
-                        <div class="flex flex-row">
-                           <img class="size-9 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
-                           <p> {{ $post->poster_name }} </p>
+                     <div class="p-3 bg-white border-2 border-white shadow-sm rounded-md text-gray-800">
+                        <div class="flex flex-row items-start gap-3">
+                           <img class="w-9 md:w-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                           <div class="flex flex-col">
+                              <p class="text-sm md:text-base font-medium"> {{ $post->poster_name }} </p>
+                              <p class="text-xs md:text-sm"> {{ $post->created_at->format('F j, Y \a\t H:i') }}</p>
+                           </div>
+
+                           <span class="ml-auto bg-[#014421] rounded-full text-sm text-white px-2 py-1">{{ $post->type  === 'item_request' ? 'Item Request' : 'Transaction'}}</span>
                         </div>
                         {{ $post }}
                      </div>
                   @endforeach
-                  <p class="text-center text-sm sm:text-base text-gray-400">End of results.</p>
+                  <p class="text-center text-sm sm:text-base text-gray-400">-- End of results --</p>
                @endif
             </div>
          </div>
       </div>
    </div>
-   <div class="hidden sm:mb-4 lg:mb-0 sm:z-10 md:block sm:fixed sm:right-0 sm:top-0 sm:p-4 sm:ml-auto sm:w-1/3 bg-gray-100 sm:transition-all sm:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
+   <!-- FILTERS -->
+   <div class="hidden sm:text-gray-800 sm:mb-4 lg:mb-0 sm:z-10 md:block sm:fixed sm:right-0 sm:top-0 sm:p-4 sm:ml-auto sm:w-1/3 bg-gray-100 sm:transition-all sm:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
      :class="openBurger ? 'sm:hidden md:block md:w-[250px] lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : ''" 
      style="margin-top: 4.3rem;">
       <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
@@ -408,6 +418,7 @@
          </div>
       </div>
    </div>
+   <!-- CREATE POST MODAL -->
    <div 
       x-show="createPostModalOpen" 
       @keydown.escape.window="createPostModalOpen = false;" 
