@@ -5,10 +5,12 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\Auth; 
 use Livewire\Component;
 use App\Models\User;
+use App\Models\Post;
 
 class Dashboard extends Component
 {
     public User $user;
+    public $posts = [];
     public $post_type = "";
     public $item_type = [];
     public $mode_of_payment = [];
@@ -17,6 +19,7 @@ class Dashboard extends Component
     public function __construct()
     {
         $this->user = User::where('id', Auth::user()->id)->firstOrFail();
+        $this->posts = Post::all();
     }
 
     public function switchRole()

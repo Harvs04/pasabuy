@@ -6,7 +6,7 @@
             </svg>
             <div class="flex flex-row w-full">
                 <p class="text-xl sm:text-2xl font-semibold text-[#014421]">{{ $user->role === 'customer' ? 'Create Item Request' : 'Create Transaction' }}</p>
-                <button @click="createPostModalOpen = false; if (window.innerWidth > 640) { openBurger = true; }" class="ml-auto">
+                <button @click="createPostModalOpen = false;" class="ml-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                     </svg>
@@ -419,9 +419,9 @@
                 <button 
                 :disabled="
                     role === 'customer' 
-                        ? (points < 80 || item_details && 
+                        ? (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
                             (!item_name_post || !item_origin_post || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post))
-                        : (points < 80 || item_details && 
+                        : (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
                             (!item_name_post || !item_origin_post || item_type_post.length === 0)) 
                             || (transaction_details && 
                             (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place))"

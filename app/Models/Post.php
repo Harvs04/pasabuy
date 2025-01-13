@@ -11,6 +11,7 @@ class Post extends Model
     protected $fillable = [
         'type',
         'user_id',
+        'poster_name',
         'item_name',
         'item_origin',
         'item_type',
