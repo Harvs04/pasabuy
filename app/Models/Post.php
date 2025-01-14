@@ -30,6 +30,9 @@ class Post extends Model
     protected $casts = [
         'item_type' => 'array',
         'sub_type' => 'array',
-        'mode_of_payment' => 'array'
+        'mode_of_payment' => 'array',
+        'delivery_date' => 'date',
+        'cutoff_date' => 'date',
+        'arrival_time' => 'time'
     ];
 }
