@@ -1,4 +1,4 @@
-<div class="font-poppins bg-gray-100" x-data="{ openBurger: true, createPostModalOpen:false }">
+<div class="font-poppins bg-gray-100" x-data="{ openBurger: true, createPostModalOpen:false }" x-cloak>
    @if(session('create_post_success'))
       <div class="fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-3 py-2 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
          <div class="flex items-center gap-2">
@@ -188,7 +188,7 @@
       'md:ml-0': !openBurger
    }"
    >
-      <div class="p-4 sm:w-4/6 border-r border-gray-200" :class="'sm:w-full md:w-4/6'">
+      <div class="p-4 border-r border-gray-200" :class="'w-full lg:w-4/6'">
          <div class="flex flex-col gap-4">
             @if ($user->contact_number === null || $user->college === null || $user->degree_program === null)
                <div class="flex flex-col w-full rounded-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">
@@ -217,7 +217,7 @@
                   <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
-            <div class="p-1.5 sm:p-3 bg-white border border-gray-50 shadow-sm rounded-md" x-cloak>
+            <div class="p-1.5 sm:p-3 bg-white border border-gray-50 shadow-sm rounded-md">
                <div class="p-2 flex flex-row gap-3 md:gap-4">
                   <img class="w-9 md:w-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                   <button @click="createPostModalOpen = true;" class="text-gray-600 text-start text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-1.5 border bg-gray-100 rounded-full w-full">
@@ -229,64 +229,16 @@
                   </button>
                </div>
             </div>
-            <div class="flex flex-col gap-4" 
-            :class="{
-               'h-[calc(100vh-13rem)]': $posts->count() === 0,
-               'h-full': $posts->count() > 0
-               }">
-               <!-- <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 1</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 2</div>
-               <div class="p-2 bg-white border-2 border-white shadow-sm rounded-md">POST 3</div> -->
-               @if($posts->count() === 0)
-                  <div class="flex flex-row gap-2 self-center text-sm sm:text-base text-gray-400">
-                     <p class="">Seems empty in here.</p>
-                     <button @click="createPostModalOpen = true" class="underline">Create a post</button>
-                  </div>
-               @else
-                  @foreach($posts as $post)
-                     <div class="p-3 bg-white border-2 border-white shadow-sm rounded-md text-gray-800">
-                        <div class="flex flex-row items-start gap-3">
-                           <img class="w-9 md:w-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
-                           <div class="flex flex-col">
-                              <p class="text-sm md:text-base font-medium"> {{ $post->poster_name }} </p>
-                              <p class="text-xs md:text-sm"> {{ $post->created_at->format('F j, Y \a\t H:i') }}</p>
-                           </div>
-
-                           <span class="ml-auto bg-[#014421] rounded-full text-sm text-white px-2 py-1">{{ $post->type  === 'item_request' ? 'Item Request' : 'Transaction'}}</span>
-                        </div>
-                        {{ $post }}
-                     </div>
-                  @endforeach
-                  <p class="text-center text-sm sm:text-base text-gray-400">-- End of results --</p>
-               @endif
+            <div class="">
+               <!-- POSTS STREAM -->
+               <livewire:posts-stream />
             </div>
          </div>
       </div>
    </div>
    <!-- FILTERS -->
    <div class="hidden sm:text-gray-800 sm:mb-4 lg:mb-0 sm:z-10 md:block sm:fixed sm:right-0 sm:top-0 sm:p-4 sm:ml-auto sm:w-1/3 bg-gray-100 sm:transition-all sm:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
-     :class="openBurger ? 'sm:hidden md:block md:w-[250px] lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : ''" 
+     :class="openBurger ? 'md:hidden lg:block lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : ''" 
      style="margin-top: 4.3rem;">
       <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
          <div class="mt-2 relative hidden sm:block w-full">
@@ -319,43 +271,43 @@
             <p class="font-medium">Item type</p>
             <div class="lg:grid lg:grid-cols-2 ml-3 text-sm">
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="food" value="food" x-model="item_type">
+                  <input type="checkbox" id="food" value="Food" x-model="item_type">
                   <label for="food">Food</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="grocery" value="grocery" x-model="item_type">
+                  <input type="checkbox" id="grocery" value="Grocery item" x-model="item_type">
                   <label for="grocery">Grocery items</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="produce" value="produce" x-model="item_type">
+                  <input type="checkbox" id="produce" value="Local produce" x-model="item_type">
                   <label for="produce">Local produce</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="pet" value="pet" x-model="item_type">
+                  <input type="checkbox" id="pet" value="Pet needs" x-model="item_type">
                   <label for="pet">Pet needs</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="apparel" value="apparel" x-model="item_type">
+                  <input type="checkbox" id="apparel" value="Apparel" x-model="item_type">
                   <label for="apparel">Apparel</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="footwear" value="footwear" x-model="item_type">
+                  <input type="checkbox" id="footwear" value="Footwear" x-model="item_type">
                   <label for="footwear">Footwear</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="merchandise" value="merchandise" x-model="item_type">
+                  <input type="checkbox" id="merchandise" value="Merchandise" x-model="item_type">
                   <label for="merchandise">Merchandise</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="personal_care" value="personal_care" x-model="item_type">
+                  <input type="checkbox" id="personal_care" value="Personal care" x-model="item_type">
                   <label for="personal_care">Personal care</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="celebratory" value="celebratory" x-model="item_type">
+                  <input type="checkbox" id="celebratory" value="Celebratory" x-model="item_type">
                   <label for="celebratory">Celebratory</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="hobbies" value="hobbies" x-model="item_type">
+                  <input type="checkbox" id="hobbies" value="Hobbies" x-model="item_type">
                   <label for="hobbies">Hobbies</label>
                </div>
             </div>
