@@ -199,43 +199,43 @@
                                 <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Type</p>
                                 <div class="text-gray-600 text-xs sm:text-sm grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 justify-items-start">
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="food_post" value="food_post" x-model="item_type_post">
+                                        <input type="checkbox" id="food_post" value="Food" x-model="item_type_post">
                                         <label for="food_post">Food</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="grocery_post" value="grocery_post" x-model="item_type_post">
+                                        <input type="checkbox" id="grocery_post" value="Grocery item" x-model="item_type_post">
                                         <label for="grocery_post">Grocery items</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="produce_post" value="produce_post" x-model="item_type_post">
+                                        <input type="checkbox" id="produce_post" value="Local produce" x-model="item_type_post">
                                         <label for="produce_post">Local produce</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="pet_post" value="pet_post" x-model="item_type_post">
+                                        <input type="checkbox" id="pet_post" value="Pet needs" x-model="item_type_post">
                                         <label for="pet_post">Pet needs</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="apparel_post" value="apparel_post" x-model="item_type_post">
+                                        <input type="checkbox" id="apparel_post" value="Apparel" x-model="item_type_post">
                                         <label for="apparel_post">Apparel</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="footwear_post" value="footwear_post" x-model="item_type_post">
+                                        <input type="checkbox" id="footwear_post" value="Footwear" x-model="item_type_post">
                                         <label for="footwear_post">Footwear</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="merchandise_post" value="merchandise_post" x-model="item_type_post">
+                                        <input type="checkbox" id="merchandise_post" value="Merchandise" x-model="item_type_post">
                                         <label for="merchandise_post">Merchandise</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="personal_care_post" value="personal_care_post" x-model="item_type_post">
+                                        <input type="checkbox" id="personal_care_post" value="Personal care" x-model="item_type_post">
                                         <label for="personal_care_post">Personal care</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="celebratory_post" value="celebratory_post" x-model="item_type_post">
+                                        <input type="checkbox" id="celebratory_post" value="Celebratory" x-model="item_type_post">
                                         <label for="celebratory_post">Celebratory</label>
                                     </div>
                                     <div class="flex flex-row items-center gap-2 mt-1">
-                                        <input type="checkbox" id="hobbies_post" value="hobbies_post" x-model="item_type_post">
+                                        <input type="checkbox" id="hobbies_post" value="Hobbies" x-model="item_type_post">
                                         <label for="hobbies_post">Hobbies</label>
                                     </div>
                                 </div>

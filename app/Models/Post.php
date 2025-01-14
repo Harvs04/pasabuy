@@ -32,7 +32,6 @@ class Post extends Model
         'sub_type' => 'array',
         'mode_of_payment' => 'array',
         'delivery_date' => 'date',
-        'cutoff_date' => 'date',
-        'arrival_time' => 'time'
+        'cutoff_date' => 'date'
     ];
 }

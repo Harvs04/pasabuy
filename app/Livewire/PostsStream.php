@@ -4,14 +4,18 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class PostsStream extends Component
 {
 
+    public User $user;
     public $posts = [];
 
     public function __construct()
     {
+        $this->user = User::where('id', Auth::user()->id)->first();
         $this->posts = Post::all()->sortByDesc('created_at');
     }
     public function render()
