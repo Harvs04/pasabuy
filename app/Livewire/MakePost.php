@@ -36,6 +36,7 @@ class MakePost extends Component
 
     public function createPost()
     {
+        sleep(2);
         try {
             $this->type = ($this->user->role === 'customer') ? 'item_request' : 'transaction';
 
