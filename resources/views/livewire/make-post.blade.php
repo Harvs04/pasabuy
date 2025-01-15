@@ -460,14 +460,12 @@
                 @click="
                     if (role === 'customer') {
                         $wire.createPost(); 
-                        createPostModalOpen = false;
                     } else if (role === 'provider') {
                         if (item_details) { 
                             item_details = false; 
                             transaction_details = true; 
                         } else if (transaction_details) { 
                             $wire.createPost();
-                            createPostModalOpen = false;
                         }
                     }
                     " 
