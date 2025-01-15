@@ -15,6 +15,7 @@ return new class extends Migration
             Schema::create('posts', function (Blueprint $table) {
                 $table->id();
                 $table->enum('type', ['item_request', 'transaction']);
+                $table->enum('status', ['open', 'ongoing', 'closed', 'cancelled'])->default('open');
                 $table->unsignedBigInteger('user_id');
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->string('poster_name');
@@ -28,6 +29,7 @@ return new class extends Migration
                 $table->json('mode_of_payment');
                 $table->string('transaction_fee')->nullable();
                 $table->integer('max_orders')->nullable();
+                $table->integer('order_count')->default(0);
                 $table->date('cutoff_date')->nullable();
                 $table->string('meetup_place')->nullable();
                 $table->string('additional_notes')->nullable();
