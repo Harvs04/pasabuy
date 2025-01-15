@@ -22,6 +22,7 @@
                 item_origin_post: $wire.entangle('item_origin'), 
                 item_type_post: $wire.entangle('item_type'), 
                 item_subtype_post: $wire.entangle('subtype'),
+                subtag_item: '',
                 item_image_post: $wire.entangle('item_image'), 
                 delivery_date_post: $wire.entangle('delivery_date'), 
                 notes_post: $wire.entangle('notes'), 
@@ -241,9 +242,40 @@
                                 </div>
                             </div>
                             <div class="w-full flex flex-col sm:flex-row gap-4">
-                                <div class="w-full flex flex-col">
+                                <div class="w-full flex flex-col" x-data="{ duplicate: false, max_count: false }">
                                     <label for="subtag" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item subtag</label>
-                                    <input type="text" id="subtag" x-model="item_subtype_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="e.g., fruits, baguio, imported"/>
+                                    <div class="relative w-full">
+                                        <input type="text" id="subtag" x-model="subtag_item" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': duplicate || max_count}" @input="duplicate = false; max_count = false;" placeholder="e.g., fruits, baguio, imported"/>
+                                        <button class="absolute top-1/2 right-2 transform -translate-y-1/2 px-3 py-1 text-gray-400 text-xs md:text-sm rounded-lg hover:bg-gray-200" 
+                                        @click="if (subtag_item !== '') {
+                                            if (item_subtype_post.length < 5) {
+                                                if (item_subtype_post.includes(subtag_item.trim())) {
+                                                    duplicate = true;
+                                                } else if (subtag_item.trim() !== '') {
+                                                    item_subtype_post.push(subtag_item.trim());
+                                                    subtag_item = '';
+                                                    duplicate = false;
+                                                    max_count = false;
+                                                }
+                                            } else if (item_subtype_post.length === 5) {
+                                                max_count = true;
+                                            }
+                                        }">Add</button>
+                                    </div>
+                                    <p x-show="duplicate" class="text-red-500 text-xs mt-1">This subtag already exists.</p>
+                                    <p x-show="max_count" class="text-red-500 text-xs mt-1">You can only add 5 subtags.</p>
+                                    <div class="flex flex-row flex-wrap space-y-2 gap-1">
+                                        <template x-for="subtag in item_subtype_post" :key="subtag">
+                                            <span class="flex flex-row gap-1 items-center text-sm font-medium px-2.5 py-0.5 rounded bg-gray-100 text-gray-800">
+                                                <span x-text="subtag"></span>
+                                                <button @click="item_subtype_post.splice(item_subtype_post.indexOf(subtag), 1);">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 ml-auto">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        </template>
+                                    </div>
                                 </div>
                                 <div class="w-full flex flex-col">
                                     <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Image</p>
