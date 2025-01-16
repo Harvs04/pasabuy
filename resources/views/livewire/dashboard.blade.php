@@ -90,7 +90,7 @@
                      </button>
                   </div>
                   <div class="absolute right-0 top-5  z-40 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
-                     <div class="px-4 py-3">
+                     <div class="px-4 py-3 hover:bg-gray-100 hover:rounded-md">
                         <a href="{{ route('profile', ['name' => $user->name]) }}">
                         <p class="text-sm text-gray-900 ">
                            {{ $user-> name }}
@@ -220,6 +220,7 @@
       'lg:ml-64 xl:ml-96': openBurger,
       'md:ml-0': !openBurger
    }"
+   wire:loading.class="hidden"
    >
       <div class="p-4 border-r border-gray-200" :class="'w-full lg:w-4/6'">
          <div class="flex flex-col gap-4">
@@ -452,21 +453,5 @@
          </div>
       </div>
    </div>
-   <div wire:loading.delay wire:target="switchRole" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16">
-         <radialGradient id="a9" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)">
-               <stop offset="0" stop-color="#014421"></stop><stop offset=".3" stop-color="#014421" stop-opacity=".9"></stop>
-               <stop offset=".6" stop-color="#014421" stop-opacity=".6"></stop>
-               <stop offset=".8" stop-color="#014421" stop-opacity=".3"></stop>
-               <stop offset="1" stop-color="#014421" stop-opacity="0"></stop>
-         </radialGradient>
-         <circle transform-origin="center" fill="none" stroke="url(#a9)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70">
-               <animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite" from="0">
-               </animateTransform>
-         </circle>
-         <circle transform-origin="center" fill="none" opacity=".2" stroke="#014421" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70">
-         </circle>
-      </svg>
-    </div>
 </div>
 
