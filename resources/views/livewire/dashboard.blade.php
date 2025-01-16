@@ -138,7 +138,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                      </svg>
                      </div>
-                     <input type="text" id="search-navbar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search items, stores, ...">
+                     <input type="text" id="search-sidebar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search items, stores, ...">
                   </div>
                </li>
             <li>
@@ -257,9 +257,13 @@
                </div>
             @endif
             <div class="px-3 md:px-4 py-3 bg-white border border-gray-50 shadow-sm rounded-md">
-               <div class="flex flex-row gap-3 md:gap-4">
-                  <img class="w-9 md:w-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
-                  <button @click="createPostModalOpen = true;" class="text-gray-600 text-start text-xs md:text-sm px-3 sm:px-4 py-1 border bg-gray-100 rounded-full w-full">
+               <div class="flex flex-row items-center gap-3 md:gap-4">
+                  <img class="w-9 md:w-10 h-9 md:h-10 rounded-full object-cover" 
+                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 
+                        alt="user photo">
+                  <button 
+                        @click="createPostModalOpen = true;" 
+                        class="text-gray-600 text-start text-xs md:text-sm px-3 sm:px-4 py-1 md:py-2 border bg-gray-100 rounded-full w-full">
                         @if ($user->role === 'customer')
                            Looking for items, {{ $user->name }}?
                         @else
@@ -268,6 +272,7 @@
                   </button>
                </div>
             </div>
+
             <div class="">
                <!-- POSTS STREAM -->
                <livewire:posts-stream />
@@ -276,8 +281,8 @@
       </div>
    </div>
    <!-- FILTERS -->
-   <div class="hidden sm:text-gray-800 sm:mb-4 lg:mb-0 sm:z-10 md:block sm:fixed sm:right-0 sm:top-0 sm:p-4 sm:ml-auto sm:w-1/3 bg-gray-100 sm:transition-all sm:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
-     :class="openBurger ? 'md:hidden lg:block lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : ''" 
+   <div class="lg:text-gray-800 lg:mb-4 lg:z-10 md:block lg:fixed lg:right-0 lg:top-0 lg:p-4 lg:ml-auto lg:w-1/3 bg-gray-100 lg:transition-all lg:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
+     :class="openBurger ? 'md:hidden lg:block lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : 'hidden'" 
      style="margin-top: 4.3rem;">
       <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
          <div class="mt-2 relative hidden sm:block w-full">
@@ -286,7 +291,7 @@
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                </svg>
             </div>
-            <input type="text" id="search-navbar" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
+            <input type="text" id="search-filter" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
          </div>
          <div class="mt-2">
             <p class="font-medium">Post type</p>
