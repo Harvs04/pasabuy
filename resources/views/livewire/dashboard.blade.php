@@ -1,35 +1,45 @@
 <div class="font-poppins bg-gray-100" x-data="{ openBurger: true, createPostModalOpen:false }" x-cloak>
    @if(session('create_post_success'))
-      <div class="fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-3 py-2 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+      <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
          <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
-            <div class="text-center">
+            <div class="text-center text-sm">
                {{ session('create_post_success') }}
             </div>
          </div>
          <!-- Close Button -->
-         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-4">
+         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
             &times;
          </button>
       </div>
+      <script>
+         setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+         }, 3000); // 3 seconds
+      </script>
    @endif
    @if(session('create_post_error'))
-      <div class="fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-3 py-2 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+      <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
          <div class="flex items-center gap-2">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                </svg>
-               <div class="text-center">
+               <div class="text-center text-sm">
                   {{ session('create_post_error') }}
                </div>
          </div>
          <!-- Close Button -->
-         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-4">
+         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
                &times;
          </button>
       </div>
+      <script>
+         setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+         }, 3000); // 3 seconds
+      </script>
    @endif
    <nav class="fixed top-0 z-40 w-full bg-[#014421] border-b">
       <div class="px-3 py-1.5 lg:px-5 lg:pl-3">
@@ -184,7 +194,7 @@
    </div>
    <!-- MAIN CONTENT -->
    <div class="sm:transition-all sm:duration-300 sm:transform relative" style="margin-top: 4.3rem;":class="{
-      'sm:ml-64 xl:ml-96': openBurger,
+      'lg:ml-64 xl:ml-96': openBurger,
       'md:ml-0': !openBurger
    }"
    >
@@ -222,10 +232,10 @@
                   <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
-            <div class="p-1.5 sm:p-3 bg-white border border-gray-50 shadow-sm rounded-md">
-               <div class="p-2 flex flex-row gap-3 md:gap-4">
-                  <img class="w-9 md:w-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
-                  <button @click="createPostModalOpen = true;" class="text-gray-600 text-start text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-1.5 border bg-gray-100 rounded-full w-full">
+            <div class="px-3 md:px-4 py-3 bg-white border border-gray-50 shadow-sm rounded-md">
+               <div class="flex flex-row gap-3 md:gap-4">
+                  <img class="w-9 md:w-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                  <button @click="createPostModalOpen = true;" class="text-gray-600 text-start text-xs md:text-sm px-3 sm:px-4 py-1 border bg-gray-100 rounded-full w-full">
                         @if ($user->role === 'customer')
                            Looking for items, {{ $user->name }}?
                         @else
@@ -370,15 +380,15 @@
             </div>
          </div>
          <div class="flex flex-row w-full mt-3 gap-2">
-            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="" class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md ml-auto" >Apply</button>
-            <button @click="post_type = ''; item_type = []; mode_of_payment = []; delivery_date = '';" x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1 text-sm disabled:bg-gray-500 bg-white enabled:text-black disabled:text-white border enabled:border-black rounded-md enabled:hover:bg-slate-100 enabled:hover:text-black">Clear</button>
+            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white rounded-md ml-auto" >Apply</button>
+            <button @click="post_type = ''; item_type = []; mode_of_payment = []; delivery_date = '';" x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1.5 text-sm disabled:bg-gray-500 bg-white enabled:text-black disabled:text-white rounded-md enabled:hover:bg-slate-200 enabled:border enabled:hover:border-slate-200 enabled:hover:text-black">Clear</button>
          </div>
       </div>
    </div>
    <!-- CREATE POST MODAL -->
    <div 
       x-show="createPostModalOpen" 
-      @keydown.escape.window="createPostModalOpen = false;" 
+      @keydown.escape.window="if () { createPostModalOpen = false; }" 
       x-transition:enter.duration.50ms 
       x-transition:leave.duration.50ms 
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
