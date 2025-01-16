@@ -58,7 +58,7 @@ class MakePost extends Component
                 'additional_notes' => $this->notes ?: null,
             ];
             Post::create($data);
-            sleep(1);
+            sleep(1.5);
             session()->flash('create_post_success', 'Post created successfully!');
             return redirect()->route('dashboard');
         } catch (\Throwable $th) {
