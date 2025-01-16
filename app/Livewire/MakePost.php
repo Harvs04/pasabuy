@@ -36,26 +36,9 @@ class MakePost extends Component
 
     public function createPost()
     {
-        sleep(2);
         try {
             $this->type = ($this->user->role === 'customer') ? 'item_request' : 'transaction';
 
-            // dd(['type' => $this->type,
-            //     'user_id' => $this->user->id,
-            //     'item_name' => $this->item_name,
-            //     'item_origin' => $this->item_origin,
-            //     'item_type' => $this->item_type,
-            //     'sub_type' => $this->subtype,
-            //     'item_image' => $this->item_image,
-            //     'delivery_date' => $this->delivery_date,
-            //     'arrival_time' => $this->arrival_time,
-            //     'mode_of_payment' => $this->mode_of_payment,
-            //     'transaction_fee' => $this->transaction_fee,
-            //     'max_orders' => $this->max_orders,
-            //     'cutoff_date' => $this->cutoff_date_orders,
-            //     'meetup_place' => $this->meetup_place,
-            //     'additional_notes' => $this->notes
-            // ]);
             $data = [
                 'type' => $this->type,
                 'user_id' => $this->user->id,
@@ -75,12 +58,10 @@ class MakePost extends Component
                 'additional_notes' => $this->notes ?: null,
             ];
             Post::create($data);
-
+            sleep(1);
             session()->flash('create_post_success', 'Post created successfully!');
             return redirect()->route('dashboard');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
-            Log::error('Post creation failed', ['error' => $th->getMessage()]);
             session()->flash('create_post_error', 'Failed to create post. Please try again.');
             return redirect()->route('dashboard');
         }
