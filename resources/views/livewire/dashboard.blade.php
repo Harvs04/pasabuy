@@ -1,4 +1,4 @@
-<div class="font-poppins bg-gray-100" x-data="{ openBurger: true, createPostModalOpen:false }" x-cloak>
+<div class="font-poppins bg-gray-100" x-data="{ openBurger: true, createPostModalOpen:false, isChangeRoleModalOpen: false, clicked: false }" x-cloak>
    @if(session('create_post_success'))
       <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
          <div class="flex items-center gap-2">
@@ -19,8 +19,7 @@
             document.querySelector('.flash').style.display = 'none';
          }, 3000); // 3 seconds
       </script>
-   @endif
-   @if(session('create_post_error'))
+   @elseif(session('create_post_error'))
       <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
          <div class="flex items-center gap-2">
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -33,6 +32,27 @@
          <!-- Close Button -->
          <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
                &times;
+         </button>
+      </div>
+      <script>
+         setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+         }, 3000); // 3 seconds
+      </script>
+   @elseif(session('change_role_success'))
+      <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+         <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+
+            <div class="text-center text-sm">
+               {{ session('change_role_success') }}
+            </div>
+         </div>
+         <!-- Close Button -->
+         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
          </button>
       </div>
       <script>
@@ -57,43 +77,46 @@
                   </a>
                </div>
             </div>
-         <div class="relative flex items-center gap-2" x-data="{ open: false }">
-               <button class="sm:hidden block" @click="openBurger = true">
-                  <svg class="w-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                     <path stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                  </svg>
-               </button>
-               <div class="flex items-center ms-3">
-               <div>
-                  <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" @click="open = !open">
-                     <img class="size-9 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+            <div class="relative flex items-center gap-2" x-data="{ open: false }">
+                  <button class="sm:hidden block" @click="openBurger = true">
+                     <svg class="w-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                     </svg>
                   </button>
-               </div>
-               <div class="absolute right-0 top-5  z-40 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
-                  <div class="px-4 py-3">
-                     <a href="{{ route('profile', ['name' => $user->name]) }}">
-                     <p class="text-sm text-gray-900 ">
-                        {{ $user-> name }}
-                     </p>
-                     <p class="text-sm font-medium text-gray-900 truncate ">
-                        {{ $user->email }}
-                     </p>
-                     </a>
+                  <div class="flex items-center ms-3">
+                  <div>
+                     <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" @click="open = !open">
+                        <img class="size-9 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                     </button>
                   </div>
-                  <ul class="py-1">
-                     <li>
-                     <button type="button" wire:click="switchRole" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Switch to {{ $user->role === 'customer' ? 'Provider' : 'Customer' }} </button>
-                     </li>
-                     <li>
-                     <button type="button" wire:click="signOut" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Log out</button>
-                     </li>
-                  </ul>
-               </div>
-               </div>
-         </div>
+                  <div class="absolute right-0 top-5  z-40 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
+                     <div class="px-4 py-3">
+                        <a href="{{ route('profile', ['name' => $user->name]) }}">
+                        <p class="text-sm text-gray-900 ">
+                           {{ $user-> name }}
+                        </p>
+                        <p class="text-sm font-medium text-gray-900 truncate ">
+                           {{ $user->email }}
+                        </p>
+                        </a>
+                     </div>
+                     <ul class="py-1">
+                        <li>
+                        <button type="button" @click="isChangeRoleModalOpen = true" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Switch to {{ $user->role === 'customer' ? 'Provider' : 'Customer' }} </button>
+                        </li>
+                        <li>
+                        <button type="button" wire:click="signOut" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Log out</button>
+                        </li>
+                     </ul>
+                  </div>
+                  </div>
+            </div>
          </div>
       </div>
    </nav>
+   <div wire:loading  class="w-full">
+      <livewire:dashboard-skeleton />
+   </div>
    <!-- SIDEBAR -->
    <div id="logo-sidebar" 
      class="fixed top-0 left-0 z-30 w-64 xl:w-96 h-screen pt-20 bg-gray-50 border-r border-gray-200"
@@ -388,12 +411,62 @@
    <!-- CREATE POST MODAL -->
    <div 
       x-show="createPostModalOpen" 
-      @keydown.escape.window="if () { createPostModalOpen = false; }" 
+      @keydown.escape.window="if (!clicked) { createPostModalOpen = false; }" 
       x-transition:enter.duration.50ms 
       x-transition:leave.duration.50ms 
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
    >
       <livewire:make-post />
    </div>
+   <!-- CHANGE ROLE MODAL -->
+   <div x-show="isChangeRoleModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
+         <div class="flex flex-row items-center gap-2 sm:gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+            </svg>
+            <p class="text-xl font-semibold text-[#014421]">Reminder</p>
+         </div>
+         @if($user->role === 'customer')
+            <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">By changing role to Provider, you will be able to:</p>
+            <ul class="text-xs md:text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
+            <li>Create and initiate transactions</li>
+            <li>Gather item orders from customers</li>
+            <li>Manage orders</li>
+            <li>Update order statuses</li>
+            </ul>
+         @else
+            <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">
+            By changing your role to Customer, you will be able to:
+            </p>
+            <ul class="text-xs md:text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
+            <li>Create item requests</li>
+            <li>Place item orders to providers</li>
+            <li>Track item orders</li>
+            <li>Rate the transaction and provider</li>
+            </ul>
+         @endif
+         <div class="mt-5 flex justify-end gap-2">
+            <button @click="isChangeRoleModalOpen = false" class="font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
+            <button @click="$wire.switchRole(); isChangeRoleModalOpen = false;" class=" font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+         </div>
+      </div>
+   </div>
+   <div wire:loading.delay wire:target="switchRole" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16">
+         <radialGradient id="a9" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)">
+               <stop offset="0" stop-color="#014421"></stop><stop offset=".3" stop-color="#014421" stop-opacity=".9"></stop>
+               <stop offset=".6" stop-color="#014421" stop-opacity=".6"></stop>
+               <stop offset=".8" stop-color="#014421" stop-opacity=".3"></stop>
+               <stop offset="1" stop-color="#014421" stop-opacity="0"></stop>
+         </radialGradient>
+         <circle transform-origin="center" fill="none" stroke="url(#a9)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70">
+               <animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite" from="0">
+               </animateTransform>
+         </circle>
+         <circle transform-origin="center" fill="none" opacity=".2" stroke="#014421" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70">
+         </circle>
+      </svg>
+    </div>
 </div>
 
