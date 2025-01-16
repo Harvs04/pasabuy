@@ -50,11 +50,13 @@
                     arrival_time: $wire.entangle('arrival_time'),
                     meetup_place: $wire.entangle('meetup_place'),
                     openDropdown:false,
+                    firstPicker: null,
+                    secondPicker: null,
                     item_details: true,
                     transaction_details: false }">
                 @if($user->role === 'customer')
                     <div class="w-full border p-4 border-gray-300 bg-white rounded-md">
-                        <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex flex-col sm:flex-row gap-4" @click="openDropdown = false">
                             <div class="w-full flex flex-col">
                                 <label for="item_name_post" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Item Name</label>
                                 <input type="text" id="item_name_post" x-model="item_name_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What items are you looking for?" />
@@ -64,7 +66,7 @@
                                 <input type="text" id="item_origin_post" x-model="item_origin_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="Where will your items come from?"/>
                             </div>
                         </div>
-                        <div class="mt-4">
+                        <div class="mt-4"  @click="openDropdown = false">
                             <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Type</p>
                             <div class="text-gray-600 text-xs sm:text-sm grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 justify-items-start">
                                 <div class="flex flex-row items-center gap-2 mt-1">
@@ -109,7 +111,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full flex flex-col mt-4">
+                        <div class="w-full flex flex-col mt-4" @click="openDropdown = false">
                             <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Image</p>
                             <input type="file" id="item_image_post" x-model="item_image_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-1"  placeholder="What are store's name and location?"/>
                         </div>
@@ -180,6 +182,7 @@
         
                                             }
                                         })"
+                                        @click="openDropdown = false"
                                         id="datepicker"
                                         type="text"
                                         wire:model="delivery_date"
@@ -189,7 +192,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col mt-4">
+                        <div class="flex flex-col mt-4" @click="openDropdown = false">
                             <label for="notes" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Other notes</label>
                             <textarea id="notes" rows="4" x-model="notes_post" class="w-full resize-none bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" placeholder="Enter any additional notes or special requests for your item here..."></textarea>
                         </div>
@@ -304,34 +307,32 @@
                         <div x-show="transaction_details && !item_details" class="">
                             <div class="mt-4 flex flex-col">
                                 <!-- MAX ORDERS AND CUTOFF DATE -->
-                                <div class="flex flex-col sm:flex-row gap-2 md:gap-4">
+                                <div class="flex flex-col sm:flex-row gap-2 md:gap-4" @click="openDropdown = false">
                                     <div class="w-full flex flex-col">
                                         <label for="transaction_max_orders" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Orders to cater</label>
                                         <input type="number" id="transaction_max_orders" x-model="max_orders" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" min="1" max="10000" placeholder="How many orders can you handle?"/>
                                     </div>
                                     <div class="w-full">
-                                        <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Cut-off for ordering</p>
+                                        <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Cutoff for ordering</p>
                                         <div class="relative">
                                             <svg class="absolute left-3 top-2.5 h-4 sm:h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                             <input id="datepicker"
                                                     x-data
-                                                    x-ref="input"
-                                                    x-init="new Pikaday({ 
-                                                        field: $refs.input, 
+                                                    x-ref="input1"
+                                                    x-init="firstPicker = new Pikaday({ 
+                                                        field: $refs.input1, 
                                                         format: 'MM/DD/YYYY', 
                                                         minDate: new Date(),
                                                         onSelect: function() {
-                                                        console.log(this.getDate());
-                                                        let date = new Date(this.getDate());
-                                                        date.setHours(date.getHours() + 8);  // Adjusting for GMT+8
-
-                                                        $wire.set('cutoff_date_orders', date.toISOString().split('T')[0], false);
-
+                                                            let date = new Date(this.getDate());
+                                                            date.setHours(date.getHours() + 8);  // Adjusting for GMT+8
+                                                            $wire.set('cutoff_date_orders', date.toISOString().split('T')[0], false);
                                                         }
                                                     })"
                                                     type="text"
+                                                    readonly
                                                     wire:model="cutoff_date_orders"
                                                     class="block w-full pl-9 md:pl-10 p-2.5 text-xs sm:text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
                                                     placeholder="Select date"
@@ -343,7 +344,7 @@
                                 <div class="flex flex-col sm:flex-row gap-2 md:gap-4 mt-2 md:mt-4">
                                     <div class="w-full flex flex-col">
                                         <label for="transaction_fee" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Transaction fee</label>
-                                        <input type="text" id="transaction_fee" x-model="transaction_fee" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="How much? e.g., 50% down payment" />
+                                        <input type="text" id="transaction_fee" x-model="transaction_fee" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" @click="openDropdown = false" placeholder="How much? e.g., 50% down payment" />
                                     </div>
                                     <div class="w-full">
                                         <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 " @click="openDropdown = !openDropdown">Mode of payment</p>
@@ -391,7 +392,7 @@
                                     </div>
                                 </div>
                                 <!-- DATE OF DELIVERY AND ARRIVAL TIME -->
-                                <div class="flex flex-col sm:flex-row gap-2 md:gap-4 mt-2 md:mt-4">
+                                <div class="flex flex-col sm:flex-row gap-2 md:gap-4 mt-2 md:mt-4" @click="openDropdown = false">
                                     <div class="w-full">
                                         <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Date of delivery</p>
                                         <div class="relative">
@@ -399,12 +400,14 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                             <input id="datepicker"
+                                                    :disabled="!cutoff_date_orders"
                                                     x-data
-                                                    x-ref="input"
-                                                    x-init="new Pikaday({ 
-                                                        field: $refs.input, 
+                                                    x-ref="input2"
+                                                    x-init="
+                                                    secondPicker = new Pikaday({ 
+                                                        field: $refs.input2, 
                                                         format: 'MM/DD/YYYY', 
-                                                        minDate: new Date(),
+                                                        minDate: new Date(cutoff_date_orders),
                                                         onSelect: function() {
                                                         console.log(this.getDate());
                                                         let date = new Date(this.getDate());
@@ -413,8 +416,16 @@
                                                         $wire.set('delivery_date', date.toISOString().split('T')[0], false);
 
                                                         }
-                                                    })"
+                                                    });
+                                                    $watch('cutoff_date_orders', (newValue) => {
+                                                        if (newValue) {
+                                                            let newMinDate = new Date(newValue);
+                                                            secondPicker.setMinDate(newMinDate);
+                                                        }
+                                                    });
+                                                    "
                                                     type="text"
+                                                    readonly
                                                     wire:model="delivery_date"
                                                     class="block w-full pl-9 md:pl-10 p-2.5 text-xs sm:text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
                                                     placeholder="Select date"
@@ -434,7 +445,7 @@
                                     </div>
                                 </div>
                                 <!-- MEETUP PLACE -->
-                                <div class="flex flex-col mt-2 md:mt-4">
+                                <div class="flex flex-col mt-2 md:mt-4" @click="openDropdown = false">
                                     <label for="transaction_meetup_place" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Meetup place</label>
                                     <input type="text" id="transaction_meetup_place" x-model="meetup_place" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" placeholder="Where do you deliver the items?"/>  
                                 </div>
