@@ -52,9 +52,9 @@
                     </div>
                     <div class="flex flex-col w-full gap-1">
                         <label for="constituent" class="font-medium">Type of constituent</label>
-                        <select x-model="constituent" wire:model="constituent" id="constituent" @change="if(constituent === 'staff') { degprog = ''; delete errors.constituent; } if(constituent !== '' && constituent !== 'staff' && college !== '') { delete errors.constituent; errors.degprog = true; } if(constituent === '') { errors.constituent = true; } " x-bind:class="{'border-red-500': errors.constituent }"
+                        <select x-model="constituent" wire:model="constituent" id="constituent" @change="if(constituent === 'staff') { degprog = ''; delete errors.constituent; } if(constituent !== '' && constituent !== 'staff' && college !== '') { delete errors.constituent; errors.degprog = true; } if(constituent === '') { errors.constituent = true; } if (constituent !== '') { delete errors.constituent; }" x-bind:class="{'border-red-500': errors.constituent }"
                                 class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
-                            <option value=""></option>
+                            <option value="" disabled></option>
                             <option value="student">Student</option>
                             <option value="faculty">Faculty</option>
                             <option value="staff">Administrative Staff</option>
@@ -66,7 +66,7 @@
                         <label for="college" class="font-medium">College</label>
                         <select x-model="college" wire:model="college" id="college" @change="if(college !== '') { delete errors.college; } if(college === '' && constituent !== 'staff') { errors.college = true; errors.degprog = true; } if (college === '') { errors.college = true; } degprog = ''; errors.degprog = true; " x-bind:class="{'border-red-500': errors.college }"
                             class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
-                            <option value=""></option>
+                            <option value="" disabled></option>
                             @foreach ($colleges as $college)
                                 <option value="{{ $college }}">{{ $college }}</option>
                             @endforeach
@@ -79,7 +79,7 @@
                         <select x-model="degprog" wire:model="degree_program" id="degprog" @change="if(degprog !== '') { delete errors.degprog; } if(degprog === ''  && constituent !== 'staff') { errors.degprog = true; }" x-bind:class="{'border-red-500': errors.degprog && constituent !== 'staff'}"
                             class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                             x-bind:disabled="constituent === 'staff' || !college">
-                            <option value=""></option>
+                            <option value="" disabled></option>
                             <template x-for="program in degprogs[college]" :key="program">
                                 <option :value="program" x-text="program"></option>
                             </template>
