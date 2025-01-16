@@ -166,7 +166,7 @@
                                 <svg class="absolute left-3 top-2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                <input id="datepicker"
+                                <input id="datepicker-delivery-item-transaction"
                                         x-data
                                         x-ref="input"
                                         x-init="new Pikaday({ 
@@ -318,7 +318,7 @@
                                             <svg class="absolute left-3 top-2.5 h-4 sm:h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
-                                            <input id="datepicker"
+                                            <input id="datepicker-cutoff"
                                                     x-data
                                                     x-ref="input1"
                                                     x-init="firstPicker = new Pikaday({ 
@@ -399,7 +399,7 @@
                                             <svg class="absolute left-3 top-2.5 h-4 sm:h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
-                                            <input id="datepicker"
+                                            <input id="datepicker-delivery"
                                                     :disabled="!cutoff_date_orders"
                                                     x-data
                                                     x-ref="input2"
@@ -488,15 +488,16 @@
                     @click="
                         if (role === 'customer') {
                             $wire.createPost(); 
+                            clicked = true;
                         } else if (role === 'provider') {
                             if (item_details) { 
                                 item_details = false; 
                                 transaction_details = true; 
                             } else if (transaction_details) { 
                                 $wire.createPost();
+                                clicked = true;
                             }
                         }
-                        clicked = true;
                         " 
                     x-text="item_details ? 'Next' : 'Post'" class="font-medium w-20 py-1 sm:py-1.5 text-sm enabled:bg-[#014421] disabled:bg-gray-500 text-white rounded-md enabled:hover:bg-green-800"></button>
                 </div>
