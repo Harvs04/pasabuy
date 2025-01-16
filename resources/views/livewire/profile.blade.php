@@ -1,4 +1,4 @@
-<div class="flex flex-col mx-4 sm:mx-0 w-full min-h-screen font-montserrat bg-gray-100">
+<div class="flex flex-col mx-4 sm:mx-0 w-full min-h-screen font-montserrat bg-gray-100" x-cloak>
   <!-- ALERT MESSAGES --> 
   @if(session('change_role_success'))
     <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
@@ -132,9 +132,7 @@
                 <!-- Tooltip -->
                 <div 
                   x-show="open" 
-                  class="absolute left-0 mt-2 z-50 border border-gray-50 rounded-lg bg-white shadow-sm sm:shadow-md p-2 w-64"
-                  x-cloak
-                >
+                  class="absolute left-0 mt-2 z-50 border border-gray-50 rounded-lg bg-white shadow-sm sm:shadow-md p-2 w-64">
                   <p class="text-sm text-black">
                     If your PASABUY point is below 80, you will not be able to avail or do transactions.
                   </p>
@@ -240,7 +238,7 @@
       <div class="flex flex-col gap-4">
         <!-- GENERAL INFO -->
         <div class="bg-white rounded-lg shadow-sm sm:shadow-md w-full">
-          <div class="flex flex-col p-8 justify-center" x-data="{ contact: $wire.entangle('contact'), originalContact:  '{{ $user->contact_number }}', constituent: '{{ $user->constituent }}', selectedConstituent: '{{ $user->constituent }}' , college: '{{ $user->college }}', selectedCollege: '{{ $user->college }}', degprog: '{{ $user->degree_program }}', selectedDegprog: '{{ $user->degree_program }}', degProgs: {{ json_encode($degprogs) }}, isModalOpen: false, infoModalOpen: false, errors: {} }" x-cloak>
+          <div class="flex flex-col p-8 justify-center" x-data="{ contact: $wire.entangle('contact'), originalContact:  '{{ $user->contact_number }}', constituent: '{{ $user->constituent }}', selectedConstituent: '{{ $user->constituent }}' , college: '{{ $user->college }}', selectedCollege: '{{ $user->college }}', degprog: '{{ $user->degree_program }}', selectedDegprog: '{{ $user->degree_program }}', degProgs: {{ json_encode($degprogs) }}, isModalOpen: false, infoModalOpen: false, errors: {} }">
             <div class="flex flex-row items-center">
               <p class="text-lg sm:text-xl font-semibold">General Information</p>
               <button @click="isModalOpen = true" class="font-medium ml-auto py-1 px-2 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md"> Change role </button>
@@ -410,7 +408,7 @@
           </div>
         </div>
         <!-- PASSWORD INFO --> 
-        <div x-data="{ current_password: $wire.entangle('current_password'), new_password: $wire.entangle('new_password'), confirm_new_pass: '', showCurrentPassword: false, showNewPassword: false, showConfirmPassword: false, wrong_password: $wire.entangle('wrong_password'), passModalOpen: $wire.entangle('open_modal') }" x-cloak class="mb-4">
+        <div x-data="{ current_password: $wire.entangle('current_password'), new_password: $wire.entangle('new_password'), confirm_new_pass: '', showCurrentPassword: false, showNewPassword: false, showConfirmPassword: false, wrong_password: $wire.entangle('wrong_password'), passModalOpen: $wire.entangle('open_modal') }" class="mb-4">
           <div class="bg-white rounded-lg shadow-sm sm:shadow-md p-8">
             <p class="text-lg sm:text-xl font-semibold">Password Information</p>
             <div class="flex flex-col sm:flex-row">

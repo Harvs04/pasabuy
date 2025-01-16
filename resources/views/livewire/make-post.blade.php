@@ -485,6 +485,7 @@
                                 $wire.createPost();
                             }
                         }
+                        clicked = true;
                         " 
                     x-text="item_details ? 'Next' : 'Post'" class="font-medium w-20 py-1 sm:py-1.5 text-sm enabled:bg-[#014421] disabled:bg-gray-500 text-white rounded-md enabled:hover:bg-green-800"></button>
                 </div>
