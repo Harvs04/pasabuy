@@ -236,9 +236,10 @@
                   </div>
                   <p class="ml-2 text-sm sm:text-sm text-[#7b1113]">
                      Please update your profile and make sure that you have a 
-                     <span class="font-medium underline">contact number</span>, 
-                     <span class="font-medium underline">college</span>, and 
-                     <span class="font-medium underline">degree program</span>, in order to do transactions.
+                     <span class="font-medium">contact number</span>, 
+                     <span class="font-medium">college</span>, and 
+                     <span class="font-medium">degree program</span>, in order to order items or make transactions.
+                     <a href="{{ route('profile', ['name' => $user->name]) }}" class="font-medium underline">Update here.</a>
                   </p>
                </div>
             @endif
@@ -409,8 +410,8 @@
             </div>
          </div>
          <div class="flex flex-row w-full mt-3 gap-2">
-            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-md ml-auto" >Apply</button>
-            <button @click="post_type = ''; item_type = []; mode_of_payment = []; delivery_date = '';" x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1.5 text-sm disabled:bg-gray-500 bg-white enabled:text-black disabled:text-white rounded-md disabled:cursor-not-allowed enabled:hover:bg-slate-200 enabled:border enabled:hover:border-slate-200 enabled:hover:text-black">Clear</button>
+            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md ml-auto" >Apply</button>
+            <button @click="post_type = ''; item_type = []; mode_of_payment = []; delivery_date = '';" x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1.5 text-sm disabled:bg-gray-300 bg-white enabled:text-black disabled:text-white rounded-md disabled:cursor-not-allowed enabled:hover:bg-slate-200 enabled:border enabled:hover:border-slate-200 enabled:hover:text-black">Clear</button>
          </div>
       </div>
    </div>
