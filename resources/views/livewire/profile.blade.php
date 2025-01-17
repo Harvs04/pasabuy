@@ -358,7 +358,7 @@
               </div>
             </div>
             <div class="mt-6 flex justify-start">
-              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" 
+              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm rounded-md" 
                 :disabled="
                   (((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || 
                   (contact === '' && constituent === selectedConstituent && college === selectedCollege && degprog === selectedDegprog)) ||
@@ -491,7 +491,7 @@
 
             </div>
             <div class="mt-6 flex justify-start">
-              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-500 text-white text-sm rounded-md" :disabled="(new_password !== confirm_new_pass && new_password.length > 0 && confirm_new_pass.length > 0) || (new_password.length < 8 && new_password.length > 0) || new_password.length > 40 || current_password === '' || (!current_password || !new_password || !confirm_new_pass) || !/[A-Z]/.test(new_password)" type="button" wire:click="checkPassword" >Save changes</button>
+              <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm rounded-md" :disabled="(new_password !== confirm_new_pass && new_password.length > 0 && confirm_new_pass.length > 0) || (new_password.length < 8 && new_password.length > 0) || new_password.length > 40 || current_password === '' || (!current_password || !new_password || !confirm_new_pass) || !/[A-Z]/.test(new_password)" type="button" wire:click="checkPassword" >Save changes</button>
             </div>
             <div x-show="passModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
