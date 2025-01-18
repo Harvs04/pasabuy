@@ -283,7 +283,7 @@
    </div>
    <!-- FILTERS -->
    <div class="lg:text-gray-800 lg:mb-4 lg:z-10 lg:block lg:fixed lg:right-0 lg:top-0 lg:p-4 lg:ml-auto lg:w-1/3 bg-gray-100 lg:transition-all lg:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
-     :class="openBurger ? 'md:hidden lg:block lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : 'hidden'" 
+     :class="openBurger ? 'hidden lg:block lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : 'hidden'" 
      style="margin-top: 4.3rem;">
       <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
          <div class="mt-2 relative hidden sm:block w-full">

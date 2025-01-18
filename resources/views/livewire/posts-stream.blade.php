@@ -1,4 +1,4 @@
-<div class="{{ $posts->count() <= 1 ? 'h-[calc(100vh-13rem)]' : 'h-full' }}" x-cloak>
+<div class="mb-10" x-cloak>
     <div class="flex flex-col gap-4" >
         @if($posts->count() === 0)
             <div class="flex flex-row gap-2 self-center text-sm sm:text-base text-gray-400">
