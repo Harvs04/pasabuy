@@ -2,18 +2,34 @@
     <hr class="my-2">
     <div class="px-3 py-1">
         <div class="" x-data="{ comment: '', comments: $wire.entangle('comments')  }">
-
-            <!-- COMMENTS STREAM --> 
             
-            <div>
-                <p x-text="comments"></p>
-            </div>
+            <!-- COMMENTS STREAM -->
+            @if($db_comments->count() > 0) 
+                <div class="flex flex-col gap-2">
+                    @foreach($db_comments as $comment)
+                        <div class="flex flex-row items-start gap-3 md:gap-4">
+                            <img class="w-8 md:w-9 h-8 md:h-9 rounded-full object-cover" 
+                                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 
+                                alt="user photo">
+                            <div class="flex flex-col items-start">
+                                <div class="flex flex-row gap-2 items-center">
+                                    <p class="font-medium">{{ $comment->commenter }}</p>
+                                    <p class="text-xs">{{ $comment->created_at->diffForHumans(null, false, true) }}</p>
+                                </div>        
+                                <p class="text-sm break-all whitespace-pre-line">{{$comment->comment}}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                    <hr class="my-2">
+                </div>
+            @endif
+
             <!-- COMMENT INPUT FIELD -->
             <div class="flex flex-row items-center gap-3 md:gap-4">
                 <img class="w-8 md:w-9 h-8 md:h-9 rounded-full object-cover" 
                     src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 
                     alt="user photo">
-                <div class="relative w-full">
+                <div class="relative w-full" x-data="{ shiftPressed: false }">
                     <textarea
                         id="comment"
                         x-model="comment"
@@ -21,9 +37,12 @@
                         class="block w-full p-2 ps-3 pe-8 text-sm text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421] resize-none overflow-hidden"
                         placeholder="Write comment..."
                         oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
-                        rows="1">
+                        rows="1"
+                        @keydown.shift="shiftPressed = true"
+	                    @keyup.shift="shiftPressed = false"
+                        @keydown.enter.prevent="if (!shiftPressed && comment) { comments.push(comment); $wire.addComment({{ $post->id }}); comment = ''; } else if (shiftPressed && comment) { $event.target.value = $event.target.value + '\n'; } ">
                     </textarea>
-                    <button class="ml-auto absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" @click="if (comment) { comments.push(comment); $wire.addComment({{ $post->id }}, {{ $user->id }}); comment = ''; } ">
+                    <button class="ml-auto absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" @click="if (comment) { comments.push(comment); $wire.addComment({{ $post->id }}); comment = ''; } ">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
