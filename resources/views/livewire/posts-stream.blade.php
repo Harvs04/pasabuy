@@ -1,4 +1,4 @@
-<div class="mb-10" x-cloak>
+<div class="" x-cloak>
     <div class="flex flex-col gap-4" >
         @if($posts->count() === 0)
             <div class="flex flex-row gap-2 self-center text-sm sm:text-base text-gray-400">
@@ -7,7 +7,7 @@
             </div>
         @else
             @foreach($posts as $post)
-                <div class="pt-3 px-3 pb-2 bg-white border-2 border-white shadow-sm rounded-md text-gray-800 text-sm" x-data="{ openComment: false }">
+                <div class="pt-3 px-3 pb-2 bg-white shadow rounded-md text-gray-800 text-sm" x-data="{ openComment: false }">
                     <div class="flex flex-row items-start gap-3">
                         <img class="w-9 md:w-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                         <div class="flex flex-col">

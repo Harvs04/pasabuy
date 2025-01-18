@@ -257,7 +257,7 @@
                   <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
-            <div class="px-3 md:px-4 py-3 bg-white border border-gray-50 shadow-sm rounded-md">
+            <div class="px-3 md:px-4 py-3 bg-white shadow rounded-md">
                <div class="flex flex-row items-center gap-3 md:gap-4">
                   <img class="w-9 md:w-10 h-9 md:h-10 rounded-full object-cover" 
                         src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 

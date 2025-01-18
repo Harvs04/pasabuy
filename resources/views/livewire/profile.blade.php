@@ -1,7 +1,8 @@
-<div class="flex flex-col mx-4 sm:mx-0 w-full min-h-screen font-montserrat bg-gray-100" x-cloak>
+<div class="mx-4 text-gray-800">
+<div class="flex flex-col font-poppins mb-20 md:mb-0" style="margin-top: 4.3rem;" x-cloak>
   <!-- ALERT MESSAGES --> 
   @if(session('change_role_success'))
-    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow">
       <div class="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -24,7 +25,7 @@
   @endif
 
   @if(session('change_pass_success'))
-    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow">
       <div class="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -47,7 +48,7 @@
   @endif
 
   @if(session('change_info_success'))
-    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow">
       <div class="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -69,7 +70,7 @@
     </script>
   @endif
   @if(session('change_pass_success'))
-    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow">
       <div class="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -90,33 +91,33 @@
         }, 3000); // 3 seconds
     </script>
   @endif
-  <div class="flex flex-row items-center gap-5 mt-20 mb-3 sm:ml-32 ">
+  <div class="flex flex-row items-center gap-3 md:gap-5 mb-3 sm:ml-32">
     <a href={{ route('dashboard') }}>
       <svg class="w-5 sm:w-7" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8.75 18.75H33.75C34.0815 18.75 34.3995 18.8817 34.6339 19.1161C34.8683 19.3505 35 19.6685 35 20C35 20.3315 34.8683 20.6495 34.6339 20.8839C34.3995 21.1183 34.0815 21.25 33.75 21.25H8.75C8.41848 21.25 8.10054 21.1183 7.86612 20.8839C7.6317 20.6495 7.5 20.3315 7.5 20C7.5 19.6685 7.6317 19.3505 7.86612 19.1161C8.10054 18.8817 8.41848 18.75 8.75 18.75Z" fill="black"/>
         <path d="M9.26751 20.0001L19.635 30.3651C19.8697 30.5998 20.0016 30.9182 20.0016 31.2501C20.0016 31.5821 19.8697 31.9004 19.635 32.1351C19.4003 32.3698 19.0819 32.5017 18.75 32.5017C18.4181 32.5017 18.0997 32.3698 17.865 32.1351L6.61501 20.8851C6.4986 20.769 6.40624 20.6311 6.34323 20.4792C6.28021 20.3273 6.24777 20.1645 6.24777 20.0001C6.24777 19.8357 6.28021 19.6729 6.34323 19.521C6.40624 19.3692 6.4986 19.2312 6.61501 19.1151L17.865 7.86511C18.0997 7.6304 18.4181 7.49854 18.75 7.49854C19.0819 7.49854 19.4003 7.6304 19.635 7.86511C19.8697 8.09983 20.0016 8.41817 20.0016 8.75011C20.0016 9.08205 19.8697 9.4004 19.635 9.63511L9.26751 20.0001Z" fill="black"/>
       </svg>
     </a>
-    <p class="text-xl sm:text-3xl font-semibold sm:font-bold">User Profile and Settings</p>
+    <p class="text-xl sm:text-3xl font-semibold">User Profile and Settings</p>
   </div>
   <div class="flex justify-center">
     <div class="w-full sm:w-5/6 flex flex-col sm:flex-row gap-4">
       <div class="flex flex-col gap-4">
         <!-- IMAGE -->
-        <div class="rounded-lg bg-white shadow-sm sm:shadow-md w-full sm:w-96 gap-4">
-          <div class="w-full flex flex-col sm:flex-row justify-center items-center gap-4 py-8">
+        <div class="rounded-md bg-white shadow w-full gap-4">
+          <div class="w-full flex flex-col sm:flex-row justify-center items-center gap-4 py-6">
             <img src="https://zerebro.org/logo512.png"  class="h-14 sm:h-20 aspect-auto rounded-full border-2 border-black"  alt="FlowBite Logo" />
             <div class="flex flex-col justify-center items-center sm:items-start">
-              <p class="text-lg sm:text-xl font-semibold"> {{ $user->name }} </p>
-              <p> {{ $user->constituent }} </p>
-              <button class="font-medium py-1 px-2 mt-3 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md"> Change picture </button>
+              <p class="text-lg font-medium"> {{ $user->name }} </p>
+              <p class="text-sm"> {{ $user->constituent }} </p>
+              <button class="py-2.5 px-2 mt-2 bg-[#014421] hover:bg-green-800 text-white text-sm/[5px] rounded-md"> Change picture </button>
             </div>
           </div>
         </div>  
         <!-- PASABUY INFO -->
-        <div class="flex justify-start rounded-lg bg-white shadow-sm sm:shadow-md w-full sm:w-96 gap-4">
-          <div class="w-full sm:w-5/6 flex flex-col p-8">
-            <p class="text-lg sm:text-xl font-semibold">PASABUY Information</p>
+        <div class="flex justify-start rounded-md bg-white shadow w-full gap-4">
+          <div class="w-full sm:w-5/6 flex flex-col py-6 px-8">
+            <p class="text-lg font-medium">PASABUY Information</p>
             <div class="flex flex-row gap-2 items-center text-sm" x-data="{ open: false }">
               <p>PASABUY points</p>
               <div 
@@ -132,9 +133,9 @@
                 <!-- Tooltip -->
                 <div 
                   x-show="open" 
-                  class="absolute left-0 mt-2 z-50 border border-gray-50 rounded-lg bg-white shadow-sm sm:shadow-md p-2 w-64">
-                  <p class="text-sm text-black">
-                    If your PASABUY point is below 80, you will not be able to avail or do transactions.
+                  class="absolute left-0 mt-2 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow p-2 w-64">
+                  <p class="text-sm">
+                    If your PASABUY point is below 80, you will not be able to order items or do transactions.
                   </p>
                 </div>
               </div>
@@ -142,11 +143,11 @@
             </div>
             <hr class="my-5" />
             <div class="flex flex-col gap-2">
-              <div class="flex flex-row gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <div class="flex flex-row gap-2 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 md:size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                 </svg>
-                <p class="font-semibold text-lg sm:text-xl">Customer</p>
+                <p class="font-medium text-lg">Customer</p>
               </div>
               <div class="flex flex-col text-sm gap-1">
                 <p>Successful Item Purchase : 1</p>
@@ -155,11 +156,11 @@
             </div>
             <hr class="my-5" />
             <div class="flex flex-col gap-2">
-              <div class="flex flex-row gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <div class="flex flex-row gap-2 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 md:size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
                 </svg>
-                <p class="font-semibold text-lg sm:text-xl">Provider</p>
+                <p class="font-medium text-lg">Provider</p>
               </div>  
               <div class="flex flex-col text-sm gap-1">
                 <div class="flex flex-row items-center">
@@ -177,14 +178,14 @@
                 </div>
                 <p>Successful Deliveries : 1</p>
                 <p>Cancelled Transactions : 1</p>
-                <button class="font-medium w-2/3 sm:w-full py-1 px-2 mt-3 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md"> View provider wordcloud </button>
+                <button class="w-2/3 sm:w-full py-1 px-2 mt-3 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md"> View provider wordcloud </button>
               </div>
             </div>
           </div>
         </div>
-        <div class="flex justify-start rounded-lg bg-white shadow-sm sm:shadow-md w-full sm:w-96 gap-4" x-data="{ deleteAccountModalOpen: false }">
-          <div class="flex flex-col p-8 gap-2">
-            <p class="text-lg sm:text-xl font-semibold">Account Management</p>
+        <div class="flex justify-start rounded-md bg-white shadow w-full sm:w-96 gap-4" x-data="{ deleteAccountModalOpen: false }">
+          <div class="flex flex-col py-6 px-8 gap-2">
+            <p class="text-lg font-medium">Account Management</p>
             <button>
               <div wire:click="logOut" class="flex items-center justify-center gap-2 w-1/2 font-medium px-2 py-1 text-sm bg-white text-[#014421] border border-[#014421] rounded-md hover:bg-gray-100">
                 <svg class="w-4 sm:w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -210,13 +211,13 @@
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff4545" class="size-12">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                       </svg>
-                      <p class="text-lg sm:text-xl font-semibold text-black">Are you sure?</p>
-                      <p class="text-sm sm:text-base">Deleting your account will remove all of your information from our database. This cannot be undone.</p>
+                      <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
+                      <p class="text-sm">Deleting your account will remove all of your information from our database. This cannot be undone.</p>
                       <p class="text-xs sm:text-sm text-gray-600 self-start">To confirm this action, type "CONFIRM"</p>
-                      <input type="text" id="name" x-model="confirm" class="self-start w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-black block p-2.5" x-bind:class="{'border-red-500': errors.confirm}"/>
+                      <input type="text" id="name" x-model="confirm" class="self-start w-1/2 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-black block p-2.5" x-bind:class="{'border-red-500': errors.confirm}"/>
                     </div>
                     <div class="mt-5 flex gap-2">
-                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="font-medium px-2 sm:px-3 py-1.5 text-sm sm:text-base border rounded-md hover:bg-slate-100 ml-auto">Cancel</button>
+                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-100 ml-auto">Cancel</button>
                         <button 
                             @click="
                                 if (confirm === 'CONFIRM') {
@@ -225,7 +226,7 @@
                                     errors.confirm = true;
                                 }
                             " 
-                            class="font-medium px-2 sm:px-3 py-1.5 text-sm sm:text-base bg-red-800 text-white rounded-md hover:bg-[#7b1113]"
+                            class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]"
                         >
                             Confirm
                         </button>
@@ -237,13 +238,13 @@
       </div>
       <div class="flex flex-col gap-4">
         <!-- GENERAL INFO -->
-        <div class="bg-white rounded-lg shadow-sm sm:shadow-md w-full">
-          <div class="flex flex-col p-8 justify-center" x-data="{ contact: $wire.entangle('contact'), originalContact:  '{{ $user->contact_number }}', constituent: '{{ $user->constituent }}', selectedConstituent: '{{ $user->constituent }}' , college: '{{ $user->college }}', selectedCollege: '{{ $user->college }}', degprog: '{{ $user->degree_program }}', selectedDegprog: '{{ $user->degree_program }}', degProgs: {{ json_encode($degprogs) }}, isModalOpen: false, infoModalOpen: false, errors: {} }">
+        <div class="bg-white rounded-lg shadow w-full">
+          <div class="flex flex-col py-6 px-8 justify-center" x-data="{ contact: $wire.entangle('contact'), originalContact:  '{{ $user->contact_number }}', constituent: '{{ $user->constituent }}', selectedConstituent: '{{ $user->constituent }}' , college: '{{ $user->college }}', selectedCollege: '{{ $user->college }}', degprog: '{{ $user->degree_program }}', selectedDegprog: '{{ $user->degree_program }}', degProgs: {{ json_encode($degprogs) }}, isModalOpen: false, infoModalOpen: false, errors: {} }">
             <div class="flex flex-row items-center">
-              <p class="text-lg sm:text-xl font-semibold">General Information</p>
-              <button @click="isModalOpen = true" class="font-medium ml-auto py-1 px-2 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md"> Change role </button>
+              <p class="text-lg font-medium">General Information</p>
+              <button @click="isModalOpen = true" class="ml-auto py-1 px-3 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md"> Change role </button>
             </div>
-            <p class="text-sm font-semibold">You are logged in as {{ $user->role === 'customer' ? 'Customer' : 'Provider' }}</p>
+            <p class="text-sm">You are logged in as <span class="font-medium underline"> {{ $user->role === 'customer' ? 'Customer' : 'Provider' }} </span></p>
             <!-- MODAL -->
             <div x-show="isModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
@@ -251,7 +252,7 @@
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                       </svg>
-                      <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
+                      <p class="text-xl font-medium text-[#014421]">Confirmation</p>
                     </div>
                     @if($user->role === 'customer')
                       <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">By changing role to Provider, you will be able to:</p>
@@ -280,23 +281,23 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
               <div class="flex flex-col mt-4">
-                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Name</label>
-                <input type="text" id="name" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="{{ $user->name }}" disabled />
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-800">Name</label>
+                <input type="text" id="name" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="{{ $user->name }}" disabled />
               </div>
               <div class="flex flex-col mt-4">
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
-                <input type="text" id="email" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="{{ $user->email }}" disabled/>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-800 ">Email</label>
+                <input type="text" id="email" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="{{ $user->email }}" disabled/>
               </div>
               <div class="flex flex-col mt-4">
-                <label for="contact" class="block mb-2 text-sm font-medium text-gray-900 ">Contact Number</label>
-                <input x-model="contact" wire:model="contact" type="tel" id="contact" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': ((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || (contact === originalContact && contact !== '') || (contact === '' && originalContact === '')}" placeholder="{{ $user->contact_number }}"/>
+                <label for="contact" class="block mb-2 text-sm font-medium text-gray-800 ">Contact Number</label>
+                <input x-model="contact" wire:model="contact" type="tel" id="contact" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': ((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || (contact === originalContact && contact !== '') || (contact === '' && originalContact === '')}" placeholder="{{ $user->contact_number }}"/>
                 <p x-show="((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0) && contact !== originalContact" class="text-red-500 text-sm mt-1">Invalid contact number format (09***).</p>
                 <p x-show="contact === originalContact && contact !== ''" class="text-red-500 text-sm mt-1">Contact number is already in use.</p>
                 <p x-show="contact === '' && originalContact === ''"  class="text-red-500 text-sm mt-1">Contact number is required for transactions.</p>
               </div>
               <div class="flex flex-col mt-4">
-                <label for="constituent" class="block mb-2 text-sm font-medium text-gray-900 ">Type of Constituent</label>
-                <select x-model="constituent" wire:model="constituent" type="text" id="constituent" @change="if (constituent === 'staff') { degprog = 'Not Applicable'; } if (constituent !== 'staff' && college === selectedCollege) { degprog = selectedDegprog; } " class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" >
+                <label for="constituent" class="block mb-2 text-sm font-medium text-gray-800 ">Type of Constituent</label>
+                <select x-model="constituent" wire:model="constituent" type="text" id="constituent" @change="if (constituent === 'staff') { degprog = 'Not Applicable'; } if (constituent !== 'staff' && college === selectedCollege) { degprog = selectedDegprog; } " class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" >
                   <option value="{{ $user->constituent }}" selected>
                     @if ($user->constituent === 'student')
                         Student
@@ -316,8 +317,8 @@
                 </select>
               </div>
               <div class="flex flex-col mt-4">
-                <label class="block mb-2 text-sm font-medium text-gray-900" for="college">College</label>
-                <select x-model="college" wire:model="selectedCollege" id="college" @change="if(college !== selectedCollege) { degprog = ''; } if (college === selectedCollege) { degprog = selectedDegprog; }" x-bind:class="{'border-red-500': (college === '' && selectedCollege === '')}" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5">
+                <label class="block mb-2 text-sm font-medium text-gray-800" for="college">College</label>
+                <select x-model="college" wire:model="selectedCollege" id="college" @change="if(college !== selectedCollege) { degprog = ''; } if (college === selectedCollege) { degprog = selectedDegprog; }" x-bind:class="{'border-red-500': (college === '' && selectedCollege === '')}" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5">
                   <option value="{{ $user->college }}" selected>{{ $user->college }}</option>
                   @foreach ($colleges as $college)
                     @if($college !== $user->college)
@@ -331,13 +332,13 @@
                 <!-- <p x-text="constituent"></p> -->
                 <!-- <p x-text="college"></p>  -->
                 <!-- <p x-text="degprog"></p>  -->
-                <label for="degprog" class="block mb-2 text-sm font-medium text-gray-900">Degree Program</label>
+                <label for="degprog" class="block mb-2 text-sm font-medium text-gray-800">Degree Program</label>
                 <select 
                     x-model="degprog" 
                     wire:model="degprog" 
                     id="degprog" 
                     x-bind:class="{'border-red-500': degprog === '' && constituent !== 'staff'}" 
-                    class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                    class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
                     :disabled="constituent === 'staff'">
                     
                     <!-- Placeholder option when no degree program is selected -->
@@ -360,7 +361,7 @@
             <div class="mt-6 flex justify-start">
               <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm rounded-md" 
                 :disabled="
-                  (((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || 
+                  (((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 || contact === originalContact) || 
                   (contact === '' && constituent === selectedConstituent && college === selectedCollege && degprog === selectedDegprog)) ||
                   (degprog === '' && constituent !== 'staff')
                 "
@@ -383,12 +384,12 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                         </svg>
-                        <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
+                        <p class="text-xl font-medium text-[#014421]">Confirmation</p>
                       </div>
                       <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to save your changes?</p>
                     </div>
                     <div class="text-xs md:text-sm mt-2 md:mt-5 border border-gray-500 shawod:md rounded-md p-2">
-                      <p class="font-medium text-lg ml-1">Summary of changes</p>
+                      <p class="font-medium text-base ml-1">Summary of changes</p>
                       <div class="flex flex-col gap-1 text-sm ml-5 px-3 py-1">
                         <ul class="list-inside list-disc mt-2">
                           <li x-show="contact" x-text="'Contact Number: ' + contact"></li>
@@ -400,8 +401,8 @@
 
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="infoModalOpen = false" class="font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
-                        <button wire:click="saveInfoChanges" class=" font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="infoModalOpen = false" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
+                        <button wire:click="saveInfoChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>
@@ -409,13 +410,13 @@
         </div>
         <!-- PASSWORD INFO --> 
         <div x-data="{ current_password: $wire.entangle('current_password'), new_password: $wire.entangle('new_password'), confirm_new_pass: '', showCurrentPassword: false, showNewPassword: false, showConfirmPassword: false, wrong_password: $wire.entangle('wrong_password'), passModalOpen: $wire.entangle('open_modal') }" class="mb-4">
-          <div class="bg-white rounded-lg shadow-sm sm:shadow-md p-8">
-            <p class="text-lg sm:text-xl font-semibold">Password Information</p>
+          <div class="bg-white rounded-lg shadow py-6 px-8">
+            <p class="text-lg font-medium">Password Information</p>
             <div class="flex flex-col sm:flex-row">
               <div class="flex flex-col w-full mt-4">
-                <label for="current_password" class="block mb-2 text-sm font-medium text-gray-900 ">Current Password</label>
+                <label for="current_password" class="block mb-2 text-sm font-medium text-gray-800 ">Current Password</label>
                 <div class="relative w-full">
-                  <input :type="showCurrentPassword ? 'text' : 'password'" id="current_password" x-model="current_password"   class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                  <input :type="showCurrentPassword ? 'text' : 'password'" id="current_password" x-model="current_password"   class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
                                   x-bind:class="{'border-red-500': wrong_password">
                   <button type="button" @click="showCurrentPassword = !showCurrentPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                       <svg x-show="!showCurrentPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
@@ -432,9 +433,9 @@
                 <p x-show="wrong_password" class="text-red-500 text-sm mt-1">Current password is incorrect.</p>
               </div>
               <div class="flex flex-col w-full mt-4">
-                <label for="new_password" class="block mb-2 text-sm font-medium text-gray-900 ">New Password</label>
+                <label for="new_password" class="block mb-2 text-sm font-medium text-gray-800 ">New Password</label>
                 <div class="relative w-full">
-                    <input :type="showNewPassword ? 'text' : 'password'" id="new_password" x-model="new_password" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                    <input :type="showNewPassword ? 'text' : 'password'" id="new_password" x-model="new_password" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
                                     x-bind:class="{'border-red-500': ((new_password.length < 8 || !/[A-Z]/.test(new_password)) && new_password.length > 0) || new_password.length > 40}">
                     <button type="button" @click="showNewPassword = !showNewPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                         <svg x-show="!showNewPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
@@ -455,9 +456,9 @@
             </div>
             <div class="flex flex-col sm:flex-row mt-4">
               <div class="flex flex-col w-full">
-                <label for="confirm_new_pass" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm New Password</label>
+                <label for="confirm_new_pass" class="block mb-2 text-sm font-medium text-gray-800 ">Confirm New Password</label>
                 <div class="relative w-full">
-                    <input :type="showConfirmPassword ? 'text' : 'password'" id="confirm_new_pass" x-model="confirm_new_pass" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                    <input :type="showConfirmPassword ? 'text' : 'password'" id="confirm_new_pass" x-model="confirm_new_pass" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
                                     x-bind:class="{'border-red-500': new_password !== confirm_new_pass && (new_password.length > 0 && confirm_new_pass.length > 0)}" >
                     <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                         <svg x-show="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
@@ -476,11 +477,11 @@
               <!-- HIDDEN -->
               <div class="flex flex-col w-full">
                 <label for="new_password" class="mb-2 text-sm font-medium text-gray-900 hidden">New Password</label>
-                <input type="password" id="new_password" class="hidden w-11/12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] p-2.5"  placeholder="{{ $user->new_password }}"/>
+                <input type="password" id="new_password" class="hidden w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] p-2.5"  placeholder="{{ $user->new_password }}"/>
               </div>
             </div>
             <div class="mt-4 flex flex-col sm:w-1/2 text-sm">
-              <p class="font-medium text-base"> Password requirements: </p>
+              <p class="font-medium text-sm"> Password requirements: </p>
               <div class="sm:ml-5">
                 <p class="mt-2">Ensure that these requirements are met:</p>
                 <ul class="list-disc list-inside">
@@ -500,7 +501,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                         </svg>
-                        <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
+                        <p class="text-xl font-medium text-[#014421]">Confirmation</p>
                       </div>
                       <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to change your password?</p>
                     </div>
@@ -515,4 +516,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>
