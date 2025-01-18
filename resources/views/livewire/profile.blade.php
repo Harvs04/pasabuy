@@ -1,5 +1,5 @@
 <div class="mx-4 text-gray-800">
-<div class="flex flex-col font-poppins mb-20 md:mb-0" style="margin-top: 4.3rem;" x-cloak>
+<div class="flex flex-col font-poppins" style="margin-top: 4.3rem;" x-cloak>
   <!-- ALERT MESSAGES --> 
   @if(session('change_role_success'))
     <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow">
@@ -217,7 +217,7 @@
                       <input type="text" id="name" x-model="confirm" class="self-start w-1/2 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-black block p-2.5" x-bind:class="{'border-red-500': errors.confirm}"/>
                     </div>
                     <div class="mt-5 flex gap-2">
-                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-100 ml-auto">Cancel</button>
+                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                         <button 
                             @click="
                                 if (confirm === 'CONFIRM') {
@@ -274,8 +274,8 @@
                       </ul>
                     @endif
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="isModalOpen = false" class="font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
-                        <button wire:click="changeRole" class=" font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="isModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                        <button wire:click="changeRole" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>
@@ -401,7 +401,7 @@
 
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="infoModalOpen = false" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
+                        <button @click="infoModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                         <button wire:click="saveInfoChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
@@ -506,8 +506,8 @@
                       <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to change your password?</p>
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="passModalOpen = false" class="font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
-                        <button wire:click="savePassChanges" class=" font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="passModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                        <button wire:click="savePassChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>

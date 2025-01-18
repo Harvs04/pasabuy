@@ -265,7 +265,22 @@
                                     <div class="w-full flex flex-col" x-data="{ duplicate: false, max_count: false }">
                                         <label for="subtag" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item subtag</label>
                                         <div class="relative w-full">
-                                            <input type="text" id="subtag" x-model="subtag_item" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': duplicate || max_count}" @input="duplicate = false; max_count = false;" placeholder="e.g., fruits, baguio, imported"/>
+                                            <input type="text" id="subtag" x-model="subtag_item" class="w-full pe-12 bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': duplicate || max_count}" @input="duplicate = false; max_count = false;" placeholder="e.g., fruits, baguio, imported"
+                                            @keydown.enter.prevent="if (subtag_item !== '') {
+                                                if (item_subtype_post.length < 5) {
+                                                    if (item_subtype_post.includes(subtag_item.trim())) {
+                                                        duplicate = true;
+                                                    } else if (subtag_item.trim() !== '') {
+                                                        item_subtype_post.push(subtag_item.trim());
+                                                        subtag_item = '';
+                                                        duplicate = false;
+                                                        max_count = false;
+                                                    }
+                                                } else if (item_subtype_post.length === 5) {
+                                                    max_count = true;
+                                                }
+                                            }" 
+                                            />
                                             <button class="absolute top-1/2 right-2 transform -translate-y-1/2 px-3 py-1 text-gray-400 text-xs md:text-sm rounded-lg hover:bg-gray-200" 
                                             @click="if (subtag_item !== '') {
                                                 if (item_subtype_post.length < 5) {
@@ -280,7 +295,13 @@
                                                 } else if (item_subtype_post.length === 5) {
                                                     max_count = true;
                                                 }
-                                            }">Add</button>
+                                            }">
+                                            <div class="flex flex-row items-center gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                                                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </button>
                                         </div>
                                         <p x-show="duplicate" class="text-red-500 text-xs mt-1">This subtag already exists.</p>
                                         <p x-show="max_count" class="text-red-500 text-xs mt-1">You can only add 5 subtags.</p>
