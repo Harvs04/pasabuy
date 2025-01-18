@@ -114,7 +114,7 @@
          </div>
       </div>
    </nav>
-   <div wire:loading  class="w-full">
+   <div wire:loading wire:targe="switchRole"  class="w-full">
       <livewire:dashboard-skeleton />
    </div>
    <!-- SIDEBAR -->
@@ -216,6 +216,7 @@
       'md:ml-0': !openBurger
    }"
    wire:loading.class="hidden"
+   wire:target="switchRole"
    >
       <div class="p-4 border-r border-gray-200" :class="'w-full lg:w-4/6'">
          <div class="flex flex-col gap-4">

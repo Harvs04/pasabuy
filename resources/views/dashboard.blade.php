@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
     @livewireStyles
 </head>
-<body>
+<body class="bg-gray-100">
     <livewire:dashboard />
     @livewireScripts
     @livewireScriptConfig

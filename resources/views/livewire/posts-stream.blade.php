@@ -2,8 +2,8 @@
     <div class="flex flex-col gap-4" >
         @if($posts->count() === 0)
             <div class="flex flex-row gap-2 self-center text-sm sm:text-base text-gray-400">
-                <p class="">Seems empty in here.</p>
-                <button @click="createPostModalOpen = true" class="underline">Create a post</button>
+                <p class="text-xs md:text-sm">Seems empty in here.</p>
+                <button @click="createPostModalOpen = true" class="underline text-xs md:text-sm">Create a post</button>
             </div>
         @else
             @foreach($posts as $post)

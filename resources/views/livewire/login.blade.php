@@ -1,11 +1,11 @@
-<div class="flex flex-col md:flex-row font-montserrat" x-cloak>
+<div class="flex flex-col md:flex-row font-poppins" x-cloak>
     <div class="bg-[#014421] flex flex-row gap-2 md:h-screen md:w-1/2 md:flex-col md:gap-0 md:justify-center items-center">
         <img src="{{ asset('assets/Pasabuy-logo-no-name.png') }}" class="ml-5 w-16 py-2 md:ml-0 md:w-1/2 md:py-0">
         <p class="text-white text-xl font-bold md:text-6xl">PASABUY</p>
     </div>
     <div class="bg-white flex flex-row gap-2 h-screen md:w-1/2 md:flex-col md:gap-0 md:items-center items-start mt-16 md:mt-0 justify-center">   
         <div class="flex flex-col w-5/6 md:w-3/6 justify-center items-center gap-10" x-data="{ email: $wire.entangle('email'), password: $wire.entangle('password'), errors: {}, showPassword: false }" >
-            <p class="text-[#7b1113] font-bold text-4xl md:text-5xl self-start">Sign in</p>
+            <p class="text-[#7b1113] font-semibold text-4xl md:text-5xl self-start">Sign in</p>
             <div class="flex flex-col w-full gap-4 md:gap-2">
                 <div class="flex flex-col w-full gap-1">
                     <label for="email" class="font-medium">Email</label>
@@ -24,7 +24,15 @@
                     <label for="password" class="font-medium">Password</label>
                     <div class="relative w-full" >
                         <input :type="showPassword ? 'text' : 'password'" id="password" x-model="password" @input="if (password.length > 0) { delete errors.password; }" @change="if (password.length === 0) { errors.password = true; } "  class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-                            :class="{'border-red-500': errors.password}"> 
+                            :class="{'border-red-500': errors.password}"
+                            @keydown.enter="
+                                errors = {};
+                                errors.email = email.length === 0;
+                                errors.password = password.length === 0;
+                                if (!errors.email && !errors.password) { 
+                                    $wire.login(); 
+                            }"
+                            > 
                             <!-- Show/Hide Password Icon -->
                         <button type="button" @click="showPassword = !showPassword" class="absolute top-1/2 right-3 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                             <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
@@ -50,7 +58,7 @@
                         if (!errors.email && !errors.password) { 
                             $wire.login(); 
                         }
-                    " 
+                    "
                     class="w-full h-12 bg-[#014421] rounded-md text-white hover:bg-green-800"
                 >
                     Sign in

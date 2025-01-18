@@ -1,4 +1,4 @@
-<div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-montserrat h-screen" x-cloak>
+<div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-poppins h-screen" x-cloak>
     <!-- Top div (Header) -->
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
         <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
@@ -8,13 +8,13 @@
     <div class="bg-white flex flex-row gap-2 md:w-full md:flex-col md:gap-0 md:items-center justify-center flex-1 mt-16 md:mt-0">   
         <div class="flex flex-col w-5/6 md:w-4/6">
             <div class="flex flex-col justify-start md:justify-center md:items-center mb-10 md:mb-16 gap-5 md:gap-7">
-                <p class="text-[#7b1113] font-bold text-4xl md:text-5xl self-start md:self-center">Sign up</p>
+                <p class="text-[#7b1113] font-semibold text-4xl md:text-5xl self-start md:self-center">Sign up</p>
                 <div class="flex flex-row text-[#014421] w-full justify-center items-center space-x-4">
-                    <p :class="{'font-bold': signupPartOne}" class="cursor-pointer">Basic Information</p>
+                    <p :class="{'font-semibold': signupPartOne}" class="cursor-pointer">Basic Information</p>
                     <hr class="w-2/12 h-px bg-[#014421] border-0 rounded hidden md:block">
-                    <p :class="{'font-bold': signupPartTwo}" class="cursor-pointer">Account Information</p>
+                    <p :class="{'font-semibold': signupPartTwo}" class="cursor-pointer">Account Information</p>
                     <hr class="w-2/12 h-px bg-[#014421] border-0 rounded hidden md:block">
-                    <p :class="{'font-bold': signupPartThree}" class="cursor-pointer">Verification Questions</p>
+                    <p :class="{'font-semibold': signupPartThree}" class="cursor-pointer">Verification Questions</p>
                 </div>
             </div>
             <!-- Toggle between form and message with Alpine.js -->
@@ -88,7 +88,7 @@
                     </div>
 
                 </form>
-                <div class="flex flex-col-reverse md:flex-row w-5/6 items-center justify-end gap-2 mt-3 md:mt-5">
+                <div class="flex flex-col-reverse md:flex-row w-full items-center justify-end gap-2 mt-3 md:mt-5">
                     <a class="w-full h-12 bg-white rounded-md md:w-1/6 border border-[#014421] hover:bg-slate-100 flex items-center justify-center"
                     href="{{ route('login') }}">
                         <p class="text-[#014421]">Return</p>
@@ -289,6 +289,22 @@
                             <button wire:click="verifyQuestions" class="px-4 py-2 bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                         </div>
                     </div>
+                </div>
+                <div wire:loading.delay wire:target="verifyQuestions" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16">
+                        <radialGradient id="a9" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)">
+                            <stop offset="0" stop-color="#014421"></stop><stop offset=".3" stop-color="#014421" stop-opacity=".9"></stop>
+                            <stop offset=".6" stop-color="#014421" stop-opacity=".6"></stop>
+                            <stop offset=".8" stop-color="#014421" stop-opacity=".3"></stop>
+                            <stop offset="1" stop-color="#014421" stop-opacity="0"></stop>
+                        </radialGradient>
+                        <circle transform-origin="center" fill="none" stroke="url(#a9)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70">
+                            <animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite" from="0">
+                            </animateTransform>
+                        </circle>
+                        <circle transform-origin="center" fill="none" opacity=".2" stroke="#014421" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70">
+                        </circle>
+                    </svg>
                 </div>
             </div>
         </div>
