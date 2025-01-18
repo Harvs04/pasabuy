@@ -251,7 +251,7 @@
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                       </svg>
-                      <p class="text-xl font-semibold text-[#014421]">Reminder</p>
+                      <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
                     </div>
                     @if($user->role === 'customer')
                       <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">By changing role to Provider, you will be able to:</p>
@@ -383,7 +383,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                         </svg>
-                        <p class="text-xl font-semibold text-[#014421]">Reminder</p>
+                        <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
                       </div>
                       <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to save your changes?</p>
                     </div>
@@ -500,7 +500,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                         </svg>
-                        <p class="text-xl font-semibold text-[#014421]">Reminder</p>
+                        <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
                       </div>
                       <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to change your password?</p>
                     </div>

@@ -31,8 +31,8 @@ return new class extends Migration
                 $table->integer('max_orders')->nullable();
                 $table->integer('order_count')->default(0);
                 $table->date('cutoff_date')->nullable();
-                $table->string('meetup_place')->nullable();
-                $table->string('additional_notes')->nullable();
+                $table->longText('meetup_place')->nullable();
+                $table->longText('additional_notes')->nullable();
                 $table->timestamps();
             });
         }
