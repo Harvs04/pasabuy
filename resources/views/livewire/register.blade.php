@@ -1,11 +1,11 @@
-<div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-poppins h-screen" x-cloak>
+<div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-poppins" x-cloak>
     <!-- Top div (Header) -->
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
         <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
         <p class="text-xl md:text-2xl font-montserrat text-white font-bold">PASABUY</p>
     </div>
     <!-- Centered Div (Signup Form) -->
-    <div class="bg-white flex flex-row gap-2 md:w-full md:flex-col md:gap-0 md:items-center justify-center flex-1 mt-16 md:mt-0">   
+    <div class="bg-white flex flex-row gap-2 md:w-full md:flex-col md:gap-0 md:items-center justify-center flex-1 mt-10 pb-10">   
         <div class="flex flex-col w-5/6 md:w-4/6">
             <div class="flex flex-col justify-start md:justify-center md:items-center mb-10 md:mb-16 gap-5 md:gap-7">
                 <p class="text-[#7b1113] font-semibold text-4xl md:text-5xl self-start md:self-center">Sign up</p>
@@ -278,15 +278,22 @@
                     </button>
                 </div>
                 <!-- Modal -->
-                <div x-show="isModalOpen" x-transition:enter.duration.100ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div x-show="isModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
-                        <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
-                        <p class="text-xs md:text-sm mt-2 md:mt-5 text-justify">By using PASABUY, a platform that facilitates transactions between Providers and Customers, you agree to comply with all terms and conditions outlined in this Agreement. PASABUY serves as an intermediary, providing tools to manage, create, and track orders between users. While PASABUY offers the platform for these transactions, it is not responsible for the fulfillment, delivery, or quality of the items involved. You, as a user, agree to use the platform responsibly and are fully accountable for any transactions conducted through PASABUY.
-
-                        Users understand and acknowledge that PASABUY is not liable for any issues, disputes, or damages that may arise from transactions between Providers and Customers. Both Providers and Customers are encouraged to communicate directly and resolve any issues regarding the transaction. PASABUY reserves the right to modify these terms at any time, and continued use of the platform constitutes your acceptance of the revised terms.</p>
+                        <div class="flex flex-row gap-2 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="size-6 md:size-7">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                            <p class="text-xl md:text-2xl font-semibold text-[#014421]">Confirmation</p>
+                        </div>
+                        <p class="text-sm mt-2 md:mt-5 text-justify">By using PASABUY, a platform that facilitates bulk purchasing of items, you agree to comply with all terms and conditions outlined in this agreement. </p>
+                        <p class="text-sm mt-2 md:mt-5 text-justify">PASABUY serves as an intermediary, providing tools to manage, create, and track orders between users. While PASABUY offers the platform for these transactions, it is not responsible for the quality of the items involved.
+                        You, as a user, agree to use the platform responsibly and are fully accountable for any transactions conducted through PASABUY.</p>
+                        <p class="text-sm mt-2 md:mt-5 text-justify">Users understand and acknowledge that PASABUY is not liable for any issues, disputes, or damages that may arise from transactions between providers and customers. Both providers and customers are encouraged to communicate directly and resolve any issues regarding the transaction. </p>
+                        <p class="text-sm mt-2 md:mt-5 text-justify">PASABUY reserves the right to modify these terms at any time, and continued use of the platform constitutes your acceptance of the revised terms.</p>
                         <div class="mt-4 flex justify-end gap-2">
-                            <button @click="isModalOpen = false" class="px-4 py-2 bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
-                            <button wire:click="verifyQuestions" class="px-4 py-2 bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                            <button @click="isModalOpen = false" class="px-3 py-1.5 bg-white text-sm border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
+                            <button wire:click="verifyQuestions" class="px-3 py-1.5 bg-[#014421] text-sm text-white rounded-md hover:bg-green-800">I understand</button>
                         </div>
                     </div>
                 </div>
