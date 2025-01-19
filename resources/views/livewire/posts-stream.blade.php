@@ -57,9 +57,9 @@
 
                     </div>
                     @if($post->type === 'item_request')
-                        <div class="mt-4 ml-1 flex flex-col gap-2">
+                        <div class="mt-4 ml-1 flex flex-col gap-3">
                             <p class="text-[#014421] text-base font-semibold underline">Item Details</p>
-                            <div class="flex flex-col gap-2 ml-2">
+                            <div class="flex flex-col gap-3 ml-2">
                                 <div class="flex flex-row gap-2 items-start text-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -104,10 +104,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr class="mt-2">
                             </div>
                             <p class="text-[#014421] text-base font-semibold underline">Request Details</p>
-                            <div class="flex flex-col ml-2 gap-2">
+                            <div class="flex flex-col ml-2 gap-3">
                                 <div class="flex flex-row gap-2 items-start text-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
@@ -144,7 +143,7 @@
                             </div>
                         </div>
                     @elseif($post->type === 'transaction')
-                        <div class="mt-4 ml-1 flex flex-col gap-2">
+                        <div class="mt-4 ml-1 flex flex-col gap-3">
                             <p class="text-[#014421] text-base font-semibold underline">Item Details</p>
                             <div class="flex flex-col ml-2 gap-2">
                                 <div class="flex flex-row gap-2 items-start text-sm">
@@ -194,7 +193,7 @@
                                 @if($post->sub_type !== null)
                                     <div class="flex flex-row gap-2 items-start text-sm">
                                         <div class="flex flex-row gap-2 items-start">
-                                            <p class="font-semibold whitespace-nowrap">Subtag:</p>
+                                            <p class="font-semibold whitespace-nowrap">Subtags:</p>
                                             <div class="flex flex-row flex-wrap gap-1">
                                                 @php
                                                     $subTypeArray = json_decode($post->sub_type, true);
@@ -214,10 +213,9 @@
                                         </div>
                                     </div>
                                 @endif
-                                <hr class="mt-2">
                             </div>
                             <p class="text-[#014421] text-base font-semibold underline">Transaction Details</p>
-                            <div class="flex flex-col ml-2 gap-2">
+                            <div class="flex flex-col ml-2 gap-3">
                                 <div class="flex flex-row gap-2 items-start text-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
