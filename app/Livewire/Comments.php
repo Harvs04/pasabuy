@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Comment;
+use App\Models\SavePost;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,7 +42,26 @@ class Comments extends Component
         ];
         Comment::create($new_comment);
 
-        $this->refreshComments($post_id);
+        $this->refreshSavedPost($post_id);
+    }
+
+    public function refreshSavedPosts()
+    {
+        Auth::setUser($this->user);
+    }
+
+    public function savePost($post_id, $isSaved)
+    {
+        if ($isSaved) {
+            $save_post = [
+                'post_id' => $post_id,
+                'user_id' => $this->user->id,
+                'saved_by' => $this->user->name, 
+            ];
+            SavePost::create($save_post);
+        } else {
+            SavePost::where('post_id', $post_id)->where('user_id', $this->user->id)->where('saved_by', $this->user->name)->delete();
+        }
     }
     
     public function render()

@@ -1,4 +1,4 @@
-<div>
+<div x-data="{ saved: {{ collect($user->save_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }} }">
     @if ($post->type === 'item_request')
         <div>
             <hr class="my-2">
@@ -40,9 +40,9 @@
                             <p class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Comment</p>
                         </div>
                     </button>
-                    <button class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
+                    <button @click=" saved = !saved; $wire.savePost({{ $post->id }}, saved).then(() => $wire.call('refreshSavedPosts')).catch(() => saved = originalState).finally(() => loading = false); " :class="saved ? 'text-[#014421]' : ''" class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
                         <div class="flex flex-row items-center justify-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
+                            <svg xmlns="http://www.w3.org/2000/svg" :fill="saved ? '#014421' : 'none'" viewBox="0 0 24 24" stroke-width="2" :stroke="saved ? '#014421' : 'currentColor'" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
                             </svg>
                             <p  class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Save post</p>
@@ -92,9 +92,9 @@
                             <p class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Comment</p>
                         </div>
                     </button>
-                    <button @click="" class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
+                    <button @click="saved = !saved; $wire.savePost({{ $post->id }}, saved).then(() => $wire.call('refreshSavedPosts')).catch(() => saved = originalState).finally(() => loading = false); " :class="saved ? 'text-[#014421]' : ''"  class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
                         <div class="flex flex-row items-center justify-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
+                            <svg xmlns="http://www.w3.org/2000/svg" :fill="saved ? '#014421' : 'none'" viewBox="0 0 24 24" stroke-width="2" :stroke="saved ? '#014421' : 'currentColor'" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
                             </svg>
                             <p  class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Save post</p>
