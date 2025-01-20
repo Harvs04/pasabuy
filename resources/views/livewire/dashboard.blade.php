@@ -61,7 +61,7 @@
          }, 3000); // 3 seconds
       </script>
    @endif
-   <nav class="fixed top-0 z-40 w-full bg-[#014421] border-b">
+   <nav class="fixed top-0 z-30 w-full bg-[#014421] border-b">
       <div class="px-3 py-1.5 lg:px-5 lg:pl-3">
          <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end w-4/6">
@@ -119,7 +119,7 @@
    </div>
    <!-- SIDEBAR -->
    <div id="logo-sidebar" 
-     class="fixed top-0 left-0 z-30 w-64 xl:w-96 h-screen pt-20 bg-gray-50 border-r border-gray-200"
+     class="fixed top-0 left-0 z-20 w-64 xl:w-96 h-screen pt-20 bg-gray-50 border-r border-gray-200"
      aria-label="Sidebar" 
      x-show="openBurger"
      x-transition:enter="transition ease-out duration-300 transform"
@@ -249,7 +249,7 @@
                         Insufficient PASABUY points
                      </p>
                   </div>
-                  <p x-show="'{{ $user->role }}' === 'customer'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create item requests and avail transactions.</p>
+                  <p x-show="'{{ $user->role }}' === 'customer'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create item requests or order items.</p>
                   <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
@@ -418,13 +418,13 @@
       @keydown.escape.window="if (!clicked) { createPostModalOpen = false; }" 
       x-transition:enter.duration.50ms 
       x-transition:leave.duration.50ms 
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30"
    >
       <livewire:make-post />
    </div>
    <!-- CHANGE ROLE MODAL -->
-   <div x-show="isChangeRoleModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
+   <div x-show="isChangeRoleModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
+      <div @keydown.escape.window="isChangeRoleModalOpen = false" class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
          <div class="flex flex-row items-center gap-2 sm:gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
@@ -432,27 +432,27 @@
             <p class="text-xl font-semibold text-[#014421]">Reminder</p>
          </div>
          @if($user->role === 'customer')
-            <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">By changing role to Provider, you will be able to:</p>
-            <ul class="text-xs md:text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
-            <li>Create and initiate transactions</li>
-            <li>Gather item orders from customers</li>
-            <li>Manage orders</li>
-            <li>Update order statuses</li>
+            <p class="text-sm md:text-base mt-2 md:mt-5 sm:ml-2 text-justify">By changing role to Provider, you will be able to:</p>
+            <ul class="text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
+               <li>Create and initiate transactions</li>
+               <li>Gather item orders from customers</li>
+               <li>Manage orders</li>
+               <li>Update order statuses</li>
             </ul>
          @else
-            <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">
+            <p class="text-sm md:text-base mt-2 md:mt-5 sm:ml-2 text-justify">
             By changing your role to Customer, you will be able to:
             </p>
-            <ul class="text-xs md:text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
-            <li>Create item requests</li>
-            <li>Place item orders to providers</li>
-            <li>Track item orders</li>
-            <li>Rate the transaction and provider</li>
+            <ul class="text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
+               <li>Create item requests</li>
+               <li>Place item orders to providers</li>
+               <li>Track item orders</li>
+               <li>Rate the transaction and provider</li>
             </ul>
          @endif
-         <div class="mt-5 flex justify-end gap-2">
-            <button @click="isChangeRoleModalOpen = false" class="font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
-            <button @click="$wire.switchRole(); isChangeRoleModalOpen = false;" class=" font-medium px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+         <div  class="mt-5 flex justify-end gap-2">
+            <button @click="isChangeRoleModalOpen = false" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
+            <button @click="$wire.switchRole(); isChangeRoleModalOpen = false;" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
          </div>
       </div>
    </div>
