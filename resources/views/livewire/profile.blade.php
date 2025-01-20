@@ -92,6 +92,12 @@
     </script>
   @endif
   <div class="flex flex-row items-center gap-3 md:gap-5 mb-3 sm:ml-32">
+    <div wire:loading.delay wire:target="changeRole, saveInfoChanges, savePassChanges, deleteAccount, logOut" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+        </svg>
+    </div>
     <a href={{ route('dashboard') }}>
       <svg class="w-5 sm:w-7" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8.75 18.75H33.75C34.0815 18.75 34.3995 18.8817 34.6339 19.1161C34.8683 19.3505 35 19.6685 35 20C35 20.3315 34.8683 20.6495 34.6339 20.8839C34.3995 21.1183 34.0815 21.25 33.75 21.25H8.75C8.41848 21.25 8.10054 21.1183 7.86612 20.8839C7.6317 20.6495 7.5 20.3315 7.5 20C7.5 19.6685 7.6317 19.3505 7.86612 19.1161C8.10054 18.8817 8.41848 18.75 8.75 18.75Z" fill="black"/>
@@ -275,7 +281,7 @@
                     @endif
                     <div class="mt-5 flex justify-end gap-2">
                         <button @click="isModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                        <button wire:click="changeRole" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="isModalOpen = false" wire:click="changeRole" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>
@@ -402,7 +408,7 @@
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
                         <button @click="infoModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                        <button wire:click="saveInfoChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="infoModalOpen = false" wire:click="saveInfoChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>
@@ -507,7 +513,7 @@
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
                         <button @click="passModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                        <button wire:click="savePassChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="passModalOpen = false" wire:click="savePassChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>
