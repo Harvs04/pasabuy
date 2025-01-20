@@ -42,7 +42,7 @@ class Comments extends Component
         ];
         Comment::create($new_comment);
 
-        $this->refreshSavedPost($post_id);
+        $this->refreshComments($post_id);
     }
 
     public function refreshSavedPosts()
