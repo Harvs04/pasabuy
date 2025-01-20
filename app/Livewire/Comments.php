@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Comment;
+use App\Models\LikePost;
 use App\Models\SavePost;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ class Comments extends Component
     public $post;
     public $comment = '';
     public $comments = [];
+    public $user_likes;
     public $db_comments;
 
     public function __construct()
@@ -23,7 +25,28 @@ class Comments extends Component
 
     public function mount()
     {
+        $this->user_likes = LikePost::where('post_id', $this->post->id)->get();
         $this->db_comments = Comment::where('post_id', $this->post->id)->get();
+    }
+
+    public function refresh()
+    {
+        Auth::setUser($this->user);
+    }
+
+    public function likePost($post_id, $isLiked)
+    {
+        if ($isLiked) {
+            $save_post = [
+                'post_id' => $post_id,
+                'user_id' => $this->user->id,
+                'liked_by' => $this->user->name, 
+            ];
+            LikePost::create($save_post);
+        } else {
+            LikePost::where('post_id', $post_id)->where('user_id', $this->user->id)->where('liked_by', $this->user->name)->delete();
+        }
+        $this->user_likes = LikePost::where('post_id', $this->post->id)->get();
     }
 
     public function refreshComments($post_id)
@@ -45,11 +68,6 @@ class Comments extends Component
         $this->refreshComments($post_id);
     }
 
-    public function refreshSavedPosts()
-    {
-        Auth::setUser($this->user);
-    }
-
     public function savePost($post_id, $isSaved)
     {
         if ($isSaved) {
@@ -63,6 +81,7 @@ class Comments extends Component
             SavePost::where('post_id', $post_id)->where('user_id', $this->user->id)->where('saved_by', $this->user->name)->delete();
         }
     }
+    
     
     public function render()
     {

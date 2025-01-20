@@ -139,7 +139,7 @@
                             </div>
                             <!-- LIKE, COMMENT, SAVE BUTTONS -->
                             <div>
-                                <livewire:comments :post="$post"/>
+                                <livewire:comments :key="$post->id.now()" :$post />
                             </div>
                         </div>
                     @elseif($post->type === 'transaction')
@@ -275,7 +275,7 @@
 
                             <!-- LIKE, COMMENT, SAVE -->
                             <div>
-                                <livewire:comments :post="$post"/>
+                                <livewire:comments :key="$post->id.now()" :$post />
                             </div>
                         </div>
                     @endif
