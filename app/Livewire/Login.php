@@ -23,10 +23,10 @@ class Login extends Component
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             if ($user->role === 'admin') {  
-                return redirect()->route('login');
+                return $this->redirect(route('login'), true);
             } 
             
-            return redirect()->route('dashboard');
+            return $this->redirect(route('dashboard'), true);
             
         }
 

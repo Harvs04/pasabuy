@@ -48,11 +48,11 @@ class SocialiteController extends Controller
                 }
             } else {
                 // If the domain is not 'up.edu.ph', show an error and redirect to login
-                return redirect()->route('login')->withErrors(['email' => 'You must login with a UP Mail address.']);
+                return redirect()->route('login')->with('non-up', 'Only UP-registered emails are allowed!');
             }
         } catch (Exception $e) {
             // Handle any exception that occurs during the authentication process
-            return redirect()->route('login')->withErrors(['error' => 'Only UP-registered emails are allowed!']);
+            return redirect()->route('login')->with('non-up', 'Only UP-registered emails are allowed!');
         }        
     }
 }

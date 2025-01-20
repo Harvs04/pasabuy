@@ -174,7 +174,7 @@ class Profile extends Component
         $user->save();
         sleep(1.5);
         session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
-        return redirect()->route('profile', ['name' => $user->name]);
+        return $this->redirect(route('profile', ['name' => $user->name]), true);
     }
 
     public function saveInfoChanges()
@@ -189,7 +189,7 @@ class Profile extends Component
 
         $user->save();
         session()->flash('change_info_success', "Changes successfully saved.");
-        return redirect()->route('profile', ['name' => $user->name]);
+        return $this->redirect(route('profile', ['name' => $user->name]), true);
     }
     public function checkPassword()
     {   
@@ -210,13 +210,13 @@ class Profile extends Component
         $user->password = Hash::make($this->new_password);
         $user->save();
         session()->flash('change_pass_success', "Password successfully changed.");
-        return redirect()->route('profile', ['name' => $user->name]);
+        return $this->redirect(route('profile', ['name' => $user->name]), true);
     }
 
     public function logOut()
     {
         Auth::logout();
-        return redirect('login');
+        return $this->redirect(route('login'), true);
     }
 
     public function deleteAccount()
@@ -225,7 +225,7 @@ class Profile extends Component
         $user->delete();
         Auth::logout();
         session()->flash('delete_account_success', "Account successfully deleted.");
-        return redirect('login');
+        return $this->redirect(route('login'), true);
     }
 
     public function render()

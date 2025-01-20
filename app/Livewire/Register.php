@@ -196,7 +196,7 @@ class Register extends Component
             $search = User::where('email', $this->up_email)->first();
             if ($search) {
                 session()->flash('register_error', 'Your registration was disapproved because your email is already used.');
-                return redirect()->route('login');
+                return $this->redirect(route('login', true));
             }
             User::create([
                 'name' => $this->first_name . ' ' . $this->last_name,
@@ -209,10 +209,10 @@ class Register extends Component
                 'password' => Hash::make($this->password)
             ]);
             session()->flash('register_success', 'Your registration was approved! You may log in to continue.');
-            return redirect()->route('login');
+            return $this->redirect(route('login', true));
         } else {
             session()->flash('register_error', 'Your registration was disapproved during evaluation. Try again.');
-            return redirect()->route('login');
+            return $this->redirect(route('login', true));
         }
         
     }

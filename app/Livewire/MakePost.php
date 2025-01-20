@@ -60,10 +60,10 @@ class MakePost extends Component
             Post::create($data);
             sleep(1.5);
             session()->flash('create_post_success', 'Post created successfully!');
-            return redirect()->route('dashboard');
+            return $this->redirect(route('dashboard'), true);
         } catch (\Throwable $th) {
             session()->flash('create_post_error', 'Failed to create post. Please try again.');
-            return redirect()->route('dashboard');
+            return $this->redirect(route('dashboard'), true);
         }
     }
     public function render()

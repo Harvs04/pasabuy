@@ -27,12 +27,12 @@ class Dashboard extends Component
 
         sleep(1.5);
         session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
-        return redirect(to: 'dashboard');
+        return $this->redirect(route('dashboard'), true);
     }
     public function signOut() 
     {
         Auth::logout();
-        return redirect('login');
+        return $this->redirect(route('login'), true);
     }
     public function render()
     {
