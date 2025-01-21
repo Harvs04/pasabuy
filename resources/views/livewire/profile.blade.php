@@ -139,7 +139,7 @@
                 <!-- Tooltip -->
                 <div 
                   x-show="open" 
-                  class="absolute left-0 mt-2 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow p-2 w-64">
+                  class="absolute left-0 mt-2 z-50 border rounded-lg bg-gray-100 text-gray-800 shadow p-2 w-64">
                   <p class="text-sm">
                     If your PASABUY point is below 80, you will not be able to order items or do transactions.
                   </p>
@@ -223,7 +223,7 @@
                       <input type="text" id="name" x-model="confirm" class="self-start w-1/2 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-black block p-2.5" x-bind:class="{'border-red-500': errors.confirm}"/>
                     </div>
                     <div class="mt-5 flex gap-2">
-                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="font-medium px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                         <button 
                             @click="
                                 if (confirm === 'CONFIRM') {
@@ -255,14 +255,14 @@
             <div @keydown.escape.window="isModalOpen = false" x-show="isModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
                     <div class="flex flex-row items-center gap-2 sm:gap-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                       </svg>
                       <p class="text-xl font-medium text-[#014421]">Confirmation</p>
                     </div>
                     @if($user->role === 'customer')
-                      <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">By changing role to Provider, you will be able to:</p>
-                      <ul class="text-xs md:text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
+                      <p class="text-sm mt-2 md:mt-5 sm:ml-2 text-justify">By changing role to Provider, you will be able to:</p>
+                      <ul class="text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
                         <li>Create and initiate transactions</li>
                         <li>Gather item orders from customers</li>
                         <li>Manage orders</li>
@@ -272,7 +272,7 @@
                       <p class="text-xs md:text-sm mt-2 md:mt-5 sm:ml-2 text-justify">
                         By changing your role to Customer, you will be able to:
                       </p>
-                      <ul class="text-xs md:text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
+                      <ul class="text-sm mt-2 md:mt-4 list-disc list-inside ml-5">
                         <li>Create item requests</li>
                         <li>Place item orders to providers</li>
                         <li>Track item orders</li>
@@ -280,7 +280,7 @@
                       </ul>
                     @endif
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="isModalOpen = false" class="font-medium px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                        <button @click="isModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                         <button @click="isModalOpen = false" wire:click="changeRole" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
@@ -392,9 +392,9 @@
                         </svg>
                         <p class="text-xl font-medium text-[#014421]">Confirmation</p>
                       </div>
-                      <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to save your changes?</p>
+                      <p class="text-sm mt-2 sm:ml-2 text-justify">Do you wish to save your changes?</p>
                     </div>
-                    <div class="text-xs md:text-sm mt-2 md:mt-5 border border-gray-500 shawod:md rounded-md p-2">
+                    <div class="mt-2 md:mt-5 border border-gray-200 rounded-md p-2">
                       <p class="font-medium text-base ml-1">Summary of changes</p>
                       <div class="flex flex-col gap-1 text-sm ml-5 px-3 py-1">
                         <ul class="list-inside list-disc mt-2">
@@ -407,7 +407,7 @@
 
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="infoModalOpen = false" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">Cancel</button>
+                        <button @click="infoModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">Cancel</button>
                         <button @click="infoModalOpen = false" wire:click="saveInfoChanges" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
@@ -509,10 +509,10 @@
                         </svg>
                         <p class="text-xl font-medium text-[#014421]">Confirmation</p>
                       </div>
-                      <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to change your password?</p>
+                      <p class="text-sm mt-2 sm:ml-2 text-justify">Do you wish to change your password?</p>
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="passModalOpen = false" class="font-medium px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                        <button @click="passModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                         <button @click="passModalOpen = false" wire:click="savePassChanges" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>

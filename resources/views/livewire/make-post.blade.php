@@ -272,7 +272,7 @@
                                                 }
                                             }" 
                                             />
-                                            <button class="absolute top-1/2 right-2 transform -translate-y-1/2 px-3 py-1 text-gray-400 text-xs md:text-sm rounded-lg hover:bg-gray-200" 
+                                            <button class="absolute top-1/2 right-2 transform -translate-y-1/2 px-1.5 py-1.5 text-gray-400 text-xs md:text-sm rounded-full hover:bg-gray-200" 
                                             @click="if (subtag_item !== '') {
                                                 if (item_subtype_post.length < 5) {
                                                     if (item_subtype_post.includes(subtag_item.trim())) {

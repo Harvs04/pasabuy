@@ -157,7 +157,7 @@
         <div 
             x-show="orderItemModalOpen" 
             x-transition:enter.duration.25ms 
-            class="fixed inset-0"
+            class="fixed inset-0 z-50"
         >
             <livewire:order-item-modal :$post/>
         </div>

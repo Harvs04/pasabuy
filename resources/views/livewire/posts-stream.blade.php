@@ -58,7 +58,7 @@
                     </div>
                     @if($post->type === 'item_request')
                         <div class="mt-4 ml-1 flex flex-col gap-3">
-                            <p class="text-[#014421] text-base font-semibold underline">Item Details</p>
+                            <p class="text-[#014421] text-base font-semibold underline">Item Details:</p>
                             <div class="flex flex-col gap-3 ml-2">
                                 <div class="flex flex-row gap-2 items-start text-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5">
@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-[#014421] text-base font-semibold underline">Request Details</p>
+                            <p class="text-[#014421] text-base font-semibold underline">Request Details:</p>
                             <div class="flex flex-col ml-2 gap-3">
                                 <div class="flex flex-row gap-2 items-start text-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5">
@@ -144,7 +144,7 @@
                         </div>
                     @elseif($post->type === 'transaction')
                         <div class="mt-4 ml-1 flex flex-col gap-3">
-                            <p class="text-[#014421] text-base font-semibold underline">Item Details</p>
+                            <p class="text-[#014421] text-base font-semibold underline">Item Details:</p>
                             <div class="flex flex-col ml-2 gap-2">
                                 <div class="flex flex-row gap-2 items-start text-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5">
@@ -214,7 +214,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <p class="text-[#014421] text-base font-semibold underline">Transaction Details</p>
+                            <p class="text-[#014421] text-base font-semibold underline">Transaction Details:</p>
                             <div class="flex flex-col ml-2 gap-3">
                                 <div class="flex flex-row gap-2 items-start text-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5">
