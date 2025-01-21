@@ -451,7 +451,7 @@
             </ul>
          @endif
          <div  class="mt-5 flex justify-end gap-2">
-            <button @click="isChangeRoleModalOpen = false" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
+            <button @click="isChangeRoleModalOpen = false" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">Cancel</button>
             <button @click="$wire.switchRole(); isChangeRoleModalOpen = false;" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
          </div>
       </div>

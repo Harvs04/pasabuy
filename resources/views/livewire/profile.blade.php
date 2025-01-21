@@ -211,7 +211,7 @@
             <button @click="deleteAccountModalOpen = !deleteAccountModalOpen" class="w-1/2 font-medium px-2 sm:px-3 py-1 text-sm bg-white text-[#7b1113] border border-[#7b1113] rounded-md hover:bg-rose-300">Delete Account</button>
           </div>
           <!-- DELETE ACCOUNT MODAL -->
-          <div x-data="{ confirm: '', errors: {} }" x-show="deleteAccountModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div @keydown.escape.window="deleteAccountModalOpen = false" x-data="{ confirm: '', errors: {} }" x-show="deleteAccountModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
                     <div class="flex flex-col items-center gap-2 sm:gap-3">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff4545" class="size-12">
@@ -223,7 +223,7 @@
                       <input type="text" id="name" x-model="confirm" class="self-start w-1/2 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-black block p-2.5" x-bind:class="{'border-red-500': errors.confirm}"/>
                     </div>
                     <div class="mt-5 flex gap-2">
-                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                        <button @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = '';" class="font-medium px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                         <button 
                             @click="
                                 if (confirm === 'CONFIRM') {
@@ -252,7 +252,7 @@
             </div>
             <p class="text-sm">You are logged in as <span class="font-medium underline"> {{ $user->role === 'customer' ? 'Customer' : 'Provider' }} </span></p>
             <!-- MODAL -->
-            <div x-show="isModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div @keydown.escape.window="isModalOpen = false" x-show="isModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
                     <div class="flex flex-row items-center gap-2 sm:gap-3">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
@@ -280,8 +280,8 @@
                       </ul>
                     @endif
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="isModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                        <button @click="isModalOpen = false" wire:click="changeRole" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="isModalOpen = false" class="font-medium px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                        <button @click="isModalOpen = false" wire:click="changeRole" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>
@@ -297,9 +297,9 @@
               <div class="flex flex-col mt-4">
                 <label for="contact" class="block mb-2 text-sm font-medium text-gray-800 ">Contact Number</label>
                 <input x-model="contact" wire:model="contact" type="tel" id="contact" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': ((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 ) || (contact === originalContact && contact !== '') || (contact === '' && originalContact === '')}" placeholder="{{ $user->contact_number }}"/>
-                <p x-show="((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0) && contact !== originalContact" class="text-red-500 text-sm mt-1">Invalid contact number format (09***).</p>
-                <p x-show="contact === originalContact && contact !== ''" class="text-red-500 text-sm mt-1">Contact number is already in use.</p>
-                <p x-show="contact === '' && originalContact === ''"  class="text-red-500 text-sm mt-1">Contact number is required for transactions.</p>
+                <p x-show="((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0) && contact !== originalContact" class="text-red-500 text-sm ml-1">Invalid contact number format (09***).</p>
+                <p x-show="contact === originalContact && contact !== ''" class="text-red-500 text-sm ml-1">Contact number is already in use.</p>
+                <p x-show="contact === '' && originalContact === ''"  class="text-red-500 text-sm ml-1">Contact number is required for transactions.</p>
               </div>
               <div class="flex flex-col mt-4">
                 <label for="constituent" class="block mb-2 text-sm font-medium text-gray-800 ">Type of Constituent</label>
@@ -332,7 +332,7 @@
                     @endif
                   @endforeach
                 </select>
-                <p x-show="college === '' && selectedCollege === ''"  class="text-red-500 text-sm mt-1">College is required for transactions.</p>
+                <p x-show="college === '' && selectedCollege === ''"  class="text-red-500 text-sm ml-1">College is required for transactions.</p>
               </div>
               <div class="flex flex-col mt-4">
                 <!-- <p x-text="constituent"></p> -->
@@ -361,7 +361,7 @@
                       <option x-text="program" :value="program"></option>
                     </template>
                 </select>
-                <p x-show="degprog === '' && constituent !== 'staff'" class="text-red-500 text-sm mt-1">A new degree program is required.</p>
+                <p x-show="degprog === '' && constituent !== 'staff'" class="text-red-500 text-sm ml-1">A new degree program is required.</p>
               </div>
             </div>
             <div class="mt-6 flex justify-start">
@@ -383,7 +383,7 @@
                             " 
                             class="w-full md:w-1/6 h-12 bg-[#014421] rounded-md text-white hover:bg-green-800 flex items-center justify-center">Save changes</button>
             </div>
-            <div x-show="infoModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div @keydown.escape.window="infoModalOpen = false" x-show="infoModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
                     <div class="flex flex-col">
                       <div class="flex flex-row items-center gap-2 sm:gap-3">
@@ -407,8 +407,8 @@
 
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="infoModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                        <button @click="infoModalOpen = false" wire:click="saveInfoChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="infoModalOpen = false" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">Cancel</button>
+                        <button @click="infoModalOpen = false" wire:click="saveInfoChanges" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>
@@ -436,7 +436,7 @@
                       </svg>
                   </button>
                 </div>
-                <p x-show="wrong_password" class="text-red-500 text-sm mt-1">Current password is incorrect.</p>
+                <p x-show="wrong_password" class="text-red-500 text-sm ml-1">Current password is incorrect.</p>
               </div>
               <div class="flex flex-col w-full mt-4">
                 <label for="new_password" class="block mb-2 text-sm font-medium text-gray-800 ">New Password</label>
@@ -455,9 +455,9 @@
                         </svg>
                     </button>
                 </div>
-                <p x-show="new_password.length < 8 && new_password.length > 0" class="text-red-500 text-sm mt-1">New password must be at least 8 characters long.</p>
-                <p x-show="new_password.length > 40" class="text-red-500 text-sm mt-1">New password length limit of 40 is reached.</p>
-                <p x-show="!/[A-Z]/.test(new_password) && new_password.length > 0" class="text-red-500 text-sm mt-1">New password must contain at least 1 uppercase letter.</p>
+                <p x-show="new_password.length < 8 && new_password.length > 0" class="text-red-500 text-sm ml-1">New password must be at least 8 characters long.</p>
+                <p x-show="new_password.length > 40" class="text-red-500 text-sm ml-1">New password length limit of 40 is reached.</p>
+                <p x-show="!/[A-Z]/.test(new_password) && new_password.length > 0" class="text-red-500 text-sm ml-1">New password must contain at least 1 uppercase letter.</p>
               </div>
             </div>
             <div class="flex flex-col sm:flex-row mt-4">
@@ -478,7 +478,7 @@
                         </svg>
                     </button>
                 </div>
-                <p x-show="new_password !== confirm_new_pass && (new_password.length > 0 && confirm_new_pass.length > 0)" class="text-red-500 text-sm mt-1">Passwords do not match.</p>
+                <p x-show="new_password !== confirm_new_pass && (new_password.length > 0 && confirm_new_pass.length > 0)" class="text-red-500 text-sm ml-1">Passwords do not match.</p>
               </div>
               <!-- HIDDEN -->
               <div class="flex flex-col w-full">
@@ -500,7 +500,7 @@
             <div class="mt-6 flex justify-start">
               <button class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm rounded-md" :disabled="(new_password !== confirm_new_pass && new_password.length > 0 && confirm_new_pass.length > 0) || (new_password.length < 8 && new_password.length > 0) || new_password.length > 40 || current_password === '' || (!current_password || !new_password || !confirm_new_pass) || !/[A-Z]/.test(new_password)" type="button" wire:click="checkPassword" >Save changes</button>
             </div>
-            <div x-show="passModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div @keydown.escape.window="passModalOpen = false" x-show="passModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
                     <div class="flex flex-col">
                       <div class="flex flex-row items-center gap-2 sm:gap-3">
@@ -512,8 +512,8 @@
                       <p class="text-xs md:text-sm mt-2 sm:ml-2 text-justify">Do you wish to change your password?</p>
                     </div>
                     <div class="mt-5 flex justify-end gap-2">
-                        <button @click="passModalOpen = false" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                        <button @click="passModalOpen = false" wire:click="savePassChanges" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm sm:text-base bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                        <button @click="passModalOpen = false" class="font-medium px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                        <button @click="passModalOpen = false" wire:click="savePassChanges" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
                     </div>
                 </div>
             </div>

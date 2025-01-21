@@ -486,7 +486,7 @@
                                 }
                             }      
                         " 
-                        x-text="item_details ? 'Cancel' : 'Return'"  class="font-medium w-20 py-1 sm:py-1.5 text-sm bg-white border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">
+                        x-text="item_details ? 'Cancel' : 'Return'"  class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">
                     </button>
                     <button 
                     :disabled="
