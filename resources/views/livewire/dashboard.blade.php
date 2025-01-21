@@ -1,4 +1,4 @@
-<div class="font-poppins bg-gray-100" x-data="{ openBurger: true, createPostModalOpen:false, isChangeRoleModalOpen: false, clicked: false }" x-cloak>
+<div class="font-poppins bg-gray-100" x-data="{ openBurger: false, createPostModalOpen:false, isChangeRoleModalOpen: false, clicked: false }" x-cloak>
    @if(session('create_post_success'))
       <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
          <div class="flex items-center gap-2">
@@ -249,8 +249,8 @@
                         Insufficient PASABUY points
                      </p>
                   </div>
-                  <p x-show="'{{ $user->role }}' === 'customer'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create item requests or order items.</p>
-                  <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text- sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
+                  <p x-show="'{{ $user->role }}' === 'customer'" class="ml-2 text-sm sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create item requests or order items.</p>
+                  <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text-sm sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
             <div class="px-3 md:px-4 py-3 bg-white shadow rounded-md">
@@ -260,11 +260,11 @@
                         alt="user photo">
                   <button 
                         @click="createPostModalOpen = true;" 
-                        class="text-gray-600 text-start text-xs md:text-sm px-3 sm:px-4 py-1 md:py-2 border bg-gray-100 rounded-full w-full">
+                        class="text-gray-600 text-start text-sm px-3 sm:px-4 py-2 border bg-gray-100 rounded-full w-full">
                         @if ($user->role === 'customer')
-                           Looking for items, {{ $user->name }}?
+                           Looking for items? Click here.
                         @else
-                           Planning to buy items in bulk, {{ $user->name }}?
+                           Making a transaction? Click here.
                         @endif
                   </button>
                </div>

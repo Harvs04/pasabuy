@@ -190,12 +190,12 @@
                     </div>
                 @elseif($user->role === 'provider')
                     <div class="flex flex-col gap-2 w-full border p-4 border-gray-300 bg-white rounded-md">
-                        <div class="flex flex-row gap-2 items-center">
-                            <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'underline' : 'no-underline'">Item Details</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <div class="flex flex-col md:flex-row gap-2 items-start md:items-center">
+                            <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'underline' : 'hidden md:block md:no-underline'">Item Details</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden md:block md:size-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
-                            <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'no-underline' : 'underline'">Transaction Details</p>
+                            <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'hidden md:block md:no-underline' : 'block underline'">Transaction Details</p>
                         </div>
                         <div x-show="item_details && !transaction_details" class="">
                             <div class="mt-4 flex flex-col gap-4">
@@ -298,7 +298,7 @@
                                         <p x-show="max_count" class="text-red-500 text-xs mt-1">You can only add 5 subtags.</p>
                                         <div class="flex flex-row flex-wrap space-y-2 gap-1">
                                             <template x-for="subtag in item_subtype_post" :key="subtag">
-                                                <span class="flex flex-row gap-1 items-center text-sm font-medium px-2.5 py-0.5 rounded bg-gray-100 text-gray-800">
+                                                <span class="flex flex-row gap-1 items-center text-xs font-medium px-2.5 py-0.5 rounded bg-gray-100 text-gray-800">
                                                     <span x-text="subtag"></span>
                                                     <button @click="item_subtype_post.splice(item_subtype_post.indexOf(subtag), 1);">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 ml-auto">
