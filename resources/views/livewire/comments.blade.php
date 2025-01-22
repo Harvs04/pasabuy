@@ -9,7 +9,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                     <div x-show="usersShow" 
-                        class="text-xs absolute -top-14 left-0 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow px-2.5 py-2">
+                        class="text-xs absolute bottom-12 left-0 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow px-2.5 py-2">
                         @if($user_likes->count() === 0)
                             <p>No likes yet.</p>
                         @else
@@ -117,7 +117,7 @@
                         </div>
                     </button>
                     
-                    <button @click="orderItemModalOpen = true; document.body.style.overflow = 'hidden';" class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" :class="{'hidden': '{{ $user->role }}' === 'provider' || '{{ $user->id }}' === '{{ $post->user_id }}', 'block': '{{ $user->role }}' !== 'customer' && '{{ $user->id }}' !== '{{ $post->user_id }}'}" :disabled="{{ $user->pasabuy_points < 80 || !$user->contact_number || !$user->college || !$user->degree_program }}">
+                    <button @click="orderItemModalOpen = true; document.body.style.overflow = 'hidden';" class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" :class="{'hidden': '{{ $user->role }}' === 'provider' || '{{ $user->id }}' === '{{ $post->user_id }}', 'block': '{{ $user->role }}' !== 'customer' && '{{ $user->id }}' !== '{{ $post->user_id }}'}" :disabled="{{ $user->pasabuy_points < 80 || !$user->contact_number || !$user->college || !$user->degree_program || $post->status !== 'open'}}">
                         <div class="flex flex-row items-center justify-center gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
@@ -204,6 +204,7 @@
                         alt="user photo">
                     <div class="relative w-full" x-data="{ shiftPressed: false }">
                         <textarea
+                            
                             id="comment"
                             x-model="comment"
                             wire:model="comment"
@@ -213,7 +214,8 @@
                             rows="1"
                             @keydown.shift="shiftPressed = true"
                             @keyup.shift="shiftPressed = false"
-                            @keydown.enter.prevent="if (!shiftPressed && comment) { comments.push(comment); $wire.addComment({{ $post->id }}); comment = ''; } else if (shiftPressed && comment) { $event.target.value = $event.target.value + '\n'; } ">
+                            @keydown.enter.prevent="if (!shiftPressed && comment) { comments.push(comment); $wire.addComment({{ $post->id }}); comment = ''; } else if (shiftPressed && comment) { $event.target.value = $event.target.value + '\n'; } "
+                            >
                         </textarea>
                         <button class="ml-auto absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" @click="if (comment) { comments.push(comment); $wire.addComment({{ $post->id }}); comment = ''; } " :class="{ 'cursor-not-allowed': !comment }">
                             <svg
