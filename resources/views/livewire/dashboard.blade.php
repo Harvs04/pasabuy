@@ -143,7 +143,7 @@
                      </button>
                   </div>
                   <div class="absolute right-0 top-5  z-40 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
-                     <div class="px-4 py-3 hover:bg-gray-100 hover:rounded-md">
+                     <div class="px-4 py-3 hover:bg-gray-100 hover:rounded-t-md">
                         <a href="{{ route('profile', ['name' => $user->name]) }}">
                         <p class="text-sm text-gray-900 ">
                            {{ $user-> name }}
@@ -155,7 +155,7 @@
                      </div>
                      <ul class="py-1">
                         <li>
-                        <button type="button" @click="isChangeRoleModalOpen = true" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Switch to {{ $user->role === 'customer' ? 'Provider' : 'Customer' }} </button>
+                        <button type="button" @click="isChangeRoleModalOpen = true; document.body.style.overflow = 'hidden';" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Switch to {{ $user->role === 'customer' ? 'Provider' : 'Customer' }} </button>
                         </li>
                         <li>
                         <button type="button" wire:click="signOut" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Log out</button>
@@ -313,7 +313,7 @@
                         src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 
                         alt="user photo">
                   <button 
-                        @click="createPostModalOpen = true;" 
+                        @click="createPostModalOpen = true; document.body.style.overflow = 'hidden';" 
                         class="text-gray-600 text-start text-sm px-3 sm:px-4 py-2 border bg-gray-100 rounded-full w-full">
                         @if ($user->role === 'customer')
                            Looking for items? Click here.
@@ -469,7 +469,7 @@
    <!-- CREATE POST MODAL -->
    <div 
       x-show="createPostModalOpen" 
-      @keydown.escape.window="if (!clicked) { createPostModalOpen = false; }" 
+      @keydown.escape.window="if (!clicked) { createPostModalOpen = false; document.body.style.overflow = 'auto'; }" 
       x-transition:enter.duration.50ms 
       x-transition:leave.duration.50ms 
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30"
@@ -478,12 +478,17 @@
    </div>
    <!-- CHANGE ROLE MODAL -->
    <div x-show="isChangeRoleModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
-      <div @keydown.escape.window="isChangeRoleModalOpen = false" class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
+      <div @keydown.escape.window="isChangeRoleModalOpen = false; document.body.style.overflow = 'auto';" class="bg-white p-6 rounded-lg w-5/6 md:w-2/3 lg:w-1/2 2xl:w-1/3 relative">
          <div class="flex flex-row items-center gap-2 sm:gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-5 sm:size-7">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
             </svg>
-            <p class="text-xl font-semibold text-[#014421]">Reminder</p>
+            <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
+            <button @click="isChangeRoleModalOpen = false; document.body.style.overflow = 'auto';" class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" class="size-6">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+               </svg>
+            </button>
          </div>
          @if($user->role === 'customer')
             <p class="text-sm md:text-base mt-2 md:mt-5 sm:ml-2 text-justify">By changing role to Provider, you will be able to:</p>
@@ -505,8 +510,8 @@
             </ul>
          @endif
          <div  class="mt-5 flex justify-end gap-2">
-            <button @click="isChangeRoleModalOpen = false" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">Cancel</button>
-            <button @click="$wire.switchRole(); isChangeRoleModalOpen = false;" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+            <button @click="isChangeRoleModalOpen = false; document.body.style.overflow = 'auto';" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">Cancel</button>
+            <button @click="$wire.switchRole(); isChangeRoleModalOpen = false; document.body.style.overflow = 'auto';" class=" px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
          </div>
       </div>
    </div>

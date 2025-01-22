@@ -271,6 +271,7 @@
 
                                 if (Object.keys(errors).length === 0) {
                                     isModalOpen = true;
+                                    document.body.style.overflow = 'hidden'
                                 }
                             " 
                             class="w-full md:w-1/6 h-12 bg-[#014421] rounded-md text-white hover:bg-green-800 flex items-center justify-center">
@@ -278,13 +279,18 @@
                     </button>
                 </div>
                 <!-- Modal -->
-                <div x-show="isModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3">
+                <div @keydown.escape.window="isModalOpen = false; document.body.style.overflow = 'auto';" x-show="isModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/3 relative">
                         <div class="flex flex-row gap-2 items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="size-6 md:size-7">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421" class="size-6 md:size-7">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                             <p class="text-xl md:text-2xl font-semibold text-[#014421]">Confirmation</p>
+                            <button @click="isModalOpen = false; document.body.style.overflow = 'auto';" class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
                         <p class="text-sm mt-2 md:mt-5 text-justify">By using PASABUY, a platform that facilitates bulk purchasing of items, you agree to comply with all terms and conditions outlined in this agreement. </p>
                         <p class="text-sm mt-2 md:mt-5 text-justify">PASABUY serves as an intermediary, providing tools to manage, create, and track orders between users. While PASABUY offers the platform for these transactions, it is not responsible for the quality of the items involved.
@@ -292,8 +298,8 @@
                         <p class="text-sm mt-2 md:mt-5 text-justify">Users understand and acknowledge that PASABUY is not liable for any issues, disputes, or damages that may arise from transactions between providers and customers. Both providers and customers are encouraged to communicate directly and resolve any issues regarding the transaction. </p>
                         <p class="text-sm mt-2 md:mt-5 text-justify">PASABUY reserves the right to modify these terms at any time, and continued use of the platform constitutes your acceptance of the revised terms.</p>
                         <div class="mt-4 flex justify-end gap-2">
-                            <button @click="isModalOpen = false" class="px-3 py-1.5 bg-white text-sm border border-[#014421] text-[#014421] rounded-md hover:bg-slate-100">Cancel</button>
-                            <button wire:click="verifyQuestions" class="px-3 py-1.5 bg-[#014421] text-sm text-white rounded-md hover:bg-green-800">I understand</button>
+                            <button @click="isModalOpen = false; document.body.style.overflow = 'auto'" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                            <button wire:click="verifyQuestions" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">I understand</button>
                         </div>
                     </div>
                 </div>

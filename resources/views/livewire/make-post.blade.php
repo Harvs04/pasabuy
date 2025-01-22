@@ -13,7 +13,7 @@
                 </svg>
                 <div class="flex flex-row w-full">
                     <p class="text-xl sm:text-2xl font-semibold text-[#014421]">{{ $user->role === 'customer' ? 'Create Item Request' : 'Create Transaction' }}</p>
-                    <button @click="createPostModalOpen = false;" class="ml-auto">
+                    <button @click="createPostModalOpen = false" class="ml-auto p-2 hover:bg-gray-100 hover:rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                         </svg>
