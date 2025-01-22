@@ -57,7 +57,7 @@ class User extends Authenticatable
 
     public function orders(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'user_id', 'id');
+        return $this->hasMany(Transaction::class, 'customer_id', 'id');
     }
 
     protected function casts(): array
