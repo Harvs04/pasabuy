@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasMany(SavePost::class, 'user_id', 'id');
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
+
     protected function casts(): array
     {
         return [

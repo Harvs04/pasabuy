@@ -1,5 +1,5 @@
 
-<div class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50 font-poppins" x-data="{ order: '', orders: $wire.entangle('orders'), order_list_modal_open: false, notes: $wire.entangle('notes'),  order_info_modal_open:false, edit_order: false, edit_index: null }">
+<div class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50 font-poppins" x-data="{ order: '', orders: $wire.entangle('orders'), order_list_modal_open: false, notes: $wire.entangle('notes'),  order_info_modal_open: false, edit_order: false, edit_index: null }">
     <div @keydown.escape.window="orderItemModalOpen = false; document.body.style.overflow = 'auto';" class="bg-white p-4 md:p-6 rounded-lg w-11/12 md:w-4/6 xl:w-5/12">
         <div class="flex flex-row items-center gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="size-6">
@@ -45,7 +45,7 @@
                             <p class="font-semibold text-base" x-text="'Your orders (' + orders.length + ')'"></p>
                             <button 
                                 @click="order_list_modal_open = false" 
-                                class="ml-auto p-0.5 text-gray-700 hover:bg-gray-200 hover:rounded-full">
+                                class="ml-auto p-0.5 text-gray-700 hover:bg-gray-100 hover:rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
