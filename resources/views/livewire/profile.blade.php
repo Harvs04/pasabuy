@@ -303,7 +303,7 @@
               </div>
               <div class="flex flex-col mt-4">
                 <label for="constituent" class="block mb-2 text-sm font-medium text-gray-800 ">Type of Constituent</label>
-                <select x-model="constituent" wire:model="constituent" type="text" id="constituent" @change="if (constituent === 'staff') { degprog = 'Not Applicable'; } if (constituent !== 'staff' && college === selectedCollege) { degprog = selectedDegprog; } " class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" >
+                <select x-model="constituent" wire:model="constituent" type="text" id="constituent" @change="if (constituent === 'staff') { degprog = 'Not Applicable'; } if (constituent !== 'staff' && college === selectedCollege) { degprog = selectedDegprog; } " x-bind:class="{'border-red-500': constituent === '' && selectedConstituent === ''}"  class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" >
                   <option value="{{ $user->constituent }}" selected>
                     @if ($user->constituent === 'student')
                         Student
@@ -321,6 +321,7 @@
                     @endif
                   @endforeach
                 </select>
+                <p x-show="constituent === '' && selectedConstituent === ''"  class="text-red-500 text-sm ml-1">Constituent type is required for transactions.</p>
               </div>
               <div class="flex flex-col mt-4">
                 <label class="block mb-2 text-sm font-medium text-gray-800" for="college">College</label>
@@ -399,7 +400,7 @@
                       <div class="flex flex-col gap-1 text-sm ml-5 px-3 py-1">
                         <ul class="list-inside list-disc mt-2">
                           <li x-show="contact" x-text="'Contact Number: ' + contact"></li>
-                          <li x-show="constituent !== selectedConstituent" x-text="'Type of constituent: ' + constituent" style="text-transform: capitalize;"></li>
+                          <li x-show="constituent !== selectedConstituent" x-text="'Type of constituent: ' + (constituent.charAt(0).toUpperCase() + constituent.slice(1))"></li>
                           <li x-show="college !== selectedCollege" x-text="'College: ' + college"></li>
                           <li x-show="degprog !== selectedDegprog && constituent !== 'staff'" x-text="degprog !== 'Not Applicable'? 'Degree Program: ' + degprog : ''"></li>
                         </ul>

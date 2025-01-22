@@ -24,7 +24,7 @@ class SocialiteController extends Controller
             
             // Check if the domain is 'up.edu.ph'
             if ($googleUser->user['hd'] === 'up.edu.ph') {
-
+                
                 $user = User::where('google_id', $googleUser->id)->first();
                 
                 if ($user) {
@@ -35,6 +35,7 @@ class SocialiteController extends Controller
                     // User does not exist, create a new user
                     $userData = User::create([
                         'name' => $googleUser->name, 
+                        'constituent' => null, 
                         'email' => $googleUser->email,
                         'role' => 'customer',
                         'google_id' => $googleUser->id

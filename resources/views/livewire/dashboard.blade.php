@@ -60,6 +60,46 @@
             document.querySelector('.flash').style.display = 'none';
          }, 3000); // 3 seconds
       </script>
+   @elseif(session('order_added'))
+      <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+         <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <div class="text-center text-sm">
+               {{ session('order_added') }}
+            </div>
+         </div>
+         <!-- Close Button -->
+         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+         </button>
+      </div>
+      <script>
+         setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+         }, 3000); // 3 seconds
+      </script>
+   @elseif(session('order_add_error'))
+      <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+         <div class="flex items-center gap-2">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+               </svg>
+               <div class="text-center text-sm">
+                  {{ session('order_add_error') }}
+               </div>
+         </div>
+         <!-- Close Button -->
+         <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+               &times;
+         </button>
+      </div>
+      <script>
+         setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+         }, 3000); // 3 seconds
+      </script>
    @endif
    <nav class="fixed top-0 z-30 w-full bg-[#014421] border-b">
       <div class="px-3 py-1.5 lg:px-5 lg:pl-3">
@@ -77,6 +117,19 @@
                   </a>
                </div>
             </div>
+            <button class="ml-auto">
+               <div class="flex flex-row justify-start items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" class="size-8 transform scale-90">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                  </svg>
+                  <span class="self-start bg-white p-0.5 rounded-full">
+                     <p class="text-[#7b1113] text-xs font-medium leading-none">3</p>
+                  </span>
+               </div>
+            </button>
+
+
+
             <div class="relative flex items-center gap-2" x-data="{ open: false }">
                   <button class="sm:hidden block" @click="openBurger = true">
                      <svg class="w-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -220,7 +273,7 @@
    >
       <div class="p-4 border-r border-gray-200" :class="'w-full lg:w-4/6'">
          <div class="flex flex-col gap-4">
-            @if ($user->contact_number === null || $user->college === null || $user->degree_program === null)
+            @if ($user->contact_number === null || $user->constituent === null || $user->college === null || $user->degree_program === null)
                <div class="flex flex-col w-full rounded-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">
                   <div class="flex flex-row items-center">
                      <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -233,6 +286,7 @@
                   <p class="ml-2 text-sm sm:text-sm text-[#7b1113]">
                      Please update your profile and make sure that you have a 
                      <span class="font-medium">contact number</span>, 
+                     <span class="font-medium">constituent type</span>,
                      <span class="font-medium">college</span>, and 
                      <span class="font-medium">degree program</span>, in order to order items or make transactions.
                      <a href="{{ route('profile', ['name' => $user->name]) }}" class="font-medium underline">Update here.</a>
@@ -254,7 +308,7 @@
                </div>
             @endif
             <div class="px-3 md:px-4 py-3 bg-white shadow rounded-md">
-               <div class="flex flex-row items-center gap-3 md:gap-4">
+               <div class="flex flex-row items-center gap-3 md:gap-4">    
                   <img class="w-9 md:w-10 h-9 md:h-10 rounded-full object-cover" 
                         src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 
                         alt="user photo">
