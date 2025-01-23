@@ -1,18 +1,17 @@
-
-<div class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50 font-poppins" x-data="{ max_count_reached: false, order: '', orders: $wire.entangle('orders'), order_list_modal_open: false, notes: $wire.entangle('notes'),  order_info_modal_open: false, edit_order: false, edit_index: null }">
+<div class="bg-black bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center font-poppins" x-transition:enter.duration.25ms x-data="{ max_count_reached: false, order: '', orders: $wire.entangle('orders'), order_list_modal_open: false, notes: $wire.entangle('notes'),  order_info_modal_open: false, edit_order: false, edit_index: null }">
     <div @keydown.escape.window="orderItemModalOpen = false; document.body.style.overflow = 'auto';" class="bg-white p-4 md:p-6 rounded-lg w-11/12 md:w-4/6 xl:w-5/12">
-        <div class="flex flex-row items-center gap-3">
+        <div class="flex flex-row items-center gap-2 sm:gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
             </svg>
-            <p class="text-xl font-semibold text-[#014421]">Add order</p>
+            <p class="text-xl sm:text-2xl font-semibold text-[#014421]">Add order</p>
             <button @click="orderItemModalOpen = false; document.body.style.overflow = 'auto';" class="ml-auto hover:bg-gray-100 hover:rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
-        <p class="mt-2 text-base">Make sure that you want this item before confirming.</p>
+        <p class="mt-2 ml-1 sm:ml-0 text-sm sm:text-base">Make sure that you want this item before confirming.</p>
         <div class="mt-2 border border-gray-200 p-4 rounded-md">
             <div class="flex flex-col gap-4 text-sm text-gray-800">
                 <div>

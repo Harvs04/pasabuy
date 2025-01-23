@@ -138,10 +138,6 @@
                                     </div>
                                 @endif
                             </div>
-                            <!-- LIKE, COMMENT, SAVE BUTTONS -->
-                            <div>
-                                <livewire:comments :key="$post->id.now()" :$post />
-                            </div>
                         </div>
                     @elseif($post->type === 'transaction')
                         <div class="mt-4 ml-1 flex flex-col gap-3">
@@ -274,12 +270,12 @@
                                 </div>
                             </div>
 
-                            <!-- LIKE, COMMENT, SAVE -->
-                            <div>
-                                <livewire:comments :key="$post->id.now()" :$post />
-                            </div>
                         </div>
-                    @endif
+                        @endif
+                        <!-- LIKE, COMMENT, SAVE -->
+                        <div>
+                            <livewire:comments :$post />
+                        </div>
                 </div>
             @endforeach
             <p class="text-center text-sm text-gray-400">-- End of results --</p>
