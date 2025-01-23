@@ -21,6 +21,7 @@
                             $colorClass = match($post->status) {
                                 'open' => 'text-xs font-medium px-2.5 py-1 rounded bg-green-900 text-gray-50',
                                 'ongoing' => 'bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-yellow-900 dark:text-yellow-300',
+                                'converted' => 'bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-gray-700 dark:text-gray-300', 
                                 'closed' => 'bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-gray-700 dark:text-gray-300',
                                 'full' => 'bg-red-100 text-red-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300',
                                 'cancelled' => 'bg-red-100 text-red-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300'

@@ -1,4 +1,4 @@
-<div x-data="{ orderItemModalOpen: false, usersShow: false, liked: {{ collect($user->like_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }}, saved: {{ collect($user->save_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }} }">
+<div x-data="{ orderItemModalOpen: false, makeTransactionModalOpen: false, usersShow: false, liked: {{ collect($user->like_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }}, saved: {{ collect($user->save_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }} }">
     @if ($post->type === 'item_request')
         <div>
             <hr class="my-2">
@@ -44,12 +44,12 @@
                             <p class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">I want this too!</p>
                         </div>
                     </button>
-                    <button class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" :class="{'hidden': '{{ $user->role }}' === 'customer' || '{{ $user->id }}' === '{{ $post->user_id }}', 'block': '{{ $user->role }}' !== 'customer' && '{{ $user->id }}' !== '{{ $post->user_id }}'}" :disabled="{{ $user->pasabuy_points < 80 }}">
+                    <button class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" :class="{'hidden': '{{ $user->role }}' === 'customer' || '{{ $user->id }}' === '{{ $post->user_id }}', 'block': '{{ $user->role }}' !== 'customer' && '{{ $user->id }}' !== '{{ $post->user_id }}'}" :disabled="{{ $user->pasabuy_points < 80 || $post->status === 'converted'}}" @click="makeTransactionModalOpen = true; document.body.style.overflow = 'hidden';">
                         <div class="flex flex-row items-center justify-center gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                             </svg>
-                            <p  class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Initiate transaction</p>
+                            <p  class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Make transaction</p>
                         </div>
                     </button>
                     <button @click="openComment = !openComment" class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-300 disabled:text-gray-400 disabled:rounded-md ml-auto">
@@ -158,14 +158,18 @@
 
     <!-- ORDER ITEM MODAL -->
     @teleport('body')
-        <div 
-            x-show="orderItemModalOpen" 
-            x-transition:enter.duration.25ms 
-            class="fixed inset-0 z-50"
-        >
+        <div x-show="orderItemModalOpen">
             <livewire:order-item-modal :$post/>
         </div>
     @endteleport
+
+    <!-- MAKE TRANSACTION FROM ITEM REQUEST MODAL -->
+    @teleport('body')
+        <div x-show="makeTransactionModalOpen">
+            <livewire:make-transaction :$post/>
+        </div>
+    @endteleport
+
     <div x-show="openComment">
         <hr class="my-2">
         <div class="py-1">
