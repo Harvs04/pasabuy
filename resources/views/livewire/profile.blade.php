@@ -104,21 +104,21 @@
       <div class="w-full sm:w-5/6 flex flex-col lg:flex-row gap-4">
         <!-- PASABUY INFO & IMAGE -->
         <div class="flex flex-col gap-4">
-          <div class="flex flex-col xl:flex-row items-start xl:items-center gap-2">
+          <div class="flex flex-row items-center lg:items-start xl:items-center gap-3">
             <a href={{ route('dashboard') }}>
-              <svg class="w-5 md:w-6" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg class="w-6 hover:bg-gray-200 hover:rounded-full mt-0 lg:mt-1 xl:mt-0" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8.75 18.75H33.75C34.0815 18.75 34.3995 18.8817 34.6339 19.1161C34.8683 19.3505 35 19.6685 35 20C35 20.3315 34.8683 20.6495 34.6339 20.8839C34.3995 21.1183 34.0815 21.25 33.75 21.25H8.75C8.41848 21.25 8.10054 21.1183 7.86612 20.8839C7.6317 20.6495 7.5 20.3315 7.5 20C7.5 19.6685 7.6317 19.3505 7.86612 19.1161C8.10054 18.8817 8.41848 18.75 8.75 18.75Z" fill="black"/>
                 <path d="M9.26751 20.0001L19.635 30.3651C19.8697 30.5998 20.0016 30.9182 20.0016 31.2501C20.0016 31.5821 19.8697 31.9004 19.635 32.1351C19.4003 32.3698 19.0819 32.5017 18.75 32.5017C18.4181 32.5017 18.0997 32.3698 17.865 32.1351L6.61501 20.8851C6.4986 20.769 6.40624 20.6311 6.34323 20.4792C6.28021 20.3273 6.24777 20.1645 6.24777 20.0001C6.24777 19.8357 6.28021 19.6729 6.34323 19.521C6.40624 19.3692 6.4986 19.2312 6.61501 19.1151L17.865 7.86511C18.0997 7.6304 18.4181 7.49854 18.75 7.49854C19.0819 7.49854 19.4003 7.6304 19.635 7.86511C19.8697 8.09983 20.0016 8.41817 20.0016 8.75011C20.0016 9.08205 19.8697 9.4004 19.635 9.63511L9.26751 20.0001Z" fill="black"/>
               </svg>
             </a>
-            <p class="text-xl lg:text-2xl font-semibold">User Profile & Settings</p>
+            <p class="text-2xl font-semibold">User Profile & Settings</p>
           </div>
           <!-- IMAGE -->
           <div class="rounded-md bg-white shadow w-full gap-4">
             <div class="w-full flex flex-col xl:flex-row justify-center items-center gap-4 py-6">
               <img src="https://zerebro.org/logo512.png" class="h-14 xl:h-20 aspect-auto rounded-full border-2 border-black"  alt="FlowBite Logo" />
               <div class="flex flex-col justify-center items-center xl:items-start">
-                <p class="text-base xl:text-lg font-medium md:font-semibold break-words"> {{ $user->name }} </p>
+                <p class="text-xl lg:text-base xl:text-lg font-medium md:font-semibold break-words"> {{ $user->name }} </p>
                 <p class="text-sm"> {{ $user->constituent }} </p>
                 <button class="py-1 px-2 mt-2 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md"> Change picture </button>
               </div>
@@ -126,9 +126,9 @@
           </div>  
           <!-- PASABUY INFO -->
           <div class="flex justify-start rounded-md bg-white shadow w-full gap-4">
-            <div class="w-full xl:w-5/6 flex flex-col px-5 py-4 xl:py-6 xl:px-8">
+            <div class="w-full xl:w-5/6 flex flex-col py-6 px-8 lg:px-5 lg:py-4 xl:py-6 xl:px-8">
               <p class="text-lg font-medium md:font-semibold">PASABUY Information</p>
-              <div class="flex flex-row gap-1 items-center text-sm" x-data="{ open: false }">
+              <div class="flex flex-row gap-1 items-center text-sm mt-1" x-data="{ open: false }">
                 <p>PASABUY points</p>
                 <div 
                   @mouseenter="open = true" 
@@ -151,7 +151,7 @@
                 </div>
                 <p>: {{ $user->pasabuy_points }}</p>
               </div>
-              <hr class="my-3 xl:my-5" />
+              <hr class="my-5 lg:my-3 xl:my-5" />
               <div class="flex flex-col gap-2">
                 <div class="flex flex-row gap-2 items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 xl:size-6">
@@ -159,12 +159,12 @@
                   </svg>
                   <p class="font-medium text-lg">Customer</p>
                 </div>
-                <div class="flex flex-col text-sm gap-0 xl:gap-1">
+                <div class="flex flex-col text-sm gap-1 lg:gap-0 xl:gap-1">
                   <p>Successful purchase: 1</p>
                   <p>Cancelled items: 1</p>
                 </div>
               </div>
-              <hr class="my-3 xl:my-5" />
+              <hr class="my-5 lg:my-3 xl:my-5" />
               <div class="flex flex-col gap-2">
                 <div class="flex flex-row gap-2 items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 xl:size-6">
@@ -172,7 +172,7 @@
                   </svg>
                   <p class="font-medium text-lg">Provider</p>
                 </div>  
-                <div class="flex flex-col text-sm gap-1">
+                <div class="flex flex-col text-sm gap-1 lg:gap-0 xl:gap-1">
                   <div class="flex flex-row items-center gap-1">
                     <p class="">Rating:</p>
                     <div class="flex flex-row">
@@ -196,7 +196,7 @@
             </div>
           </div>
           <div class="flex justify-start rounded-md bg-white shadow w-full gap-4" x-data="{ deleteAccountModalOpen: false }">
-            <div class="flex flex-col px-5 py-4 xl:py-6 xl:px-8 ">
+            <div class="flex flex-col py-6 px-8 lg:px-5 lg:py-4 xl:py-6 xl:px-8">
               <p class="text-lg font-medium md:font-semibold">Account Management</p>
               <button class="w-full mt-1">
                 <div wire:click="logOut" class="flex items-center justify-center gap-2 w-fit font-medium px-2 py-1 text-sm bg-white text-[#014421] border border-[#014421] rounded-md hover:bg-gray-100">
@@ -206,7 +206,7 @@
                   <p class="">Log Out</p>
                 </div>
               </button>
-              <hr class="my-3 xl:my-5">
+              <hr class="my-5 lg:my-3 xl:my-5">
               <div class="flex flex-col gap-2">
                 <p class="text-sm inline-flex w-fit items-center rounded-full bg-rose-200 px-3 py-1 text-[#7b1113]">
                   <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -446,9 +446,9 @@
                 <div class="flex flex-col w-full mt-4">
                   <label for="current_password" class="block mb-2 text-sm font-medium text-gray-800 ">Current Password</label>
                   <div class="relative w-full">
-                    <input :type="showCurrentPassword ? 'text' : 'password'" id="current_password" x-model="current_password"   class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                    <input :type="showCurrentPassword ? 'text' : 'password'" id="current_password" x-model="current_password"   class="w-11/12 bg-gray-50 pe-10 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
                                     x-bind:class="{'border-red-500': wrong_password">
-                    <button type="button" @click="showCurrentPassword = !showCurrentPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
+                    <button type="button" @click="showCurrentPassword = !showCurrentPassword" class="absolute top-1/2 right-11 lg:right-8 xl:right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                         <svg x-show="!showCurrentPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -465,9 +465,9 @@
                 <div class="flex flex-col w-full mt-4">
                   <label for="new_password" class="block mb-2 text-sm font-medium text-gray-800 ">New Password</label>
                   <div class="relative w-full">
-                      <input :type="showNewPassword ? 'text' : 'password'" id="new_password" x-model="new_password" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                      <input :type="showNewPassword ? 'text' : 'password'" id="new_password" x-model="new_password" class="w-11/12 bg-gray-50 border pe-10 border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
                                       x-bind:class="{'border-red-500': ((new_password.length < 8 || !/[A-Z]/.test(new_password)) && new_password.length > 0) || new_password.length > 40}">
-                      <button type="button" @click="showNewPassword = !showNewPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
+                      <button type="button" @click="showNewPassword = !showNewPassword" class="absolute top-1/2 right-11 lg:right-8 xl:right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                           <svg x-show="!showNewPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                               stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -488,9 +488,9 @@
                 <div class="flex flex-col w-full">
                   <label for="confirm_new_pass" class="block mb-2 text-sm font-medium text-gray-800 ">Confirm New Password</label>
                   <div class="relative w-full">
-                      <input :type="showConfirmPassword ? 'text' : 'password'" id="confirm_new_pass" x-model="confirm_new_pass" class="w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
+                      <input :type="showConfirmPassword ? 'text' : 'password'" id="confirm_new_pass" x-model="confirm_new_pass" class="w-11/12 bg-gray-50 pe-10 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" {{ $user->google_id == '' ? '' : "disabled" }}
                                       x-bind:class="{'border-red-500': new_password !== confirm_new_pass && (new_password.length > 0 && confirm_new_pass.length > 0)}" >
-                      <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="absolute top-1/2 right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
+                      <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="absolute top-1/2 right-11 lg:right-8 xl:right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                           <svg x-show="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
                               stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -510,7 +510,7 @@
                   <input type="password" id="new_password" class="hidden w-11/12 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] p-2.5"  placeholder="{{ $user->new_password }}"/>
                 </div>
               </div>
-              <div class="mt-4 flex flex-col sm:w-1/2 text-sm">
+              <div class="mt-4 flex flex-col w-full 2xl:w-1/2 text-sm">
                 <p class="font-medium text-sm"> Password requirements: </p>
                 <div class="sm:ml-5">
                   <p class="mt-2">Ensure that these requirements are met:</p>

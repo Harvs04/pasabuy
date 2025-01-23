@@ -31,7 +31,7 @@ Route::middleware(['auth', RoleBasedMiddleware::class])->group(function () {
     })->name('dashboard');
 });
 
-Route::get('{name}/profile', function($name) {
+Route::get('profile/{name}', function($name) {
     if (!Auth::check()) {
         return redirect()->route('login');
     }

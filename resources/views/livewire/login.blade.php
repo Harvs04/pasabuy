@@ -1,9 +1,9 @@
-<div class="flex flex-col md:flex-row font-poppins" x-cloak>
-    <div class="bg-[#014421] flex flex-row gap-2 md:h-screen md:w-1/2 md:flex-col md:gap-0 md:justify-center items-center">
-        <img src="{{ asset('assets/Pasabuy-logo-no-name.png') }}" class="ml-5 w-16 py-2 md:ml-0 md:w-1/2 md:py-0">
-        <p class="text-white text-xl font-bold md:text-6xl">PASABUY</p>
+<div class="flex flex-col lg:flex-row font-poppins" x-cloak>
+    <div class="bg-[#014421] flex flex-row gap-2 lg:h-screen lg:w-1/2 lg:flex-col lg:gap-0 lg:justify-center items-center">
+        <img src="{{ asset('assets/Pasabuy-logo-no-name.png') }}" class="ml-5 w-16 py-2 lg:ml-0 lg:w-1/2 lg:py-0">
+        <p class="text-white text-xl font-bold lg:text-6xl">PASABUY</p>
     </div>
-    <div class="bg-white flex flex-row gap-2 h-screen md:w-1/2 md:flex-col md:gap-0 md:items-center items-start mt-16 md:mt-0 justify-center">   
+    <div class="bg-white flex flex-row gap-2 h-screen lg:w-1/2 lg:flex-col lg:gap-0 lg:items-center items-start mt-16 lg:mt-0 justify-center">   
         <div class="flex flex-col w-5/6 md:w-3/6 justify-center items-center gap-10" x-data="{ email: $wire.entangle('email'), password: $wire.entangle('password'), errors: {}, showPassword: false }" >
             <p class="text-[#7b1113] font-semibold text-4xl md:text-5xl self-start">Sign in</p>
             <div class="flex flex-col w-full gap-4 md:gap-2">
@@ -90,7 +90,7 @@
                     </div>
                 </a>
 
-                <div class="flex text-sm md:text-base flex-row gap-2 mt-2">
+                <div class="flex items-center text-sm md:text-base flex-row lg:flex-col xl:flex-row gap-2 lg:gap-0 xl:gap-2 mt-2">
                     <p>Don't have an account?</p>
                     <a href={{ route('signup') }}  class="text-[#7b1113] font-bold">Register here</a>
                 </div>
