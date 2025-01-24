@@ -37,26 +37,31 @@ class Comments extends Component
 
     public function likePost($post_id, $isLiked)
     {
-        if ($isLiked) {
-            $save_post = [
-                'post_id' => $post_id,
-                'user_id' => $this->user->id,
-                'liked_by' => $this->user->name, 
-            ];
-            LikePost::create($save_post);
-
-            if ($this->user->id !== $this->post->user_id) {
-                Notification::create([
-                    'type' => 'like',
+        try {
+            if ($isLiked) {
+                $save_post = [
                     'post_id' => $post_id,
-                    'actor_id' => $this->user->id,
-                    'poster_id' => $this->post->user_id
-                ]);
+                    'user_id' => $this->user->id,
+                    'liked_by' => $this->user->name, 
+                ];
+                LikePost::create($save_post);
+    
+                if ($this->user->id !== $this->post->user_id) {
+                    Notification::create([
+                        'type' => 'like',
+                        'post_id' => $post_id,
+                        'actor_id' => $this->user->id,
+                        'poster_id' => $this->post->user_id
+                    ]);
+                }
+            } else {
+                LikePost::where('post_id', $post_id)->where('user_id', $this->user->id)->where('liked_by', $this->user->name)->delete();
             }
-        } else {
-            LikePost::where('post_id', $post_id)->where('user_id', $this->user->id)->where('liked_by', $this->user->name)->delete();
+            $this->user_likes = LikePost::where('post_id', $this->post->id)->get();
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('dashboard'), true);
         }
-        $this->user_likes = LikePost::where('post_id', $this->post->id)->get();
     }
 
     public function refreshComments($post_id)
@@ -67,28 +72,47 @@ class Comments extends Component
 
     public function addComment($post_id)
     {   
-        $new_comment = [
-            'post_id' => $post_id,
-            'user_id' => $this->user->id,
-            'commenter' => $this->user->name,
-            'comment' => $this->comment 
-        ];
-        Comment::create($new_comment);
+        try {
+            $new_comment = [
+                'post_id' => $post_id,
+                'user_id' => $this->user->id,
+                'commenter' => $this->user->name,
+                'comment' => $this->comment 
+            ];
+            Comment::create($new_comment);
+    
+            $this->refreshComments($post_id);
 
-        $this->refreshComments($post_id);
+            if ($this->user->id !== $this->post->user_id) {
+                Notification::create([
+                    'type' => 'comment',
+                    'post_id' => $post_id,
+                    'actor_id' => $this->user->id,
+                    'poster_id' => $this->post->user_id
+                ]);
+            }
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('dashboard'), true);
+        }
     }
 
     public function savePost($post_id, $isSaved)
     {
-        if ($isSaved) {
-            $save_post = [
-                'post_id' => $post_id,
-                'user_id' => $this->user->id,
-                'saved_by' => $this->user->name, 
-            ];
-            SavePost::create($save_post);
-        } else {
-            SavePost::where('post_id', $post_id)->where('user_id', $this->user->id)->where('saved_by', $this->user->name)->delete();
+        try {
+            if ($isSaved) {
+                $save_post = [
+                    'post_id' => $post_id,
+                    'user_id' => $this->user->id,
+                    'saved_by' => $this->user->name, 
+                ];
+                SavePost::create($save_post);
+            } else {
+                SavePost::where('post_id', $post_id)->where('user_id', $this->user->id)->where('saved_by', $this->user->name)->delete();
+            }
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('dashboard'), true);
         }
     }
     
