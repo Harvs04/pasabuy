@@ -24,7 +24,7 @@ class Navbar extends Component
 
     public function updateIsSeen()
     {
-        foreach($this->user->notifications() as $notif) {
+        foreach($this->user->notification_as_poster as $notif) {
             $notif->isSeen = true;
             $notif->save();
         }

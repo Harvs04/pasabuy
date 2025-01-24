@@ -37,7 +37,7 @@ Route::get('profile/{name}', function($name) {
     }
 
     if (Auth::user()->name !== $name) {
-        abort(403, 'Unauthorized access');
+        return view('forbidden');
     }
 
     return view('profile', ['name' => $name]);

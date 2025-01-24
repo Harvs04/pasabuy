@@ -39,7 +39,7 @@
                   <h1 class="text-lg md:text-xl font-semibold text-gray-800">Notifications</h1>
                   <div class="mt-4">
                      @foreach ($user->notification_as_poster as $notif)
-                        <div class="flex flex-row gap-3 p-1 hover:bg-gray-100 hover:rounded text-sm md:text-base items-start">
+                        <div class="flex flex-row gap-3 p-1 hover:bg-gray-100 hover:rounded text-sm items-start">
                            <img class="size-9 md:size-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo"> 
                            <div class="flex flex-col">
                               <span class="font-medium leading-tight">
@@ -64,10 +64,8 @@
                                     <span class="font-normal">cancelled the transaction.</span>
                                  @endif
                               </span>
-                              <span class="text-sm">{{ $notif->created_at->Timezone('Singapore')->format('F j, Y \\a\\t h:i A') }}</span>
+                              <span class="text-xs">{{ $notif->created_at->Timezone('Singapore')->format('F j, Y \\a\\t h:i A') }}</span>
                            </div>
-
-
                         </div>
                      @endforeach
                   </div>
