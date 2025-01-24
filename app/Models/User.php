@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -58,6 +59,11 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Transaction::class, 'customer_id', 'id');
+    }
+
+    public function notification_as_poster(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'poster_id', 'id')->orderByDesc('created_at');
     }
 
     protected function casts(): array
