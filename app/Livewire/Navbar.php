@@ -15,6 +15,21 @@ class Navbar extends Component
     {
         $this->user = User::where('id', Auth::user()->id)->firstOrFail();
     }
+
+    public function signOut() 
+    {
+        Auth::logout();
+        return $this->redirect(route('login'), true);
+    }
+
+    public function updateIsSeen()
+    {
+        foreach($this->user->notifications() as $notif) {
+            $notif->isSeen = true;
+            $notif->save();
+        }
+    }
+
     public function render()
     {
         return view('livewire.navbar');

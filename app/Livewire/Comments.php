@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\LikePost;
 use App\Models\SavePost;
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class Comments extends Component
@@ -43,6 +44,15 @@ class Comments extends Component
                 'liked_by' => $this->user->name, 
             ];
             LikePost::create($save_post);
+
+            if ($this->user->id !== $this->post->user_id) {
+                Notification::create([
+                    'type' => 'like',
+                    'post_id' => $post_id,
+                    'actor_id' => $this->user->id,
+                    'poster_id' => $this->post->user_id
+                ]);
+            }
         } else {
             LikePost::where('post_id', $post_id)->where('user_id', $this->user->id)->where('liked_by', $this->user->name)->delete();
         }
