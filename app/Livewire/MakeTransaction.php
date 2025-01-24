@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\Notification;
 
 class MakeTransaction extends Component
 {
@@ -52,6 +53,13 @@ class MakeTransaction extends Component
             $this->post->save();
 
             sleep(1.5);
+
+            Notification::create([
+                'type' => 'converted post',
+                'post_id' => $this->post->id,
+                'actor_id' => $user->id,
+                'poster_id' => $this->post->user_id
+            ]);
             session()->flash('create_transaction_success', 'Transaction created successfully.');
             return $this->redirect(route('dashboard'), true);
         } catch (\Throwable $th) {
