@@ -184,7 +184,7 @@
                         alt="user photo">
                   <button 
                         @click="createPostModalOpen = true; document.body.style.overflow = 'hidden';" 
-                        class="text-gray-600 text-start text-sm px-3 sm:px-4 py-2 border bg-gray-100 rounded-full w-full">
+                        class="text-gray-600 text-start text-sm px-3 sm:px-4 py-2 border bg-gray-50 rounded-full w-full">
                         @if ($user->role === 'customer')
                            Looking for items? Click here.
                         @else
