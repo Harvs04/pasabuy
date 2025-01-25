@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\CloudinaryController;
+use App\Http\Controllers\SidebarController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Middleware\RoleBasedMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\Login;
+use App\Livewire\Navbar;
 use App\Livewire\Register;
+use App\Livewire\Sidebar;
 
 // google auth
 Route::controller(SocialiteController::class)->group(function(){
@@ -30,6 +33,16 @@ Route::middleware(['auth', RoleBasedMiddleware::class])->group(function () {
     Route::get('/dashboard', function () {
     })->name('dashboard');
 });
+
+Route::get('/messages', [SidebarController::class, 'messages'])->name('messages');
+
+Route::get('/saved', [SidebarController::class, 'saved'])->name('saved');
+
+Route::get('/my-orders', [SidebarController::class, 'orders'])->name('my-orders');
+
+Route::get('/transactions', [SidebarController::class, 'transactions'])->name('transactions');
+
+Route::get('/my-history', [SidebarController::class, 'history'])->name('pasabuy-history');
 
 Route::get('profile/{name}', function($name) {
     if (!Auth::check()) {
