@@ -143,7 +143,7 @@
    @endif
 
    <!-- SKELETON -->
-   <div wire:loading wire:targe="switchRole"  class="w-full">
+   <div wire:loading wire:target="switchRole, applyFilter, clearFilter"  class="w-full">
       <livewire:dashboard-skeleton />
    </div>
 
@@ -159,7 +159,7 @@
       'md:ml-0': !openBurger
    }"
    wire:loading.class="hidden"
-   wire:target="switchRole"
+   wire:target="switchRole, applyFilter, clearFilter"
    >
       <div class="p-4 border-r border-gray-200" :class="'w-full lg:w-4/6'">
          <div class="flex flex-col gap-4">
@@ -213,10 +213,9 @@
                   </button>
                </div>
             </div>
-
             <div class="">
                <!-- POSTS STREAM -->
-               <livewire:posts-stream />
+               <livewire:posts-stream key="{{ now() }}" :posts="$posts" />
             </div>
          </div>
       </div>
@@ -226,22 +225,18 @@
    <div class="lg:text-gray-800 lg:mb-4 lg:z-10 lg:block lg:fixed lg:right-0 lg:top-0 lg:p-4 lg:ml-auto lg:w-1/3 bg-white lg:transition-all lg:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
      :class="openBurger ? 'hidden lg:block lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : 'hidden'" 
      style="margin-top: 4.3rem;">
-      <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
+      <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ search: $wire.entangle('search'), post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
          <div class="mt-2 relative hidden sm:block w-full">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                </svg>
             </div>
-            <input type="text" id="search-filter" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
+            <input type="text" id="search-filter" x-model="search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
          </div>
          <div class="mt-2">
             <p class="font-medium">Post type</p>
             <div class="ml-4 text-sm" :class="openBurger ? 'flex flex-col' : 'xl:flex xl:flex-row xl:gap-4'">
-               <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="radio" id="all" value="all" name="post_type" x-model="post_type">
-                  <label for="all">All Posts</label>
-               </div>
                <div class="flex flex-row items-center gap-2 mt-2">
                   <input type="radio" id="transaction" value="transaction" name="post_type" x-model="post_type">
                   <label for="transaction">Transactions</label>
@@ -311,8 +306,8 @@
                   <label for="digital_wallet">Digital wallet</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
-                  <input type="checkbox" id="debit_credit" value="Debit/Credit" x-model="mode_of_payment">
-                  <label for="debit_credit">Debit/Credit card</label>
+                  <input type="checkbox" id="debit_credit" value="Debit Credit" x-model="mode_of_payment">
+                  <label for="debit_credit">Debit/Credit</label>
                </div>
                <div class="flex flex-row items-center gap-2 mt-2">
                   <input type="checkbox" id="bank_transfer" value="Bank Transfer" x-model="mode_of_payment">
@@ -332,8 +327,7 @@
                      x-ref="input"
                      x-init="new Pikaday({ 
                         field: $refs.input, 
-                        format: 'MM/DD/YYYY', 
-                        minDate: new Date(),
+                        format: 'MM/DD/YYYY',
                         onSelect: function() {
                            console.log(this.getDate());
                            let date = new Date(this.getDate());
@@ -352,8 +346,8 @@
             </div>
          </div>
          <div class="flex flex-row w-full mt-3 gap-2">
-            <button x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md ml-auto" >Apply</button>
-            <button @click="post_type = ''; item_type = []; mode_of_payment = []; delivery_date = '';" x-bind:disabled="post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1.5 text-sm disabled:bg-gray-300 bg-white enabled:text-black disabled:text-white rounded-md disabled:cursor-not-allowed enabled:hover:bg-slate-200 enabled:border enabled:hover:border-slate-200 enabled:hover:text-black">Clear</button>
+            <button x-bind:disabled="search === '' && post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="$wire.applyFilter()" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md ml-auto" >Apply</button>
+            <button @click="search = ''; post_type = ''; item_type = []; mode_of_payment = []; delivery_date = ''; $wire.clearFilter();" x-bind:disabled="search === '' && post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1.5 text-sm disabled:bg-gray-300 bg-white enabled:text-black disabled:text-white rounded-md disabled:cursor-not-allowed enabled:hover:bg-slate-200 enabled:border enabled:hover:border-slate-200 enabled:hover:text-black">Clear</button>
          </div>
       </div>
    </div>

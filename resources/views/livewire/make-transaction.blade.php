@@ -221,25 +221,25 @@
                                     <ul class="p-3 space-y-3 text-sm text-gray-600">
                                         <li>
                                             <label for="checkbox-item-1-convert" class="flex items-center cursor-pointer">
-                                                <input id="checkbox-item-1-convert" type="checkbox" value="Cash" x-model="mode_of_payment_post" wire:model="mode_of_payment" class="w-3 bg-gray-100 border-gray-300 rounded">
+                                                <input id="checkbox-item-1-convert" type="checkbox" value="Cash" x-model="mode_of_payment_post" class="w-3 bg-gray-100 border-gray-300 rounded">
                                                 <span class="ms-2 text-xs sm:text-sm">Cash</span>
                                             </label>
                                         </li>
                                         <li>
                                             <label for="checkbox-item-2-convert" class="flex items-center cursor-pointer">
-                                                <input id="checkbox-item-2-convert" type="checkbox" value="Digital Wallet" x-model="mode_of_payment_post" wire:model="mode_of_payment" class="w-3 bg-gray-100 border-gray-300 rounded" checked>
+                                                <input id="checkbox-item-2-convert" type="checkbox" value="Digital Wallet" x-model="mode_of_payment_post" class="w-3 bg-gray-100 border-gray-300 rounded" checked>
                                                 <span class="ms-2 text-xs sm:text-sm">Digital wallet</span>
                                             </label>
                                         </li>
                                         <li>
                                             <label for="checkbox-item-3-convert" class="flex items-center cursor-pointer">
-                                                <input id="checkbox-item-3-convert" type="checkbox" value="Debit/Credit" x-model="mode_of_payment_post" wire:model="mode_of_payment" class="w-3 bg-gray-100 border-gray-300 rounded">
+                                                <input id="checkbox-item-3-convert" type="checkbox" value="Debit Credit" x-model="mode_of_payment_post" class="w-3 bg-gray-100 border-gray-300 rounded">
                                                 <span class="ms-2 text-xs sm:text-sm">Debit/Credit card</span>
                                             </label>
                                         </li>
                                         <li>
                                             <label for="checkbox-item-4-convert" class="flex items-center cursor-pointer">
-                                                <input id="checkbox-item-4-convert" type="checkbox" value="Bank Transfer" x-model="mode_of_payment_post" wire:model="mode_of_payment" class="w-3 bg-gray-100 border-gray-400 rounded">
+                                                <input id="checkbox-item-4-convert" type="checkbox" value="Bank Transfer" x-model="mode_of_payment_post" class="w-3 bg-gray-100 border-gray-400 rounded">
                                                 <span class="ms-2 text-xs sm:text-sm">Bank transfer</span>
                                             </label>
                                         </li>
@@ -311,7 +311,7 @@
         </div>
         <div class="mt-5 flex justify-end gap-2">
             <button x-text="item_details ? 'Cancel' : 'Return'" @click="if (item_details) {makeTransactionModalOpen = false; document.body.style.overflow = 'auto';} else if (transaction_details) { item_details = true; transaction_details = false; }" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black"></button>
-            <button x-text="item_details ? 'Next' : 'Post'" @click="if (item_details) { item_details = false; transaction_details = true; } else if (transaction_details) { $wire.makePost(item_name_post, item_origin_post, item_type_post, item_subtype_post); }" :disabled="item_details ? (!item_name_post || !item_origin_post || item_type_post.length === 0) : (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place)"  class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md"></button>
+            <button x-text="item_details ? 'Next' : 'Post'" @click="if (item_details) { item_details = false; transaction_details = true; } else if (transaction_details) { $wire.makePost(item_name_post, item_origin_post, item_type_post, item_subtype_post, mode_of_payment_post); }" :disabled="item_details ? (!item_name_post || !item_origin_post || item_type_post.length === 0) : (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place)"  class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md"></button>
         </div>
         <div wire:loading.delay wire:target="makePost" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">

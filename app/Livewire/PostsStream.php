@@ -11,13 +11,18 @@ class PostsStream extends Component
 {
 
     public User $user;
-    public $posts = [];
+    public $posts;
 
     public function __construct()
     {
         $this->user = User::where('id', Auth::user()->id)->first();
-        $this->posts = Post::all()->sortByDesc('created_at');
     }
+
+    public function mount($posts)
+    {
+        $this->posts = $posts;
+    }
+
     public function render()
     {
         return view('livewire.posts-stream');

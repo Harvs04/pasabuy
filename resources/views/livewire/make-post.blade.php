@@ -134,7 +134,7 @@
                                             </li>
                                             <li>
                                                 <label for="checkbox-item-3" class="flex items-center cursor-pointer">
-                                                    <input id="checkbox-item-3" type="checkbox" value="Debit/Credit" x-model="mode_of_payment_post" class="w-3 bg-gray-100 border-gray-300 rounded">
+                                                    <input id="checkbox-item-3" type="checkbox" value="Debit Credit" x-model="mode_of_payment_post" class="w-3 bg-gray-100 border-gray-300 rounded">
                                                     <span class="ms-2 text-xs sm:text-sm">Debit/Credit card</span>
                                                 </label>
                                             </li>
@@ -387,7 +387,7 @@
                                                     </li>
                                                     <li>
                                                         <label for="checkbox-item-3" class="flex items-center cursor-pointer">
-                                                            <input id="checkbox-item-3" type="checkbox" value="Debit/Credit" x-model="mode_of_payment_post" class="w-3 bg-gray-100 border-gray-300 rounded">
+                                                            <input id="checkbox-item-3" type="checkbox" value="Debit Credit" x-model="mode_of_payment_post" class="w-3 bg-gray-100 border-gray-300 rounded">
                                                             <span class="ms-2 text-xs sm:text-sm">Debit/Credit card</span>
                                                         </label>
                                                     </li>

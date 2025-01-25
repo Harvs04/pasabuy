@@ -25,7 +25,7 @@ class MakeTransaction extends Component
     public $arrival_time;
     public $meetup_place;
 
-    public function makePost($item_name, $item_origin, $item_type, $subtype)
+    public function makePost($item_name, $item_origin, $item_type, $subtype, $mode_of_payment)
     {
         try {
             $user = Auth::user();
@@ -40,7 +40,7 @@ class MakeTransaction extends Component
                 'item_image' => $this->item_image,
                 'delivery_date' => $this->delivery_date,
                 'arrival_time' => $this->arrival_time,
-                'mode_of_payment' => json_encode($this->mode_of_payment),
+                'mode_of_payment' => json_encode($mode_of_payment),
                 'transaction_fee' => $this->transaction_fee,
                 'max_orders' => $this->max_orders,
                 'cutoff_date' => $this->cutoff_date_orders,
