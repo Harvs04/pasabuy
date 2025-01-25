@@ -37,9 +37,9 @@
    
                   <!-- NOTIFICATION FIELD -->
                   <div x-show="openNotification" class="break-words w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:right-0 top-16 bg-white rounded-md border px-3 py-4">
-                     <h1 class="text-lg md:text-xl font-semibold text-gray-800">Notifications</h1>
+                     <h1 class="text-lg md:text-xl font-semibold text-gray-800 ml-1">Notifications</h1>
                      <div class="mt-4">
-                        @foreach ($user->notification_as_poster as $notif)
+                        @forelse ($user->notification_as_poster as $notif)
                            <div class="flex flex-row gap-3 p-1 hover:bg-gray-100 hover:rounded text-sm items-start">
                               <img class="size-9 md:size-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo"> 
                               <div class="flex flex-col">
@@ -50,7 +50,7 @@
                                     @elseif ($notif->type === 'comment')
                                        <span class="font-normal">commented on your post.</span>
                                     @elseif ($notif->type === 'new order')
-                                       <span class="font-normal">added an order.</span>
+                                       <span class="font-normal">added {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
                                     @elseif ($notif->type === 'cancelled order')
                                        <span class="font-normal">cancelled an order.</span>
                                     @elseif ($notif->type === 'converted post')
@@ -68,7 +68,11 @@
                                  <span class="text-xs">{{ $notif->created_at->Timezone('Singapore')->format('F j, Y \\a\\t h:i A') }}</span>
                               </div>
                            </div>
-                        @endforeach
+                        @empty
+                           <p class="text-sm text-center">
+                              Seems empty. Try ordering items or making transactions.
+                           </p>
+                        @endforelse
                      </div>
                   </div>
                </div>

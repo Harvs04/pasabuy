@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('poster_id');
             $table->foreign('poster_id')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('isSeen')->default(false);
+            $table->integer('order_count')->nullable();
             $table->timestamps();
         });
     }

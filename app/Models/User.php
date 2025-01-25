@@ -56,10 +56,16 @@ class User extends Authenticatable
         return $this->hasMany(SavePost::class, 'user_id', 'id');
     }
 
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Post::class, 'user_id', 'id')->where('type', 'transaction');
+    }
+
     public function orders(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'customer_id', 'id');
+        return $this->hasMany(Order::class, 'customer_id', 'id');
     }
+
 
     public function notification_as_poster(): HasMany
     {

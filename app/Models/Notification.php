@@ -14,7 +14,8 @@ class Notification extends Model
         'type',
         'post_id',
         'actor_id',
-        'poster_id'
+        'poster_id',
+        'order_count'
     ];
 
     public function user(): BelongsTo

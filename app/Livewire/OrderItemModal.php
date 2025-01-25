@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Transaction;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Notification;
 
@@ -20,8 +20,9 @@ class OrderItemModal extends Component
         try {
             $user = Auth::user();
             foreach($this->orders as $order) {
-                Transaction::create([
+                Order::create([
                     'post_id' => $this->post->id,
+                    'provider_id' => $this->post->user_id,
                     'customer_id' => $user->id,
                     'order' => $order,
                     'additional_notes' => $this->notes ? $this->notes : null
@@ -44,13 +45,13 @@ class OrderItemModal extends Component
                 'type' => 'new order',
                 'post_id' => $this->post->id,
                 'actor_id' => $user->id,
-                'poster_id' => $this->post->user_id
+                'poster_id' => $this->post->user_id,
+                'order_count' => count($this->orders)
             ]);
             
             session()->flash('order_added', 'Order added successfully!');
             return $this->redirect(route('dashboard'), true);
         } catch (\Throwable $th) {
-            dd($th);
             session()->flash('order_add_error', 'Failed to add order. Please try again later.');
             return $this->redirect(route('dashboard'), true);
         }

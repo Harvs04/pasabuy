@@ -40,7 +40,6 @@
                 </svg>
                 <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'hidden md:block md:no-underline' : 'block underline'">Transaction Details</p>
             </div>
-            <p x-text="item_type_post"></p>
             <div x-show="item_details && !transaction_details" class="">
                 <div class="mt-4 flex flex-col gap-4">
                     <div class="w-full flex flex-col">
