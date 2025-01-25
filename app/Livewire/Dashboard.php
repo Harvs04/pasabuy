@@ -30,17 +30,6 @@ class Dashboard extends Component
     }
 
     // navbar functions
-
-    public function switchRole()
-    {
-        $user = $this->user;
-        $user->role === 'customer' ? $user->role = 'provider' : $user->role = 'customer'; 
-        $user->save();
-
-        sleep(1.5);
-        session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
-        return $this->redirect(route('dashboard'), true);
-    }
     public function signOut() 
     {
         Auth::logout();
