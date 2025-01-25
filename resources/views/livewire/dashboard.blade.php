@@ -1,4 +1,4 @@
-<div class="font-poppins bg-gray-50" x-data="{ openBurger: false, createPostModalOpen:false, isChangeRoleModalOpen: false, clicked: false }" x-cloak>
+<div class="font-poppins bg-gray-50" x-data="{ openBurger: window.innerWidth > 640 ? true : false, createPostModalOpen:false, isChangeRoleModalOpen: false, clicked: false }" x-cloak>
    @if(session('create_post_success'))
       <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
          <div class="flex items-center gap-2">
