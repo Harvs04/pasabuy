@@ -34,4 +34,9 @@ class Post extends Model
         'delivery_date' => 'date',
         'cutoff_date' => 'date'
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
