@@ -5,11 +5,18 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\Auth; 
 use Livewire\Component;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class Navbar extends Component
 {
 
     public User $user;
+    public $currentUrl;
+
+    public function mount()
+    {
+        $this->currentUrl = url()->current();
+    }
 
     public function __construct()
     {
@@ -24,6 +31,13 @@ class Navbar extends Component
 
         sleep(1.5);
         session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
+        
+        if (str_contains($this->currentUrl, 'transactions')) {
+            return redirect(route('my-orders'), true);
+        } elseif (str_contains($this->currentUrl, 'my-orders')) {
+            return redirect(route('transactions'), true);
+        }
+
         return redirect(request()->header('Referer'));
     }
 
