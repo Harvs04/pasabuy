@@ -56,18 +56,21 @@ class Dashboard extends Component
 
         // Apply 'item_type' filter if it's an array and not empty
         if (!empty($this->item_type) && is_array($this->item_type)) {
-            foreach ($this->item_type as $type) {
-                // Use raw SQL to decode the JSON column and check if the filter value exists in the decoded array
-                $query->orWhere('item_type', 'like', '%' . $type . '%');
-            }
+            $query->where(function ($innerQuery) {
+                foreach ($this->item_type as $type) {
+                    // Use raw SQL to decode the JSON column and check if the filter value exists in the decoded array
+                    $innerQuery->orWhere('item_type', 'like', '%' . $type . '%');
+                }
+            });
         }
 
         // Apply 'mode_of_payment' filter if it's an array and not empty
         if (!empty($this->mode_of_payment) && is_array($this->mode_of_payment)) {
-            foreach ($this->mode_of_payment as $payment) {
-                // Use raw SQL to decode the JSON column and check if the filter value exists in the decoded array
-                $query->orWhere('mode_of_payment', 'like', '%' . $payment . '%');
-            }
+            $query->where(function ($innerQuery) {
+                foreach ($this->mode_of_payment as $payment) {
+                    $innerQuery->orWhere('mode_of_payment', 'like', '%' . $payment . '%');
+                }
+            });
         }
 
         // Apply 'delivery_date' filter if it's not null or empty
