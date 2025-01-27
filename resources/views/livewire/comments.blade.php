@@ -1,4 +1,4 @@
-<div x-data="{ orderItemModalOpen: false, makeTransactionModalOpen: false, usersShow: false, liked: {{ collect($user->like_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }}, saved: {{ collect($user->save_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }} }">
+<div x-data="{ orderItemModalOpen: false, makeTransactionModalOpen: false, usersShow: false, liked: {{ collect($user->like_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }}, saved: {{ collect($user->save_posts)->pluck('post_id')->contains($post->id) ? 'true' : 'false' }}, role: '{{ $user->role }}', user_id: '{{ $user->id }}', post_user_id: '{{ $post->user_id }}', pasabuy_points: '{{ $user->pasabuy_points }}', contact_number: '{{ $user->contact_number }}', college: '{{ $user->college }}', degree_program: '{{ $user->degree_program }}', post_status: '{{ $post->status }}' }">
     @if ($post->type === 'item_request')
         <div>
             <hr class="my-2">
@@ -44,7 +44,7 @@
                             <p class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">I want this too!</p>
                         </div>
                     </button>
-                    <button class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" :class="{'hidden': '{{ $user->role }}' === 'customer' || '{{ $user->id }}' === '{{ $post->user_id }}', 'block': '{{ $user->role }}' !== 'customer' && '{{ $user->id }}' !== '{{ $post->user_id }}'}" :disabled="{{ $user->pasabuy_points < 80 || $post->status === 'converted'}}" @click="makeTransactionModalOpen = true; document.body.style.overflow = 'hidden';">
+                    <button class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" :class="{'hidden': role === 'customer' || user_id === post_user_id, 'block': role !== 'customer' && user_id !== post_user_id }" :disabled="pasabuy_points < 80 || post_status === 'converted'" @click="makeTransactionModalOpen = true; document.body.style.overflow = 'hidden';">
                         <div class="flex flex-row items-center justify-center gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -119,9 +119,9 @@
                             </svg>
                             <p class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">I want this too!</p>
                         </div>
-                    </button>
-                    
-                    <button @click="orderItemModalOpen = true; document.body.style.overflow = 'hidden';" class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" :class="{'hidden': '{{ $user->role }}' === 'provider' || '{{ $user->id }}' === '{{ $post->user_id }}', 'block': '{{ $user->role }}' !== 'customer' && '{{ $user->id }}' !== '{{ $post->user_id }}'}" :disabled="{{ $user->pasabuy_points < 80 || !$user->contact_number || !$user->college || !$user->degree_program || $post->status !== 'open'}}">
+                    </button> 
+                    <button @click="orderItemModalOpen = true; document.body.style.overflow = 'hidden';" class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" x-bind:class="{'hidden': role === 'provider' || user_id === post_user_id, 'block': role !== 'customer' && user_id !== post_user_id}" 
+                    x-bind:disabled="pasabuy_points < 80 || !contact_number || !college || !degree_program || post_status !== 'open'">
                         <div class="flex flex-row items-center justify-center gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />

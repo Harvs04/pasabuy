@@ -41,17 +41,18 @@
                     firstPicker: null,
                     secondPicker: null,
                     item_details: true,
-                    transaction_details: false }">
+                    transaction_details: false
+                    }">
                 @if($user->role === 'customer')
                     <div class="w-full border p-4 border-gray-300 bg-white rounded-md">
                         <div class="flex flex-col sm:flex-row gap-4" @click="openDropdown = false">
                             <div class="w-full flex flex-col">
                                 <label for="item_name_post" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Item Name</label>
-                                <input type="text" id="item_name_post" x-model="item_name_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What items are you looking for?" />
+                                <input type="text" id="item_name_post" x-model="item_name_post" @input="item_name_post = item_name_post.replace(/'/g, '᾽')"  class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What items are you looking for?" />
                             </div>
                             <div class="w-full flex flex-col">
                                 <label for="item_origin_post" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Item Origin</label>
-                                <input type="text" id="item_origin_post" x-model="item_origin_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="Where will your items come from?"/>
+                                <input type="text" id="item_origin_post" x-model="item_origin_post" @input="item_origin_post = item_origin_post.replace(/'/g, '᾽')" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="Where will your items come from?"/>
                             </div>
                         </div>
                         <div class="mt-4"  @click="openDropdown = false">
@@ -199,11 +200,11 @@
                             <div class="mt-4 flex flex-col gap-4">
                                 <div class="w-full flex flex-col">
                                     <label for="item_name_post" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Name</label>
-                                    <input type="text" id="item_name_post" x-model="item_name_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What items are you going to buy?" />
+                                    <input type="text" id="item_name_post" x-model="item_name_post" @input="item_name_post = item_name_post.replace(/'/g, '᾽')" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What items are you going to buy?" />
                                 </div>
                                 <div class="w-full flex flex-col">
                                     <label for="item_origin_post" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Origin</label>
-                                    <input type="text" id="item_origin_post" x-model="item_origin_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What are store's name and location?"/>
+                                    <input type="text" id="item_origin_post" x-model="item_origin_post" @input="item_origin_post = item_origin_post.replace(/'/g, '᾽')" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What are store's name and location?"/>
                                 </div>
                                 <div>
                                     <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Type</p>
@@ -492,7 +493,7 @@
                         x-text="item_details ? 'Cancel' : 'Return'"  class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">
                     </button>
                     <button 
-                    :disabled="
+                    x-bind:disabled="
                         role === 'customer' 
                             ? (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
                                 (!item_name_post || !item_origin_post || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post))

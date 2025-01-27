@@ -25,9 +25,11 @@
 
     <livewire:navbar />
     <livewire:sidebar />
+
     <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;":class="{'lg:ml-64 xl:ml-96': openBurger, 'md:ml-0': !openBurger}">
-      @foreach ($user->transactions as $transaction)
-         <p>{{ $transaction->orders }}</p>
-      @endforeach
+      
+   @foreach ($user->transactions as $transaction)
+      <p>{{ $transaction->orders }}</p>
+   @endforeach
     </div>
 </div>

@@ -11,21 +11,21 @@ use Illuminate\Support\Facades\Log;
 class MakePost extends Component
 {   
     public User $user;
-    public $type = '';
-    public $item_name = '';
-    public $item_origin = '';
+    public $type;
+    public $item_name;
+    public $item_origin;
     public $item_type = [];
     public $subtype = [];
-    public $item_image = '';
+    public $item_image;
     public $mode_of_payment = [];
-    public $delivery_date = '';
-    public $notes = '';
+    public $delivery_date;
+    public $notes;
 
     // additional vars for transactions
-    public $max_orders = '';
+    public $max_orders;
     public $cutoff_date_orders = null;
-    public $transaction_fee = '';
-    public $meetup_place = '';
+    public $transaction_fee;
+    public $meetup_place;
     public $arrival_time = null;
 
 
