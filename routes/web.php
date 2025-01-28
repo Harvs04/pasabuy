@@ -6,6 +6,7 @@ use App\Http\Controllers\SocialiteController;
 use App\Http\Middleware\RoleBasedMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
 use App\Livewire\Login;
 use App\Livewire\Navbar;
 use App\Livewire\Register;
@@ -41,6 +42,18 @@ Route::get('/saved', [SidebarController::class, 'saved'])->name('saved');
 Route::get('/my-orders', [SidebarController::class, 'orders'])->name('my-orders');
 
 Route::get('/transactions', [SidebarController::class, 'transactions'])->name('transactions');
+
+Route::get('transactions/{id}', function($id) {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    if (Auth::user()->id !== Post::where('id', $id)->first()->user_id) {
+        return view('forbidden');
+    }
+
+    return view('transaction', ['id' => $id]);
+})->name('transaction.view');
 
 Route::get('/my-history', [SidebarController::class, 'history'])->name('pasabuy-history');
 
