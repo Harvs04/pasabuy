@@ -12,6 +12,32 @@ class Transactions extends Component
 
     use WithPagination;
     public $user;
+
+    public function deleteTransaction($id)
+    {
+        try {
+            $transaction = Post::where('id', $id)->first();
+
+            if (!$transaction) {
+                session()->flash('error', 'An error occurred. Please try again.');
+                return $this->redirect(route('transactions'), true);
+            }
+
+            $transaction->delete();
+
+            sleep(1.5);
+            session()->flash('delete_success', 'Transaction deleted!');
+            return $this->redirect(route('transactions'), true);
+
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('transactions'), true);
+        }
+        
+
+    
+    }
+
     public function render()
     {
         $this->user = Auth::user();
