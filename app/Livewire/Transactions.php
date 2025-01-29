@@ -41,7 +41,7 @@ class Transactions extends Component
     public function render()
     {
         $this->user = Auth::user();
-        $transactions = Post::where('user_id', $this->user->id)->orderByDesc('created_at')->paginate(10);
+        $transactions = Post::where('user_id', $this->user->id)->where('type', 'transaction')->orderByDesc('created_at')->paginate(10);
         return view('livewire.transactions', ['user' => $this->user, 'transactions' => $transactions]);
     }
 }
