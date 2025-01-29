@@ -58,9 +58,11 @@
                                     @elseif ($notif->type === 'item bought')
                                        <span class="font-normal">successfully bought your order.</span>
                                     @elseif ($notif->type === 'cancelled order')
-                                       <span class="font-normal">successfully delivered your order.</span>
+                                       <span class="font-normal">cancelled your order.</span>
                                     @elseif ($notif->type === 'item unavailable')
                                        <span class="font-normal">was not able to buy your order.</span>
+                                    @elseif ($notif->type === 'item deleted')
+                                       <span class="font-normal">deleted your order.</span>
                                     @elseif ($notif->type === 'transaction cancelled')
                                        <span class="font-normal">cancelled the transaction.</span>
                                     @endif

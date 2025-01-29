@@ -39,10 +39,13 @@ class Transaction extends Component
     public function deleteOrder($id)
     {
         try {
+            $transaction = Post::where('id', $this->id)->first();
             $order = Order::where('id', $id)->first();
             $customer_id = $order->customer_id;
             $order->delete();
-
+            
+            $transaction->order_count--;
+            $transaction->save();
             sleep(1.5);
 
             Notification::create([
@@ -51,7 +54,7 @@ class Transaction extends Component
                 'actor_id' => $this->user->id,
                 'poster_id' => $customer_id
             ]);
-            
+
             session()->flash('delete_success', 'Order deleted!');
             return $this->redirect(route('transaction.view', ['id' => $this->id]), true);
         } catch (\Throwable $th) {
@@ -61,7 +64,8 @@ class Transaction extends Component
     }
 
     public function render()
-    {   $transaction = Post::where('id', $this->id)->first();
+    {  
+        $transaction = Post::where('id', $this->id)->first();
         $orders = Order::where('post_id', $transaction->id)->orderByDesc('created_at')->paginate(10);
         return view('livewire.transaction', ['transaction' => $transaction, 'orders' => $orders]);
     }
