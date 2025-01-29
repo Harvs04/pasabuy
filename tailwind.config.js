@@ -15,7 +15,10 @@ export default {
       },
       fontFamily: {
         'poppins': 'Poppins'
-      }
+      },
+      screens: {
+        'mid': '950px'
+      },
     },
   },
   plugins: [],
