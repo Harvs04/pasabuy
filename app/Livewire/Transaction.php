@@ -45,6 +45,7 @@ class Transaction extends Component
             $order->delete();
             
             $transaction->order_count--;
+            $transaction->status = 'open';
             $transaction->save();
             sleep(1.5);
 
