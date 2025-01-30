@@ -10,24 +10,25 @@
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
 <body>
-<section class="bg-white ">
-    <div class="container flex items-center min-h-screen px-6 py-12 mx-auto">
-        <div class="flex flex-col items-center max-w-sm mx-auto text-center">
-            <p class="p-3 text-sm font-medium text-green-500 rounded-full bg-green-50">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                </svg>
-            </p>
-            <h1 class="mt-3 text-2xl font-semibold text-gray-800  md:text-3xl">Page not found</h1>
-            <p class="mt-4 text-gray-500">The page you are looking for doesn't exist. Here are some helpful links:</p>
-
-            <div class="flex items-center justify-center w-full mt-6 gap-x-3 shrink-0 sm:w-auto">
-                <a href="{{ route('dashboard') }}" class="w-1/2 px-5 py-2 text-sm text-white bg-[#014421] rounded-lg hover:bg-green-800">
-                    Take me home
-                </a>
-            </div>
+<div class="flex flex-col items-center justify-center w-screen h-screen gap-12 py-8 ">
+      <p class="p-3 text-sm font-medium text-green-500 rounded-full bg-green-50">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="2" fill="#014421" class="size-20">
+          <path fill-rule="evenodd" d="m6.72 5.66 11.62 11.62A8.25 8.25 0 0 0 6.72 5.66Zm10.56 12.68L5.66 6.72a8.25 8.25 0 0 0 11.62 11.62ZM5.105 5.106c3.807-3.808 9.98-3.808 13.788 0 3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788Z" clip-rule="evenodd" />
+        </svg>
+      </p>
+      <div class="flex flex-col items-center gap-4">
+        <h1 class="text-3xl font-medium text-center">
+          Page not found!
+        </h1>
+        <p class="text-xl text-center ">
+            The page you are looking for doesn't exist.
+        </p>
+        <div class="flex items-center justify-center w-full mt-6 gap-x-3 shrink-0 sm:w-auto">
+            <a href="{{ route('dashboard') }}" class="w-2/3 sm:w-full px-5 py-2 text-sm text-white bg-[#014421] rounded-lg hover:bg-green-800 text-center">
+                Back to home
+            </a>
         </div>
+      </div>
     </div>
-</section>
 </body>
 </html>

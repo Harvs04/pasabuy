@@ -1,16 +1,14 @@
 <?php
 
 use App\Http\Controllers\CloudinaryController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\SidebarController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Middleware\RoleBasedMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
-use App\Livewire\Login;
-use App\Livewire\Navbar;
-use App\Livewire\Register;
-use App\Livewire\Sidebar;
+use App\Models\Order;
 
 // google auth
 Route::controller(SocialiteController::class)->group(function(){
@@ -48,12 +46,49 @@ Route::get('transactions/{id}', function($id) {
         return redirect()->route('login');
     }
 
-    if (Auth::user()->id !== Post::where('id', $id)->first()->user_id) {
+    $post = Post::where('id', $id)->first();
+
+    if (!$post) {
+        return view('missing');
+    }
+
+    if (Auth::user()->id !== $post->user_id) {
+        return view('forbidden');
+    }
+
+    if (Auth::user()->role !== 'provider') {
         return view('forbidden');
     }
 
     return view('transaction', ['id' => $id]);
 })->name('transaction.view');
+
+Route::get('transactions/{transaction_id}/order/{order_id}', function($transaction_id, $order_id) {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    $post = Post::where('id', $transaction_id)->first();
+
+    if (!$post) {
+        return view('missing');
+    }
+
+    if (Auth::user()->id !== $post->user_id) {
+        return view('forbidden');
+    }
+
+    if (Auth::user()->role !== 'provider') {
+        return view('forbidden');
+    }
+
+    $order = Order::where('id', $order_id)->first();
+    if (!$order) {
+        return view('missing');
+    }
+
+    return view('transaction-order', ['transaction_id' => $transaction_id, 'order' => $order]);
+})->name('transaction-order.view');
 
 Route::get('/my-history', [SidebarController::class, 'history'])->name('pasabuy-history');
 
@@ -75,3 +110,5 @@ Route::get('/upload', function() {
 
 
 Route::resource('cloudinary', CloudinaryController::class);
+
+Route::fallback([PageController::class, 'notfound']);
