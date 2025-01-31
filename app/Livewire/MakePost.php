@@ -47,7 +47,7 @@ class MakePost extends Component
                 'item_origin' => $this->item_origin,
                 'item_type' => json_encode($this->item_type),
                 'sub_type' => empty($this->subtype) ? null : json_encode($this->subtype),
-                'item_image' => $this->item_image ?: null,
+                'item_image' => $this->item_image ?: 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png',
                 'delivery_date' => $this->delivery_date,
                 'arrival_time' => $this->arrival_time ?: null,
                 'mode_of_payment' => json_encode($this->mode_of_payment),

@@ -23,7 +23,7 @@ return new class extends Migration
                 $table->string('item_origin');
                 $table->json('item_type');
                 $table->json('sub_type')->nullable();
-                $table->string('item_image')->nullable();
+                $table->string('item_image');
                 $table->date('delivery_date');
                 $table->time('arrival_time')->nullable();
                 $table->json('mode_of_payment');
