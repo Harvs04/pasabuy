@@ -64,7 +64,7 @@
    <!-- LOADING STATE -->
    
    <!-- CONTENT --> 
-   <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-col-reverse mid:flex-row" style="margin-top: 4.3rem;":class="{'lg:ml-64 xl:ml-96': openBurger, 'mid:ml-0': !openBurger}">
+   <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-col-reverse mid:flex-row" style="margin-top: 4.3rem;">
       <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -75,7 +75,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                             </svg>
                         </a>
-                        <p class="text-lg mid:text-xl font-semibold">Orders list</p>
+                        <p class="text-lg mid:text-xl font-semibold">Orders list: Transaction#{{ $transaction->id }}</p>
                     </div>
                     <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400 break-words">
                         Browse a list of transaction's orders, update payment and order status, and delete some if applicable.
@@ -176,12 +176,12 @@
          </div>
       </div>
       <div class="pt-4 pb-0 mid:pb-4 pr-4 pl-4 mid:pl-0 w-full mid:w-1/3">
-         <a href="{{ route('transactions') }}" class="w-fit p-1.5 hover:bg-gray-100 hover:rounded-full block mid:hidden">
+         <a href="{{ route('transaction.view', ['id' => $order->post_id ]) }}" class="w-fit p-1.5 hover:bg-gray-100 hover:rounded-full block mid:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
          </a>
-         <div class="bg-white rounded-lg shadow-md h-full p-5 flex flex-col sm:flex-row mid:flex-col mid:gap-4 lg:gap-0">
+         <div class="bg-white rounded-lg shadow-md h-full px-5 pt-5 pb-5 lg:pb-0 flex flex-col sm:flex-row mid:flex-col mid:gap-4 lg:gap-0">
             @if ($transaction->item_image)
                <img src="{{ $transaction->item_image }}" alt="{{ $transaction->item_name ?? 'Item Image' }}" class="self-center mb-4 w-2/3 sm:w-1/2 sm:mb-0 sm:self-start mid:w-full h-auto rounded bg-gray-100">
             @else
@@ -226,8 +226,8 @@
                   </span>
                   <p class="text-gray-600 font-normal break-words">{{ $transaction->meetup_place }}</p>
                </div>
-               <div class="ml-auto">
-                  <button @click="$wire.startTransaction()" class="w-fit px-2 py-1 text-sm enabled:bg-[#014421] enabled:hover:bg-green-800 enabled:text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50" :disabled="{{ $transaction->status !== 'open'}}">
+               <div class="mt-auto ml-auto">
+                  <button @click="$wire.startTransaction()" class="w-24 px-2 py-1 text-sm enabled:bg-[#014421] enabled:hover:bg-green-800 enabled:text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50" :disabled="{{ $transaction->status !== 'open'}}">
                      Start
                   </button>
                </div>

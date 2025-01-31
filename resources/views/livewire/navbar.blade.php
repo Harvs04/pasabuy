@@ -41,7 +41,7 @@
                      <div class="mt-4">
                         @forelse ($user->notification_as_poster as $notif)
                            <div class="flex flex-row gap-3 p-1 hover:bg-gray-100 hover:rounded text-sm items-start">
-                              <img class="size-9 md:size-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo"> 
+                              <img class="size-9 md:size-12 rounded-full" src="{{ $user->profile_pic_url }}" alt="user photo"> 
                               <div class="flex flex-col">
                                  <span class="font-medium leading-tight">
                                     {{ App\Models\User::find($notif->actor_id)->name }}
@@ -91,7 +91,7 @@
                <div class="flex items-center ms-3">
                   <div>
                      <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" @click="open = !open">
-                        <img class="size-9 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                        <img class="size-9 rounded-full" src="{{ $user->profile_pic_url }}" alt="user photo">
                      </button>
                   </div>
                   <div class="absolute right-1 sm:right-0 top-10 z-40 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
