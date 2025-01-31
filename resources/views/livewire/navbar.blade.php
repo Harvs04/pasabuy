@@ -14,7 +14,7 @@
    
                   <!-- LOGO -->
                   <a href={{ route('dashboard') }}  class="flex ms-2 md:me-24">
-                     <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="h-14 me-3" alt="FlowBite Logo" />
+                     <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png" class="h-14 me-3" alt="FlowBite Logo" />
                      <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">PASABUY</span>
                   </a>
                </div>
