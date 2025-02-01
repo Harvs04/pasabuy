@@ -1,63 +1,44 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, isChangeRoleModalOpen: false, deleteOrderModalOpen: false, status: '{{ $order->item_status }}', firstClicked: '{{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) }}', secondClicked: '{{ in_array($order->item_status, ['Delivered', 'Rated']) }}', thirdClicked: '{{ in_array($order->item_status, ['Rated']) }}', updateMode: false }"
+    x-data="{ openBurger: false, isChangeRoleModalOpen: false, deleteOrderModalOpen: false, status: '{{ $order->item_status }}', firstClicked: '{{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) }}', secondClicked: '{{ in_array($order->item_status, ['Delivered', 'Rated']) }}', thirdClicked: '{{ in_array($order->item_status, ['Rated']) }}', updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}' }"
     x-cloak>
 
     @if(session('start_success'))
-    <div
-        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-        <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
+        <div
+            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
 
-            <div class="text-center text-sm">
-                {{ session('start_success') }}
+                <div class="text-center text-sm">
+                    {{ session('start_success') }}
+                </div>
             </div>
+            <!-- Close Button -->
+            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+                &times;
+            </button>
         </div>
-        <!-- Close Button -->
-        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-            &times;
-        </button>
-    </div>
-    @elseif(session('delete_success'))
-    <div
-        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-        <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-
-            <div class="text-center text-sm">
-                {{ session('delete_success') }}
-            </div>
-        </div>
-        <!-- Close Button -->
-        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-            &times;
-        </button>
-    </div>
     @elseif(session('error'))
-    <div
-        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-        <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-            <div class="text-center text-sm">
-                {{ session('error') }}
+        <div
+            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <div class="text-center text-sm">
+                    {{ session('error') }}
+                </div>
             </div>
+            <!-- Close Button -->
+            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+                &times;
+            </button>
         </div>
-        <!-- Close Button -->
-        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-            &times;
-        </button>
-    </div>
     @endif
 
     <livewire:navbar />
@@ -65,7 +46,7 @@
 
     <!-- LOADING STATE -->
     @teleport('body')
-    <div wire:loading.delay wire:target="startTransaction, deleteOrder"
+    <div wire:loading.delay wire:target="updateStatus, deleteOrder"
         class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
             class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
@@ -103,19 +84,38 @@
                         <div class="flex flex-col">
                             <div class="flex flex-row">
                                 <p class="text-lg font-semibold">Order tracking</p>
-                                <button type="button" @click="updateMode = true"
-                                    class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center bg-[#014421] hover:bg-green-800 rounded-lg text-center">
+                                <div class="flex gap-2 ml-auto">
+                                    <!-- Update/Save Button -->
+                                    <button type="button" @click="updateMode = true"
+                                        class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] hover:bg-green-800 rounded-lg text-center">
 
-                                    <!-- SVG Icon -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white me-2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                    </svg>
+                                        <!-- SVG Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white sm:me-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                        </svg>
 
-                                    <!-- Dynamic Text -->
-                                    <span x-text="!updateMode ? 'Update' : 'Save'"></span>
-                                </button>
+                                        <!-- Dynamic Text -->
+                                        <span class="hidden sm:block" x-text="!updateMode ? 'Update' : 'Save'"></span>
+                                    </button>
+
+                                    <!-- Delete Button -->
+                                    <button type="button" @click="deleteOrderModalOpen = true; document.body.style.overflow = 'hidden';"
+                                        class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-red-800 hover:bg-[#7b1113] rounded-lg text-center">
+
+                                        <!-- SVG Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-4 h-4 text-white sm:me-2">
+                                            <path fill-rule="evenodd"
+                                                d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+
+                                        <!-- Dynamic Text -->
+                                        <span class="hidden sm:block">Delete order</span>
+                                    </button>
+                                </div>
 
                             </div>
                             <div class="mt-4 flex justify-center">
@@ -124,13 +124,11 @@
                                     <li class="group relative flex-1 after:content-[''] after:bg-gray-200 after:h-0.5 after:w-full after:absolute after:top-1/2 after:right-[-50%] after:z-0"
                                         :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || thirdClicked}"
                                         @click="if (updateMode){firstClicked = !firstClicked; secondClicked = false; thirdClicked = false;}">
-                                        <div
-                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : firstClicked || secondClicked || thirdClicked}"
+                                        <div :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : firstClicked || secondClicked || thirdClicked}"
                                             class="flex items-center gap-4 h-24 p-4 bg-gray-50 rounded-lg shadow z-10 relative">
                                             <div class="rounded-lg flex items-center justify-center h-10 w-10 bg-gray-200"
                                                 :class="{'group-hover:bg-green-700' : updateMode , 'bg-green-700' : firstClicked || secondClicked || thirdClicked}">
-                                                <span
-                                                    class="'text-gray-600'"
+                                                <span class="'text-gray-600'"
                                                     :class="{'group-hover:text-white group-hover:bg-green-700' : updateMode, 'text-white' : firstClicked || secondClicked || thirdClicked}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none">
@@ -163,8 +161,7 @@
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : secondClicked || thirdClicked }">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
                                                 :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : secondClicked || thirdClicked }">
-                                                <span
-                                                    class="text-gray-600"
+                                                <span class="text-gray-600"
                                                     :class="{'group-hover:text-white' : updateMode, 'text-white' : secondClicked || thirdClicked }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none">
@@ -191,8 +188,7 @@
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : thirdClicked}">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
                                                 :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : thirdClicked}">
-                                                <span
-                                                    class="text-gray-600"
+                                                <span class="text-gray-600"
                                                     :class="{'group-hover:text-white' : updateMode, 'text-white' : thirdClicked}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none">
@@ -223,8 +219,7 @@
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421] cursor-pointer' : firstClicked || secondClicked || thirdClicked}">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
                                                 :class="{'group-hover:bg-green-700' : updateMode,'bg-green-700' : firstClicked || secondClicked || thirdClicked}">
-                                                <span
-                                                    class="text-gray-600"
+                                                <span class="text-gray-600"
                                                     :class="{'group-hover:text-white' : updateMode, 'text-white' : firstClicked || secondClicked || thirdClicked }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none">
@@ -254,8 +249,7 @@
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : secondClicked || thirdClicked }">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
                                                 :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : secondClicked || thirdClicked  }">
-                                                <span
-                                                    class="text-gray-600"
+                                                <span class="text-gray-600"
                                                     :class="{'group-hover:text-white' : updateMode, 'text-white' : secondClicked || thirdClicked }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none">
@@ -282,8 +276,7 @@
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : thirdClicked}">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
                                                 :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : thirdClicked}">
-                                                <span
-                                                    class="text-gray-600"
+                                                <span class="text-gray-600"
                                                     :class="{'group-hover:text-white' : updateMode, 'text-white' : thirdClicked}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none">
@@ -311,7 +304,7 @@
                             <p class="text-lg font-semibold">Other details:</p>
                             <div class="flex flex-wrap items-start gap-4 text-gray-700">
                                 <img src="{{ $transaction->item_image }}" alt="order_image"
-                                    class="rounded-full w-32 h-32 object-cover self-center sm:self-start">
+                                    class="rounded-full w-20 h-20 sm:w-32 sm:h-32 object-cover self-center sm:self-start">
                                 <div class="text-sm flex flex-col items-start gap-1">
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
@@ -349,18 +342,23 @@
                             <div class="flex flex-row">
                                 <p class="text-lg font-semibold">Customer details:</p>
                                 <button type="button"
-                                    class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center bg-[#014421] hover:bg-green-800 rounded-lg text-center">
+                                    class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] hover:bg-green-800 rounded-lg text-center">
+
+                                    <!-- SVG Icon -->
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="w-4 h-4 text-white me-2">
+                                        class="w-4 h-4 text-white sm:me-2">
                                         <path
                                             d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
                                     </svg>
-                                    Message
+
+                                    <!-- Dynamic Text -->
+                                    <span class="hidden sm:block">Message</span>
                                 </button>
                             </div>
+
                             <div class="flex flex-wrap items-start gap-4 text-gray-700">
                                 <img src="{{ $user->profile_pic_url }}" alt="customer_image"
-                                    class="rounded-full w-32 h-32 object-cover self-center sm:self-start">
+                                    class="rounded-full w-20 h-20 sm:w-32 sm:h-32 object-cover self-center sm:self-start">
                                 <div class="text-sm flex flex-col items-start gap-1">
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
@@ -401,8 +399,32 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                 </svg>
             </a>
-            <div class="h-fit bg-white rounded-lg shadow-md px-5 pt-5 pb-5 mid:pb-0 flex flex-col lg:gap-0">
-                <p class="text-lg text-[#014421] font-semibold mb-2">Transaction details: </p>
+            <div class="relative h-fit bg-white rounded-lg shadow-md px-5 pt-5 pb-5 mid:pb-0 flex flex-col lg:gap-0">
+                <div>
+                    <p class="text-lg text-[#014421] font-semibold mb-2">Transaction details: </p>
+                    <button class="absolute right-2 top-2 p-2 hover:bg-gray-100 hover:rounded-full"
+                        @click="openTransactionDots = !openTransactionDots">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                        </svg>
+                    </button>
+                    <div x-show="openTransactionDots" @click.outside="openTransactionDots = false"
+                        class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
+                        <button
+                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            :disabled="transactionStatus === 'open'" @click="$wire.updateStatus('open')">Open</button>
+                        <button
+                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            :disabled="transactionStatus === 'ongoing'"
+                            @click="$wire.updateStatus('ongoing')">Start</button>
+                        <button
+                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            :disabled="transactionStatus === 'cancelled'"
+                            @click="$wire.updateStatus('cancelled')">Cancel</button>
+                    </div>
+                </div>
                 <div class="flex flex-col sm:flex-row mid:flex-col gap-4">
                     @if ($transaction->item_image)
                     <img src="{{ $transaction->item_image }}" alt="{{ $transaction->item_name ?? 'Item Image' }}"
@@ -413,9 +435,14 @@
                     @endif
                     <div class="mid:pb-4 text-sm flex flex-col gap-2 items-start">
                         <div class="flex flex-wrap items-center gap-2 text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 flex-shrink-0">
-                                <path fill-rule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clip-rule="evenodd" />
-                                <path fill-rule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375Zm9.586 4.594a.75.75 0 0 0-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 0 0-1.06 1.06l1.5 1.5a.75.75 0 0 0 1.116-.062l3-3.75Z" clip-rule="evenodd" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-5 flex-shrink-0">
+                                <path fill-rule="evenodd"
+                                    d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375Zm9.586 4.594a.75.75 0 0 0-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 0 0-1.06 1.06l1.5 1.5a.75.75 0 0 0 1.116-.062l3-3.75Z"
+                                    clip-rule="evenodd" />
                             </svg>
                             <span class="font-medium whitespace-nowrap">
                                 Transaction status:
@@ -507,7 +534,7 @@
             <div class="mt-5 flex gap-2">
                 <button @click="deleteOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button @click="$wire.deleteOrder(deleteIndex); deleteIndex = null;"
+                <button @click="$wire.deleteOrder()"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]">
                     Confirm
                 </button>
