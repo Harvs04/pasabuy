@@ -20,6 +20,22 @@ class Transaction extends Component
         $this->user = Auth::user();
     }
 
+    public function updateStatus($type)
+    {
+        try {
+            $transaction = Post::where('id', $this->id)->first();
+            $transaction->status = $type;
+            $transaction->save();
+
+            sleep(1.5);
+            session()->flash('start_success', 'Transaction status updated!');
+            return $this->redirect(route('transaction.view', ['id' => $this->id]), true);
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('transaction.view', ['id' => $this->id]), true);
+        }
+    }
+
     public function startTransaction()
     {
         try {

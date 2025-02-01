@@ -8,7 +8,7 @@
      x-transition:leave="transition ease-in duration-100 transform"
      x-transition:leave-start="translate-x-0"
      x-transition:leave-end="-translate-x-full"
-     @click.outside="if (openBurger && window.innerWidth < 1024) { openBurger = false; }">
+     @click.outside="if (openBurger) { openBurger = false; }">
       <div class="h-full px-3 pb-4 overflow-y-auto">
          <ul class="space-y-2 text-[15px]">
             <li>
