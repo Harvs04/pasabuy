@@ -14,6 +14,41 @@ class TransactionOrder extends Component
     public $t_id;
     public $order;
 
+    public function saveChanges($purchased, $delivered, $rated, $isPaid)
+    {
+        try {
+            $status = '';
+            if ($purchased && $delivered && $rated) {
+                $status = 'Rated';
+            } else if (!$purchased && !$delivered && !$rated) {
+                $status = 'Pending';
+            } else if ($purchased) {
+                $status = 'Acquired';
+            } else if ($delivered) {
+                $status = 'Delivered';
+            } else if ($rated) {
+                $status = 'Rated';
+            }
+
+            if ($this->order->item_status !== $status) {
+                $this->order->item_status = $status;
+            }
+
+            if ($this->order->is_paid !== $isPaid) {
+                $this->order->is_paid = $isPaid ? 1 : 0;
+                $this->order->save();
+            }
+
+            sleep(1.5);
+            session()->flash('order_updated_success', 'Order status updated!');
+            return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+        }
+    }
+
     public function updateStatus($type)
     {
         try {

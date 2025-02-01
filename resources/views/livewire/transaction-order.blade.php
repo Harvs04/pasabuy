@@ -1,44 +1,63 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, isChangeRoleModalOpen: false, deleteOrderModalOpen: false, status: '{{ $order->item_status }}', firstClicked: '{{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) }}', secondClicked: '{{ in_array($order->item_status, ['Delivered', 'Rated']) }}', thirdClicked: '{{ in_array($order->item_status, ['Rated']) }}', updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}' }"
+    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, deleteOrderModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, thirdClicked: {{ in_array($order->item_status, ['Rated']) ? 'true' : 'false' }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}' }"
     x-cloak>
 
     @if(session('start_success'))
-        <div
-            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
+    <div
+        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
 
-                <div class="text-center text-sm">
-                    {{ session('start_success') }}
-                </div>
+            <div class="text-center text-sm">
+                {{ session('start_success') }}
             </div>
-            <!-- Close Button -->
-            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-                &times;
-            </button>
         </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
+    @elseif(session('order_updated_success'))
+    <div
+        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+
+            <div class="text-center text-sm">
+                {{ session('order_updated_success') }}
+            </div>
+        </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
     @elseif(session('error'))
-        <div
-            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <div class="text-center text-sm">
-                    {{ session('error') }}
-                </div>
+    <div
+        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <div class="text-center text-sm">
+                {{ session('error') }}
             </div>
-            <!-- Close Button -->
-            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-                &times;
-            </button>
         </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
     @endif
 
     <livewire:navbar />
@@ -46,7 +65,7 @@
 
     <!-- LOADING STATE -->
     @teleport('body')
-    <div wire:loading.delay wire:target="updateStatus, deleteOrder"
+    <div wire:loading.delay wire:target="updateStatus, deleteOrder, saveChanges"
         class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
             class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
@@ -86,14 +105,18 @@
                                 <p class="text-lg font-semibold">Order tracking</p>
                                 <div class="flex gap-2 ml-auto">
                                     <!-- Update/Save Button -->
-                                    <button type="button" @click="updateMode = true"
+                                    <button type="button" @click="if (!updateMode){ updateMode = true; } else if (updateMode) { $wire.saveChanges(firstClicked, secondClicked, thirdClicked, isPaid); }"
                                         class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] hover:bg-green-800 rounded-lg text-center">
 
                                         <!-- SVG Icon -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        <svg x-show="!updateMode" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white sm:me-2">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                        </svg>
+
+                                        <svg x-show="updateMode" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white sm:me-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                         </svg>
 
                                         <!-- Dynamic Text -->
@@ -101,7 +124,8 @@
                                     </button>
 
                                     <!-- Delete Button -->
-                                    <button type="button" @click="deleteOrderModalOpen = true; document.body.style.overflow = 'hidden';"
+                                    <button type="button"
+                                        @click="deleteOrderModalOpen = true; document.body.style.overflow = 'hidden';"
                                         class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-red-800 hover:bg-[#7b1113] rounded-lg text-center">
 
                                         <!-- SVG Icon -->
@@ -327,12 +351,29 @@
                                         <p class="text-gray-600 font-normal break-words">
                                             {{ $order->additional_notes ? $order->additional_notes : 'none' }}</p>
                                     </div>
-                                    <div class="flex flex-row items-start gap-1 mt-auto">
-                                        <span class="font-medium whitespace-nowrap">
-                                            Payment status:
-                                        </span>
-                                        <p class="text-gray-600 font-normal break-words">
-                                            {{ $order->is_paid ? 'Paid' : 'Pending' }}</p>
+                                    <div class="mt-6">
+                                        <div class="flex flex-row items-start gap-1 mt-auto"
+                                            :class="updateMode ? 'hidden' : 'block'">
+                                            <span class="font-medium whitespace-nowrap">
+                                                Payment status:
+                                            </span>
+                                            <p class="text-gray-600 font-normal break-words">
+                                                {{ $order->is_paid ? 'Paid' : 'Pending' }}</p>
+                                        </div>
+                                        <div class="flex flex-row items-center gap-1 mt-auto"
+                                            :class="updateMode ? 'block' : 'hidden'">
+                                            <span class="font-medium whitespace-nowrap">
+                                                Payment status:
+                                            </span>
+                                            <label class="ml-2 inline-flex items-center me-5 cursor-pointer">
+                                                <input x-model="isPaid" type="checkbox" class="sr-only peer">
+                                                <div
+                                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring peer-focus:ring-green-800  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-green-800 ">
+                                                </div>
+                                                <span
+                                                    class="ms-1 text-sm font-medium text-gray-700" x-text="isPaid ? 'Paid' : 'Pending'"></span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
