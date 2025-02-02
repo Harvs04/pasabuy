@@ -63,19 +63,21 @@ class TransactionOrder extends Component
             $transaction->save();
 
             if ($type === 'cancelled') {
-                foreach($transaction->orders as $order) {
-                    $order->item_status = 'Cancelled';
-                    $order->save();
 
+                if (count($transaction->orders) > 0) {
                     $this->user->pasabuy_points -= 5;
                     $this->user->save();
-
-                    Notification::create([
-                        'type' => 'transaction cancelled',
-                        'post_id' => $this->t_id,
-                        'actor_id' => Auth::user()->id,
-                        'poster_id' => User::where('id', $order->customer_id)->first()->id
-                    ]);
+                    foreach($transaction->orders as $order) {
+                        $order->item_status = 'Cancelled';
+                        $order->save();
+    
+                        Notification::create([
+                            'type' => 'transaction cancelled',
+                            'post_id' => $this->t_id,
+                            'actor_id' => Auth::user()->id,
+                            'poster_id' => User::where('id', $order->customer_id)->first()->id
+                        ]);
+                    }
                 }
             }
 

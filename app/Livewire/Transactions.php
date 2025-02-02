@@ -27,19 +27,21 @@ class Transactions extends Component
             $transaction->status = 'cancelled';
             $transaction->save();
 
-            $this->user->pasabuy_points -= 5;
-            $this->user->save();
-
-            foreach($transaction->orders as $order) {
-                $order->item_status = 'Cancelled';
-                $order->save();
-                
-                Notification::create([
-                    'type' => 'transaction cancelled',
-                    'post_id' => $id,
-                    'actor_id' => $this->user->id,
-                    'poster_id' => User::where('id', $order->customer_id)->first()->id
-                ]);
+            if (count($transaction->orders) > 0) {
+                $this->user->pasabuy_points -= 5;
+                $this->user->save();
+    
+                foreach($transaction->orders as $order) {
+                    $order->item_status = 'Cancelled';
+                    $order->save();
+                    
+                    Notification::create([
+                        'type' => 'transaction cancelled',
+                        'post_id' => $id,
+                        'actor_id' => $this->user->id,
+                        'poster_id' => User::where('id', $order->customer_id)->first()->id
+                    ]);
+                }
             }
 
             sleep(1.5);
