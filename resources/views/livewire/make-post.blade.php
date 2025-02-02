@@ -493,16 +493,18 @@
                         x-text="item_details ? 'Cancel' : 'Return'"  class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">
                     </button>
                     <button 
+                    x-data="{ disabled:false }"
                     x-bind:disabled="
                         role === 'customer' 
                             ? (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
-                                (!item_name_post || !item_origin_post || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post))
+                                (!item_name_post || !item_origin_post || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post)) || disabled
                             : (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
                                 (!item_name_post || !item_origin_post || item_type_post.length === 0)) 
                                 || (transaction_details && 
-                                (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place))"
+                                (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place)) || disabled"
                     @click="
                         if (role === 'customer') {
+                            disabled = true;
                             $wire.createPost(); 
                             clicked = true;
                         } else if (role === 'provider') {
@@ -510,6 +512,7 @@
                                 item_details = false; 
                                 transaction_details = true; 
                             } else if (transaction_details) { 
+                                disabled = true;
                                 $wire.createPost();
                                 clicked = true;
                             }

@@ -25,13 +25,7 @@
                     <div class="relative w-full" >
                         <input :type="showPassword ? 'text' : 'password'" id="password" x-model="password" @input="if (password.length > 0) { delete errors.password; }" @change="if (password.length === 0) { errors.password = true; } "  class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                             :class="{'border-red-500': errors.password}"
-                            @keydown.enter="
-                                errors = {};
-                                errors.email = email.length === 0;
-                                errors.password = password.length === 0;
-                                if (!errors.email && !errors.password) { 
-                                    $wire.login(); 
-                            }"
+                            
                             > 
                             <!-- Show/Hide Password Icon -->
                         <button type="button" @click="showPassword = !showPassword" class="absolute top-1/2 right-3 transform -translate-y-1/2 text-slate-400 focus:outline-none">
@@ -51,11 +45,14 @@
             </div>
             <div class="flex flex-col w-full items-center justify-center gap-2">
                 <button 
+                    x-data="{ disabled: false }"
+                    :disabled="disabled"
                     x-on:click="
                         errors = {};
                         errors.email = email.length === 0;
                         errors.password = password.length === 0;
                         if (!errors.email && !errors.password) { 
+                            disabled = true;
                             $wire.login(); 
                         }
                     "

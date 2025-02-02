@@ -219,11 +219,11 @@
                         class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
                         <button
                             class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            :disabled="transactionStatus === 'open' || transactionStatus === 'cancelled'"
+                            x-bind:disabled="transactionStatus === 'open' || transactionStatus === 'cancelled'"
                             @click="changeStatusModalOpen = true; statusChange = 'open';">Open</button>
                         <button
                             class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            :disabled="transactionStatus === 'ongoing' || transactionStatus === 'cancelled'"
+                            x-bind:disabled="transactionStatus === 'ongoing' || transactionStatus === 'cancelled'"
                             @click="changeStatusModalOpen = true; statusChange = 'ongoing';">Start</button>
                         <button
                             class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"

@@ -299,7 +299,7 @@
                         <p class="text-sm mt-2 md:mt-5 text-justify">PASABUY reserves the right to modify these terms at any time, and continued use of the platform constitutes your acceptance of the revised terms.</p>
                         <div class="mt-4 flex justify-end gap-2">
                             <button @click="isModalOpen = false; document.body.style.overflow = 'auto'" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                            <button wire:click="verifyQuestions" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">I understand</button>
+                            <button x-data="{ disabled: false }" :disabled="disabled" @click="$wire.verifyQuestions(); disabled = true;" class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">I understand</button>
                         </div>
                     </div>
                 </div>

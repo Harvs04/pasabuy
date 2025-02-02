@@ -102,10 +102,10 @@
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
                               <span class="
-                                 {{ $transaction->status == 'open' ? 'bg-green-900 text-green-300' : '' }}
-                                 {{ $transaction->status == 'ongoing' ? 'bg-yellow-900 text-yellow-300' : '' }}
-                                 {{ $transaction->status == 'completed' ? 'bg-gray-800 text-gray-300' : '' }}
-                                 {{ $transaction->status == 'cancelled' ? 'bg-red-900 text-red-300' : '' }}
+                                 {{ $transaction->status === 'open' ? 'bg-green-900 text-green-300' : '' }}
+                                 {{ $transaction->status === 'ongoing' ? 'bg-yellow-900 text-yellow-300' : '' }}
+                                 {{ $transaction->status === 'completed' ? 'bg-gray-800 text-gray-300' : '' }}
+                                 {{ in_array($transaction->status, ['cancelled', 'full']) ? 'bg-red-900 text-red-300' : '' }}
                                  text-xs font-medium me-2 px-2.5 py-0.5 rounded-full
                               ">
                                  {{ ucwords($transaction->status) }}
@@ -122,7 +122,7 @@
                                  {{ count($transaction->orders) . "/" . $transaction->max_orders }}
                            </td>
                            <td class="px-6 text-center" x-data="{ transactionStatus: '{{ $transaction->status }}' }">
-                              <div class="flex flex-row gap-2 items-center justify-center">
+                              <div class="flex flex-row gap-4 items-center justify-center">
                                  <a href="{{ route('transaction.view', ['id' => $transaction->id]) }}" class="">
                                     <div class="flex">
                                        <svg class="block sm:hidden size-5 text-gray-600 hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">

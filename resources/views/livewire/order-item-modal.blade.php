@@ -140,7 +140,7 @@
         </div>
         <div class="mt-5 flex justify-end gap-2">
             <button @click="orderItemModalOpen = false; document.body.style.overflow = 'auto';" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">Cancel</button>
-            <button @click="$wire.addOrder()" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md" :disabled="orders.length === 0">Confirm</button>
+            <button x-data="{ disabled: false }" @click="disabled = true; $wire.addOrder();" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md" :disabled="orders.length === 0 || disabled">Confirm</button>
         </div>
         <div wire:loading.delay wire:target="addOrder" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">

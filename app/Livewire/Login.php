@@ -31,7 +31,7 @@ class Login extends Component
         }
 
         session()->flash('login_failed', 'Incorrect login credentials. Try again.');
-        $this->reset(['email', 'password']);
+        return $this->redirect(route('login'), true);
     }
     public function render()
     {
