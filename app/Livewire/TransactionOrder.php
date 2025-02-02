@@ -13,6 +13,12 @@ class TransactionOrder extends Component
 
     public $t_id;
     public $order;
+    public $user;
+
+    public function __construct()
+    {
+        $this->user = User::where('id',Auth::user()->id)->first();
+    }
 
     public function saveChanges($purchased, $delivered, $rated, $isPaid)
     {
@@ -55,6 +61,23 @@ class TransactionOrder extends Component
             $transaction = Post::where('id', $this->t_id)->first();
             $transaction->status = $type;
             $transaction->save();
+
+            if ($type === 'cancelled') {
+                foreach($transaction->orders as $order) {
+                    $order->item_status = 'Cancelled';
+                    $order->save();
+
+                    $this->user->pasabuy_points -= 5;
+                    $this->user->save();
+
+                    Notification::create([
+                        'type' => 'transaction cancelled',
+                        'post_id' => $this->t_id,
+                        'actor_id' => Auth::user()->id,
+                        'poster_id' => User::where('id', $order->customer_id)->first()->id
+                    ]);
+                }
+            }
 
             sleep(1.5);
             session()->flash('start_success', 'Transaction status updated!');
