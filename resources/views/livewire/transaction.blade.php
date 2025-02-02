@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, transactionStatus: '{{ $transaction->status }}', isChangeRoleModalOpen: false, deleteOrderModalOpen: false, deleteIndex: null, openTransactionDots: false, changeTransactionStatus: false }"
+    x-data="{ openBurger: false, transactionStatus: '{{ $transaction->status }}', isChangeRoleModalOpen: false, deleteOrderModalOpen: false, deleteIndex: null, openTransactionDots: false, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '' }"
     x-cloak>
 
     @if(session('start_success'))
@@ -107,7 +107,7 @@
                     </caption>
                     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-center">
+                            <th scope="col" class="px-3 py-3 text-center">
                                 Order id
                             </th>
                             <th scope="col" class="px-6 py-3">
@@ -116,20 +116,20 @@
                             <th scope="col" class="px-6 py-3">
                                 Order
                             </th>
-                            <th scope="col" class="px-6 py-0 text-center">
+                            <th scope="col" class="px-1 py-0 text-center">
                                 Payment status
-                            <th scope="col" class="px-6 py-0 text-center">
+                            <th scope="col" class="px-1 py-0 text-center">
                                 Order status
                             </th>
                             <th scope="col" class="px-6 py-4 text-center">
-                                <span class="">Actions</span>
+                                <span class="">Action</span>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($orders as $order)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
+                            <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
                                 <span>
                                     {{ $order->id }}
                                 </span>
@@ -141,24 +141,14 @@
                             <td class="px-6 py-4">
                                 {{ $order->order }}
                             </td>
-                            <td class="px-6 py-4 align-middle">
+                            <td class="px-1 py-4 text-center">
                                 @if($order->is_paid)
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="text-green-600 size-5 mx-auto">
-                                    <path fill-rule="evenodd"
-                                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Paid </span>
                                 @elseif(!$order->is_paid)
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="text-red-600 size-5 mx-auto">
-                                    <path fill-rule="evenodd"
-                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                                    <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
                                 @endif
                             </td>
-                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
+                            <td scope="row" class="px-1 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
                                 <span class="
                                  {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'bg-green-900 text-green-300' : '' }}
                                  {{ $order->item_status == 'Pending' ? 'bg-yellow-900 text-yellow-300' : '' }}
@@ -173,33 +163,20 @@
                             <td class="px-6 py-4 align-middle">
                                 <span class="flex flex-row gap-2 items-center justify-center">
                                     <a href="{{ route('transaction-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
-                                        class="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="size-5 text-gray-600 hover:text-gray-900">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        </svg>
+                                        class="group">
+                                        <div class="flex gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor"
+                                                class="block sm:hidden size-5 text-gray-600 group-hover:text-gray-900">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                            <span
+                                                class="hidden sm:block group-hover:underline group-hover:text-gray-900">View</span>
+                                        </div>
                                     </a>
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="size-5 text-green-600 hover:text-green-500">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                    </a>
-                                    <button
-                                        @click="deleteOrderModalOpen = true; document.body.style.overflow = 'hidden'; deleteIndex = {{ $order->id }};">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="size-5 text-red-600 hover:text-red-400">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                        </svg>
-                                    </button>
                                 </span>
                             </td>
                         </tr>
@@ -240,9 +217,18 @@
                     </button>
                     <div x-show="openTransactionDots" @click.outside="openTransactionDots = false"
                         class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
-                        <button class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed" :disabled="transactionStatus === 'open'" @click="$wire.updateStatus('open')">Open</button>
-                        <button class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed" :disabled="transactionStatus === 'ongoing'" @click="$wire.updateStatus('ongoing')">Start</button>
-                        <button class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed" :disabled="transactionStatus === 'cancelled'" @click="$wire.updateStatus('cancelled')">Cancel</button>
+                        <button
+                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            :disabled="transactionStatus === 'open' || transactionStatus === 'cancelled'"
+                            @click="changeStatusModalOpen = true; statusChange = 'open';">Open</button>
+                        <button
+                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            :disabled="transactionStatus === 'ongoing' || transactionStatus === 'cancelled'"
+                            @click="changeStatusModalOpen = true; statusChange = 'ongoing';">Start</button>
+                        <button
+                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            :disabled="transactionStatus === 'cancelled'"
+                            @click="changeStatusModalOpen = true; statusChange = 'cancelled';">Cancel</button>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row mid:flex-col gap-4">
@@ -255,9 +241,14 @@
                     @endif
                     <div class="mid:pb-4 text-sm flex flex-col gap-2 items-start">
                         <div class="flex flex-wrap items-center gap-2 text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 flex-shrink-0">
-                                <path fill-rule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clip-rule="evenodd" />
-                                <path fill-rule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375Zm9.586 4.594a.75.75 0 0 0-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 0 0-1.06 1.06l1.5 1.5a.75.75 0 0 0 1.116-.062l3-3.75Z" clip-rule="evenodd" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-5 flex-shrink-0">
+                                <path fill-rule="evenodd"
+                                    d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375Zm9.586 4.594a.75.75 0 0 0-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 0 0-1.06 1.06l1.5 1.5a.75.75 0 0 0 1.116-.062l3-3.75Z"
+                                    clip-rule="evenodd" />
                             </svg>
                             <span class="font-medium whitespace-nowrap">
                                 Transaction status:
@@ -325,6 +316,37 @@
     </div>
 
     <!-- MODAL -->
+    <div @keydown.escape.window="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
+        x-show="changeStatusModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
+            <div class="flex flex-row items-center gap-2 sm:gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="#014421" class="size-6 md:size-7">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
+                <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="#000000" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <p class="text-sm mt-2 sm:ml-2">Do you wish to save your changes?</p>
+
+            <div class="mt-5 flex justify-end gap-2">
+                <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                <button
+                    @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';"
+                    class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <div @keydown.escape.window="deleteOrderModalOpen = false; document.body.style.overflow = 'auto';"
         x-data="{ confirm: '', errors: {} }" x-show="deleteOrderModalOpen" x-transition:enter.duration.25ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -336,7 +358,8 @@
                         d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p class="text-sm">Make sure to inform the customer before deleting the order. Deleting order without
+                <p class="text-sm">Make sure to inform the customer before cancelling the order. Cancelling order
+                    without
                     the customer's consent might cause conflicts.</p>
                 <button @click="deleteOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
