@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('role', ['customer', 'provider', 'admin']);
             $table->string('password')->nullable();
             $table->integer('pasabuy_points')->default(100);
-            $table->string('profile_pic_url')->default('https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif');
+            $table->string('profile_pic_url');
             $table->rememberToken();
             $table->timestamps();
         });
