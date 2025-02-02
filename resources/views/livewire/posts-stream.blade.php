@@ -22,7 +22,7 @@
                                 'open' => 'text-xs font-medium px-2.5 py-1 rounded bg-green-900 text-gray-50',
                                 'ongoing' => 'bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-yellow-900 dark:text-yellow-300',
                                 'converted' => 'bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-gray-700 dark:text-gray-300', 
-                                'closed' => 'bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-gray-700 dark:text-gray-300',
+                                'completed' => 'bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-gray-700 dark:text-gray-300',
                                 'full' => 'bg-red-100 text-red-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300',
                                 'cancelled' => 'bg-red-100 text-red-800 text-xs font-medium px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300'
                             };
@@ -32,7 +32,7 @@
                                 <!-- For larger screens (>=640px) -->
                                 <span class="hidden xl:inline">
                                     {{ ucwords($post->status) }}
-                                    @if($post->status !== 'closed' && $post->status !== 'cancelled' && $post->type === 'transaction')
+                                    @if($post->status !== 'completed' && $post->status !== 'cancelled' && $post->type === 'transaction')
                                         {{ $post->type === 'item_request' ? 'Item request' : 'transaction'}}: {{ $post->order_count }}/{{ $post->max_orders }}
                                     @else
                                         {{ $post->type === 'item_request' ? 'Item request' : 'transaction'}}
@@ -50,7 +50,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                                         </svg>
                                     @endif
-                                    @if($post->status !== 'closed' && $post->status !== 'cancelled' && $post->type === 'transaction')
+                                    @if($post->status !== 'completed' && $post->status !== 'cancelled' && $post->type === 'transaction')
                                         {{ $post->order_count }}/{{ $post->max_orders }}
                                     @endif
                                 </span>

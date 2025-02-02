@@ -15,7 +15,7 @@ return new class extends Migration
             Schema::create('posts', function (Blueprint $table) {
                 $table->id();
                 $table->enum('type', ['item_request', 'transaction']);
-                $table->enum('status', ['open', 'full', 'converted', 'ongoing', 'closed', 'cancelled'])->default('open');
+                $table->enum('status', ['open', 'full', 'converted', 'ongoing', 'completed', 'cancelled'])->default('open');
                 $table->unsignedBigInteger('user_id');
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->string('poster_name');
