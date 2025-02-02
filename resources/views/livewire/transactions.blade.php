@@ -88,7 +88,7 @@
                               <span class="
                                  {{ $transaction->status == 'open' ? 'bg-green-900 text-green-300' : '' }}
                                  {{ $transaction->status == 'ongoing' ? 'bg-yellow-900 text-yellow-300' : '' }}
-                                 {{ $transaction->status == 'closed' ? 'bg-gray-800 text-gray-300' : '' }}
+                                 {{ $transaction->status == 'completed' ? 'bg-gray-800 text-gray-300' : '' }}
                                  {{ $transaction->status == 'cancelled' ? 'bg-red-900 text-red-300' : '' }}
                                  text-xs font-medium me-2 px-2.5 py-0.5 rounded-full
                               ">

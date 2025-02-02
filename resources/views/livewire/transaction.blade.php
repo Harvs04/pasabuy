@@ -160,7 +160,7 @@
                             </td>
                             <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
                                 <span class="
-                                 {{ in_array($order->item_status, ['Acquired', 'Delivered']) ? 'bg-green-900 text-green-300' : '' }}
+                                 {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'bg-green-900 text-green-300' : '' }}
                                  {{ $order->item_status == 'Pending' ? 'bg-yellow-900 text-yellow-300' : '' }}
                                  {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
                                  {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
