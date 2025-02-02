@@ -37,7 +37,7 @@ class MakeTransaction extends Component
                 'item_origin' => $item_origin,
                 'item_type' => json_encode($item_type),
                 'sub_type' => $this->subtype ? json_encode($subtype) : null,
-                'item_image' => $this->item_image,
+                'item_image' => $this->item_image ?: 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png',
                 'delivery_date' => $this->delivery_date,
                 'arrival_time' => $this->arrival_time,
                 'mode_of_payment' => json_encode($mode_of_payment),
