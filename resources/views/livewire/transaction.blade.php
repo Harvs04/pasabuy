@@ -340,8 +340,8 @@
             <div class="mt-5 flex justify-end gap-2">
                 <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button
-                    @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';"
+                <button x-data="{ disabled: false }" :disabled="disabled"
+                    @click="disabled = true; changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';"
                     class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
             </div>
         </div>
@@ -372,7 +372,7 @@
             <div class="mt-5 flex gap-2">
                 <button @click="deleteOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button @click="$wire.deleteOrder(deleteIndex); deleteIndex = null;"
+                <button x-data="{ disabled: false }" :disabled="disabled" @click="disabled = true; $wire.deleteOrder(deleteIndex); deleteIndex = null;"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]">
                     Confirm
                 </button>

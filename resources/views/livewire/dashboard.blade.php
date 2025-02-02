@@ -143,7 +143,7 @@
    @endif
 
    <!-- SKELETON -->
-   <div wire:loading wire:target="switchRole, applyFilter, clearFilter"  class="w-full">
+   <div wire:loading wire:target="applyFilter, clearFilter"  class="w-full">
       <livewire:dashboard-skeleton />
    </div>
 
