@@ -206,7 +206,8 @@ class Register extends Component
                 'degree_program' => $this->degree_program,
                 'email' => $this->up_email,
                 'role' => $this->role,
-                'password' => Hash::make($this->password)
+                'password' => Hash::make($this->password),
+                'profile_pic_url' => 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif'
             ]);
             session()->flash('register_success', 'Your registration was approved! You may log in to continue.');
             return $this->redirect(route('login', true));

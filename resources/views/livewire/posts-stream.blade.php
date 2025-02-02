@@ -9,7 +9,7 @@
             @foreach($posts as $post)
                 <div class="pt-3 px-3 pb-2 bg-white shadow rounded-md text-gray-800 text-sm" x-data="{ openComment: false }">
                     <div class="flex flex-row items-start gap-3">
-                        <img class="w-9 md:w-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                        <img class="w-9 md:w-10 rounded-full" src="{{ App\Models\User::where('id', $post->user_id)->first()->profile_pic_url }}" alt="user_photo">
                         <div class="flex flex-col">
                             <div class="flex flex-row text-sm gap-1">
                                 <p class="font-semibold"> {{ $post->poster_name }} </p>

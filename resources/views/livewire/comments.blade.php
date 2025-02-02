@@ -181,8 +181,8 @@
                         @foreach($db_comments as $comment)
                             <div class="flex flex-row items-start gap-3 md:gap-4" x-data="{ showDate: false }">
                                 <img class="w-8 md:w-9 h-8 md:h-9 rounded-full object-cover" 
-                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 
-                                    alt="user photo">
+                                    src="{{ App\Models\User::where('id', $comment->user_id)->first()->profile_pic_url }}" 
+                                    alt="user_photo">
                                 <div class="flex flex-col items-start w-full">
                                     <div class="flex flex-row gap-2 items-center relative">
                                         <p class="font-medium">{{ $comment->commenter }}</p>
@@ -208,7 +208,7 @@
                 <!-- COMMENT INPUT FIELD -->
                 <div class="flex flex-row items-center gap-3 md:gap-4">
                     <img class="w-8 md:w-9 h-8 md:h-9 rounded-full object-cover" 
-                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 
+                        src="{{ $user->profile_pic_url }}" 
                         alt="user photo">
                     <div class="relative w-full" x-data="{ shiftPressed: false }">
                         <textarea

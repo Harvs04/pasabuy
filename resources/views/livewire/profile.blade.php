@@ -116,7 +116,7 @@
           <!-- IMAGE -->
           <div class="rounded-md bg-white shadow w-full gap-4">
             <div class="w-full flex flex-col xl:flex-row justify-center items-center gap-4 py-6">
-              <img src="https://zerebro.org/logo512.png" class="h-14 xl:h-20 aspect-auto rounded-full border-2 border-black"  alt="FlowBite Logo" />
+              <img src="{{ $user->profile_pic_url }}" class="h-14 xl:h-20 aspect-auto rounded-full border shadow"  alt="user_photo" />
               <div class="flex flex-col justify-center items-center xl:items-start">
                 <p class="text-xl lg:text-base xl:text-lg font-medium md:font-semibold break-words"> {{ $user->name }} </p>
                 <p class="text-sm"> {{ $user->constituent }} </p>
