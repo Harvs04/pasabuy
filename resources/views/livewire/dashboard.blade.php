@@ -199,9 +199,11 @@
             @endif
             <div class="px-3 md:px-4 py-3 bg-white shadow rounded-md">
                <div class="flex flex-row items-center gap-3 md:gap-4">    
-                  <img class="w-9 md:w-10 h-9 md:h-10 rounded-full object-cover" 
-                        src="{{ $user->profile_pic_url }}" 
-                        alt="user_photo">
+                  <a href="{{ route('profile', ['name' => $user->name]) }}">
+                     <img class="w-9 md:w-10 h-9 md:h-10 rounded-full object-cover" 
+                           src="{{ $user->profile_pic_url }}" 
+                           alt="user_photo">
+                  </a>
                   <button 
                         @click="createPostModalOpen = true; document.body.style.overflow = 'hidden';" 
                         class="text-gray-600 text-start text-sm px-3 sm:px-4 py-2 border bg-gray-50 rounded-full w-full">
