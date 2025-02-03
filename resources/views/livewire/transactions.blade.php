@@ -1,4 +1,4 @@
-<div class="font-poppins bg-gray-50 h-full" x-data="{ openBurger: false, isChangeRoleModalOpen: false, deleteTransactionModalOpen: false, deleteIndex: null }" x-cloak>
+<div class="font-poppins bg-gray-50" x-data="{ openBurger: false, isChangeRoleModalOpen: false, deleteTransactionModalOpen: false, deleteIndex: null }" x-cloak>
 
    @if(session('change_role_success'))
       <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
@@ -69,7 +69,7 @@
    <livewire:sidebar />
 
    <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;":class="{'lg:ml-64 xl:ml-96': openBurger, 'md:ml-0': !openBurger}">
-      <div class="p-4 w-full h-screen">
+      <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                <caption class="p-5 text-lg mid:text-xl font-semibold text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
