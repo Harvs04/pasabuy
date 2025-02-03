@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Notification;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Log;
@@ -57,7 +58,15 @@ class MakePost extends Component
                 'meetup_place' => $this->meetup_place ?: null,
                 'additional_notes' => $this->notes ?: null,
             ];
-            Post::create($data);
+            $post = Post::create($data);
+
+            Notification::create([
+                'type' => $this->type === 'item_request' ? 'new item request' : 'new transaction',
+                'post_id' => $post->id,
+                'actor_id' => $this->user->id,
+                'poster_id' => $this->user->id
+            ]);
+
             sleep(1.5);
             session()->flash('create_post_success', 'Post created successfully!');
             return $this->redirect(route('dashboard'), true);

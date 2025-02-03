@@ -44,27 +44,35 @@
                               <img class="size-9 md:size-12 rounded-full" src="{{ App\Models\User::where('id', $notif->actor_id)->first()->profile_pic_url }}" alt="user photo"> 
                               <div class="flex flex-col">
                                  <span class="font-medium leading-tight">
-                                    {{ App\Models\User::find($notif->actor_id)->name }}
+                                    @if ($notif->actor_id !== $notif->poster_id)
+                                       {{ App\Models\User::find($notif->actor_id)->name }}
+                                    @endif
                                     @if ($notif->type === 'like')
                                        <span class="font-normal">liked your post.</span>
                                     @elseif ($notif->type === 'comment')
                                        <span class="font-normal">commented on your post.</span>
                                     @elseif ($notif->type === 'new order')
-                                       <span class="font-normal">added {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
+                                       @if ($notif->actor_id !== $notif->poster_id)
+                                          <span class="font-normal">added {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
+                                       @else
+                                          <span class="font-normal">You've added {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
+                                       @endif
                                     @elseif ($notif->type === 'cancelled order')
                                        <span class="font-normal">cancelled an order.</span>
                                     @elseif ($notif->type === 'converted post')
                                        <span class="font-normal">converted your post to a transaction.</span>
                                     @elseif ($notif->type === 'item bought')
-                                       <span class="font-normal">successfully bought your order.</span>
-                                    @elseif ($notif->type === 'cancelled order')
-                                       <span class="font-normal">cancelled your order.</span>
+                                       <span class="font-normal">successfully acquired your order.</span>
                                     @elseif ($notif->type === 'item unavailable')
                                        <span class="font-normal">was not able to buy your order.</span>
                                     @elseif ($notif->type === 'item deleted')
                                        <span class="font-normal">deleted your order.</span>
                                     @elseif ($notif->type === 'transaction cancelled')
                                        <span class="font-normal">cancelled the transaction.</span>
+                                    @elseif ($notif->type === 'new item request')
+                                       <span class="font-normal">You've created a new item request.</span>
+                                    @elseif ($notif->type === 'new transaction')
+                                       <span class="font-normal">You've created a new transaction.</span>
                                     @endif
                                  </span>
                                  <span class="text-xs">{{ $notif->created_at->Timezone('Singapore')->format('F j, Y \\a\\t h:i A') }}</span>

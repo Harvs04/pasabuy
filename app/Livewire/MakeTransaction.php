@@ -46,7 +46,7 @@ class MakeTransaction extends Component
                 'cutoff_date' => $this->cutoff_date_orders,
                 'meetup_place' => $this->meetup_place
             ];
-            Post::create($new_post);
+            $post = Post::create($new_post);
 
             // update status of item request:
             $this->post->status = 'converted';
@@ -54,12 +54,22 @@ class MakeTransaction extends Component
 
             sleep(1.5);
 
+            // notif for the poster of item request
             Notification::create([
                 'type' => 'converted post',
                 'post_id' => $this->post->id,
                 'actor_id' => $user->id,
                 'poster_id' => $this->post->user_id
             ]);
+
+            // notif for the actor
+            Notification::create([
+                'type' => 'new transaction',
+                'post_id' => $post->id,
+                'actor_id' => $user->id,
+                'poster_id' => $user->id
+            ]);
+
             session()->flash('create_transaction_success', 'Transaction created successfully.');
             return $this->redirect(route('dashboard'), true);
         } catch (\Throwable $th) {

@@ -48,6 +48,15 @@ class OrderItemModal extends Component
                 'poster_id' => $this->post->user_id,
                 'order_count' => count($this->orders)
             ]);
+
+            // make a notification
+            Notification::create([
+                'type' => 'new order',
+                'post_id' => $this->post->id,
+                'actor_id' => $user->id,
+                'poster_id' => $user->id,
+                'order_count' => count($this->orders)
+            ]);
             
             session()->flash('order_added', 'Order added successfully!');
             return $this->redirect(route('dashboard'), true);
