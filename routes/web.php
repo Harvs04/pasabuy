@@ -39,6 +39,47 @@ Route::get('/saved', [SidebarController::class, 'saved'])->name('saved');
 
 Route::get('/my-orders', [SidebarController::class, 'orders'])->name('my-orders');
 
+Route::get('my-orders/{id}', function($id) {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    $post = Post::where('id', $id)->first();
+
+    if (!$post) {
+        return view('missing');
+    }
+
+    if (Auth::user()->role !== 'customer') {
+        return view('forbidden');
+    }
+
+    return view('order-list', ['id' => $id]);
+})->name('my-orders.view');
+
+Route::get('my-orders/{transaction_id}/order/{order_id}', function($transaction_id, $order_id) {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    $post = Post::where('id', $transaction_id)->first();
+
+    if (!$post) {
+        return view('missing');
+    }
+
+    if (Auth::user()->role !== 'customer') {
+        return view('forbidden');
+    }
+
+    $order = Order::where('id', $order_id)->first();
+    if (!$order) {
+        return view('missing');
+    }
+
+    return view('order-view', ['transaction_id' => $transaction_id, 'order' => $order]);
+})->name('my-orders-order.view');
+
 Route::get('/transactions', [SidebarController::class, 'transactions'])->name('transactions');
 
 Route::get('transactions/{id}', function($id) {
