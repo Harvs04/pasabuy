@@ -356,11 +356,11 @@
                         <hr class="my-4">
                         <div class="flex flex-col gap-2 text-md">
                             <div class="flex flex-row">
-                                <p class="text-lg font-semibold">Customer details:</p>
+                                <p class="text-lg font-semibold">Provider details:</p>
                                 <button type="button"
                                     :disabled="transactionStatus === 'cancelled'"
                                     class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
-
+                                    <!-- TODO: CHANGE PROVIDER DETAILS IN CUSTOMER VIEW -->
                                     <!-- SVG Icon -->
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                         class="w-4 h-4 text-white sm:me-2">
@@ -419,28 +419,6 @@
             <div class="relative h-fit bg-white rounded-lg shadow-md px-5 pt-5 pb-5 mid:pb-0 flex flex-col lg:gap-0">
                 <div>
                     <p class="text-lg text-[#014421] font-semibold mb-2">Transaction details: </p>
-                    <button class="absolute right-2 top-2 p-2 hover:bg-gray-100 hover:rounded-full"
-                        @click="openTransactionDots = !openTransactionDots">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                        </svg>
-                    </button>
-                    <div x-show="openTransactionDots" @click.outside="openTransactionDots = false"
-                        class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
-                        <button
-                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            :disabled="transactionStatus === 'open' || transactionStatus === 'cancelled'" @click="changeStatusModalOpen = true; statusChange = 'open';">Open</button>
-                        <button
-                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            :disabled="transactionStatus === 'ongoing' || transactionStatus === 'cancelled'"
-                            @click="changeStatusModalOpen = true; statusChange = 'ongoing';">Start</button>
-                        <button
-                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            :disabled="transactionStatus === 'cancelled'"
-                            @click="changeStatusModalOpen = true; statusChange = 'cancelled';">Cancel</button>
-                    </div>
                 </div>
                 <div class="flex flex-col sm:flex-row mid:flex-col gap-4">
                     @if ($transaction->item_image)
