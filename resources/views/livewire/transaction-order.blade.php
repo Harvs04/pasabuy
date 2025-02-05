@@ -374,32 +374,38 @@
                             </div>
 
                             <div class="flex flex-wrap items-start gap-4 text-gray-700">
-                                <img src="{{ $user->profile_pic_url }}" alt="customer_image"
+                                <img src="{{ App\Models\User::where('id', $order->customer_id)->first()->profile_pic_url }}" alt="customer_image"
                                     class="rounded-full w-20 h-20 sm:w-32 sm:h-32 object-cover self-center sm:self-start">
                                 <div class="text-sm flex flex-col items-start gap-1">
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
-                                            Customer name:
+                                            Name:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ $user->name }}</p>
+                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->customer_id)->first()->name }}</p>
+                                    </div>
+                                    <div class="flex flex-row items-start gap-1">
+                                        <span class="font-medium whitespace-nowrap">
+                                            Email:
+                                        </span>
+                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->customer_id)->first()->email }}</p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             College:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ $user->college }}</p>
+                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->customer_id)->first()->college }}</p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             Degree program:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ $user->degree_program }}</p>
+                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->customer_id)->first()->degree_program }}</p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             Contact number:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ $user->contact_number }}</p>
+                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->customer_id)->first()->contact_number }}</p>
                                     </div>
                                 </div>
                             </div>
