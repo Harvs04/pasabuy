@@ -44,13 +44,28 @@ Route::get('my-orders/{id}', function($id) {
         return redirect()->route('login');
     }
 
+    if (Auth::user()->role !== 'customer') {
+        return view('forbidden');
+    }
+
     $post = Post::where('id', $id)->first();
 
     if (!$post) {
         return view('missing');
     }
 
-    if (Auth::user()->role !== 'customer') {
+    $found = false;
+
+    // dd(Auth::user()->orders);
+
+    foreach (Auth::user()->orders as $order) {
+        if ($order->post_id == (int)$id) {
+            $found = true;
+            break; // Exit loop once the matching order is found
+        }
+    }
+
+    if (!$found) {
         return view('forbidden');
     }
 
@@ -62,14 +77,26 @@ Route::get('my-orders/{transaction_id}/order/{order_id}', function($transaction_
         return redirect()->route('login');
     }
 
+    if (Auth::user()->role !== 'customer') {
+        return view('forbidden');
+    }
+
     $post = Post::where('id', $transaction_id)->first();
 
     if (!$post) {
         return view('missing');
     }
 
-    if (Auth::user()->role !== 'customer') {
-        return view('forbidden');
+    $found = false;
+    foreach($post->orders as $order_info) {
+        if ($order_info->id === (int)$order_id) {
+            $found = true;
+            break;
+        }
+    }
+
+    if (!$found) {
+        return view('missing');
     }
 
     $order = Order::where('id', $order_id)->first();
@@ -87,6 +114,10 @@ Route::get('transactions/{id}', function($id) {
         return redirect()->route('login');
     }
 
+    if (Auth::user()->role !== 'provider') {
+        return view('forbidden');
+    }
+
     $post = Post::where('id', $id)->first();
 
     if (!$post) {
@@ -97,16 +128,16 @@ Route::get('transactions/{id}', function($id) {
         return view('forbidden');
     }
 
-    if (Auth::user()->role !== 'provider') {
-        return view('forbidden');
-    }
-
     return view('transaction', ['id' => $id]);
 })->name('transaction.view');
 
 Route::get('transactions/{transaction_id}/order/{order_id}', function($transaction_id, $order_id) {
     if (!Auth::check()) {
         return redirect()->route('login');
+    }
+
+    if (Auth::user()->role !== 'provider') {
+        return view('forbidden');
     }
 
     $post = Post::where('id', $transaction_id)->first();
@@ -119,8 +150,16 @@ Route::get('transactions/{transaction_id}/order/{order_id}', function($transacti
         return view('forbidden');
     }
 
-    if (Auth::user()->role !== 'provider') {
-        return view('forbidden');
+    $found = false;
+    foreach($post->orders as $order_info) {
+        if ($order_info->id === (int)$order_id) {
+            $found = true;
+            break;
+        }
+    }
+
+    if (!$found) {
+        return view('missing');
     }
 
     $order = Order::where('id', $order_id)->first();
