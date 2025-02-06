@@ -20,38 +20,19 @@ class OrderView extends Component
         $this->user = User::where('id',Auth::user()->id)->first();
     }
 
-    public function saveChanges($purchased, $delivered, $rated, $isPaid)
+    public function confirmDelivery()
     {
         try {
-            $status = '';
-            if ($purchased && $delivered && $rated) {
-                $status = 'Rated';
-            } else if (!$purchased && !$delivered && !$rated) {
-                $status = 'Pending';
-            } else if ($purchased) {
-                $status = 'Acquired';
-            } else if ($delivered) {
-                $status = 'Delivered';
-            } else if ($rated) {
-                $status = 'Rated';
-            }
-
-            if ($this->order->item_status !== $status) {
-                $this->order->item_status = $status;
-            }
-
-            if ($this->order->is_paid !== $isPaid) {
-                $this->order->is_paid = $isPaid ? 1 : 0;
-                $this->order->save();
-            }
+            $this->order->item_status = 'Delivered';
+            $this->order->save();
 
             sleep(1.5);
-            session()->flash('order_updated_success', 'Order status updated!');
-            return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+            session()->flash('order_updated_success', 'Delivery Confirmed!');
+            return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
 
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
-            return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+            return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         }
     }
 

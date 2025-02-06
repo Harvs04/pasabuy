@@ -65,7 +65,7 @@
 
     <!-- LOADING STATE -->
     @teleport('body')
-    <div wire:loading.delay wire:target="updateStatus, saveChanges"
+    <div wire:loading.delay wire:target="updateStatus, confirmDelivery"
         class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
             class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
@@ -106,19 +106,11 @@
                                 <div class="flex gap-2 ml-auto">
                                     <!-- Update/Save Button -->
                                     <button type="button"
-                                        @click="if (!updateMode){ updateMode = true; } else if (updateMode) { saveChangesModalOpen = true; document.body.style.overflow = 'hidden'; }"
-                                        :disabled="transactionStatus === 'cancelled'"
-                                        class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
+                                        @click="saveChangesModalOpen = true; document.body.style.overflow = 'hidden';"
+                                        :disabled="transactionStatus === 'cancelled' || status !== 'Waiting'"
+                                        class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:bg-gray-300 disabled:cursor-not-allowed">
 
-                                        <!-- SVG Icon -->
-                                        <svg x-show="!updateMode" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                            class="w-4 h-4 text-white sm:me-2">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                        </svg>
-
-                                        <svg x-show="updateMode" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                             class="w-4 h-4 text-white sm:me-2">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -126,7 +118,7 @@
                                         </svg>
 
                                         <!-- Dynamic Text -->
-                                        <span class="hidden sm:block" x-text="!updateMode ? 'Update' : 'Save'"></span>
+                                        <span class="hidden sm:block">Confirm delivery</span>
                                     </button>
                                 </div>
 
@@ -358,7 +350,7 @@
                             <div class="flex flex-row">
                                 <p class="text-lg font-semibold">Provider details:</p>
                                 <button type="button"
-                                    :disabled="transactionStatus === 'cancelled'"
+                                    :disabled="transactionStatus === 'cancelled' || status === 'Cancelled'"
                                     class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
                                     <!-- TODO: CHANGE PROVIDER DETAILS IN CUSTOMER VIEW -->
                                     <!-- SVG Icon -->
@@ -530,12 +522,12 @@
                     </svg>
                 </button>
             </div>
-            <p class="text-sm mt-2 sm:ml-2">Do you wish to save your changes?</p>
+            <p class="text-sm mt-2 sm:ml-2">Do you confirm that your order has been delivered by provider, <span class="font-semibold"> {{ App\Models\User::where('id', $order->provider_id)->first()->name }} </span> at <span class="font-semibold"> {{ App\Models\Post::where('id', $order->post_id)->first()->meetup_place }}</span>?</p>
             
             <div class="mt-5 flex justify-end gap-2">
                 <button @click="saveChangesModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button x-data="{ disabled: false }" :disabled="disabled"  @click="disabled = true; saveChangesModalOpen = false; document.body.style.overflow = 'auto'; $wire.saveChanges(firstClicked, secondClicked, thirdClicked, isPaid);" 
+                <button x-data="{ disabled: false }" :disabled="disabled"  @click="disabled = true; saveChangesModalOpen = false; document.body.style.overflow = 'auto'; $wire.confirmDelivery();" 
                     class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
             </div>
         </div>
