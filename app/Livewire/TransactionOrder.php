@@ -20,20 +20,18 @@ class TransactionOrder extends Component
         $this->user = User::where('id',Auth::user()->id)->first();
     }
 
-    public function saveChanges($purchased, $delivered, $rated, $isPaid)
+    public function saveChanges($purchased, $delivered, $isPaid)
     {
         try {
             $status = '';
-            if ($purchased && $delivered && $rated) {
+            if ($purchased && $delivered) {
                 $status = 'Rated';
-            } else if (!$purchased && !$delivered && !$rated) {
+            } else if (!$purchased && !$delivered) {
                 $status = 'Pending';
             } else if ($purchased) {
                 $status = 'Acquired';
             } else if ($delivered) {
-                $status = 'Delivered';
-            } else if ($rated) {
-                $status = 'Rated';
+                $status = 'Waiting';
             }
 
             if ($this->order->item_status !== $status) {
@@ -50,6 +48,7 @@ class TransactionOrder extends Component
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
 
         } catch (\Throwable $th) {
+            dd($th);
             session()->flash('error', 'An error occurred. Please try again.');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         }

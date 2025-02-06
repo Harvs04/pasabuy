@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');
             $table->longText('order');
             $table->boolean('is_paid')->default(false);
-            $table->enum('item_status', ['Pending', 'Acquired', 'Unavailable', 'Cancelled', 'Delivered', 'Rated'])->default('Pending');
+            $table->enum('item_status', ['Pending', 'Acquired', 'Unavailable', 'Cancelled', 'Delivered', 'Waiting', 'Rated'])->default('Pending');
             $table->longText('additional_notes')->nullable();
             $table->timestamps();
         });
