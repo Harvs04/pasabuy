@@ -321,31 +321,21 @@
          <div class="mt-2">
             <p class="font-medium">Date of delivery</p>
             <div class="relative mt-2">
-               <svg class="absolute left-3 top-2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-               </svg>
                <input id="datepicker"
-                     @change="change = true"
-                     x-data
-                     x-ref="input"
-                     x-init="new Pikaday({ 
-                        field: $refs.input, 
-                        format: 'MM/DD/YYYY',
-                        onSelect: function() {
-                           console.log(this.getDate());
-                           let date = new Date(this.getDate());
-                           date.setHours(date.getHours() + 8);  // Adjusting for GMT+8
+       @change="
+            change = true;
+            console.log($event.target.value);
+            let selectedDate = new Date($event.target.value);
+            selectedDate.setHours(selectedDate.getHours() + 8);  // Adjusting for GMT+8
+            $wire.set('delivery_date', selectedDate.toISOString().split('T')[0], false);
+       "
+       type="date"
+       onkeydown="return false;" 
+       wire:model="delivery_date"
+       class="block w-full p-2 text-sm text-gray-500 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]"
+       placeholder="Select date"
+/>
 
-                           $wire.set('delivery_date', date.toISOString().split('T')[0], false);
-
-                        }
-                     })"
-                     type="text"
-                     readonly
-                     wire:model="delivery_date"
-                     class="block w-full pl-10 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]"
-                     placeholder="Select date"
-               />
             </div>
          </div>
          <div class="flex flex-row w-full mt-3 gap-2">

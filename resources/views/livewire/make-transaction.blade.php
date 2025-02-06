@@ -170,27 +170,21 @@
                         <div class="w-full">
                             <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Cutoff for ordering</p>
                             <div class="relative">
-                                <svg class="absolute left-3 top-2.5 h-4 sm:h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
                                 <input id="datepicker-cutoff-convert"
-                                        @change="delivery_date_post = ''"
+                                        @change="
+                                            delivery_date_post = '';
+                                            console.log($event.target.value);
+                                            let selectedDate = new Date($event.target.value);
+                                            selectedDate.setHours(selectedDate.getHours() + 8);  // Adjusting for GMT+8
+                                            $wire.set('cutoff_date_orders', selectedDate.toISOString().split('T')[0], false);
+                                        
+                                        "
                                         x-data
-                                        x-ref="input1"
-                                        x-init="firstPicker = new Pikaday({ 
-                                            field: $refs.input1, 
-                                            format: 'MM/DD/YYYY', 
-                                            minDate: new Date(),
-                                            onSelect: function() {
-                                                let date = new Date(this.getDate());
-                                                date.setHours(date.getHours() + 8);  // Adjusting for GMT+8
-                                                $wire.set('cutoff_date_orders', date.toISOString().split('T')[0], false);
-                                            }
-                                        })"
-                                        type="text"
-                                        readonly
+                                        x-ref="cutoff_convert"
+                                        x-init="$refs.cutoff_convert.min = new Date().toISOString().split('T')[0];" type="date" onkeydown="return false;"
+                                    
                                         wire:model="cutoff_date_orders"
-                                        class="block w-full pl-9 md:pl-10 p-2.5 text-xs sm:text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
+                                        class="block w-full p-2.5 text-xs sm:text-sm text-gray-500 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
                                         placeholder="Select date"
                                 />
                             </div>
@@ -252,38 +246,30 @@
                         <div class="w-full">
                             <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Date of delivery</p>
                             <div class="relative">
-                                <svg class="absolute left-3 top-2.5 h-4 sm:h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
                                 <input id="datepicker-delivery-convert"
                                         :disabled="!cutoff_date_orders"
-                                        x-data
-                                        x-ref="input2"
-                                        x-init="
-                                        secondPicker = new Pikaday({ 
-                                            field: $refs.input2, 
-                                            format: 'MM/DD/YYYY', 
-                                            minDate: new Date(cutoff_date_orders),
-                                            onSelect: function() {
-                                            console.log(this.getDate());
-                                            let date = new Date(this.getDate());
-                                            date.setHours(date.getHours() + 8);  // Adjusting for GMT+8
-
-                                            $wire.set('delivery_date', date.toISOString().split('T')[0], false);
-
-                                            }
-                                        });
-                                        $watch('cutoff_date_orders', (newValue) => {
-                                            if (newValue) {
-                                                let newMinDate = new Date(newValue);
-                                                secondPicker.setMinDate(newMinDate);
-                                            }
-                                        });
+                                        @change="
+                                            console.log($event.target.value);
+                                            let selectedDate = new Date($event.target.value);
+                                            selectedDate.setHours(selectedDate.getHours() + 8);  // Adjusting for GMT+8
+                                            $wire.set('delivery_date', selectedDate.toISOString().split('T')[0], false);
                                         "
-                                        type="text"
-                                        readonly
+                                        x-data
+                                        x-ref="delivery_convert"
+                                        x-init="
+                                            // Set min date based on cutoff_date_orders
+                                            $refs.delivery_convert.min = new Date(cutoff_date_orders).toISOString().split('T')[0];
+                                            // Watch for changes in cutoff_date_orders to update min date dynamically
+                                            $watch('cutoff_date_orders', (newValue) => {
+                                                if (newValue) {
+                                                    $refs.delivery_convert.min = new Date(newValue).toISOString().split('T')[0];
+                                                }
+                                            });
+                                        "
+                                        type="date"
+                                        onkeydown="return false;" 
                                         wire:model="delivery_date"
-                                        class="block w-full pl-9 md:pl-10 p-2.5 text-xs sm:text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
+                                        class="block w-full p-2.5 text-xs sm:text-sm text-gray-500 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
                                         placeholder="Select date"
                                 />
                             </div>
