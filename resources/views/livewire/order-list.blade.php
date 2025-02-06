@@ -143,23 +143,44 @@
                             </td>
                             <td class="px-1 py-4 text-center">
                                 @if($order->is_paid)
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Paid </span>
+                                <span
+                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Paid
+                                </span>
                                 @elseif(!$order->is_paid)
-                                    <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
+                                <span
+                                    class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
                                 @endif
                             </td>
-                            <td scope="row" class="px-1 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
+                            <td scope="row" class="px-1 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
+                                x-data="{ waitingInfo: false, status: '{{ $order->item_status }}' }">
+
                                 <span class="
-                                 {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'bg-green-900 text-green-300' : '' }}
-                                 {{ $order->item_status == 'Pending' ? 'bg-yellow-900 text-yellow-300' : '' }}
-                                 {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
-                                 {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
-                                 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full
-                              ">
+        {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'bg-green-900 text-green-300' : '' }}
+        {{ in_array($order->item_status, ['Pending', 'Waiting']) ? 'bg-yellow-900 text-yellow-300' : '' }}
+        {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
+        {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
+        text-xs font-medium me-2 px-2.5 py-0.5 rounded-full relative flex items-center justify-center
+    ">
                                     {{ ucwords($order->item_status) }}
+
+                                    <!-- Info Icon -->
+                                    <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true" @mouseleave="waitingInfo = false"
+                                        xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 ml-1 cursor-pointer"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                    </svg>
+
+                                    <!-- Tooltip -->
+                                    <div x-show="waitingInfo && status === 'Waiting'"
+                                        class="absolute bottom-full mb-1 right-0 bg-white text-gray-600 p-2 text-xs shadow-lg rounded-md z-10"
+                                        x-cloak>
+                                        You must confirm whether your order has been delivered.
+                                    </div>
                                 </span>
 
                             </td>
+
                             <td class="px-6 py-4 align-middle" x-data="{ orderStatus: '{{ $order->item_status }}' }">
                                 <span class="flex flex-row gap-4 items-center justify-center">
                                     <a href="{{ route('my-orders-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
@@ -177,12 +198,16 @@
                                                 class="font-semibold hidden sm:block hover:underline hover:text-gray-900">View</span>
                                         </div>
                                     </a>
-                                    <button class="text-red-500 enabled:hover:text-red-600 disabled:cursor-not-allowed" :disabled="orderStatus === 'Cancelled'" @click="cancelOrderModalOpen = true; document.body.style.overflow = 'hidden'; deleteIndex = {{ $order->id }};">
+                                    <button class="text-red-500 enabled:hover:text-red-600 disabled:cursor-not-allowed"
+                                        :disabled="orderStatus === 'Cancelled'"
+                                        @click="cancelOrderModalOpen = true; document.body.style.overflow = 'hidden'; deleteIndex = {{ $order->id }};">
                                         <div class="flex">
-                                        <svg class="size-5 block sm:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                        </svg>
-                                        <span class="hidden sm:block font-semibold hover:underline">Cancel</span>
+                                            <svg class="size-5 block sm:hidden" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                            </svg>
+                                            <span class="hidden sm:block font-semibold hover:underline">Cancel</span>
                                         </div>
                                     </button>
                                 </span>
@@ -334,33 +359,37 @@
 
     <!-- MODAL -->
     @teleport('body')
-        <div @keydown.escape.window="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';" x-data="{ confirm: '', errors: {} }" x-show="cancelOrderModalOpen" x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
+    <div @keydown.escape.window="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
+        x-data="{ confirm: '', errors: {} }" x-show="cancelOrderModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
         <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
-                <div class="flex flex-col items-center gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff4545" class="size-12">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            <div class="flex flex-col items-center gap-2 sm:gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="#ff4545" class="size-12">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p class="text-sm">Cancelling your order will incur a -5 decrease in your pasabuy points</p>
-                <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';" class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" class="size-6">
+                <p class="text-sm">Cancelling your order will incur a decrease of 5 pasabuy points</p>
+                <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="#000000" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                     </svg>
                 </button>
-                </div>
-                <div class="mt-5 flex gap-2">
-                    <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';" class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                    <button 
-                    x-data="{ disabled: false }"
-                    :disabled="disabled"
+            </div>
+            <div class="mt-5 flex gap-2">
+                <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                <button x-data="{ disabled: false }" :disabled="disabled"
                     @click="disabled = true; cancelOrderModalOpen = false; $wire.cancelOrder({{$transaction->id}}, deleteIndex); deleteIndex = null;"
-                    class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]"
-                    >
+                    class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]">
                     Confirm
-                    </button>
-                </div>
+                </button>
+            </div>
         </div>
-        </div>
+    </div>
     @endteleport
 </div>
 

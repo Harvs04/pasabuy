@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, saveChangesModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, thirdClicked: {{ in_array($order->item_status, ['Rated']) ? 'true' : 'false' }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}', changeStatusModalOpen: false, statusChange : '' }"
+    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, saveChangesModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Waiting', 'Delivered', 'Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}', changeStatusModalOpen: false, statusChange : '' }"
     x-cloak>
 
     @if(session('start_success'))
@@ -102,12 +102,12 @@
                     <div class="p-0 py-4 md:p-4">
                         <div class="flex flex-col">
                             <div class="flex flex-row">
-                                <p class="text-lg font-semibold">Order tracking</p>
+                                <p class="text-lg font-semibold">Order tracking: {{ $order->item_status }}</p>
                                 <div class="flex gap-2 ml-auto">
                                     <!-- Update/Save Button -->
                                     <button type="button"
                                         @click="if (!updateMode){ updateMode = true; } else if (updateMode) { saveChangesModalOpen = true; document.body.style.overflow = 'hidden'; }"
-                                        :disabled="transactionStatus === 'cancelled'"
+                                        :disabled="transactionStatus === 'cancelled' || status === 'Cancelled'"
                                         class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
 
                                         <!-- SVG Icon -->
@@ -135,14 +135,14 @@
                                 <ol class="hidden md:flex w-full gap-8 items-center">
                                     <!-- Step 1: Item purchased -->
                                     <li class="group relative flex-1 after:content-[''] after:bg-gray-200 after:h-0.5 after:w-full after:absolute after:top-1/2 after:right-[-50%] after:z-0"
-                                        :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || thirdClicked}"
-                                        @click="if (updateMode){firstClicked = !firstClicked; secondClicked = false; thirdClicked = false;}">
-                                        <div :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : firstClicked || secondClicked || thirdClicked}"
+                                        :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || status === 'Rated' }"
+                                        @click="if (updateMode){firstClicked = !firstClicked; secondClicked = false; }">
+                                        <div :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : firstClicked || secondClicked || status === 'Rated' }"
                                             class="flex items-center gap-4 h-24 p-4 bg-gray-50 rounded-lg shadow z-10 relative">
                                             <div class="rounded-lg flex items-center justify-center h-10 w-10 bg-gray-200"
-                                                :class="{'group-hover:bg-green-700' : updateMode , 'bg-green-700' : firstClicked || secondClicked || thirdClicked}">
+                                                :class="{'group-hover:bg-green-700' : updateMode , 'bg-green-700' : firstClicked || secondClicked || status === 'Rated' }">
                                                 <span class="'text-gray-600'"
-                                                    :class="{'group-hover:text-white group-hover:bg-green-700' : updateMode, 'text-white' : firstClicked || secondClicked || thirdClicked}">
+                                                    :class="{'group-hover:text-white group-hover:bg-green-700' : updateMode, 'text-white' : firstClicked || secondClicked || status === 'Rated' }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
@@ -165,14 +165,14 @@
 
                                     <!-- Step 2: Item Delivered -->
                                     <li class="group relative flex-1 after:content-[''] after:h-0.5 after:w-full after:bg-gray-200 after:absolute after:top-1/2 after:right-[-50%] after:z-0"
-                                        :class="{'hover:after:bg-green-700 cursor-pointer' : updateMode, 'after:bg-green-700' : secondClicked || thirdClicked }"
-                                        @click="if (updateMode) {secondClicked = !secondClicked; firstClicked = false; thirdClicked = false;}">
+                                        :class="{'hover:after:bg-green-700 cursor-pointer' : updateMode, 'after:bg-green-700' : secondClicked }"
+                                        @click="if (updateMode) {secondClicked = !secondClicked; firstClicked = false; }">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow z-10 relative"
-                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : secondClicked || thirdClicked }">
+                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : secondClicked || status === 'Rated' }">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
-                                                :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : secondClicked || thirdClicked }">
+                                                :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : secondClicked || status === 'Rated' }">
                                                 <span class="text-gray-600"
-                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : secondClicked || thirdClicked }">
+                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : secondClicked || status === 'Rated' }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
@@ -191,14 +191,12 @@
                                     </li>
 
                                     <!-- Step 3: Transaction rating -->
-                                    <li class="relative flex-1 group"
-                                        @click="if (updateMode) {thirdClicked = !thirdClicked; firstClicked = false; secondClicked = false;}">
+                                    <li class="relative flex-1 group">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow"
-                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : thirdClicked}">
-                                            <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
-                                                :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : thirdClicked}">
+                                            :class="{'bg-green-50 border border-[#014421]' : status === 'Rated'}">
+                                            <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10">
                                                 <span class="text-gray-600"
-                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : thirdClicked}">
+                                                :class="{'text-white' : status === 'Rated' }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
@@ -219,14 +217,14 @@
 
                                 <ol class="block md:hidden space-y-8">
                                     <li class="group after:bg-gray-200 relative flex-1 after:content-[''] after:w-0.5 after:h-full after:inline-block after:absolute after:-bottom-11 after:left-1/2"
-                                        :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || thirdClicked}"
-                                        @click="if (updateMode){firstClicked = !firstClicked; secondClicked = false; thirdClicked = false;}">
+                                        :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || status === 'Rated' }"
+                                        @click="if (updateMode){firstClicked = !firstClicked; secondClicked = false; }">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow z-10 relative"
-                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421] cursor-pointer' : firstClicked || secondClicked || thirdClicked}">
+                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421] cursor-pointer' : firstClicked || secondClicked || status === 'Rated'  }">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
-                                                :class="{'group-hover:bg-green-700' : updateMode,'bg-green-700' : firstClicked || secondClicked || thirdClicked}">
+                                                :class="{'group-hover:bg-green-700' : updateMode,'bg-green-700' : firstClicked || secondClicked || status === 'Rated' }">
                                                 <span class="text-gray-600"
-                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : firstClicked || secondClicked || thirdClicked }">
+                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : firstClicked || secondClicked || status === 'Rated' }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
@@ -246,14 +244,14 @@
 
                                     <!-- Step 2: Item Delivered -->
                                     <li class="group relative flex-1 after:content-[''] after:w-0.5 after:h-full after:bg-gray-200 after:inline-block after:absolute after:-bottom-11 after:left-1/2"
-                                        :class="{'hover:after:bg-green-700 cursor-pointer' : updateMode, 'after:bg-green-700' : secondClicked || thirdClicked }"
-                                        @click="if (updateMode) {secondClicked = !secondClicked; firstClicked = false; thirdClicked = false;}">
+                                        :class="{'hover:after:bg-green-700 cursor-pointer' : updateMode, 'after:bg-green-700' : secondClicked }"
+                                        @click="if (updateMode) {secondClicked = !secondClicked; firstClicked = false; }">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow z-10 relative"
-                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : secondClicked || thirdClicked }">
+                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : secondClicked }">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
-                                                :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : secondClicked || thirdClicked  }">
+                                                :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : secondClicked }">
                                                 <span class="text-gray-600"
-                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : secondClicked || thirdClicked }">
+                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : secondClicked }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
@@ -272,14 +270,13 @@
                                     </li>
 
                                     <!-- Step 3: Transaction rating -->
-                                    <li class="relative flex-1 group"
-                                        @click="if (updateMode) {thirdClicked = !thirdClicked; firstClicked = false; secondClicked = false;}">
+                                    <li class="relative flex-1 group">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow"
-                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : thirdClicked}">
+                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : status === 'Rated'}">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
-                                                :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : thirdClicked}">
+                                                :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : status === 'Rated'}">
                                                 <span class="text-gray-600"
-                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : thirdClicked}">
+                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : status === 'Rated'}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
@@ -307,7 +304,7 @@
                                 <div class="text-sm flex flex-col items-start gap-1">
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
-                                            Created on:
+                                            Order added:
                                         </span>
                                         <p class="text-gray-600 font-normal break-words">
                                             {{ $order->created_at->Timezone('Singapore')->format('F j, Y') . " at " . Carbon\Carbon::parse($order->created_at)->format('g:i A') }}
@@ -358,7 +355,7 @@
                             <div class="flex flex-row">
                                 <p class="text-lg font-semibold">Customer details:</p>
                                 <button type="button"
-                                    :disabled="transactionStatus === 'cancelled'"
+                                    :disabled="transactionStatus === 'cancelled' || status === 'Cancelled'"
                                     class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
 
                                     <!-- SVG Icon -->
@@ -557,7 +554,7 @@
             <div class="mt-5 flex justify-end gap-2">
                 <button @click="saveChangesModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button x-data="{ disabled: false }" :disabled="disabled"  @click="disabled = true; saveChangesModalOpen = false; document.body.style.overflow = 'auto'; $wire.saveChanges(firstClicked, secondClicked, thirdClicked, isPaid);" 
+                <button x-data="{ disabled: false }" :disabled="disabled"  @click="disabled = true; saveChangesModalOpen = false; document.body.style.overflow = 'auto'; $wire.saveChanges(firstClicked, secondClicked, isPaid);" 
                     class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
             </div>
         </div>

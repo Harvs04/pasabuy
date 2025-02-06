@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, saveChangesModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, thirdClicked: {{ in_array($order->item_status, ['Rated']) ? 'true' : 'false' }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}', changeStatusModalOpen: false, statusChange : '' }"
+    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, saveChangesModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Waiting', 'Delivered','Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, thirdClicked: {{ in_array($order->item_status, ['Rated']) ? 'true' : 'false' }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}', changeStatusModalOpen: false, statusChange : '' }"
     x-cloak>
 
     @if(session('start_success'))
@@ -102,7 +102,7 @@
                     <div class="p-0 py-4 md:p-4">
                         <div class="flex flex-col">
                             <div class="flex flex-row">
-                                <p class="text-lg font-semibold">Order tracking</p>
+                                <p class="text-lg font-semibold">Order tracking: {{ $order->item_status }}</p>
                                 <div class="flex gap-2 ml-auto">
                                     <!-- Update/Save Button -->
                                     <button type="button"
@@ -307,7 +307,7 @@
                                 <div class="text-sm flex flex-col items-start gap-1">
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
-                                            Created on:
+                                            Order added:
                                         </span>
                                         <p class="text-gray-600 font-normal break-words">
                                             {{ $order->created_at->Timezone('Singapore')->format('F j, Y') . " at " . Carbon\Carbon::parse($order->created_at)->format('g:i A') }}
