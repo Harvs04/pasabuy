@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['like' ,'comment', 'new order', 'new item request', 'new transaction', 'cancelled order', 'converted post', 'item bought', 'item delivered', 'item unavailable', 'transaction cancelled']);
+            $table->enum('type', ['like' ,'comment', 'new order', 'new item request', 'new transaction', 'cancelled order', 'converted post', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item unavailable', 'transaction cancelled']);
             $table->unsignedBigInteger('post_id');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->unsignedBigInteger('actor_id');
