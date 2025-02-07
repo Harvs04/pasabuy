@@ -26,6 +26,10 @@ class User extends Authenticatable
         'degree_program',
         'email',
         'role',
+        'successful_orders',
+        'cancelled_orders',
+        'successful_deliveries',
+        'cancelled_transactions',
         'password',
         'google_id',
         'profile_pic_url'
