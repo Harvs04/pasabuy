@@ -26,6 +26,29 @@ class OrderView extends Component
             $this->order->item_status = 'Delivered';
             $this->order->save();
 
+            // notif for confirming
+            Notification::create([
+                'type' => 'item confirmed',
+                'post_id' => $this->order->post_id,
+                'actor_id' => $this->order->customer_id,
+                'poster_id' => $this->order->provider_id
+            ]);
+
+            Notification::create([
+                'type' => 'item delivered',
+                'post_id' => $this->order->post_id,
+                'actor_id' => $this->order->provider_id,
+                'poster_id' => $this->order->customer_id
+            ]);
+
+            $customer = User::where('id', $this->order->customer_id)->first();
+            $customer->successful_orders += 1;
+            $customer->save();
+
+            $provider = User::where('id', $this->order->provider_id)->first();
+            $provider->successful_deliveries += 1;
+            $provider->save();
+
             sleep(1.5);
             session()->flash('order_updated_success', 'Delivery Confirmed!');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);

@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, saveChangesModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Waiting', 'Delivered','Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, thirdClicked: {{ in_array($order->item_status, ['Rated']) ? 'true' : 'false' }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}', changeStatusModalOpen: false, statusChange : '' }"
+    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, saveChangesModalOpen: false, rateTransactionModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Waiting', 'Delivered','Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, thirdClicked: {{ in_array($order->item_status, ['Rated']) ? 'true' : 'false' }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}', changeStatusModalOpen: false, statusChange : '' }"
     x-cloak>
 
     @if(session('start_success'))
@@ -105,20 +105,33 @@
                                 <p class="text-lg font-semibold">Order tracking: {{ $order->item_status }}</p>
                                 <div class="flex gap-2 ml-auto">
                                     <!-- Update/Save Button -->
-                                    <button type="button"
+                                    <button x-show="status === 'Waiting'" type="button"
                                         @click="saveChangesModalOpen = true; document.body.style.overflow = 'hidden';"
                                         :disabled="transactionStatus === 'cancelled' || status !== 'Waiting'"
                                         class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:bg-gray-300 disabled:cursor-not-allowed">
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                            class="w-4 h-4 text-white sm:me-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white sm:me-2">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                         </svg>
 
                                         <!-- Dynamic Text -->
                                         <span class="hidden sm:block">Confirm delivery</span>
+                                    </button>
+
+                                    <button x-show="status === 'Delivered'" type="button"
+                                        @click="rateTransactionModalOpen = true; document.body.style.overflow = 'hidden';"
+                                        :disabled="transactionStatus === 'cancelled' || status !== 'Delivered'"
+                                        class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:bg-gray-300 disabled:cursor-not-allowed">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white sm:me-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                                        </svg>
+
+                                        <!-- Dynamic Text -->
+                                        <span class="hidden sm:block">Rate transaction</span>
                                     </button>
                                 </div>
 
@@ -366,38 +379,47 @@
                             </div>
 
                             <div class="flex flex-wrap items-start gap-4 text-gray-700">
-                                <img src="{{ App\Models\User::where('id', $order->provider_id)->first()->profile_pic_url }}" alt="provider_image"
+                                <img src="{{ App\Models\User::where('id', $order->provider_id)->first()->profile_pic_url }}"
+                                    alt="provider_image"
                                     class="rounded-full w-20 h-20 sm:w-32 sm:h-32 object-cover self-center sm:self-start">
                                 <div class="text-sm flex flex-col items-start gap-1">
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             Name:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->provider_id)->first()->name }}</p>
+                                        <p class="text-gray-600 font-normal break-words">
+                                            {{ App\Models\User::where('id', $order->provider_id)->first()->name }}</p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             Email:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->provider_id)->first()->email }}</p>
+                                        <p class="text-gray-600 font-normal break-words">
+                                            {{ App\Models\User::where('id', $order->provider_id)->first()->email }}</p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             College:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->provider_id)->first()->college }}</p>
+                                        <p class="text-gray-600 font-normal break-words">
+                                            {{ App\Models\User::where('id', $order->provider_id)->first()->college }}
+                                        </p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             Degree program:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->provider_id)->first()->degree_program }}</p>
+                                        <p class="text-gray-600 font-normal break-words">
+                                            {{ App\Models\User::where('id', $order->provider_id)->first()->degree_program }}
+                                        </p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             Contact number:
                                         </span>
-                                        <p class="text-gray-600 font-normal break-words">{{ App\Models\User::where('id', $order->provider_id)->first()->contact_number }}</p>
+                                        <p class="text-gray-600 font-normal break-words">
+                                            {{ App\Models\User::where('id', $order->provider_id)->first()->contact_number }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -503,10 +525,10 @@
     </div>
 
     <!-- SAVE MODAL -->
-    <div @keydown.escape.window="saveChangesModalOpen = false; document.body.style.overflow = 'auto';" x-show="saveChangesModalOpen"
-        x-transition:enter.duration.25ms
+    <div @keydown.escape.window="saveChangesModalOpen = false; document.body.style.overflow = 'auto';"
+        x-show="saveChangesModalOpen" x-transition:enter.duration.25ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
+        <div class="bg-white p-6 rounded-lg w-11/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
             <div class="flex flex-row items-center gap-2 sm:gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="#014421" class="size-6 md:size-7">
@@ -522,20 +544,79 @@
                     </svg>
                 </button>
             </div>
-            <p class="text-sm mt-2 sm:ml-2">Do you confirm that your order has been delivered by provider, <span class="font-semibold"> {{ App\Models\User::where('id', $order->provider_id)->first()->name }} </span> at <span class="font-semibold"> {{ App\Models\Post::where('id', $order->post_id)->first()->meetup_place }}</span>?</p>
-            
+            <p class="text-sm mt-2 sm:mt-8 sm:ml-2">Do you confirm that your order has been delivered by provider, <span
+                    class="font-semibold"> {{ App\Models\User::where('id', $order->provider_id)->first()->name }}
+                </span> at <span class="font-semibold">
+                    {{ App\Models\Post::where('id', $order->post_id)->first()->meetup_place }}</span>?</p>
+
             <div class="mt-5 flex justify-end gap-2">
                 <button @click="saveChangesModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button x-data="{ disabled: false }" :disabled="disabled"  @click="disabled = true; saveChangesModalOpen = false; document.body.style.overflow = 'auto'; $wire.confirmDelivery();" 
+                <button x-data="{ disabled: false }" :disabled="disabled"
+                    @click="disabled = true; saveChangesModalOpen = false; document.body.style.overflow = 'auto'; $wire.confirmDelivery();"
                     class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
             </div>
         </div>
     </div>
 
+    <!-- RATE -->
+    <div @keydown.escape.window="rateTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+        x-show="rateTransactionModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+        <div class="bg-white p-6 rounded-lg w-11/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative flex flex-col items-center">
+
+            <!-- Image at the Top Center -->
+            <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738904265/1_xrzfcp.png" alt="Rating Image"
+                class="w-60 h-32 object-cover">
+
+            <p class="text-sm text-center mb-4">We want to hear from you!</p>
+
+            <!-- Star Rating -->
+            <div class="flex justify-center mb-4" x-data="{ rating: 0, tempRating: 0 }">
+                <template x-for="star in 5">
+                    <svg @mouseover="tempRating = star" @mouseleave="tempRating = rating" @click="rating = star"
+                        :class="(star <= tempRating || star <= rating) ? 'fill-yellow-400' : 'fill-gray-100'"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421"
+                        class="w-8 h-8 cursor-pointer transition-colors duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                    </svg>
+                </template>
+            </div>
+
+            <!-- Textual Feedback -->
+            <textarea
+                class="text-sm w-full border border-gray-300 rounded-md p-2 mb-4 focus:outline-none focus:border-[#014421]"
+                placeholder="Leave feedback for the provider..." rows="5"
+                style="resize: none; max-height: 200px;"></textarea>
+
+            <!-- Buttons -->
+            <div class="flex justify-end w-full gap-2">
+                <button @click="rateTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="px-3 py-1 text-sm border rounded-md hover:bg-slate-200">Cancel</button>
+
+                <button
+                    @click="rateTransactionModalOpen = false; document.body.style.overflow = 'auto'; $wire.confirmDelivery();"
+                    class="px-3 py-1 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Submit</button>
+            </div>
+
+            <!-- Close Button -->
+            <button @click="rateTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+                class="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="#000000" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+
+
     <!-- UPDATE STATUS MODAL -->
-    <div @keydown.escape.window="changeStatusModalOpen = false; document.body.style.overflow = 'auto';" x-show="changeStatusModalOpen"
-        x-transition:enter.duration.25ms
+    <div @keydown.escape.window="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
+        x-show="changeStatusModalOpen" x-transition:enter.duration.25ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
             <div class="flex flex-row items-center gap-2 sm:gap-3">
@@ -554,11 +635,12 @@
                 </button>
             </div>
             <p class="text-sm mt-2 sm:ml-2">Do you wish to save your changes?</p>
-            
+
             <div class="mt-5 flex justify-end gap-2">
                 <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button x-data="{ disabled: false }" :disabled="disabled" @click="disabled = true; changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';" 
+                <button x-data="{ disabled: false }" :disabled="disabled"
+                    @click="disabled = true; changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';"
                     class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
             </div>
         </div>
