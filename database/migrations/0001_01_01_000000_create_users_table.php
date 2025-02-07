@@ -22,6 +22,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('google_id')->nullable();
             $table->enum('role', ['customer', 'provider', 'admin']);
+            $table->float('star_rating')->default(0);
+            $table->integer('successful_orders')->default(0);
+            $table->integer('cancelled_orders')->default(0);
+            $table->integer('successful_deliveries')->default(0);
+            $table->integer('cancelled_transactions')->default(0);
             $table->string('password')->nullable();
             $table->integer('pasabuy_points')->default(100);
             $table->string('profile_pic_url');
