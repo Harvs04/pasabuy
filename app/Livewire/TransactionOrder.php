@@ -30,8 +30,23 @@ class TransactionOrder extends Component
                 $status = 'Pending';
             } else if ($purchased) {
                 $status = 'Acquired';
+
+                Notification::create([
+                    'type' => 'item bought',
+                    'post_id' => $this->order->post_id,
+                    'actor_id' => $this->order->provider_id,
+                    'poster_id' => $this->order->customer_id
+                ]);
+
             } else if ($delivered) {
                 $status = 'Waiting';
+
+                Notification::create([
+                    'type' => 'item waiting',
+                    'post_id' => $this->order->post_id,
+                    'actor_id' => $this->order->provider_id,
+                    'poster_id' => $this->order->customer_id
+                ]);
             }
 
             if ($this->order->item_status !== $status) {
