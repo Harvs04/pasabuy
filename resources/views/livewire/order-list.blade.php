@@ -151,7 +151,8 @@
                                     class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
                                 @endif
                             </td>
-                            <td scope="row" class="px-1 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
+                            <td scope="row"
+                                class="px-1 py-4 font-medium text-gray-900 whitespace-nowrap relative flex justify-center"
                                 x-data="{ waitingInfo: false, status: '{{ $order->item_status }}' }">
 
                                 <span class="
@@ -159,14 +160,15 @@
         {{ in_array($order->item_status, ['Pending', 'Waiting']) ? 'bg-yellow-900 text-yellow-300' : '' }}
         {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
         {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
-        text-xs font-medium me-2 px-2.5 py-0.5 rounded-full relative flex items-center justify-center
+        text-xs font-medium me-2 px-2.5 py-0.5 rounded-full flex items-center justify-center relative
     ">
                                     {{ ucwords($order->item_status) }}
 
                                     <!-- Info Icon -->
-                                    <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true" @mouseleave="waitingInfo = false"
-                                        xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 ml-1 cursor-pointer"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true"
+                                        @mouseleave="waitingInfo = false" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-3.5 h-3.5 ml-1 cursor-pointer" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
                                     </svg>
@@ -175,11 +177,11 @@
                                     <div x-show="waitingInfo && status === 'Waiting'"
                                         class="absolute bottom-full mb-1 right-0 bg-white text-gray-600 p-2 text-xs shadow-lg rounded-md z-10"
                                         x-cloak>
-                                        You must confirm whether your order has been delivered.
+                                        You must confirm whether the order has been delivered.
                                     </div>
                                 </span>
-
                             </td>
+
 
                             <td class="px-6 py-4 align-middle" x-data="{ orderStatus: '{{ $order->item_status }}' }">
                                 <span class="flex flex-row gap-4 items-center justify-center">

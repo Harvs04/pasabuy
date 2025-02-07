@@ -65,6 +65,12 @@
                                        <span class="font-normal">successfully acquired your order.</span>
                                     @elseif ($notif->type === 'item unavailable')
                                        <span class="font-normal">was not able to buy your order.</span>
+                                    @elseif ($notif->type === 'item waiting')
+                                       <span class="font-normal">marked your order as delivered.</span>
+                                    @elseif ($notif->type === 'item confirmed')
+                                       <span class="font-normal">has confirmed your delivery.</span>
+                                    @elseif ($notif->type === 'item delivered')
+                                       <span class="font-normal">has delivered your order.</span>
                                     @elseif ($notif->type === 'item deleted')
                                        <span class="font-normal">deleted your order.</span>
                                     @elseif ($notif->type === 'transaction cancelled')

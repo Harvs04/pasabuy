@@ -143,12 +143,16 @@
                             </td>
                             <td class="px-1 py-4 text-center">
                                 @if($order->is_paid)
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Paid </span>
+                                <span
+                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Paid
+                                </span>
                                 @elseif(!$order->is_paid)
-                                    <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
+                                <span
+                                    class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Pending</span>
                                 @endif
                             </td>
-                            <td scope="row" class="px-1 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
+                            <td scope="row"
+                                class="px-1 py-4 font-medium text-gray-900 whitespace-nowrap relative flex justify-center"
                                 x-data="{ waitingInfo: false, status: '{{ $order->item_status }}' }">
 
                                 <span class="
@@ -156,14 +160,15 @@
         {{ in_array($order->item_status, ['Pending', 'Waiting']) ? 'bg-yellow-900 text-yellow-300' : '' }}
         {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
         {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
-        text-xs font-medium me-2 px-2.5 py-0.5 rounded-full relative flex items-center justify-center
+        text-xs font-medium me-2 px-2.5 py-0.5 rounded-full flex items-center justify-center relative
     ">
                                     {{ ucwords($order->item_status) }}
 
                                     <!-- Info Icon -->
-                                    <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true" @mouseleave="waitingInfo = false"
-                                        xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 ml-1 cursor-pointer"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true"
+                                        @mouseleave="waitingInfo = false" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-3.5 h-3.5 ml-1 cursor-pointer" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
                                     </svg>
@@ -175,8 +180,8 @@
                                         Waiting for customer's confirmation.
                                     </div>
                                 </span>
-
                             </td>
+
                             <td class="px-6 py-4 align-middle">
                                 <span class="flex flex-row gap-2 items-center justify-center">
                                     <a href="{{ route('transaction-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
@@ -389,7 +394,8 @@
             <div class="mt-5 flex gap-2">
                 <button @click="deleteOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button x-data="{ disabled: false }" :disabled="disabled" @click="disabled = true; $wire.deleteOrder(deleteIndex); deleteIndex = null;"
+                <button x-data="{ disabled: false }" :disabled="disabled"
+                    @click="disabled = true; $wire.deleteOrder(deleteIndex); deleteIndex = null;"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]">
                     Confirm
                 </button>

@@ -107,8 +107,8 @@
                                     <!-- Update/Save Button -->
                                     <button type="button"
                                         @click="if (!updateMode){ updateMode = true; } else if (updateMode) { saveChangesModalOpen = true; document.body.style.overflow = 'hidden'; }"
-                                        :disabled="transactionStatus === 'cancelled' || status === 'Cancelled'"
-                                        class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
+                                        :disabled="transactionStatus === 'cancelled' || status === 'Cancelled' || status === 'Delivered'"
+                                        class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed disabled:bg-gray-300">
 
                                         <!-- SVG Icon -->
                                         <svg x-show="!updateMode" xmlns="http://www.w3.org/2000/svg" fill="none"
