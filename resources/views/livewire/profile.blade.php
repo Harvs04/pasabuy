@@ -188,8 +188,8 @@
                                     <p class="font-medium text-lg">Customer</p>
                                 </div>
                                 <div class="flex flex-col text-sm gap-1 lg:gap-0 xl:gap-1">
-                                    <p>Successful purchase: 1</p>
-                                    <p>Cancelled items: 1</p>
+                                    <p>Successful purchase: {{ $user->successful_orders }}</p>
+                                    <p>Cancelled items: {{ $user->cancelled_orders }}</p>
                                 </div>
                             </div>
                             <hr class="my-5 lg:my-3 xl:my-5" />
@@ -220,8 +220,8 @@
                     </svg> -->
                                         <p>(12)</p>
                                     </div>
-                                    <p>Successful Deliveries: 1</p>
-                                    <p>Cancelled transactions: 1</p>
+                                    <p>Successful Deliveries: {{ $user->successful_deliveries }}</p>
+                                    <p>Cancelled transactions: {{ $user->cancelled_transactions }}</p>
                                     <button
                                         class="w-fit py-1 px-4 mt-1 xl:mt-3 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md">
                                         View wordcloud </button>
