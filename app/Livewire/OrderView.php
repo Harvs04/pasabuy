@@ -38,12 +38,12 @@ class OrderView extends Component
                 'poster_id' => $this->order->provider_id
             ]);
 
-            Notification::create([
-                'type' => 'item delivered',
-                'post_id' => $this->order->post_id,
-                'actor_id' => $this->order->provider_id,
-                'poster_id' => $this->order->customer_id
-            ]);
+            // Notification::create([
+            //     'type' => 'item delivered',
+            //     'post_id' => $this->order->post_id,
+            //     'actor_id' => $this->order->provider_id,
+            //     'poster_id' => $this->order->customer_id
+            // ]);
 
             $customer = User::where('id', $this->order->customer_id)->first();
             $customer->successful_orders += 1;
