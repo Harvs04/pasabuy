@@ -1,4 +1,4 @@
-<div class="text-gray-800 mx-2 my-4">
+<div class="text-gray-800 mx-2 my-4" x-data="{ orders: '{{ count($user->orders) }}', transactions: '{{ count($user->transactions) }}' }">
     <div class="flex flex-col font-poppins" x-cloak>
         <!-- ALERT MESSAGES -->
         @if(session('change_role_success'))
@@ -134,7 +134,7 @@
                                     fill="black" />
                             </svg>
                         </a>
-                        <p class="text-2xl font-semibold">User Profile & Settings</p>
+                        <p class="text-2xl font-semibold">Profile & Settings</p>
                     </div>
                     <!-- IMAGE -->
                     <div class="rounded-md bg-white shadow w-full p-4">
@@ -146,7 +146,7 @@
                                     {{ $user->name }} </p>
                                 <p class="text-sm"> {{ $user->constituent }} </p>
                                 <button
-                                    class="py-1 px-2 mt-2 bg-[#014421] hover:bg-green-800 text-white text-sm rounded-md">
+                                    class="py-1 px-2 mt-2 bg-[#014421] hover:bg-green-800 text-white text-xs rounded-md">
                                     Change picture </button>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                     <div class="flex justify-start rounded-md bg-white shadow w-full gap-4">
                         <div class="w-full xl:w-5/6 flex flex-col py-6 px-8 lg:px-5 lg:py-4 xl:py-6 xl:px-8">
                             <p class="text-lg font-medium md:font-semibold">PASABUY Information</p>
-                            <div class="flex flex-row gap-1 items-center text-sm mt-1" x-data="{ open: false }">
+                            <div class="flex flex-row gap-1 items-center text-sm" x-data="{ open: false }">
                                 <p>PASABUY points</p>
                                 <div @mouseenter="open = true" @mouseleave="open = false"
                                     class="flex self-center relative">
@@ -178,7 +178,7 @@
                                 <p>: {{ $user->pasabuy_points }}</p>
                             </div>
                             <hr class="my-5 lg:my-3 xl:my-5" />
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-1">
                                 <div class="flex flex-row gap-2 items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" class="size-5 xl:size-6">
@@ -187,13 +187,13 @@
                                     </svg>
                                     <p class="font-medium text-lg">Customer</p>
                                 </div>
-                                <div class="flex flex-col text-sm gap-1 lg:gap-0 xl:gap-1">
+                                <div class="flex flex-col text-sm gap-1">
                                     <p>Successful purchase: {{ $user->successful_orders }}</p>
                                     <p>Cancelled items: {{ $user->cancelled_orders }}</p>
                                 </div>
                             </div>
                             <hr class="my-5 lg:my-3 xl:my-5" />
-                            <div class="flex flex-col gap-2">
+                            <div class="flex flex-col gap-1">
                                 <div class="flex flex-row gap-2 items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" class="size-5 xl:size-6">
@@ -202,7 +202,7 @@
                                     </svg>
                                     <p class="font-medium text-lg">Provider</p>
                                 </div>
-                                <div class="flex flex-col text-sm gap-1 lg:gap-0 xl:gap-1">
+                                <div class="flex flex-col text-sm gap-1">
                                     <div class="flex flex-row items-center gap-1">
                                         <p class="">Rating:</p>
                                         <div class="flex flex-row">
@@ -260,7 +260,7 @@
                         x-data="{ deleteAccountModalOpen: false }">
                         <div class="flex flex-col py-6 px-8 lg:px-5 lg:py-4 xl:py-6 xl:px-8">
                             <p class="text-lg font-medium md:font-semibold">Account Management</p>
-                            <button class="w-full mt-1" x-data="{ disabled: false }" :disabled="disabled"
+                            <button class="w-fit mt-1" x-data="{ disabled: false }" :disabled="disabled"
                                 @click="disabled = true; $wire.logOut();">
                                 <div
                                     class="flex items-center justify-center gap-2 w-fit font-medium px-2 py-1 text-sm bg-white text-[#014421] border border-[#014421] rounded-md hover:bg-gray-100">
@@ -286,7 +286,8 @@
                                 </p>
                                 <p class="text-sm">This action will completely delete your data in our database.</p>
                                 <button @click="deleteAccountModalOpen = true; document.body.style.overflow = 'hidden';"
-                                    class="w-fit font-medium px-2 sm:px-3 py-1 text-sm bg-white text-[#7b1113] border border-[#7b1113] rounded-md hover:bg-rose-300">Delete
+                                    x-bind:disabled="orders > 0 || transactions > 0"
+                                    class="w-fit font-medium px-2 sm:px-3 py-1 text-sm enabled:bg-white enabled:text-[#7b1113] enabled:border enabled:border-[#7b1113] rounded-md enabled:hover:bg-rose-300 disabled:bg-gray-300 disabled:text-white disabled:cursor-not-allowed">Delete
                                     Account</button>
                             </div>
                         </div>

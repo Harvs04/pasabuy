@@ -10,7 +10,7 @@
 </head>
 <body class="flex flex-col items-center gap-5 font-montserrat">
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
-        <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
+        <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png" class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
         <p class="text-xl md:text-2xl font-montserrat text-white font-bold">PASABUY</p>
     </div>
     <div class="w-10/12 mt-20 md:mt-10 flex flex-col md:w-9/12 text-center items-center gap-12">
