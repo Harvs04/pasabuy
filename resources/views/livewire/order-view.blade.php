@@ -101,7 +101,7 @@
 
     <!-- CONTENT -->
     <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-col-reverse mid:flex-row"
-        style="margin-top: 4.3rem;" :class="{'lg:ml-64 xl:ml-96': openBurger, 'mid:ml-0': !openBurger}">
+        style="margin-top: 4.3rem;">
         <div class="p-4 w-full">
             <div class="relative overflow-x-auto shadow-md rounded-lg w-full">
                 <div class="p-5 text-left rtl:text-right text-gray-800 bg-white overflow-hidden flex flex-col">

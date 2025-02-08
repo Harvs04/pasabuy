@@ -175,9 +175,10 @@
 
         <!-- Tooltip -->
         <div x-show="waitingInfo && status === 'Waiting'"
-            class="absolute bottom-full mb-1 right-0 bg-white text-gray-600 p-2 text-xs shadow-lg rounded-md z-10"
+            class="absolute bottom-full mb-1 -right-12 bg-white text-gray-600 p-2 text-xs shadow-lg rounded-md z-10 
+                    whitespace-wrap sm:whitespace-nowrap max-w-max"
             x-cloak>
-            You must confirm whether the order has been delivered.
+            Waiting for the customer to confirm the delivery.
         </div>
     </span>
 </td>
