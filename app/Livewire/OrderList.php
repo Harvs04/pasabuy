@@ -34,7 +34,9 @@ class OrderList extends Component
             $order->save();
 
             $this->user->pasabuy_points -= 5;
+            $this->user->cancelled_orders += 1;
             $this->user->save();
+            
                     
             Notification::create([
                 'type' => 'cancelled order',

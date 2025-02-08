@@ -29,6 +29,7 @@ class Transactions extends Component
 
             if (count($transaction->orders) > 0) {
                 $this->user->pasabuy_points -= 5;
+                $this->user->cancelled_transactions += 1;
                 $this->user->save();
     
                 foreach($transaction->orders as $order) {
