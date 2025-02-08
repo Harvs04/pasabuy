@@ -98,9 +98,9 @@
             </button>
         </div>
         <script>
-        setTimeout(() => {
-            document.querySelector('.flash').style.display = 'none';
-        }, 3000); // 3 seconds
+            setTimeout(() => {
+                document.querySelector('.flash').style.display = 'none';
+            }, 3000); // 3 seconds
         </script>
         @endif
         <div class="flex flex-row items-center gap-3 md:gap-5" style="margin-top: 3.5rem;">
@@ -137,8 +137,8 @@
                         <p class="text-2xl font-semibold">User Profile & Settings</p>
                     </div>
                     <!-- IMAGE -->
-                    <div class="rounded-md bg-white shadow w-full gap-4">
-                        <div class="w-full flex flex-col xl:flex-row justify-center items-center gap-4 py-6">
+                    <div class="rounded-md bg-white shadow w-full p-4">
+                        <div class="w-full flex flex-col xl:flex-row justify-start items-center gap-4">
                             <img src="{{ $user->profile_pic_url }}"
                                 class="h-14 xl:h-20 aspect-auto rounded-full border shadow" alt="user_photo" />
                             <div class="flex flex-col justify-center items-center xl:items-start">
@@ -206,19 +206,46 @@
                                     <div class="flex flex-row items-center gap-1">
                                         <p class="">Rating:</p>
                                         <div class="flex flex-row">
-                                            @for($i = 0; $i < 5; $i++) <svg xmlns="http://www.w3.org/2000/svg"
-                                                class="w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="size-5 xl:size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            @php
+                                                $averageRating = round($user->ratings->avg('star_rating'), 1); // Rounded to 1 decimal place
+                                            @endphp
+                                            @for ($i = 1; $i <= 5; $i++) @if ($i <=floor($averageRating)) <!-- Solid
+                                                Star for full rating -->
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="w-5 xl:w-6 text-yellow-500" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
-                                                @endfor()
+                                                @elseif ($i - $averageRating < 1) <!-- Half Star for fractional rating
+                                                    -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="w-5 xl:w-6 text-yellow-400" viewBox="0 0 24 24"
+                                                        fill="currentColor">
+                                                        <defs>
+                                                            <linearGradient id="half">
+                                                                <stop offset="50%" stop-color="currentColor" />
+                                                                <stop offset="50%" stop-color="transparent" />
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <path fill="url(#half)"
+                                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                    @else
+                                                    <!-- Outline Star for empty rating -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="w-5 xl:w-6 text-gray-300" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor" stroke-width="1.5">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                                    </svg>
+                                                    @endif
+                                                    @endfor
                                         </div>
-                                        <!-- SOLID STAR -->
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-5" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                      <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
-                    </svg> -->
-                                        <p>(12)</p>
+
+                                        <p>({{ count($user->ratings) }})</p>
                                     </div>
                                     <p>Successful Deliveries: {{ $user->successful_deliveries }}</p>
                                     <p>Cancelled transactions: {{ $user->cancelled_transactions }}</p>
@@ -233,7 +260,8 @@
                         x-data="{ deleteAccountModalOpen: false }">
                         <div class="flex flex-col py-6 px-8 lg:px-5 lg:py-4 xl:py-6 xl:px-8">
                             <p class="text-lg font-medium md:font-semibold">Account Management</p>
-                            <button class="w-full mt-1" x-data="{ disabled: false }" :disabled="disabled" @click="disabled = true; $wire.logOut();">
+                            <button class="w-full mt-1" x-data="{ disabled: false }" :disabled="disabled"
+                                @click="disabled = true; $wire.logOut();">
                                 <div
                                     class="flex items-center justify-center gap-2 w-fit font-medium px-2 py-1 text-sm bg-white text-[#014421] border border-[#014421] rounded-md hover:bg-gray-100">
                                     <svg class="w-4 sm:w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -484,7 +512,7 @@
                             <div class="mt-6 flex justify-start">
                                 <button
                                     class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm rounded-md"
-                                    :disabled="
+                                    x-bind:disabled="
                     (((!/^09\d{9}$/.test(contact) || contact.length !== 11) && contact.length > 0 || contact === originalContact) || 
                     (contact === '' && constituent === selectedConstituent && college === selectedCollege && degprog === selectedDegprog)) ||
                     (degprog === '' && constituent !== 'staff')
@@ -677,10 +705,9 @@
 
                             </div>
                             <div class="mt-6 flex justify-start">
-                                <button
-                                    x-data="{ disabled: false }"
+                                <button x-data="{ disabled: false }"
                                     class="font-medium py-2 px-3 bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm rounded-md"
-                                    :disabled="disabled || (new_password !== confirm_new_pass && new_password.length > 0 && confirm_new_pass.length > 0) || (new_password.length < 8 && new_password.length > 0) || new_password.length > 40 || current_password === '' || (!current_password || !new_password || !confirm_new_pass) || !/[A-Z]/.test(new_password)"
+                                    x-bind:disabled="disabled || (new_password !== confirm_new_pass && new_password.length > 0 && confirm_new_pass.length > 0) || (new_password.length < 8 && new_password.length > 0) || new_password.length > 40 || current_password === '' || (!current_password || !new_password || !confirm_new_pass) || !/[A-Z]/.test(new_password)"
                                     type="button"
                                     @click="disabled = true; $wire.checkPassword(); document.body.style.overflow = 'hidden';">Save
                                     changes</button>

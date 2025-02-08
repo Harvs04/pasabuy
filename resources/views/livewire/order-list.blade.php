@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, isChangeRoleModalOpen: false, cancelOrderModalOpen: false, deleteIndex: null, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '' }"
+    x-data="{ openBurger: false, isChangeRoleModalOpen: false, cancelOrderModalOpen: false, deleteIndex: null, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '', transactionStatus: '{{ $transaction->status }}' }"
     x-cloak>
 
     @if(session('start_success'))
@@ -201,7 +201,7 @@
                                         </div>
                                     </a>
                                     <button class="text-red-500 enabled:hover:text-red-600 disabled:cursor-not-allowed"
-                                        :disabled="orderStatus === 'Cancelled'"
+                                        x-bind:disabled="orderStatus === 'Cancelled' || transactionStatus === 'cancelled' || ['Acquired', 'Delivered', 'Waiting', 'Rated'].includes(orderStatus)"
                                         @click="cancelOrderModalOpen = true; document.body.style.overflow = 'hidden'; deleteIndex = {{ $order->id }};">
                                         <div class="flex">
                                             <svg class="size-5 block sm:hidden" xmlns="http://www.w3.org/2000/svg"
@@ -386,7 +386,7 @@
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
                     @click="disabled = true; cancelOrderModalOpen = false; $wire.cancelOrder({{$transaction->id}}, deleteIndex); deleteIndex = null;"
-                    class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]">
+                    class="px-2 sm:px-3 py-1.5 text-sm bg-red-700 text-white rounded-md hover:bg-red-600">
                     Confirm
                 </button>
             </div>

@@ -107,7 +107,7 @@
                                     <!-- Update/Save Button -->
                                     <button type="button"
                                         @click="if (!updateMode){ updateMode = true; } else if (updateMode) { saveChangesModalOpen = true; document.body.style.overflow = 'hidden'; }"
-                                        :disabled="transactionStatus === 'cancelled' || status === 'Cancelled' || status === 'Delivered'"
+                                        :disabled="transactionStatus === 'cancelled' || ['Cancelled', 'Delivered', 'Rated', 'Unavailable'].includes(status)"
                                         class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed disabled:bg-gray-300">
 
                                         <!-- SVG Icon -->
@@ -194,7 +194,8 @@
                                     <li class="relative flex-1 group">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow"
                                             :class="{'bg-green-50 border border-[#014421]' : status === 'Rated'}">
-                                            <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10">
+                                            <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
+                                            :class="{'bg-green-700' : status === 'Rated'}">
                                                 <span class="text-gray-600"
                                                 :class="{'text-white' : status === 'Rated' }">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"

@@ -196,7 +196,7 @@
                                                     d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                             </svg>
                                             <span
-                                                class="hidden sm:block group-hover:underline group-hover:text-gray-900">View</span>
+                                                class="hidden sm:block font-semibold text-gray-600 hover:text-gray-900 hover:underline">View</span>
                                         </div>
                                     </a>
                                 </span>
