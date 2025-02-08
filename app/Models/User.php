@@ -77,6 +77,11 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class, 'poster_id', 'id')->orderByDesc('created_at');
     }
 
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class, 'provider_id', 'id')->orderByDesc('created_at');
+    }
+
     protected function casts(): array
     {
         return [
