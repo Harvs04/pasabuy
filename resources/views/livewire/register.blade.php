@@ -58,7 +58,7 @@
                             <option value="student">Student</option>
                             <option value="faculty">Faculty</option>
                             <option value="staff">Administrative Staff</option>
-                            <option value="alumni">Alumni</option>
+                            <option value="alumnus">Alumnus</option>
                         </select>
                         <p x-show="errors.constituent" class="text-red-500 text-sm mt-1">Type of constituent is required.</p>
                     </div>

@@ -191,6 +191,8 @@ class Register extends Component
             $score++;
         }
 
+        sleep(1.5);
+
         if ($score >= 3) {
             // check if the email already exists
             $search = User::where('email', $this->up_email)->first();
@@ -209,6 +211,7 @@ class Register extends Component
                 'password' => Hash::make($this->password),
                 'profile_pic_url' => 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif'
             ]);
+
             session()->flash('register_success', 'Your registration was approved! You may log in to continue.');
             return $this->redirect(route('login', true));
         } else {

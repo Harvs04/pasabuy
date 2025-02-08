@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('contact_number')->nullable();
-            $table->enum('constituent', ['student', 'faculty', 'staff', 'alumni'])->nullable();
+            $table->enum('constituent', ['student', 'faculty', 'staff', 'alumnus'])->nullable();
             $table->string('college')->nullable();
             $table->string('degree_program')->nullable();
             $table->string('email')->unique();

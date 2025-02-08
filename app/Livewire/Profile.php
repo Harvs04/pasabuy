@@ -22,7 +22,7 @@ class Profile extends Component
         'Student' => 'student',
         'Faculty Member' => 'faculty',
         'Administrative Staff' => 'staff',
-        'Alumni' => 'alumni'
+        'Alumnus' => 'alumnus'
     ];
     public $colleges = [
         "College of Agriculture and Food Science (CAFS)",

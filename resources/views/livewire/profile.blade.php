@@ -448,8 +448,8 @@
                                             Faculty Member
                                             @elseif ($user->constituent === 'staff')
                                             Administrative Staff
-                                            @elseif ($user->constituent === 'alumni')
-                                            Alumni
+                                            @elseif ($user->constituent === 'alumnus')
+                                            Alumnus
                                             @endif
                                         </option>
                                         @foreach ($types as $label => $value)
