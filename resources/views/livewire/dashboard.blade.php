@@ -234,7 +234,7 @@
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                </svg>
             </div>
-            <input type="text" id="search-filter" @change="change = true" x-model="search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
+            <input type="text" id="search-filter" @input="change = true" x-model="search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
          </div>
          <div class="mt-2">
             <p class="font-medium">Post type</p>
@@ -339,7 +339,7 @@
             </div>
          </div>
          <div class="flex flex-row w-full mt-3 gap-2">
-            <button x-bind:disabled="!change" @click="$wire.applyFilter()" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md ml-auto" >Apply</button>
+            <button x-bind:disabled="search === '' && post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''" @click="$wire.applyFilter()" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md ml-auto" >Apply</button>
             <button @click="change = false; search = ''; post_type = ''; item_type = []; mode_of_payment = []; delivery_date = ''; $wire.clearFilter();" x-bind:disabled="search === '' && post_type === '' && item_type.length === 0 && mode_of_payment.length === 0 && delivery_date === ''"  class="font-medium px-2 sm:px-3 py-1.5 text-sm disabled:bg-gray-300 bg-white enabled:text-black disabled:text-white rounded-md disabled:cursor-not-allowed enabled:hover:bg-slate-200 enabled:border enabled:hover:border-slate-200 enabled:hover:text-black">Clear</button>
          </div>
       </div>
