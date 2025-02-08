@@ -152,7 +152,7 @@
                                 @endif
                             </td>
                             <td 
-    class="px-1 py-4 align-middle text-center w-fit"
+    class="px-1 py-4 align-middle text-center"
     x-data="{ waitingInfo: false, status: '{{ $order->item_status }}' }">
 
     <span class="
@@ -160,7 +160,7 @@
         {{ in_array($order->item_status, ['Pending', 'Waiting']) ? 'bg-yellow-900 text-yellow-300' : '' }}
         {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
         {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
-        w-fit text-xs font-medium px-2.5 py-0.5 rounded-full inline-block text-center relative
+        w-fit text-xs font-medium px-2.5 py-0.5 rounded-full inline-flex text-center relative
     ">
         {{ ucwords($order->item_status) }}
 

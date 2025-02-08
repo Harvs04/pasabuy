@@ -244,7 +244,7 @@
                                                     @endif
                                                     @endfor
                                         </div>
-
+                                        <p>{{ $averageRating . "/5" }}</p>
                                         <p>({{ count($user->ratings) }})</p>
                                     </div>
                                     <p>Successful Deliveries: {{ $user->successful_deliveries }}</p>
@@ -594,7 +594,7 @@
                                             x-model="current_password"
                                             class="w-11/12 bg-gray-50 pe-10 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
                                             {{ $user->google_id == '' ? '' : "disabled" }}
-                                            x-bind:class="{'border-red-500': wrong_password">
+                                            x-bind:class="{'border-red-500': wrong_password}">
                                         <button type="button" @click="showCurrentPassword = !showCurrentPassword"
                                             class="absolute top-1/2 right-11 lg:right-8 xl:right-11 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                                             <svg x-show="!showCurrentPassword" xmlns="http://www.w3.org/2000/svg"

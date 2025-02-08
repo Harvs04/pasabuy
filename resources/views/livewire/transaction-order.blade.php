@@ -273,11 +273,11 @@
                                     <!-- Step 3: Transaction rating -->
                                     <li class="relative flex-1 group">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow"
-                                            :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : status === 'Rated'}">
+                                            :class="{'bg-green-50 border border-[#014421]' : status === 'Rated'}">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
-                                                :class="{'group-hover:bg-green-700' : updateMode, 'bg-green-700' : status === 'Rated'}">
+                                                :class="{'bg-green-700' : status === 'Rated'}">
                                                 <span class="text-gray-600"
-                                                    :class="{'group-hover:text-white' : updateMode, 'text-white' : status === 'Rated'}">
+                                                    :class="{'text-white' : status === 'Rated'}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
