@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Notification;
+use App\Models\Rating;
 use Illuminate\Support\Facades\Auth;
 
 class OrderView extends Component
@@ -14,6 +15,9 @@ class OrderView extends Component
     public $t_id;
     public $order;
     public $user;
+
+    public $star_rating = 0;
+    public $remarks;
 
     public function __construct()
     {
@@ -94,30 +98,61 @@ class OrderView extends Component
         }
     }
 
-    public function deleteOrder()
+    public function cancelOrder()
     {
         try {
-            $transaction = Post::where('id', $this->t_id)->first();
-            $customer_id = $this->order->customer_id;
-            $this->order->delete();
+            $this->order->item_status = 'Cancelled';
+            $this->order->save();
+            $this->user->cancelled_orders += 1;
+            $this->user->pasabuy_points -= 5;
+            $this->user->save();
             
-            $transaction->order_count--;
-            $transaction->status = 'open';
-            $transaction->save();
             sleep(1.5);
 
             Notification::create([
-                'type' => 'item deleted',
+                'type' => 'cancelled order',
                 'post_id' => $this->t_id,
-                'actor_id' => Auth::user()->id,
-                'poster_id' => $customer_id
+                'actor_id' => $this->order->customer_id,
+                'poster_id' => $this->order->provider_id
             ]);
 
-            session()->flash('delete_success', 'Order deleted!');
-            return $this->redirect(route('transaction.view', ['id' => $this->t_id]), true);
+            session()->flash('cancel_success', 'Order cancelled!');
+            return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
-            return $this->redirect(route('transaction.view', ['id' => $this->t_id]), true);
+            return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+        }
+    }
+
+    public function rateTransaction()
+    {
+        try {
+            $this->order->item_status = 'Rated';
+            $this->order->save();
+
+            $rating = [
+                'post_id' => $this->t_id,
+                'order_id' => $this->order->id,
+                'provider_id' => $this->order->provider_id,
+                'customer_id' => $this->order->customer_id,
+                'star_rating' => $this->star_rating, 
+                'remarks' => $this->remarks
+            ];
+
+            Rating::create($rating);
+            Notification::create([
+                'type' => 'item rated',
+                'post_id' => $this->t_id,
+                'actor_id' => $this->order->customer_id,
+                'poster_id' => $this->order->provider_id
+            ]);
+
+            sleep(1.5);
+            session()->flash('item_rated_success', 'Transaction rated!');
+            return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         }
     }
 
