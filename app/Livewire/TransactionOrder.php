@@ -78,6 +78,8 @@ class TransactionOrder extends Component
 
             if ($type === 'cancelled') {
 
+                $this->user->cancelled_transactions += 1;
+
                 if (count($transaction->orders) > 0) {
                     $this->user->pasabuy_points -= 5;
                     $this->user->save();
