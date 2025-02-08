@@ -33,7 +33,11 @@ class OrderList extends Component
             $order->item_status = 'Cancelled';
             $order->save();
 
-            $this->user->pasabuy_points -= 5;
+            $transaction = Post::where('id', $t_id)->first();
+            if ($transaction->status === 'ongoing') {
+                $this->user->pasabuy_points -= 5;
+            }
+            
             $this->user->cancelled_orders += 1;
             $this->user->save();
             

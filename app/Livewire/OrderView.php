@@ -104,7 +104,12 @@ class OrderView extends Component
             $this->order->item_status = 'Cancelled';
             $this->order->save();
             $this->user->cancelled_orders += 1;
-            $this->user->pasabuy_points -= 5;
+
+            $transaction = Post::where('id', $this->t_id)->first();
+            if ($transaction->status === 'ongoing') {
+                $this->user->pasabuy_points -= 5;
+            }
+            
             $this->user->save();
             
             sleep(1.5);
