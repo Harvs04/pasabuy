@@ -31,7 +31,6 @@ class Transactions extends Component
 
             if (count($transaction->orders) > 0) {
                 $this->user->pasabuy_points -= 5;
-                $this->user->save();
     
                 foreach($transaction->orders as $order) {
                     $order->item_status = 'Cancelled';
@@ -45,6 +44,8 @@ class Transactions extends Component
                     ]);
                 }
             }
+
+            $this->user->save();
 
             sleep(1.5);
             session()->flash('cancel_success', 'Transaction deleted!');
