@@ -82,6 +82,16 @@ class User extends Authenticatable
         return $this->hasMany(Rating::class, 'provider_id', 'id')->orderByDesc('created_at');
     }
 
+    public function conversations_as_provider(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'provider_id', 'id')->orderByDesc('created_at');
+    }
+
+    public function conversations_as_customer(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'customer_id', 'id')->orderByDesc('created_at');
+    }
+
     protected function casts(): array
     {
         return [
