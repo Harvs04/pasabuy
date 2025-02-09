@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('post_id');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->unsignedBigInteger('provider_id');
             $table->foreign('provider_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('customer_id');

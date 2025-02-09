@@ -13,6 +13,7 @@ class Conversation extends Model
 
     protected $fillable = [
         'post_id',
+        'order_id',
         'provider_id',
         'customer_id'
     ];
