@@ -244,7 +244,7 @@
                                                     @endif
                                                     @endfor
                                         </div>
-                                        <p x-show="transactions === 0">{{ $averageRating . "/5" }}</p>
+                                        <p x-show="transactions > 0">{{ $averageRating . "/5" }}</p>
                                         <p>({{ count($user->ratings) }})</p>
                                     </div>
                                     <p>Successful Deliveries: {{ $user->successful_deliveries }}</p>
