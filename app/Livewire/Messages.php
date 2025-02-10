@@ -16,9 +16,9 @@ class Messages extends Component
     }
 
 
-    public function messageView($receiver_id)
+    public function messageView($convo_id)
     {
-        return $this->redirect(route('message.view', ['receiver_id' => $receiver_id]), true);
+        return $this->redirect(route('message.view', ['convo_id' => $convo_id]), true);
     }
 
 
