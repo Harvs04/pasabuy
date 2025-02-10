@@ -8,6 +8,7 @@ use App\Http\Middleware\RoleBasedMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\Conversation;
 use App\Models\Order;
 
 // google auth
@@ -39,6 +40,41 @@ Route::middleware(['auth', RoleBasedMiddleware::class])->group(function () {
 
 Route::get('/messages', [SidebarController::class, 'messages'])->name('messages');
 
+Route::get('/messages/{convo_id}', function($convo_id){
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    $convo = Conversation::where('id', $convo_id)->first();
+    if (!$convo) {
+        return view('missing');
+    }
+
+    $found = false;
+
+    if (Auth::user()->role === 'provider') {
+        foreach (Auth::user()->conversations_as_provider as $convo) {
+            if ($convo->id == (int)$convo_id) {
+                $found = true;
+                break; 
+            }
+        }
+    } else if (Auth::user()->role === 'customer') {
+        foreach (Auth::user()->conversations_as_customer as $convo) {
+            if ($convo->id == (int)$convo_id) {
+                $found = true;
+                break; 
+            }
+        }
+    }
+
+    if (!$found) {
+        return view('missing');
+    }
+
+    return view('message-view', ['convo_id' => $convo_id]);
+})->name('message.view');
+
 Route::get('/saved', [SidebarController::class, 'saved'])->name('saved');
 
 Route::get('/my-orders', [SidebarController::class, 'orders'])->name('my-orders');
@@ -65,12 +101,12 @@ Route::get('my-orders/{id}', function($id) {
     foreach (Auth::user()->orders as $order) {
         if ($order->post_id == (int)$id) {
             $found = true;
-            break; // Exit loop once the matching order is found
+            break; 
         }
     }
 
     if (!$found) {
-        return view('forbidden');
+        return view('missing');
     }
 
     return view('order-list', ['id' => $id]);
