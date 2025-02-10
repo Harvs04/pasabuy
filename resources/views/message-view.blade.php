@@ -15,7 +15,7 @@
     @livewireStyles
 </head>
 <body class="bg-gray-50">
-    <livewire:message-view :receiver_id="$receiver_id" />
+    <livewire:message-view :convo_id="$convo_id" />
     @livewireScripts
     @livewireScriptConfig
 </body>
