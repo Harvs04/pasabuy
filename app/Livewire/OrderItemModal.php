@@ -22,7 +22,7 @@ class OrderItemModal extends Component
         try {
             $user = Auth::user();
             foreach($this->orders as $order) {
-                Order::create([
+                $newOrder = Order::create([
                     'post_id' => $this->post->id,
                     'provider_id' => $this->post->user_id,
                     'customer_id' => $user->id,
@@ -42,7 +42,7 @@ class OrderItemModal extends Component
                     // new convo
                     $newConvo = Conversation::create([
                         'post_id' => $this->post->id,
-                        'order_id' => $order->id,
+                        'order_id' => $newOrder->id,
                         'provider_id' => $this->post->user_id,
                         'customer_id' => $user->id
                     ]);
