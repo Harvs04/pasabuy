@@ -36,7 +36,9 @@ class Navbar extends Component
             return redirect(route('my-orders'), true);
         } elseif (str_contains($this->currentUrl, 'my-orders')) {
             return redirect(route('transactions'), true);
-        }
+        } elseif (str_contains($this->currentUrl, 'messages')) {
+            return redirect(route('messages'), true);
+        } 
 
         return redirect(request()->header('Referer'));
     }
