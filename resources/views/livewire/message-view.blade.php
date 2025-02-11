@@ -151,51 +151,124 @@
                 <!-- MESSAGES CONTENT -->
 
                 <!-- MESSAGE INPUT ROW -->
-                <div class="flex flex-col w-full mt-auto">
-                    <div class="overflow-y-auto flex flex-col-reverse h-[calc(100vh-150px)]" wire:poll.keep-alive.3000ms>
-                        @php
-                        if ($user->role === 'provider') {
-                            $conversation = $user->conversations_as_provider->firstWhere('customer_id',
-                            $conversation->customer_id);
-                        } else if ($user->role === 'customer') {
-                            $conversation = $user->conversations_as_customer->firstWhere('provider_id',
-                            $conversation->provider_id);
-                        }
-                        @endphp
-                        @foreach ($conversation->messages as $message)
-                            @if ($message->sender_id === $user->id)
-                            <div class="ml-auto p-3 rounded-lg mr-2">
-                                <div class="flex items-center justify-start flex-row-reverse" x-data="{ showDateOpen: false }">
-                                    <div class="flex items-center justify-center">
-                                        <img src="{{ $user->profile_pic_url }}" alt=""
-                                            class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
-                                    </div>
-                                    <div class="relative mr-3 text-sm bg-green-100 py-1.5 px-4 shadow rounded-xl max-w-[400px] lg:max-w-screen-md w-fit" @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
-                                        <div class="relative break-all"> {{ $message->message }} </div>
-                                        <div class="absolute top-0 -left-16 bg-gray-100 p-1.5 opacity-90 font-medium text-xs border rounded-md shadown" x-show="showDateOpen">{{ $message->created_at->format('g:i A') }}</div>
-                                    </div>
+                <div class="flex flex-col w-full mt-auto" x-data="{ showDetailsOpen: false }">
+                    @php
+                    if ($user->role === 'provider') {
+                    $conversation = $user->conversations_as_provider->firstWhere('customer_id',
+                    $conversation->customer_id);
+                    $receiver = App\Models\User::where('id', $conversation->customer_id)->first();
+                    } else if ($user->role === 'customer') {
+                    $conversation = $user->conversations_as_customer->firstWhere('provider_id',
+                    $conversation->provider_id);
+                    $receiver = App\Models\User::where('id', $conversation->provider_id)->first();
+                    }
+                    @endphp
+                    <div class="flex sm:hidden w-full bg-white border-b border-gray-400 p-3 gap-2 items-center">
+                        <a href="{{ route('messages') }}" class="p-2 hover:bg-gray-100 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="h-5 w-5 flex-shrink-0">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                        </a>
+                        <div class="flex gap-2 items-center font-poppins" @click="showDetailsOpen = true"
+                            @click.outside="showDetailsOpen = false">
+                            <img src="{{ $receiver->profile_pic_url }}" alt=""
+                                class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
+                            <p class="font-medium">{{ $receiver->name }}</p>
+                        </div>
+                    </div>
+                    @teleport('body')
+                    <div @keydown.escape.window="showDetailsOpen = false; document.body.style.overflow = 'auto';"
+                        x-show="showDetailsOpen" x-transition:enter.duration.25ms
+                        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative space-y-4">
+                            <div class="flex flex-row items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#014421"
+                                    class="size-5">
+                                    <path fill-rule="evenodd"
+                                        d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <p class="text-lg font-semibold text-[#014421]">User details</p>
+                                <button @click="showDetailsOpen = false; document.body.style.overflow = 'auto';"
+                                    class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="#000000" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="h-20 w-20 rounded-full border overflow-hidden">
+                                    <img src="{{ $receiver->profile_pic_url }}" alt="Avatar"
+                                        class="h-full w-full object-contain flex-shrink-0" />
+                                </div>
+                                <p class="text-sm font-semibold mt-2">{{ $receiver->name }} </p>
+                                <div class="text-sm text-gray-500">
+                                    <p> {{ $user->role === 'provider' ? 'your customer in transaction #' : 'your provider in transaction #' }}{{ App\Models\Post::where('id', $order->post_id)->first()->id }}
+                                    </p>
+                                    <p>Item: {{ App\Models\Post::where('id', $order->post_id)->first()->item_name }}</p>
+                                    <p>Order: {{ $order->order }}</p>
                                 </div>
                             </div>
-                            @elseif($message->receiver_id === $user->id)
-                            <div class="p-3 rounded-lg ml-2">
-                                <div class="flex flex-row items-center" x-data="{ showDateOpen : false }">
-                                    <div
-                                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                                        @if ($user->role === 'provider')
-                                        <img src="{{ App\Models\User::where('id', $conversation->customer_id)->first()->profile_pic_url }}"
-                                            alt="" class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
-                                        @elseif($user->role === 'customer')
-                                        <img src="{{ App\Models\User::where('id', $conversation->provider_id)->first()->profile_pic_url }}"
-                                            alt="" class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
+                        </div>
+                    </div>
+                    @endteleport
+                    <div class="overflow-y-auto flex flex-col-reverse h-[calc(100vh-12rem)] sm:h-[calc(100vh-150px)]"
+                        wire:poll.keep-alive.3000ms>
+                        @foreach ($conversation->messages as $message)
+                        @if ($message->sender_id === $user->id)
+                        <div class="ml-auto p-3 rounded-lg mr-2">
+                            <div class="flex items-center justify-start flex-row-reverse"
+                                x-data="{ showDateOpen: false }">
+                                <div class="flex items-center justify-center">
+                                    <img src="{{ $user->profile_pic_url }}" alt=""
+                                        class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
+                                </div>
+                                <div class="relative mr-3 text-sm bg-green-100 py-1.5 px-4 shadow rounded-xl max-w-[250px] md:max-w-[500px]"
+                                    @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
+                                    <div class="relative break-all"> {{ $message->message }} </div>
+                                    <div class="absolute -top-8 right-0 bg-gray-100 p-1.5 opacity-90 font-medium text-xs border rounded-md shadow w-fit whitespace-nowrap inline-flex"
+                                        x-show="showDateOpen">
+                                        @if ($message->created_at->timezone('Singapore')->isToday())
+                                        {{ $message->created_at->timezone('Singapore')->format('g:i A') }}
+                                        @elseif ($message->created_at->timezone('Singapore')->isYesterday())
+                                        Yesterday at {{ $message->created_at->timezone('Singapore')->format('g:i A') }}
+                                        @else
+                                        {{ $message->created_at->timezone('Singapore')->format('M d, Y g:i A') }}
                                         @endif
                                     </div>
-                                    <div class="relative ml-3 text-sm bg-white py-1.5 px-4 shadow rounded-xl max-w-[400px] lg:max-w-screen-md w-fit" @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
-                                        <div class="break-all relative">{{ $message->message }}</div>
-                                        <div class="absolute top-0 -right-16 bg-gray-100 p-1.5 opacity-90 font-medium text-xs border rounded-md shadown" x-show="showDateOpen">{{ $message->created_at->format('g:i A') }}</div>
+
+                                </div>
+                            </div>
+                        </div>
+                        @elseif($message->receiver_id === $user->id)
+                        <div class="p-3 rounded-lg ml-2">
+                            <div class="flex flex-row items-center" x-data="{ showDateOpen : false }">
+                                <div
+                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                    <!-- image of chatter -->
+                                    <img src="{{ App\Models\User::where('id', $receiver->id)->first()->profile_pic_url }}"
+                                        alt="" class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
+                                </div>
+                                <div class="relative ml-3 text-sm bg-white py-1.5 px-4 shadow rounded-xl max-w-[250px] md:max-w-[500px]"
+                                    @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
+                                    <div class="break-all relative">{{ $message->message }}</div>
+                                    <div class="absolute -top-8 left-0 bg-gray-100 p-1.5 opacity-90 font-medium text-xs border rounded-md shadow w-fit whitespace-nowrap inline-flex"
+                                        x-show="showDateOpen">
+                                        @if ($message->created_at->timezone('Singapore')->isToday())
+                                        {{ $message->created_at->timezone('Singapore')->format('g:i A') }}
+                                        @elseif ($message->created_at->timezone('Singapore')->isYesterday())
+                                        Yesterday at {{ $message->created_at->timezone('Singapore')->format('g:i A') }}
+                                        @else
+                                        {{ $message->created_at->timezone('Singapore')->format('M d, Y g:i A') }}
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-                            @endif
+                        </div>
+                        @endif
                         @endforeach
                     </div>
                     <div class="flex flex-row items-center h-16 bg-white w-full gap-2 border-t px-2.5"
