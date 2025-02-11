@@ -79,7 +79,7 @@
                                 @endif
                             </span>
                         </div>
-                        <div class="flex flex-col mt-2 h-5/6 sm:h-[435px] overflow-y-auto scrollbar-hide">
+                        <div class="flex flex-col mt-2 h-[calc(100svh-16rem)] sm:h-[calc(100svh-20rem)] overflow-y-auto scrollbar-hide">
                             @if ($user->role === 'provider')
                                 @foreach ($user->conversations_as_provider as $convo)
                                     <button class="flex flex-row items-center hover:bg-gray-100 rounded-md p-1.5 gap-2" @click="$wire.messageView({{ (int)$convo->id }})">
