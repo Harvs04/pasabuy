@@ -58,7 +58,7 @@ class MessageView extends Component
             return redirect()->back()->with('success', "Notif sent to user{$userId}.");
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
-            return $this->redirect(route('message.view', ['convo_id', (int)$this->convo->id]), true);  
+            return $this->redirect(route('message.view', ['convo_id' => (int)$this->convo_id]), true);  
         }
     }
 
