@@ -216,7 +216,7 @@
                     </div>
                     @endteleport
                     <div class="overflow-y-auto flex flex-col-reverse h-[calc(100vh-12rem)] sm:h-[calc(100vh-150px)]"
-                        wire:poll.keep-alive.3000ms>
+                        id="messages-container">
                         @foreach ($conversation->messages as $message)
                         @if ($message->sender_id === $user->id)
                         <div class="ml-auto p-3 rounded-lg mr-2">
