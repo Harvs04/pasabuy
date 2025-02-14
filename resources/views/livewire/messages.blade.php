@@ -33,7 +33,7 @@
         style="margin-top: 4.3rem; height: calc(100vh - 4.3rem); overflow: hidden;">
         <div class="flex antialiased text-gray-800 w-full">
             <div class="flex flex-row h-full w-full overflow-hidden">
-                <div class="flex flex-col pt-2 px-4 w-full sm:w-1/2 md:w-80 lg:w-96 bg-white flex-shrink-0 border-r">
+                <div class="flex flex-col pt-2 px-4 w-full sm:w-80 md:w-80 lg:w-96 bg-white flex-shrink-0 border-r">
                     <div class="self-start flex flex-row items-center justify-start h-12 w-full gap-1">
                         <div class="flex items-center justify-center rounded-2xl h-10 w-10">
                             <svg class="hidden sm:block w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -91,9 +91,19 @@
                                         alt="customer_image"
                                         class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
                                 </div>
-                                <div class="text-sm font-semibold">
+                                <div class="flex flex-col text-sm font-semibold w-full">
+                                    <p class="truncate">
                                     {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
-                                </div>
+                                    </p>
+                                    <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
+                                        <p id="last_message_base-{{ $convo->id }}" class="sm:truncate sm:max-w-[100px] lg:max-w-[170px]">
+                                            {{ $convo->messages[0]->message ?? "Start messaging now."}}
+                                        </p>
+                                        <p id="last_message_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
+                                            ⋅ {{ $convo->messages[0]?->created_at->timezone('Asia/Singapore')?->diffForHumans() ?? "" }}
+                                        </p>
+                                    </div>
+                                </div>  
                             </a>
                             @endforeach
                             @elseif($user->role === 'customer')
@@ -105,8 +115,18 @@
                                         alt="customer_image"
                                         class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
                                 </div>
-                                <div class="text-sm font-semibold">
-                                    {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
+                                <div class="flex flex-col text-sm font-semibold w-full">
+                                    <p class="truncate">
+                                    {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
+                                    </p>
+                                    <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
+                                        <p id="last_message_base-{{ $convo->id }}" class="sm:truncate sm:max-w-[100px] lg:max-w-[170px]">
+                                            {{ $convo->messages[0]->message ?? "Start messaging now."}}
+                                        </p>
+                                        <p id="last_message_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
+                                            ⋅ {{ $convo->messages[0]?->created_at->timezone('Asia/Singapore')?->diffForHumans() ?? "" }}
+                                        </p>
+                                    </div>
                                 </div>
                             </a>
                             @endforeach
