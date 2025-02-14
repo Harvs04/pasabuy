@@ -35,27 +35,14 @@ class MessageView extends Component
                 'message' => $message
             ];
 
-            Message::create($new_message);
-
-            // getting receiver user:
-            $receiver = User::where('id', $receiver_id)->first();
-            // update messages:
-            if ($this->user->role === 'provider') {
-                // $this->user->conversations_as_provider->push($new_message);
-                $receiver->conversations_as_customer->push($new_message);
-            } else if ($this->user->role === 'customer') {
-                // $this->user->conversations_as_customer->push($new_message);
-                $receiver->conversations_as_provider->push($new_message);
-            }
+            $new = Message::create($new_message);
 
             $userId = (int) $receiver_id;
             $senderId = Auth::user()->id;
             $message = $message ?? "You have new notification!"; 
 
-            Log::info("Firing PrivateNotificationEvent for user {$userId} from sender {$senderId} with message: {$message}");
-            broadcast(new PrivateMessageEvent($userId, $senderId, $message));
-            Log::info("After PrivateNotificationEvent for user {$userId} from sender {$senderId} with message: {$message}");
-            return redirect()->back()->with('success', "Notif sent to user{$userId}.");
+            broadcast(new PrivateMessageEvent($userId, $senderId, $message, $this->user->profile_pic_url, $new->created_at));
+
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
             return $this->redirect(route('message.view', ['convo_id', (int)$this->convo->id]), true);  
