@@ -110,25 +110,35 @@
                                             alt="customer_image"
                                             class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
                                     </div>
-                                    <div class="text-sm font-semibold">
-                                        {{ App\Models\User::where('id', $conversation->customer_id)->first()->name }}
+                                    <div class="flex flex-col text-sm font-semibold truncate">
+                                        <p>
+                                            {{ App\Models\User::where('id', $conversation->customer_id)->first()->name }}
+                                        </p>
+                                        <p class="text-gray-500 text-xs font-normal" id="last_message_current-{{ $conversation->id }}">
+                                            {{ $conversation->messages[0]->message ?? "Start messaging now."}}
+                                        </p>
                                     </div>
                                 </div>
-                            @foreach ($user->conversations_as_provider as $convo)
-                                @if ((int)$convo_id !== (int)$convo->id)
-                                    <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
-                                        href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
-                                        <div class="flex flex-shrink-0">
-                                            <img src="{{ App\Models\User::where('id', $convo['customer_id'])->first()->profile_pic_url }}"
-                                                alt="customer_image"
-                                                class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
-                                        </div>
-                                        <div class="text-sm font-semibold">
-                                            {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
-                                        </div>
-                                    </a>
-                                @endif
-                            @endforeach
+                                @foreach ($user->conversations_as_provider as $convo)
+                                    @if ((int)$convo_id !== (int)$convo->id)
+                                        <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
+                                            href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
+                                            <div class="flex flex-shrink-0">
+                                                <img src="{{ App\Models\User::where('id', $convo['customer_id'])->first()->profile_pic_url }}"
+                                                    alt="customer_image"
+                                                    class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                            </div>
+                                            <div class="flex flex-col text-sm font-semibold truncate">
+                                                <p>
+                                                    {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
+                                                </p>
+                                                <p id="last_message-{{ $convo->id }}" class="text-gray-500 text-xs font-normal">
+                                                    {{ $convo->messages[0]->message ?? "Start messaging now."}}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endforeach
                             @elseif($user->role === 'customer')
                                 <div class="flex flex-row items-start bg-gray-200 rounded-md p-1.5 gap-2"
                                     >
@@ -137,26 +147,36 @@
                                             alt="customer_image"
                                             class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
                                     </div>
-                                    <div class="text-sm font-semibold">
-                                        {{ App\Models\User::where('id', $conversation->provider_id)->first()->name }}
+                                    <div class="flex flex-col text-sm font-semibold truncate">
+                                        <p>
+                                            {{ App\Models\User::where('id', $conversation->provider_id)->first()->name }}
+                                        </p>
+                                        <p class="text-gray-500 text-xs font-normal" id="last_message_current-{{ $conversation->id }}">
+                                            {{ $conversation->messages[0]->message ?? "Start messaging now."}}
+                                        </p>
                                     </div>
                                 </div>
-                            @foreach ($user->conversations_as_customer as $convo)   
-                                @if ((int)$convo_id !== (int)$convo->id)
-                                    <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
-                                        
-                                        href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
-                                        <div class="flex flex-shrink-0">
-                                            <img src="{{ App\Models\User::where('id', $convo['provider_id'])->first()->profile_pic_url }}"
-                                                alt="customer_image"
-                                                class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
-                                        </div>
-                                        <div class="text-sm font-semibold">
-                                            {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
-                                        </div>
-                                    </a>
-                                @endif
-                            @endforeach
+                                @foreach ($user->conversations_as_customer as $convo)   
+                                    @if ((int)$convo_id !== (int)$convo->id)
+                                        <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
+                                            
+                                            href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
+                                            <div class="flex flex-shrink-0">
+                                                <img src="{{ App\Models\User::where('id', $convo['provider_id'])->first()->profile_pic_url }}"
+                                                    alt="customer_image"
+                                                    class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                            </div>
+                                            <div class="flex flex-col text-sm font-semibold truncate">
+                                                <p>
+                                                    {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
+                                                </p>
+                                                <p id="last_message-{{ $convo->id }}" class="text-gray-500 text-xs font-normal">
+                                                    {{ $convo->messages[0]->message ?? "Start messaging now."}}
+                                                </p>
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endforeach
                             @endif
 
                         </div>
@@ -165,7 +185,7 @@
                         <hr class="">
                         <div class="flex flex-col space-y-1 overflow-y-auto">
                             <a href="{{ route('profile', ['name' => $user->name] ) }}"
-                                class="flex flex-row items-center hover:bg-gray-200 rounded-md p-1.5 gap-2">
+                                class="flex flex-row items-center hover:bg-gray-200 rounded-md p-1 gap-2">
                                 <div class="flex flex-shrink-0">
                                     <img src="{{ $user->profile_pic_url }}" alt="user_img"
                                         class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
@@ -242,9 +262,9 @@
                         </div>
                     </div>
                     @endteleport
-                    <div class="overflow-y-auto flex flex-col h-[calc(100vh-12rem)] sm:h-[calc(100vh-150px)]"
+                    <div class="overflow-y-auto flex flex-col-reverse h-[calc(100vh-12rem)] sm:h-[calc(100vh-150px)]"
                         id="messages-container">
-                        @foreach ($conversation->messages->reverse() as $message)
+                        @foreach ($conversation->messages as $message)
                         @if ($message->sender_id === $user->id)
                         <div class="ml-auto p-3 rounded-lg mr-2">
                             <div class="flex items-center justify-start flex-row-reverse"
@@ -255,7 +275,7 @@
                                 </div>
                                 <div class="relative mr-3 text-sm bg-green-100 py-1.5 px-4 shadow rounded-xl max-w-[250px] md:max-w-[500px]"
                                     @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
-                                    <div class="relative break-all"> {{ $message->message }} </div>
+                                    <div class="relative break-words"> {{ $message->message }} </div>
                                     <div class="absolute -top-8 right-0 bg-gray-100 p-1.5 opacity-90 font-medium text-xs border rounded-md shadow w-fit whitespace-nowrap inline-flex"
                                         x-show="showDateOpen">
                                         @if ($message->created_at->timezone('Singapore')->isToday())
@@ -281,7 +301,7 @@
                                 </div>
                                 <div class="relative ml-3 text-sm bg-white py-1.5 px-4 shadow rounded-xl max-w-[250px] md:max-w-[500px]"
                                     @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
-                                    <div class="break-all relative">{{ $message->message }}</div>
+                                    <div class="break-words relative">{{ $message->message }}</div>
                                     <div class="absolute -top-8 left-0 bg-gray-100 p-1.5 opacity-90 font-medium text-xs border rounded-md shadow w-fit whitespace-nowrap inline-flex"
                                         x-show="showDateOpen">
                                         @if ($message->created_at->timezone('Singapore')->isToday())
@@ -313,7 +333,7 @@
                         <div class="flex-grow">
                             <div class="relative w-full">
                                 <input type="text"
-                                    class="flex w-full border rounded-full text-sm focus:outline-none focus:border-gray-300 pl-4 h-10"
+                                    class="flex w-full border rounded-full text-sm focus:outline-none focus:border-gray-300 pl-4 h-10 pe-6"
                                     x-model="chatMessage" @keydown.enter.window="if (chatMessage) { 
                                     if (role === 'provider') { 
                                         $wire.sendMessage(chatMessage, {{ $conversation->customer_id }}); 
@@ -322,15 +342,6 @@
                                     } 
                                     chatMessage = ''; 
                                     }" />
-                                <button
-                                    class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                        </path>
-                                    </svg>
-                                </button>
                             </div>
                         </div>
                         <div class="">
