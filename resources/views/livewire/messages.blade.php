@@ -96,12 +96,22 @@
                                     {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
                                     </p>
                                     <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
-                                        <p id="last_message_base-{{ $convo->id }}" class="sm:truncate sm:max-w-[100px] lg:max-w-[170px]">
-                                            {{ $convo->messages[0]->message ?? "Start messaging now."}}
+                                        @php
+                                            $lastMessage = optional($convo->messages->first())->message ?? "Start messaging now.";
+                                            $shouldTruncate = $lastMessage !== "Start messaging now.";
+                                            $lastMessageTime = optional($convo->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
+                                        @endphp
+
+                                        <p id="last_message_base-{{ $convo->id }}"
+                                        class="{{ $shouldTruncate ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
+                                            {{ $lastMessage }}
                                         </p>
-                                        <p id="last_message_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
-                                            ⋅ {{ $convo->messages[0]?->created_at->timezone('Asia/Singapore')?->diffForHumans() ?? "" }}
-                                        </p>
+
+                                        @if ($lastMessageTime || $shouldTruncate)
+                                            <p id="last_message_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
+                                                ⋅ {{ $lastMessageTime }}
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>  
                             </a>
@@ -117,15 +127,25 @@
                                 </div>
                                 <div class="flex flex-col text-sm font-semibold w-full">
                                     <p class="truncate">
-                                    {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
+                                    {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
                                     </p>
                                     <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
-                                        <p id="last_message_base-{{ $convo->id }}" class="sm:truncate sm:max-w-[100px] lg:max-w-[170px]">
-                                            {{ $convo->messages[0]->message ?? "Start messaging now."}}
+                                        @php
+                                            $lastMessage = optional($convo->messages->first())->message ?? "Start messaging now.";
+                                            $shouldTruncate = $lastMessage !== "Start messaging now.";
+                                            $lastMessageTime = optional($convo->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
+                                        @endphp
+
+                                        <p id="last_message_base-{{ $convo->id }}"
+                                        class="{{ $shouldTruncate ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
+                                            {{ $lastMessage }}
                                         </p>
-                                        <p id="last_message_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
-                                            ⋅ {{ $convo->messages[0]?->created_at->timezone('Asia/Singapore')?->diffForHumans() ?? "" }}
-                                        </p>
+
+                                        @if ($lastMessageTime || $shouldTruncate)
+                                            <p id="last_message_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
+                                                ⋅ {{ $lastMessageTime }}
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>
                             </a>
