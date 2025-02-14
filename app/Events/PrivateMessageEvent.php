@@ -17,21 +17,27 @@ class PrivateMessageEvent implements ShouldBroadcastNow
 
     public $userId;
     public $senderId;
+    public $convoId;
     public $message;
+    public $imageUrl;
+    public $createdAt;
     /**
      * Create a new event instance.
      */
-    public function __construct($userId, $senderId, $message)
+    public function __construct($userId, $senderId, $convoId, $message, $imageUrl, $createdAt)
     {
         $this->userId = $userId;
         $this->senderId = $senderId;
+        $this->convoId = $convoId;
         $this->message = $message;
+        $this->imageUrl = $imageUrl;
+        $this->createdAt = $createdAt;
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return Channel
      */
     public function broadcastOn()
     {
@@ -48,6 +54,6 @@ class PrivateMessageEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        return ['message' => $this->message, 'sender_id' => $this->senderId];
+        return ['message' => $this->message, 'sender_id' => $this->senderId, 'convo_id' => $this->convoId, 'image_url' => $this->imageUrl, 'created_at' => $this->createdAt];
     }
 }
