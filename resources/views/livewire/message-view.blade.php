@@ -101,34 +101,61 @@
                         </div>
                     </div>
                     <div class="flex flex-col mt-2 mb-2">
-                        <div class="flex flex-col mt-2 h-40 md:h-[268px] overflow-y-auto scrollbar-hide">
+                        <div class="flex flex-col mt-2 h-40 md:h-[268px] overflow-y-auto scrollbar-hide gap-0.5">
                             @if ($user->role === 'provider')
+                                <div class="flex flex-row items-start bg-gray-200 rounded-md p-1.5 gap-2"
+                                    >
+                                    <div class="flex flex-shrink-0">
+                                        <img src="{{ App\Models\User::where('id', $conversation->customer_id)->first()->profile_pic_url }}"
+                                            alt="customer_image"
+                                            class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                    </div>
+                                    <div class="text-sm font-semibold">
+                                        {{ App\Models\User::where('id', $conversation->customer_id)->first()->name }}
+                                    </div>
+                                </div>
                             @foreach ($user->conversations_as_provider as $convo)
-                            <a class="flex flex-row items-center hover:bg-gray-100 rounded-md p-1.5 gap-2"
-                                href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
-                                <div class="flex flex-shrink-0">
-                                    <img src="{{ App\Models\User::where('id', $convo['customer_id'])->first()->profile_pic_url }}"
-                                        alt="customer_image"
-                                        class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
-                                </div>
-                                <div class="text-sm font-semibold">
-                                    {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
-                                </div>
-                            </a>
+                                @if ((int)$convo_id !== (int)$convo->id)
+                                    <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
+                                        href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
+                                        <div class="flex flex-shrink-0">
+                                            <img src="{{ App\Models\User::where('id', $convo['customer_id'])->first()->profile_pic_url }}"
+                                                alt="customer_image"
+                                                class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                        </div>
+                                        <div class="text-sm font-semibold">
+                                            {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
+                                        </div>
+                                    </a>
+                                @endif
                             @endforeach
                             @elseif($user->role === 'customer')
-                            @foreach ($user->conversations_as_customer as $convo)
-                            <a class="flex flex-row items-center hover:bg-gray-100 rounded-md p-1.5 gap-2"
-                                href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
-                                <div class="flex flex-shrink-0">
-                                    <img src="{{ App\Models\User::where('id', $convo['provider_id'])->first()->profile_pic_url }}"
-                                        alt="customer_image"
-                                        class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                <div class="flex flex-row items-start bg-gray-200 rounded-md p-1.5 gap-2"
+                                    >
+                                    <div class="flex flex-shrink-0">
+                                        <img src="{{ App\Models\User::where('id', $conversation->provider_id)->first()->profile_pic_url }}"
+                                            alt="customer_image"
+                                            class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                    </div>
+                                    <div class="text-sm font-semibold">
+                                        {{ App\Models\User::where('id', $conversation->provider_id)->first()->name }}
+                                    </div>
                                 </div>
-                                <div class="text-sm font-semibold">
-                                    {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
-                                </div>
-                            </a>
+                            @foreach ($user->conversations_as_customer as $convo)   
+                                @if ((int)$convo_id !== (int)$convo->id)
+                                    <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
+                                        
+                                        href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
+                                        <div class="flex flex-shrink-0">
+                                            <img src="{{ App\Models\User::where('id', $convo['provider_id'])->first()->profile_pic_url }}"
+                                                alt="customer_image"
+                                                class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                        </div>
+                                        <div class="text-sm font-semibold">
+                                            {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
+                                        </div>
+                                    </a>
+                                @endif
                             @endforeach
                             @endif
 
@@ -138,7 +165,7 @@
                         <hr class="">
                         <div class="flex flex-col space-y-1 overflow-y-auto">
                             <a href="{{ route('profile', ['name' => $user->name] ) }}"
-                                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 gap-2">
+                                class="flex flex-row items-center hover:bg-gray-200 rounded-md p-1.5 gap-2">
                                 <div class="flex flex-shrink-0">
                                     <img src="{{ $user->profile_pic_url }}" alt="user_img"
                                         class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
@@ -215,9 +242,9 @@
                         </div>
                     </div>
                     @endteleport
-                    <div class="overflow-y-auto flex flex-col-reverse h-[calc(100vh-12rem)] sm:h-[calc(100vh-150px)]"
+                    <div class="overflow-y-auto flex flex-col h-[calc(100vh-12rem)] sm:h-[calc(100vh-150px)]"
                         id="messages-container">
-                        @foreach ($conversation->messages as $message)
+                        @foreach ($conversation->messages->reverse() as $message)
                         @if ($message->sender_id === $user->id)
                         <div class="ml-auto p-3 rounded-lg mr-2">
                             <div class="flex items-center justify-start flex-row-reverse"
@@ -334,3 +361,8 @@
     </div>
 </div>
 </div>
+
+<script>
+    let messagesContainer = document.getElementById("messages-container");
+    messagesContainer.scrollTo(0, messageContainer.scrollHeight);
+</script>

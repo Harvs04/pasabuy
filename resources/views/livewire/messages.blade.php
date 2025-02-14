@@ -33,19 +33,20 @@
         style="margin-top: 4.3rem; height: calc(100vh - 4.3rem); overflow: hidden;">
         <div class="flex antialiased text-gray-800 w-full">
             <div class="flex flex-row h-full w-full overflow-hidden">
-                <div
-                    class="flex flex-col pt-2 px-4 w-full sm:w-1/2 md:w-80 lg:w-96 bg-white flex-shrink-0 border-r">
+                <div class="flex flex-col pt-2 px-4 w-full sm:w-1/2 md:w-80 lg:w-96 bg-white flex-shrink-0 border-r">
                     <div class="self-start flex flex-row items-center justify-start h-12 w-full gap-1">
                         <div class="flex items-center justify-center rounded-2xl h-10 w-10">
-                            <svg class="hidden sm:block w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
-                                xmlns="http://www.w3.org/2000/svg">
+                            <svg class="hidden sm:block w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                stroke-width="2" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
                                 </path>
                             </svg>
                             <a href="{{ route('dashboard') }}" class="p-1.5 hover:bg-gray-100 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="block sm:hidden w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="block sm:hidden w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                                 </svg>
                             </a>
                         </div>
@@ -79,38 +80,44 @@
                                 @endif
                             </span>
                         </div>
-                        <div class="flex flex-col mt-2 h-[calc(100svh-16rem)] sm:h-[calc(100svh-20rem)] overflow-y-auto scrollbar-hide">
+                        <div
+                            class="flex flex-col mt-2 h-[calc(100svh-16rem)] sm:h-[calc(100svh-20rem)] overflow-y-auto scrollbar-hide gap-0.5">
                             @if ($user->role === 'provider')
-                                @foreach ($user->conversations_as_provider as $convo)
-                                    <button class="flex flex-row items-center hover:bg-gray-100 rounded-md p-1.5 gap-2" @click="$wire.messageView({{ (int)$convo->id }})">
-                                        <div class="flex flex-shrink-0">
-                                            <img src="{{ App\Models\User::where('id', $convo->customer_id)->first()->profile_pic_url }}"
-                                                alt="customer_image"
-                                                class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
-                                        </div>
-                                        <div class="text-sm font-semibold">
-                                            {{ App\Models\User::where('id', $convo->customer_id)->first()->name }}</div>
-                                    </button>
-                                @endforeach
+                            @foreach ($user->conversations_as_provider as $convo)
+                            <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
+                                href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
+                                <div class="flex flex-shrink-0">
+                                    <img src="{{ App\Models\User::where('id', $convo['customer_id'])->first()->profile_pic_url }}"
+                                        alt="customer_image"
+                                        class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                </div>
+                                <div class="text-sm font-semibold">
+                                    {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
+                                </div>
+                            </a>
+                            @endforeach
                             @elseif($user->role === 'customer')
-                                @foreach ($user->conversations_as_customer as $convo)
-                                    <button class="flex flex-row items-center hover:bg-gray-100 rounded-md p-1.5 gap-2" @click="$wire.messageView({{ (int)$convo->id }})">
-                                        <div class="flex flex-shrink-0">
-                                            <img src="{{ App\Models\User::where('id', $convo->provider_id)->first()->profile_pic_url }}"
-                                                alt="customer_image"
-                                                class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
-                                        </div>
-                                        <div class="text-sm font-semibold">
-                                            {{ App\Models\User::where('id', $convo->provider_id)->first()->name }}</div>
-                                    </button>
-                                @endforeach
+                            @foreach ($user->conversations_as_customer as $convo)
+                            <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
+                                href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
+                                <div class="flex flex-shrink-0">
+                                    <img src="{{ App\Models\User::where('id', $convo['provider_id'])->first()->profile_pic_url }}"
+                                        alt="customer_image"
+                                        class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                </div>
+                                <div class="text-sm font-semibold">
+                                    {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
+                                </div>
+                            </a>
+                            @endforeach
                             @endif
                         </div>
                     </div>
                     <div class="hidden sm:block mt-auto mb-2">
                         <hr class="mt-4 mb-2">
                         <div class="flex flex-col space-y-1 overflow-y-auto">
-                            <a href="{{ route('profile', ['name' => $user->name]) }}" class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 gap-2">
+                            <a href="{{ route('profile', ['name' => $user->name]) }}"
+                                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 gap-2">
                                 <div class="flex flex-shrink-0">
                                     <img src="{{ $user->profile_pic_url }}" alt="user_img"
                                         class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
