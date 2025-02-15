@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let lastMessageElemBase = document.querySelector(`#last_message_base-${convo_id}`);
         if (lastMessageElemBase) {
-            lastMessageElemBase.innerHTML = event.message;
+            let senderName = event.sender_id == userId ? "You:" : event.sender_name + ":";
+            lastMessageElemBase.innerHTML = senderName + " " + event.message;
         }
 
         let lastMessageTimeElem = document.querySelector(`#last_message_time-${convo_id}`);
@@ -30,6 +31,29 @@ document.addEventListener("DOMContentLoaded", function () {
             lastMessageElem.innerHTML = event.message;  // Update the preview message
         } 
 
+
+        let lastMessageElemCurrentView = document.querySelector(`#last_message_view_current-${convo_id}`);
+        if (lastMessageElemCurrentView) {
+            let senderName = event.sender_id == userId ? "You:" : event.sender_name + ":";
+            lastMessageElemCurrentView.innerHTML = senderName + " " + event.message;
+        }
+
+        let lastMessageElemBaseView = document.querySelector(`#last_message_view_base-${convo_id}`);
+        if (lastMessageElemBaseView) {
+            let senderName = event.sender_id == userId ? "You:" : event.sender_name + ":";
+            lastMessageElemBaseView.innerHTML = senderName + " " + event.message;
+        }
+
+        let lastMessageTimeElemView = document.querySelector(`#last_message_view_time-${convo_id}`);
+        if (lastMessageTimeElemView) {
+            lastMessageTimeElemView.innerHTML = "⋅ " + formatMessageTime(event.created_at);
+        }
+
+        let lastMessageElemView = document.querySelector(`#last_message_view-${parseInt(convo_id)}`);
+        if (lastMessageElemView) {
+            lastMessageElemView.innerHTML = event.message;  // Update the preview message
+        } 
+
         if (senderId == userId || parseInt(convoId) != parseInt(convo_id)) {
             return; 
         }
@@ -37,7 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // update preview message of current transaction
         let lastMessageElemCurrent = document.querySelector(`#last_message_current-${convo_id}`);
         if (lastMessageElemCurrent) {
-            lastMessageElemCurrent.innerHTML = event.message;
+            let senderName = event.sender_id == userId ? "You:" : event.sender_name + ":";
+            lastMessageElemBase.innerHTML = senderName + " " + event.message;
         }
 
         // Create a new message element

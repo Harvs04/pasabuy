@@ -114,9 +114,39 @@
                                         <p>
                                             {{ App\Models\User::where('id', $conversation->customer_id)->first()->name }}
                                         </p>
-                                        <p class="text-gray-500 text-xs font-normal" id="last_message_current-{{ $conversation->id }}">
-                                            {{ $conversation->messages[0]->message ?? "Start messaging now."}}
+                                        <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
+                                        @php
+                                        $lastMessage = optional($conversation->messages->first())->message ?? "Start messaging
+                                        now.";
+                                        $shouldTruncate = $lastMessage !== "Start messaging now.";
+                                        $lastMessageTime =
+                                        optional($conversation->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
+                                        @endphp
+
+                                        <p id="last_message_view_current-{{ $conversation->id }}"
+                                            class="{{ isset($shouldTruncate) && $shouldTruncate ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
+
+                                            @php
+                                            $firstMessage = $conversation->messages->first();
+                                            $sender = $firstMessage ? App\Models\User::find($firstMessage->sender_id) :
+                                            null;
+                                            $lastMessage = $firstMessage->message ?? "Start messaging now.";
+                                            @endphp
+
+                                            @if ($sender && $sender->id === $user->id)
+                                            You:
+                                            @elseif ($sender)
+                                            {{ $sender->name }}:
+                                            @endif
+                                            {{ $lastMessage }}
                                         </p>
+
+                                        @if($lastMessage !== 'Start messaging now.')
+                                        <p id="last_message_view_time-{{ $conversation->id }}" class="ml-auto sm:ml-0">
+                                            ⋅ {{ $lastMessageTime }}
+                                        </p>
+                                        @endif
+                                    </div>
                                     </div>
                                 </div>
                                 @foreach ($user->conversations_as_provider as $convo)
@@ -132,9 +162,39 @@
                                                 <p>
                                                     {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
                                                 </p>
-                                                <p id="last_message-{{ $convo->id }}" class="text-gray-500 text-xs font-normal">
-                                                    {{ $convo->messages[0]->message ?? "Start messaging now."}}
-                                                </p>
+                                                <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
+                                        @php
+                                        $lastMessage = optional($convo->messages->first())->message ?? "Start messaging
+                                        now.";
+                                        $shouldTruncate = $lastMessage !== "Start messaging now.";
+                                        $lastMessageTime =
+                                        optional($convo->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
+                                        @endphp
+
+                                        <p id="last_message_view_base-{{ $convo->id }}"
+                                            class="{{ isset($shouldTruncate) && $shouldTruncate ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
+
+                                            @php
+                                            $firstMessage = $convo->messages->first();
+                                            $sender = $firstMessage ? App\Models\User::find($firstMessage->sender_id) :
+                                            null;
+                                            $lastMessage = $firstMessage->message ?? "Start messaging now.";
+                                            @endphp
+
+                                            @if ($sender && $sender->id === $user->id)
+                                            You:
+                                            @elseif ($sender)
+                                            {{ $sender->name }}:
+                                            @endif
+                                            {{ $lastMessage }}
+                                        </p>
+
+                                        @if($lastMessage !== 'Start messaging now.')
+                                        <p id="last_message_view_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
+                                            ⋅ {{ $lastMessageTime }}
+                                        </p>
+                                        @endif
+                                    </div>
                                             </div>
                                         </a>
                                     @endif
@@ -151,9 +211,39 @@
                                         <p>
                                             {{ App\Models\User::where('id', $conversation->provider_id)->first()->name }}
                                         </p>
-                                        <p class="text-gray-500 text-xs font-normal" id="last_message_current-{{ $conversation->id }}">
-                                            {{ $conversation->messages[0]->message ?? "Start messaging now."}}
+                                        <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
+                                        @php
+                                        $lastMessage = optional($conversation->messages->first())->message ?? "Start messaging
+                                        now.";
+                                        $shouldTruncate = $lastMessage !== "Start messaging now.";
+                                        $lastMessageTime =
+                                        optional($conversation->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
+                                        @endphp
+
+                                        <p id="last_message_view_current-{{ $conversation->id }}"
+                                            class="{{ isset($shouldTruncate) && $shouldTruncate ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
+
+                                            @php
+                                            $firstMessage = $conversation->messages->first();
+                                            $sender = $firstMessage ? App\Models\User::find($firstMessage->sender_id) :
+                                            null;
+                                            $lastMessage = $firstMessage->message ?? "Start messaging now.";
+                                            @endphp
+
+                                            @if ($sender && $sender->id === $user->id)
+                                            You:
+                                            @elseif ($sender)
+                                            {{ $sender->name }}:
+                                            @endif
+                                            {{ $lastMessage }}
                                         </p>
+
+                                        @if($lastMessage !== 'Start messaging now.')
+                                        <p id="last_message_view_time-{{ $conversation->id }}" class="ml-auto sm:ml-0">
+                                            ⋅ {{ $lastMessageTime }}
+                                        </p>
+                                        @endif
+                                    </div>
                                     </div>
                                 </div>
                                 @foreach ($user->conversations_as_customer as $convo)   
@@ -170,9 +260,37 @@
                                                 <p>
                                                     {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
                                                 </p>
-                                                <p id="last_message-{{ $convo->id }}" class="text-gray-500 text-xs font-normal">
-                                                    {{ $convo->messages[0]->message ?? "Start messaging now."}}
-                                                </p>
+                                                <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
+                                        @php
+                                        $lastMessage = optional($convo->messages->first())->message ?? "Start messaging
+                                        now.";
+                                        $shouldTruncate = $lastMessage !== "Start messaging now.";
+                                        $lastMessageTime = optional($convo->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
+                                        @endphp
+
+                                        <p id="last_message_view_base-{{ $convo->id }}"
+                                            class="{{ isset($shouldTruncate) && $shouldTruncate ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
+
+                                            @php
+                                            $firstMessage = $convo->messages->first();
+                                            $sender = $firstMessage ? App\Models\User::find($firstMessage->sender_id) :
+                                            null;
+                                            $lastMessage = $firstMessage->message ?? "Start messaging now.";
+                                            @endphp
+
+                                            @if ($sender && $sender->id === $user->id)
+                                            You:
+                                            @elseif ($sender)
+                                            {{ $sender->name }}:
+                                            @endif
+                                            {{ $lastMessage }}
+                                        </p>
+                                        @if($lastMessage !== 'Start messaging now.')
+                                        <p id="last_message_view_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
+                                            ⋅ {{ $lastMessageTime }}
+                                        </p>
+                                        @endif
+                                    </div>
                                             </div>
                                         </a>
                                     @endif
@@ -273,15 +391,13 @@
                                     <img src="{{ $user->profile_pic_url }}" alt=""
                                         class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
                                 </div>
-                                <div class="relative mr-3 text-sm bg-green-100 py-1.5 px-4 shadow rounded-xl max-w-[250px] md:max-w-[500px]"
+                                <div class="relative mr-3 text-sm bg-green-100 py-1.5 px-4 shadow rounded-md max-w-[250px] sm:max-w-[275x] md:max-w-[300px] lg:max-w-lg xl:max-w-3xl"
                                     @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
                                     <div class="relative break-words"> {{ $message->message }} </div>
                                     <div class="absolute -top-8 right-0 bg-gray-100 p-1.5 opacity-90 font-medium text-xs border rounded-md shadow w-fit whitespace-nowrap inline-flex"
                                         x-show="showDateOpen">
                                         @if ($message->created_at->timezone('Singapore')->isToday())
                                         {{ $message->created_at->timezone('Singapore')->format('g:i A') }}
-                                        @elseif ($message->created_at->timezone('Singapore')->isYesterday())
-                                        Yesterday at {{ $message->created_at->timezone('Singapore')->format('g:i A') }}
                                         @else
                                         {{ $message->created_at->timezone('Singapore')->format('M d, Y g:i A') }}
                                         @endif
@@ -299,15 +415,13 @@
                                     <img src="{{ App\Models\User::where('id', $receiver->id)->first()->profile_pic_url }}"
                                         alt="" class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
                                 </div>
-                                <div class="relative ml-3 text-sm bg-white py-1.5 px-4 shadow rounded-xl max-w-[250px] md:max-w-[500px]"
+                                <div class="relative ml-3 text-sm bg-white py-1.5 px-4 shadow rounded-md max-w-[250px] sm:max-w-[275x] md:max-w-[300px] lg:max-w-lg xl:max-w-3xl"
                                     @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
                                     <div class="break-words relative">{{ $message->message }}</div>
                                     <div class="absolute -top-8 left-0 bg-gray-100 p-1.5 opacity-90 font-medium text-xs border rounded-md shadow w-fit whitespace-nowrap inline-flex"
                                         x-show="showDateOpen">
                                         @if ($message->created_at->timezone('Singapore')->isToday())
                                         {{ $message->created_at->timezone('Singapore')->format('g:i A') }}
-                                        @elseif ($message->created_at->timezone('Singapore')->isYesterday())
-                                        Yesterday at {{ $message->created_at->timezone('Singapore')->format('g:i A') }}
                                         @else
                                         {{ $message->created_at->timezone('Singapore')->format('M d, Y g:i A') }}
                                         @endif
