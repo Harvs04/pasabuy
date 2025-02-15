@@ -31,8 +31,8 @@ class OrderItemModal extends Component
                 ]);
 
                 // checking if a converstation already exists
-                $conversation = Conversation::where('post_id', $this->post->id)
-                            ->where('provider_id', $this->post->user_id)
+                $conversation = Conversation::
+                            where('provider_id', $this->post->user_id)
                             ->where('customer_id', $user->id)
                             ->first();
 
@@ -58,9 +58,9 @@ class OrderItemModal extends Component
             }
 
             $transaction = Post::where('id', $this->post->id)->firstOrFail();
-            $transaction->order_count += count($this->orders);
+            // $transaction->order_count += count($this->orders);
 
-            if ($transaction->order_count === $transaction->max_orders) {
+            if (count($transaction->orders) === $transaction->max_orders) {
                 $transaction->status = 'full';
             }
 

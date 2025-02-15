@@ -33,7 +33,7 @@
                                 <span class="hidden xl:inline">
                                     {{ ucwords($post->status) }}
                                     @if($post->status !== 'completed' && $post->status !== 'cancelled' && $post->type === 'transaction')
-                                        {{ $post->type === 'item_request' ? 'Item request' : 'transaction'}}: {{ $post->order_count }}/{{ $post->max_orders }}
+                                        {{ $post->type === 'item_request' ? 'Item request' : 'transaction'}}: {{ count($post->orders) }}/{{ $post->max_orders }}
                                     @else
                                         {{ $post->type === 'item_request' ? 'Item request' : 'transaction'}}
                                     @endif
@@ -51,7 +51,7 @@
                                         </svg>
                                     @endif
                                     @if($post->status !== 'completed' && $post->status !== 'cancelled' && $post->type === 'transaction')
-                                        {{ $post->order_count }}/{{ $post->max_orders }}
+                                        {{ count($post->orders) }}/{{ $post->max_orders }}
                                     @endif
                                 </span>
                             </span>

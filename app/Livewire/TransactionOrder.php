@@ -113,7 +113,7 @@ class TransactionOrder extends Component
             $customer_id = $this->order->customer_id;
             $this->order->delete();
             
-            $transaction->order_count--;
+            // $transaction->order_count--;
             $transaction->status = 'open';
             $transaction->save();
             sleep(1.5);

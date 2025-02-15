@@ -335,7 +335,7 @@
                         </div>
                     </div>
                     @endteleport
-                    <div class="overflow-y-auto flex flex-col-reverse h-[calc(100vh-12rem)] sm:h-[calc(100vh-150px)]"
+                    <div class="overflow-y-auto flex flex-col-reverse h-[calc(100vh-12rem)] sm:h-[calc(100vh-8rem)]"
                         id="messages-container">
                         @foreach ($conversation->messages as $message)
                         @if ($message->sender_id === $user->id)

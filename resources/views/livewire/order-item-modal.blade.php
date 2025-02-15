@@ -107,7 +107,7 @@
                     To enter or make another order, click the + button after typing.
                 </div>
                 <button class="ml-auto p-1 text-gray-400 text-xs md:text-sm rounded-full hover:bg-gray-200" 
-                    @click="if (order && !edit_order && ('{{ $post->max_orders - $post->order_count }}' > orders.length)) { orders.push(order); order = ''; } else if (order && edit_order) { orders[edit_index] = order; order = ''; edit_order = false; edit_index = null; } else if ({{ $post->max_orders }} - {{ $post->order_count }} <= orders.length && order) { max_count_reached = true; }">
+                    @click="if (order && !edit_order && ('{{ $post->max_orders - count($post->orders) }}' > orders.length)) { orders.push(order); order = ''; } else if (order && edit_order) { orders[edit_index] = order; order = ''; edit_order = false; edit_index = null; } else if ({{ $post->max_orders }} - {{ count($post->orders) }} <= orders.length && order) { max_count_reached = true; }">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#1f2937" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -121,7 +121,7 @@
                 :class="{ 'border-red-500': max_count_reached }"
                 placeholder="Order name, quantity..."
                 rows="1"
-                @keydown.enter.prevent="if (order && !edit_order && ('{{ $post->max_orders - $post->order_count }}' > orders.length)) { orders.push(order); order = ''; } else if (order && edit_order) { orders[edit_index] = order; order = ''; edit_order = false; edit_index = null; } else if ({{ $post->max_orders }} - {{ $post->order_count }} <= orders.length && order) { max_count_reached = true; }">
+                @keydown.enter.prevent="if (order && !edit_order && ('{{ $post->max_orders - count($post->orders) }}' > orders.length)) { orders.push(order); order = ''; } else if (order && edit_order) { orders[edit_index] = order; order = ''; edit_order = false; edit_index = null; } else if ({{ $post->max_orders }} - {{ count($post->orders) }} <= orders.length && order) { max_count_reached = true; }">
             </textarea>
             <p x-show="max_count_reached" class="text-sm text-red-500 mt-1">Maximum orders reached!</p>
 
