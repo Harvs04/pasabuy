@@ -39,10 +39,11 @@ class MessageView extends Component
 
             $userId = (int) $receiver_id;
             $senderId = Auth::user()->id;
+            $senderName = Auth::user()->name;
             $convoId = (int) $this->convo_id;
             $message = $message ?? "You have new notification!"; 
 
-            broadcast(new PrivateMessageEvent($userId, $senderId, $convoId, $message, $this->user->profile_pic_url, $new->created_at));
+            broadcast(new PrivateMessageEvent($userId, $senderId, $senderName, $convoId, $message, $this->user->profile_pic_url, $new->created_at));
 
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
