@@ -33,7 +33,8 @@
         style="margin-top: 4.3rem; height: calc(100vh - 4.3rem); overflow: hidden;">
         <div class="flex antialiased text-gray-800 w-full">
             <div class="flex flex-row h-full w-full overflow-hidden">
-                <div class="flex flex-col pt-2 px-4 w-full sm:w-80 md:w-80 lg:w-96 bg-white flex-shrink-0 border-r">
+                <div class="flex flex-col pt-2 px-4 w-full sm:w-80 md:w-80 lg:w-96 bg-white flex-shrink-0 border-r"
+                    x-data="{ search: '' }">
                     <div class="self-start flex flex-row items-center justify-start h-12 w-full gap-1">
                         <div class="flex items-center justify-center rounded-2xl h-10 w-10">
                             <svg class="hidden sm:block w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -63,7 +64,7 @@
                                             d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                     </svg>
                                 </div>
-                                <input type="text" id="simple-search"
+                                <input type="text" id="simple-search" x-model="search"
                                     class="bg-gray-50 border focus:outline-none focus:border-gray-300 text-gray-900 text-sm rounded-lg block w-full ps-9 p-2.5"
                                     placeholder="Search name..." required />
                             </div>
@@ -82,36 +83,40 @@
                         </div>
                         <div
                             class="flex flex-col mt-2 h-[calc(100svh-16rem)] sm:h-[calc(100svh-20rem)] overflow-y-auto scrollbar-hide gap-0.5">
-                            @if ($user->role === 'provider')
-                            @foreach ($user->conversations_as_provider as $convo)
-                            <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
-                                href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
+                            @php
+                            $conversations = $user->role === 'provider' ? $user->conversations_as_provider :
+                            $user->conversations_as_customer;
+                            @endphp
+
+                            @foreach ($conversations as $convo)
+                            @php
+                            $isProvider = $user->role === 'provider';
+                            $otherUser = App\Models\User::find($isProvider ? $convo->customer_id : $convo->provider_id);
+                            $lastMessage = optional($convo->messages->first())->message ?? "Start messaging now.";
+                            $lastMessageTime =
+                            optional($convo->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
+                            @endphp
+
+                            <!-- Filtering based on name -->
+                            <a x-show="search === '' || '{{ strtolower($otherUser->name) }}'.includes(search.toLowerCase())"
+                                class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
+                                href="{{ route('message.view', ['convo_id' => $convo->id]) }}">
+
                                 <div class="flex flex-shrink-0">
-                                    <img src="{{ App\Models\User::where('id', $convo['customer_id'])->first()->profile_pic_url }}"
-                                        alt="customer_image"
+                                    <img src="{{ $otherUser->profile_pic_url }}" alt="profile_image"
                                         class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
                                 </div>
+
                                 <div class="flex flex-col text-sm font-semibold w-full">
-                                    <p class="truncate">
-                                        {{ App\Models\User::where('id', $convo['customer_id'])->first()->name }}
-                                    </p>
+                                    <p class="truncate">{{ $otherUser->name }}</p>
+
                                     <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
-                                        @php
-                                        $lastMessage = optional($convo->messages->first())->message ?? "Start messaging
-                                        now.";
-                                        $shouldTruncate = $lastMessage !== "Start messaging now.";
-                                        $lastMessageTime =
-                                        optional($convo->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
-                                        @endphp
-
                                         <p id="last_message_base-{{ $convo->id }}"
-                                            class="{{ isset($shouldTruncate) && $shouldTruncate ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
-
+                                            class="{{ $lastMessage !== 'Start messaging now.' ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
                                             @php
                                             $firstMessage = $convo->messages->first();
                                             $sender = $firstMessage ? App\Models\User::find($firstMessage->sender_id) :
                                             null;
-                                            $lastMessage = $firstMessage->message ?? "Start messaging now.";
                                             @endphp
 
                                             @if ($sender && $sender->id === $user->id)
@@ -122,7 +127,7 @@
                                             {{ $lastMessage }}
                                         </p>
 
-                                        @if($lastMessage !== 'Start messaging now.')
+                                        @if ($lastMessage !== 'Start messaging now.')
                                         <p id="last_message_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
                                             ⋅ {{ $lastMessageTime }}
                                         </p>
@@ -131,61 +136,13 @@
                                 </div>
                             </a>
                             @endforeach
-                            @elseif($user->role === 'customer')
-                            @foreach ($user->conversations_as_customer as $convo)
-                            <a class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2"
-                                href="{{ route('message.view', ['convo_id' => $convo['id']]) }}">
-                                <div class="flex flex-shrink-0">
-                                    <img src="{{ App\Models\User::where('id', $convo['provider_id'])->first()->profile_pic_url }}"
-                                        alt="customer_image"
-                                        class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
-                                </div>
-                                <div class="flex flex-col text-sm font-semibold w-full">
-                                    <p class="truncate">
-                                        {{ App\Models\User::where('id', $convo['provider_id'])->first()->name }}
-                                    </p>
-                                    <div class="flex items-center gap-1 text-gray-500 text-xs font-normal w-full">
-                                        @php
-                                        $lastMessage = optional($convo->messages->first())->message ?? "Start messaging
-                                        now.";
-                                        $shouldTruncate = $lastMessage !== "Start messaging now.";
-                                        $lastMessageTime = optional($convo->messages->first())->created_at?->timezone('Asia/Singapore')->diffForHumans();
-                                        @endphp
-
-                                        <p id="last_message_base-{{ $convo->id }}"
-                                            class="{{ isset($shouldTruncate) && $shouldTruncate ? 'sm:truncate sm:max-w-[100px] lg:max-w-[170px]' : '' }}">
-
-                                            @php
-                                            $firstMessage = $convo->messages->first();
-                                            $sender = $firstMessage ? App\Models\User::find($firstMessage->sender_id) :
-                                            null;
-                                            $lastMessage = $firstMessage->message ?? "Start messaging now.";
-                                            @endphp
-
-                                            @if ($sender && $sender->id === $user->id)
-                                            You:
-                                            @elseif ($sender)
-                                            {{ $sender->name }}:
-                                            @endif
-                                            {{ $lastMessage }}
-                                        </p>
-                                        @if($lastMessage !== 'Start messaging now.')
-                                        <p id="last_message_time-{{ $convo->id }}" class="ml-auto sm:ml-0">
-                                            ⋅ {{ $lastMessageTime }}
-                                        </p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </a>
-                            @endforeach
-                            @endif
                         </div>
                     </div>
                     <div class="hidden sm:block mt-auto mb-2">
                         <hr class="mt-4 mb-2">
                         <div class="flex flex-col space-y-1 overflow-y-auto">
                             <a href="{{ route('profile', ['name' => $user->name]) }}"
-                                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2 gap-2">
+                                class="flex flex-row items-center hover:bg-gray-200 rounded-md p-1 gap-2">
                                 <div class="flex flex-shrink-0">
                                     <img src="{{ $user->profile_pic_url }}" alt="user_img"
                                         class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
