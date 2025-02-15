@@ -29,7 +29,6 @@ return new class extends Migration
                 $table->json('mode_of_payment');
                 $table->string('transaction_fee')->nullable();
                 $table->integer('max_orders')->nullable();
-                $table->integer('order_count')->default(0);
                 $table->date('cutoff_date')->nullable();
                 $table->longText('meetup_place')->nullable();
                 $table->longText('additional_notes')->nullable();
