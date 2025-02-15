@@ -117,7 +117,7 @@
                             <svg wire:loading.class="hidden" wire:target="likePost" xmlns="http://www.w3.org/2000/svg" :fill="liked ? '#014421' : 'none'" viewBox="0 0 24 24" stroke-width="2" :stroke="liked ? '#014421' : 'currentColor'" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                             </svg>
-                            <p class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">I want this too!</p>
+                            <p class="hidden lg:font-medium lg:block" >I want this too!</p>
                         </div>
                     </button> 
                     <button @click="orderItemModalOpen = true; document.body.style.overflow = 'hidden';" class="w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-200 disabled:text-gray-300 disabled:cursor-not-allowed disabled:rounded-md" x-bind:class="{'hidden': role === 'provider' || user_id === post_user_id, 'block': role !== 'customer' && user_id !== post_user_id}" 
@@ -126,7 +126,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                             </svg>
-                            <p class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Order item</p>
+                            <p class="hidden lg:font-medium lg:block" >Order item</p>
                         </div>
                     </button>
                     <button @click="openComment = !openComment" class="ml-auto w-4/12 md:w-5/12 py-1.5 enabled:hover:bg-gray-200 enabled:hover:rounded-md disabled:bg-gray-300 disabled:text-gray-400 disabled:rounded-md">
@@ -134,7 +134,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.068.157 2.148.279 3.238.364.466.037.893.281 1.153.671L12 21l2.652-3.978c.26-.39.687-.634 1.153-.67 1.09-.086 2.17-.208 3.238-.365 1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
                             </svg>
-                            <p class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Comment</p>
+                            <p class="hidden lg:font-medium lg:block" >Comment</p>
                         </div>
                     </button>
                     <button @click="saved = !saved; $wire.savePost({{ $post->id }}, saved).then(() => $wire.call('refresh')); " :class="saved ? 'text-[#014421]' : ''"  class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
@@ -148,7 +148,7 @@
                             <svg wire:loading.class="hidden" wire:target="savePost" xmlns="http://www.w3.org/2000/svg" :fill="saved ? '#014421' : 'none'" viewBox="0 0 24 24" stroke-width="2" :stroke="saved ? '#014421' : 'currentColor'" class="size-4 md:size-5" :class="openBurger ? 'lg:size-4 xl:size-5': 'size-5'">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
                             </svg>
-                            <p  class="hidden lg:font-medium lg:block" :class="openBurger ? 'hidden md:block md:text-sm lg:text-xs xl:text-sm' : 'md:block'">Save post</p>
+                            <p  class="hidden lg:font-medium lg:block" >Save post</p>
                         </div>
                     </button>
                 </div>

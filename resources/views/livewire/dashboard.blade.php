@@ -154,10 +154,7 @@
    <livewire:sidebar />
    
    <!-- MAIN CONTENT -->
-   <div class="sm:transition-all sm:duration-300 sm:transform relative" style="margin-top: 4.3rem;":class="{
-      'lg:ml-64 xl:ml-96': openBurger,
-      'md:ml-0': !openBurger
-   }"
+   <div class="sm:transition-all sm:duration-300 sm:transform relative" style="margin-top: 4.3rem;"
    wire:loading.class="hidden"
    wire:target="switchRole, applyFilter, clearFilter"
    >
@@ -225,7 +222,7 @@
 
    <!-- FILTERS -->
    <div class="lg:text-gray-800 lg:mb-4 lg:z-10 lg:block lg:fixed lg:right-0 lg:top-0 lg:p-4 lg:ml-auto lg:w-1/3 bg-white lg:transition-all lg:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
-     :class="openBurger ? 'hidden lg:block lg:w-3/12 xl:w-[300px] 2xl:w-3/12' : 'hidden'" 
+
      style="margin-top: 4.3rem;">
       <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden" x-data="{ change: false, search: $wire.entangle('search'), post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
          <div class="mt-2 relative hidden sm:block w-full">
@@ -238,7 +235,7 @@
          </div>
          <div class="mt-2">
             <p class="font-medium">Post type</p>
-            <div class="ml-4 text-sm" :class="openBurger ? 'flex flex-col' : 'xl:flex xl:flex-row xl:gap-4'">
+            <div class="ml-4 text-sm" >
                <div class="flex flex-row items-center gap-2 mt-2">
                   <input type="radio" id="transaction" value="transaction" name="post_type" @change="change = true" x-model="post_type">
                   <label for="transaction">Transactions</label>
