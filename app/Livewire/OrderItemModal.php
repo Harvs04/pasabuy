@@ -65,7 +65,7 @@ class OrderItemModal extends Component
             }
 
             $transaction->save();
-            sleep(1.5);
+            ;
 
 
             // make a notification

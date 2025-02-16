@@ -67,7 +67,7 @@ class MakePost extends Component
                 'poster_id' => $this->user->id
             ]);
 
-            sleep(1.5);
+            ;
             session()->flash('create_post_success', 'Post created successfully!');
             return $this->redirect(route('dashboard'), true);
         } catch (\Throwable $th) {

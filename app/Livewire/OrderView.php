@@ -53,7 +53,7 @@ class OrderView extends Component
             $provider->successful_deliveries += 1;
             $provider->save();
 
-            sleep(1.5);
+            ;
             session()->flash('order_updated_success', 'Delivery Confirmed!');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
 
@@ -89,7 +89,7 @@ class OrderView extends Component
                 }
             }
 
-            sleep(1.5);
+            ;
             session()->flash('start_success', 'Transaction status updated!');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
@@ -112,7 +112,7 @@ class OrderView extends Component
             
             $this->user->save();
             
-            sleep(1.5);
+            ;
 
             Notification::create([
                 'type' => 'cancelled order',
@@ -152,7 +152,7 @@ class OrderView extends Component
                 'poster_id' => $this->order->provider_id
             ]);
 
-            sleep(1.5);
+            ;
             session()->flash('item_rated_success', 'Transaction rated!');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {

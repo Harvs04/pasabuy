@@ -47,7 +47,7 @@ class Transactions extends Component
 
             $this->user->save();
 
-            sleep(1.5);
+            ;
             session()->flash('cancel_success', 'Transaction deleted!');
             return $this->redirect(route('transactions'), true);
 

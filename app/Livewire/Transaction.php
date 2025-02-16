@@ -49,7 +49,7 @@ class Transaction extends Component
                 }
             }
 
-            sleep(1.5);
+            ;
             session()->flash('start_success', 'Transaction status updated!');
             return $this->redirect(route('transaction.view', ['id' => $this->id]), true);
         } catch (\Throwable $th) {

@@ -52,7 +52,7 @@ class MakeTransaction extends Component
             $this->post->status = 'converted';
             $this->post->save();
 
-            sleep(1.5);
+            ;
 
             // notif for the poster of item request
             Notification::create([

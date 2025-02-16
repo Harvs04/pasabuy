@@ -50,7 +50,7 @@ class OrderList extends Component
             ]);
                 
 
-            sleep(1.5);
+            ;
             session()->flash('cancel_success', 'Transaction cancelled!');
             return $this->redirect(route('my-orders.view', ['id' => $t_id]), true);
 

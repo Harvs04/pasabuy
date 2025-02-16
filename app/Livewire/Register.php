@@ -191,7 +191,7 @@ class Register extends Component
             $score++;
         }
 
-        sleep(1.5);
+        ;
 
         if ($score >= 3) {
             // check if the email already exists

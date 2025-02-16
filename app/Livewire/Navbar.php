@@ -29,7 +29,7 @@ class Navbar extends Component
         $user->role === 'customer' ? $user->role = 'provider' : $user->role = 'customer'; 
         $user->save();
 
-        sleep(1.5);
+        ;
         session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
         
         if (str_contains($this->currentUrl, 'transactions')) {

@@ -172,7 +172,7 @@ class Profile extends Component
         $user = $this->user;
         $user->role = $user->role === "customer" ? 'provider' : 'customer';
         $user->save();
-        sleep(1.5);
+        ;
         session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
         return $this->redirect(route('profile', ['name' => $user->name]), true);
     }

@@ -58,7 +58,7 @@ class TransactionOrder extends Component
                 $this->order->save();
             }
 
-            sleep(1.5);
+            ;
             session()->flash('order_updated_success', 'Order status updated!');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
 
@@ -97,7 +97,7 @@ class TransactionOrder extends Component
                 }
             }
 
-            sleep(1.5);
+            ;
             session()->flash('start_success', 'Transaction status updated!');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
@@ -116,7 +116,7 @@ class TransactionOrder extends Component
             // $transaction->order_count--;
             $transaction->status = 'open';
             $transaction->save();
-            sleep(1.5);
+            ;
 
             Notification::create([
                 'type' => 'item deleted',
