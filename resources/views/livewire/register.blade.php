@@ -1,7 +1,7 @@
 <div x-data="{ signupPartOne: true, signupPartTwo: false, signupPartThree: false, isModalOpen: false }" class="flex flex-col font-poppins" x-cloak>
     <!-- Top div (Header) -->
     <div class="flex flex-row w-full bg-[#014421] gap-2 md:gap-5 items-center">
-        <img src={{ asset('assets/Pasabuy-logo-no-name.png') }} class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
+        <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png" class="ml-5 w-16 md:ml-10 my-2 md:w-16"> 
         <p class="text-xl md:text-2xl font-montserrat text-white font-bold">PASABUY</p>
     </div>
     <!-- Centered Div (Signup Form) -->
@@ -22,7 +22,7 @@
                 <form class="flex flex-col md:grid md:grid-cols-3 w-5/6 md:w-full gap-4 md:gap-8">
                 <div class="flex flex-col w-full gap-1">
                     <label for="fname" class="font-medium">First Name</label>
-                    <input type="text" id="fname" x-model="fname" wire:model="fname" 
+                    <input type="text" id="fname" x-model="fname" 
                         @input="if (fname.trim().length >= 3 && fname.trim().length <= 30 && /^[a-zA-Z\s]+$/.test(fname)) { delete errors.fname; }"
                         x-bind:class="{'border-red-500': errors.fname || ((fname.trim().length < 3 || fname.trim().length > 30 || !/^[a-zA-Z\s]+$/.test(fname)) && fname.trim().length > 0)}"
                         class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
@@ -33,7 +33,7 @@
 
                 <div class="flex flex-col w-full gap-1">
                     <label for="lname" class="font-medium">Last Name</label>
-                    <input type="text" id="lname" x-model="lname" wire:model="lname" 
+                    <input type="text" id="lname" x-model="lname" 
                         @input="if (lname.trim().length >= 2 && lname.trim().length <= 30 && /^[a-zA-Z\s]+$/.test(lname)) { delete errors.lname; }"
                         x-bind:class="{'border-red-500': errors.lname || ((lname.trim().length < 2 || lname.trim().length > 30 || !/^[a-zA-Z\s]+$/.test(lname)) && lname.trim().length > 0)}"
                         class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
