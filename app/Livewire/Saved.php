@@ -11,14 +11,24 @@ class Saved extends Component
 
     public $user;
     public $posts;
+    public $search = "";
+    public $post_type = "";
+    public $item_type = [];
+    public $mode_of_payment = [];
+    public $delivery_date = "";
+
+    // containers for results
+    public $search_output = [];
+    public $post_type_output = [];
+    public $post_ids;
 
     public function __construct()
     {
         $this->user = Auth::user();
-        $savedPostIds = $this->user->save_posts->pluck('post_id');
+        $this->post_ids = $this->user->save_posts->pluck('post_id');
 
     // Retrieve all posts that match the saved post IDs
-        $this->posts =  Post::whereIn('id', $savedPostIds)->get();
+        $this->posts =  Post::whereIn('id', $this->post_ids)->get();
     }
 
     public function applyFilter()
@@ -75,7 +85,7 @@ class Saved extends Component
 
     public function clearFilter()
     {
-        $this->posts = $this->user->save_posts;
+        $this->posts = Post::whereIn('id', $this->post_ids)->get();
     }
 
     public function render()
