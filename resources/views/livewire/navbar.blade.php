@@ -36,7 +36,7 @@
                   </button>
    
                   <!-- NOTIFICATION FIELD -->
-                  <div x-show="openNotification" class="break-words w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:right-0 top-16 bg-white rounded-md shadow border px-3 py-4">
+                  <div x-show="openNotification" class="break-words w-full sm:w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:right-0 top-16 bg-white rounded-md shadow border px-3 py-4">
                      <h1 class="text-lg md:text-xl font-semibold text-gray-800 ml-1">Notifications</h1>
                      <div class="mt-4">
                         @forelse ($user->notification_as_poster as $notif)
@@ -92,14 +92,7 @@
                      </div>
                   </div>
                </div>
-               
-   
-               <!-- SEARCH IN MOBILE -->
-               <button class="sm:hidden block" @click="openBurger = true">
-                  <svg class="w-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                     <path stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                  </svg>
-               </button>
+            
    
                <!-- PROFILE, LOG OUT, CHANGE ROLE -->
                <div class="flex items-center ms-3">
