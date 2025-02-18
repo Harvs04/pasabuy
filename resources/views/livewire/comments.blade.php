@@ -9,7 +9,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                     <div x-show="usersShow" 
-                        class="text-xs absolute bottom-12 left-0 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow px-2.5 py-2">
+                        class="text-xs absolute bottom-8 left-0 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow px-2 py-1.5">
                         @if($user_likes->count() === 0)
                             <p>No likes yet.</p>
                         @else
@@ -27,7 +27,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="w-5/6 flex flex-row gap-1 ml-auto">
+                <div class="w-4/6 sm:w-5/6 flex flex-row gap-1 ml-auto">
                     <button @click="liked = !liked; $wire.likePost({{ $post->id }}, liked).then(() => $wire.call('refresh')); " class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md" :class="'{{ $user->role }}' === 'provider' ? 'hidden' : 'block'">
                         <div class="flex flex-row items-center justify-center gap-3" :class="liked ? 'text-[#014421]' : ''">
                             
@@ -87,7 +87,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                     <div x-show="usersShow" 
-                        class="text-xs absolute -top-14 left-0 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow px-2.5 py-2">
+                        class="text-xs absolute bottom-8 left-0 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow px-2 py-1.5">
                         @if($user_likes->count() === 0)
                             <p>No likes yet.</p>
                         @else
@@ -105,7 +105,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="w-5/6 flex flex-row gap-1 ml-auto">
+                <div class="w-4/6 sm:w-5/6 flex flex-row gap-1 ml-auto">
                     <button @click="liked = !liked; $wire.likePost({{ $post->id }}, liked).then(() => $wire.call('refresh')); " class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md" :class="'{{ $user->role }}' === 'customer' ? 'hidden' : 'block'">
                         <div class="flex flex-row items-center justify-center gap-3" :class="liked ? 'text-[#014421]' : ''">
                             <div wire:loading.delay.long wire:target="likePost" role="status">
