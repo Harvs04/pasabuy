@@ -35,7 +35,7 @@
     <div class="sm:transition-all sm:duration-300 sm:transform relative" style="margin-top: 4.3rem;"
         wire:loading.class="hidden" wire:target="switchRole, applyFilter, clearFilter">
         <div class="pb-4 sm:p-4 border-r border-gray-200 w-full lg:w-4/6">
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2 md:gap-4">
                 @if ($user->contact_number === null || $user->constituent === null || $user->college === null ||
                 $user->degree_program === null)
                 <div class="flex flex-col w-full rounded-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">

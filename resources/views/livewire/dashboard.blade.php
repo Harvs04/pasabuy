@@ -1,4 +1,4 @@
-<div class="font-poppins bg-gray-50 h-screen" x-data="{ openBurger: false, createPostModalOpen:false, isChangeRoleModalOpen: false, clicked: false }" x-cloak>
+<div class="font-poppins bg-gray-50" x-data="{ openBurger: false, createPostModalOpen:false, isChangeRoleModalOpen: false, clicked: false }" x-cloak>
    @if(session('create_post_success'))
       <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
          <div class="flex items-center gap-2">
@@ -158,7 +158,7 @@
    wire:loading.class="hidden"
    wire:target="switchRole, applyFilter, clearFilter"
    >
-      <div class="pb-4 sm:p-4 border-r border-gray-200" :class="'w-full lg:w-4/6'">
+      <div class="pb-4 sm:p-4 border-r border-gray-200 w-full lg:w-4/6">
          <div class="flex flex-col gap-2 md:gap-4">
             @if ($user->contact_number === null || $user->constituent === null || $user->college === null || $user->degree_program === null)
                <div class="flex flex-col w-full rounded-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">
@@ -194,7 +194,7 @@
                   <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text-sm sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
-            <div class="px-3 md:px-4 py-3 bg-white shadow rounded-md">
+            <div class="px-3 md:px-4 py-3 bg-white border sm:rounded-md">
                <div class="flex flex-row items-center gap-3 md:gap-4">    
                   <a href="{{ route('profile', ['name' => $user->name]) }}">
                      <img class="w-9 md:w-10 h-9 md:h-10 rounded-full object-cover" 
@@ -213,8 +213,8 @@
                </div>
             </div>
             <div class="">
-               <!-- POSTS STREAM -->
-               <livewire:posts-stream key="{{ now() }}" :posts="$posts" :type="'dashboard'" />
+                <!-- POSTS STREAM -->
+                <livewire:posts-stream key="{{ now() }}" :posts="$posts" :type="'dashboard'" />
             </div>
          </div>
       </div>

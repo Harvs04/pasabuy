@@ -5,11 +5,11 @@
             document.body.style.overflow = "hidden";
         </script>
         <div class="h-[calc(100vh-7rem)] fixed top-1/2 flex flex-col sm:flex-row self-center items-center gap-2 text-sm sm:text-base text-gray-400">
-            <p class="text-xs sm:text-sm">Seems empty in here.</p>
+            <p class="">Seems empty in here.</p>
             @if ($type === 'dashboard')
-                <button @click="createPostModalOpen = true" class="underline text-xs sm:text-sm">Create a post</button>
+                <button @click="createPostModalOpen = true" class="underline">Create a post</button>
             @elseif($type === 'saved')
-                <a href="{{ route('dashboard') }}" class="underline text-xs sm:text-sm">Back to dashboard</a>
+                <a href="{{ route('dashboard') }}" class="underline">Back to dashboard</a>
             @endif
         </div>
         @else
