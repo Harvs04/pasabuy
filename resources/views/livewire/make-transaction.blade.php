@@ -1,5 +1,5 @@
 <div class="bg-black bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center font-poppins" x-transition:enter.duration.25ms>
-    <div @keydown.escape.window="makeTransactionModalOpen = false; document.body.style.overflow = 'auto';" class="bg-white px-4 pt-6 pb-4 sm:px-8 rounded-lg w-11/12 lg:w-2/3 xl:w-1/2 font-poppins relative"
+    <div @keydown.escape.window="makeTransactionModalOpen = false; document.body.style.overflow = 'auto';" class="bg-white px-4 pt-6 pb-4 sm:px-8 rounded-lg w-11/12 lg:w-2/3 xl:w-1/2 font-poppins relative overflow-y-auto max-h-[80vh] sm:max-h-[95vh]"
     x-data="{
         item_name_post: '{{ $post->item_name }}', 
         item_origin_post: '{{ $post->item_origin }}', 
@@ -24,7 +24,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="mt-1 sm:mt-0 size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
             </svg>
-            <p class="text-xl sm:text-2xl font-semibold text-[#014421]">Convert item request to transaction</p>
+            <p class="text-xl sm:text-2xl font-semibold text-[#014421]">Create transaction</p>
             <button @click="makeTransactionModalOpen = false; document.body.style.overflow = 'auto';" class="absolute top-4 right-4 ml-auto hover:bg-gray-100 hover:rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -295,8 +295,8 @@
             </div>
         </div>
         <div class="mt-5 flex justify-end gap-2">
-            <button x-text="item_details ? 'Cancel' : 'Return'" @click="if (item_details) {makeTransactionModalOpen = false; document.body.style.overflow = 'auto';} else if (transaction_details) { item_details = true; transaction_details = false; }" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black"></button>
-            <button x-data="{ disabled: false }" x-text="item_details ? 'Next' : 'Post'" @click="if (item_details) { item_details = false; transaction_details = true; } else if (transaction_details) { disabled = true; $wire.makePost(item_name_post, item_origin_post, item_type_post, item_subtype_post, mode_of_payment_post); }" x-bind:disabled="item_details ? (!item_name_post || !item_origin_post || item_type_post.length === 0) : (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place) || disabled"  class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md"></button>
+            <button x-text="item_details ? 'Cancel' : 'Return'" @click="if (item_details) {makeTransactionModalOpen = false; document.body.style.overflow = 'auto';} else if (transaction_details) { item_details = true; transaction_details = false; }" class="font-medium w-16 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black"></button>
+            <button x-data="{ disabled: false }" x-text="item_details ? 'Next' : 'Post'" @click="if (item_details) { item_details = false; transaction_details = true; } else if (transaction_details) { disabled = true; $wire.makePost(item_name_post, item_origin_post, item_type_post, item_subtype_post, mode_of_payment_post); }" x-bind:disabled="item_details ? (!item_name_post || !item_origin_post || item_type_post.length === 0) : (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place) || disabled"  class="font-medium w-16 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md"></button>
         </div>
         <div wire:loading.delay wire:target="makePost" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">

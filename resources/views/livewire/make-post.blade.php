@@ -1,4 +1,4 @@
-<div class="bg-white px-4 pt-6 pb-4 sm:px-8 rounded-lg w-11/12 lg:w-2/3 xl:w-1/2 font-poppins relative">
+<div class="overflow-y-auto bg-white px-4 pt-6 pb-4 sm:px-8 rounded-lg w-11/12 lg:w-2/3 xl:w-1/2 font-poppins relative max-h-[80vh] sm:max-h-[95vh]">
     <div wire:loading.delay wire:target="createPost"
         class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
@@ -130,8 +130,10 @@
                     </div>
                     <div class="flex flex-row items-start gap-4">
                         <div class="mt-4 w-full">
-                            <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 "
+                            <p class="hidden sm:block mb-1 text-sm sm:text-base font-medium text-gray-900 "
                                 @click="openDropdown = !openDropdown">Mode of payment</p>
+                            <p class="block sm:hidden mb-1 text-sm sm:text-base font-medium text-gray-900 "
+                                @click="openDropdown = !openDropdown">MOP</p>
                             <div class="flex flex-col mt-2" x-data="{ clickCheckbox: false }">
                                 <button x-on:click="openDropdown = !openDropdown"
                                     @click.outside="if (!clickCheckbox) { openDropdown = false; }"
@@ -188,7 +190,7 @@
                             </div>
                         </div>
                         <div class="mt-4 w-full">
-                            <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Date of delivery</p>
+                            <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Delivery date</p>
                             <div class="relative mt-2">
                             <input id="datepicker-delivery" 
        x-data 
@@ -206,7 +208,7 @@
             $wire.set('delivery_date', selectedDate.toISOString().split('T')[0], false);
        " 
        wire:model="delivery_date"
-       class="block w-full p-2.5 text-xs sm:text-sm text-gray-500 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
+       class="block w-full p-2 text-xs sm:text-sm text-gray-400 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421]"
        placeholder="Select date" />
                             </div>
                         </div>
@@ -430,9 +432,9 @@
                                     <div class="flex flex-col mt-2" x-data="{ clickCheckbox: false }">
                                         <button x-on:click="openDropdown = !openDropdown"
                                             @click.outside="if (!clickCheckbox) { openDropdown = false; }"
-                                            class="text-gray-400 bg-gray-50 hover:bg-slate-100 border border-gray-300 focus:outline-none focus:border-[#014421] rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center w-full"
+                                            class="text-gray-400 bg-gray-50 hover:bg-slate-100 border border-gray-300 focus:outline-none focus:border-[#014421] rounded-lg text-sm px-3 py-2 text-center inline-flex items-center w-full"
                                             type="button">
-                                            <p class="text-xs sm:text-sm"
+                                            <p class="mr-auto text-xs sm:text-sm"
                                                 x-text="mode_of_payment_post.length === 0 ? 'Choose' : (window.innerWidth > 640 ? (mode_of_payment_post.length > 2 ? (mode_of_payment_post.slice(0, 2).join(', ') + ' +' + (mode_of_payment_post.length - 2)) : mode_of_payment_post.join(', ')) : (mode_of_payment_post.length > 1 ? mode_of_payment_post[0] + ' +' + (mode_of_payment_post.length - 1) : mode_of_payment_post[0]))">
                                             </p>
                                             <svg class="w-2.5 h-2.5 ml-auto" aria-hidden="true"
