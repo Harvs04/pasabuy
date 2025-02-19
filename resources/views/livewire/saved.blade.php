@@ -34,7 +34,7 @@
 
     <div class="sm:transition-all sm:duration-300 sm:transform relative" style="margin-top: 4.3rem;"
         wire:loading.class="hidden" wire:target="switchRole, applyFilter, clearFilter">
-        <div class="p-4 border-r border-gray-200" :class="'w-full lg:w-4/6'">
+        <div class="pb-4 sm:p-4 border-r border-gray-200 w-full lg:w-4/6">
             <div class="flex flex-col gap-4">
                 @if ($user->contact_number === null || $user->constituent === null || $user->college === null ||
                 $user->degree_program === null)
@@ -87,7 +87,9 @@
         </div>
     </div>
 </div>
-<div class="lg:text-gray-800 lg:mb-4 lg:z-10 lg:block lg:fixed lg:right-0 lg:top-0 lg:p-4 lg:ml-auto lg:w-1/3 bg-white lg:transition-all lg:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
+
+<!-- FILTER -->
+<div class="hidden lg:text-gray-800 lg:mb-4 lg:z-10 lg:block lg:fixed lg:right-0 lg:top-0 lg:p-4 lg:ml-auto lg:w-1/3 bg-white lg:transition-all lg:duration-300 md:overflow-y-auto 2xl:overflow-y-hidden md:h-[600px] lg:h-[620px] 2xl:h-screen"
     style="margin-top: 4.3rem;">
     <div class="flex flex-col sm:overflow-y-visible 2xl:overflow-y-hidden"
         x-data="{ change: false, search: $wire.entangle('search'), post_type: $wire.entangle('post_type'), item_type: $wire.entangle('item_type'), mode_of_payment: $wire.entangle('mode_of_payment'), delivery_date: $wire.entangle('delivery_date') }">
