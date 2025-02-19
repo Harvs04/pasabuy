@@ -12,6 +12,7 @@ class PostsStream extends Component
 
     public User $user;
     public $posts;
+    public $type;
 
     public function __construct()
     {

@@ -82,7 +82,7 @@
             @endif
             <div class="">
                 <!-- POSTS STREAM -->
-                <livewire:posts-stream key="{{ now() }}" :posts="$posts" />
+                <livewire:posts-stream key="{{ now() }}" :posts="$posts" :type="'saved'" />
             </div>
         </div>
     </div>

@@ -214,7 +214,7 @@
             </div>
             <div class="">
                <!-- POSTS STREAM -->
-               <livewire:posts-stream key="{{ now() }}" :posts="$posts" />
+               <livewire:posts-stream key="{{ now() }}" :posts="$posts" :type="'dashboard'" />
             </div>
          </div>
       </div>
