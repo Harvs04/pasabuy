@@ -15,7 +15,8 @@ class Order extends Model
         'provider_id',
         'customer_id',
         'order',
-        'additional_notes'
+        'additional_notes',
+        'date_delivered'
     ];
 
     public function user(): BelongsTo

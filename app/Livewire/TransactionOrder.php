@@ -40,6 +40,7 @@ class TransactionOrder extends Component
 
             } else if ($delivered) {
                 $status = 'Waiting';
+                $this->order->date_delivered = now();
 
                 Notification::create([
                     'type' => 'item waiting',
@@ -55,15 +56,14 @@ class TransactionOrder extends Component
 
             if ($this->order->is_paid !== $isPaid) {
                 $this->order->is_paid = $isPaid ? 1 : 0;
-                $this->order->save();
             }
-
-            ;
+            
+            $this->order->save();
+            
             session()->flash('order_updated_success', 'Order status updated!');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
 
         } catch (\Throwable $th) {
-            dd($th);
             session()->flash('error', 'An error occurred. Please try again.');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         }

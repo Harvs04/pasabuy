@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('is_paid')->default(false);
             $table->enum('item_status', ['Pending', 'Acquired', 'Unavailable', 'Cancelled', 'Delivered', 'Waiting', 'Rated'])->default('Pending');
             $table->longText('additional_notes')->nullable();
+            $table->dateTime('date_delivered')->nullable();
             $table->timestamps();
         });
     }
