@@ -6,15 +6,15 @@
             <div class="flex items-center justify-start rtl:justify-end w-4/6">
                <div class="flex flex-row gap-2 items-center ml-2 sm:ml-5">
                   <!-- BURGER MENU --> 
-                  <button @click="openBurger = !openBurger">
+                  <button @click="openBurger = !openBurger" class="relative p-1.5 -m-1.5 hover:bg-green-900 hover:rounded-full">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" class="size-6 sm:size-8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                      </svg>
                   </button>
    
                   <!-- LOGO -->
-                  <a href={{ route('dashboard') }}  class="flex ms-2 md:me-24">
-                     <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png" class="h-14 me-3" alt="FlowBite Logo" />
+                  <a href={{ route('dashboard') }}  class="flex ms-2 sm:ms-4 gap-2">
+                     <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png" class="h-14" alt="FlowBite Logo" />
                      <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">PASABUY</span>
                   </a>
                </div>
@@ -24,13 +24,16 @@
             <div class="flex items-center gap-2" x-data="{ open: false }">
                <div @click.outside="openNotification = false">
                   <!-- NOTIFICATIONS --> 
-                  <button @click="openNotification = !openNotification; $wire.updateIsSeen();" class="mt-1">
-                     <div class="flex flex-row justify-start items-center">
+                  <button @click="openNotification = !openNotification; $wire.updateIsSeen();" class="relative mt-1 p-1.5 hover:bg-green-900 hover:rounded-full">
+                     <div class="relative flex items-center">
+                        <!-- Notification Bell Icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" class="size-7 sm:size-8 transform scale-90">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                         </svg>
-                        <span class="self-start bg-white p-0.5 rounded-full">
-                           <p class="text-[#7b1113] text-xs font-medium leading-none">{{ $user->notification_as_poster->where('isSeen', false)->count() }}</p>
+
+                        <!-- Notification Counter -->
+                        <span class="absolute top-0 right-0 transform translate-x-1 -translate-y-1 bg-[#7b1113] text-white text-xs font-medium px-1.5 py-0.5 rounded-full">
+                              {{ $user->notification_as_poster->where('isSeen', false)->count() }}
                         </span>
                      </div>
                   </button>

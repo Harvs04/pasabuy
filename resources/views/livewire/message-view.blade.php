@@ -36,13 +36,20 @@
             <div class="flex flex-row h-full w-full overflow-hidden ">
                 <div class="hidden sm:flex sm:flex-col pt-2 px-4 w-60 md:w-80 lg:w-96 bg-white flex-shrink-0 border-r" x-data="{ search: '' }">
                     <div class="self-start flex flex-row items-center justify-start h-12 w-full">
-                        <div class="flex items-center justify-center rounded-2xl h-10 w-10">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
+                    <div class="flex items-center justify-center rounded-2xl h-10 w-10 sm:ml-2">
+                            <svg class="hidden sm:block w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                stroke-width="2" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
                                 </path>
                             </svg>
+                            <a href="{{ route('dashboard') }}" class="p-1 hover:bg-gray-100 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="block sm:hidden w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                </svg>
+                            </a>
                         </div>
                         <div class="font-bold text-2xl">Messages</div>
                     </div>
