@@ -102,12 +102,12 @@
                     <div class="p-0 py-4 md:p-4">
                         <div class="flex flex-col">
                             <div class="flex flex-row">
-                                <p class="text-lg font-semibold">Order tracking: {{ $order->item_status }}</p>
+                                <p class="text-lg font-semibold">Order tracking: {{ $order->item_status === 'Waiting' ? 'Delivered (Confirmation pending)' : $order->item_status }}</p>
                                 <div class="flex gap-2 ml-auto">
                                     <!-- Update/Save Button -->
                                     <button type="button"
                                         @click="if (!updateMode){ updateMode = true; } else if (updateMode) { saveChangesModalOpen = true; document.body.style.overflow = 'hidden'; }"
-                                        :disabled="transactionStatus === 'cancelled' || ['Cancelled', 'Delivered', 'Rated', 'Unavailable'].includes(status)"
+                                        :disabled="transactionStatus === 'cancelled' || ['Cancelled', 'Waiting', 'Delivered', 'Rated', 'Unavailable'].includes(status)"
                                         class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed disabled:bg-gray-300">
 
                                         <!-- SVG Icon -->
@@ -308,7 +308,7 @@
                                             Order added:
                                         </span>
                                         <p class="text-gray-600 font-normal break-words">
-                                            {{ $order->created_at->Timezone('Singapore')->format('F j, Y') . " at " . Carbon\Carbon::parse($order->created_at)->format('g:i A') }}
+                                            {{ $order->created_at->Timezone('Singapore')->format('F j, Y') . " at " . Carbon\Carbon::parse($order->created_at)->Timezone('Singapore')->format('g:i A') }}
                                         </p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">

@@ -121,7 +121,7 @@
                     <div class="p-0 py-4 md:p-4">
                         <div class="flex flex-col">
                             <div class="flex flex-row">
-                                <p class="text-lg font-semibold">Order tracking: {{ $order->item_status }}</p>
+                                <p class="text-lg font-semibold">Order tracking: {{ $order->item_status === 'Waiting' ? 'Delivered (Confirmation pending)' : $order->item_status }}</p>
                                 <div class="flex gap-2 ml-auto">
                                     <!-- Update/Save Button -->
                                     <button x-show="status === 'Waiting'" type="button"
