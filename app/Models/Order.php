@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,10 @@ class Order extends Model
         'order',
         'additional_notes',
         'date_delivered'
+    ];
+
+    protected $casts = [
+        'date_delivered' => 'datetime'
     ];
 
     public function user(): BelongsTo
