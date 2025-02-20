@@ -71,6 +71,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'customer_id', 'id');
     }
 
+    public function deliveries(): HasMany
+    {
+        return $this->hasMany(Order::class, 'provider_id', 'id');
+    }
+
 
     public function notification_as_poster(): HasMany
     {
