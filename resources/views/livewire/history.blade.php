@@ -25,7 +25,7 @@
 
     <livewire:navbar />
     <livewire:sidebar />
-    <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;">
+    <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;" :class="{'lg:ml-64 xl:ml-96': openBurger, 'md:ml-0': !openBurger}">
     <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -117,7 +117,7 @@
                            </td>
                            <td class="px-6 text-center" x-data="{ transactionStatus: '{{ $order->item_status }}' }">
                               <div class="flex flex-row gap-4 items-center justify-center">
-                                 <a href="" class="">
+                                 <a href="{{ route('history.view', ['order_id' => $order->id]) }}" class="">
                                     <div class="flex">
                                        <svg class="block sm:hidden size-5 text-gray-600 hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -138,8 +138,8 @@
                      @endforelse
                </tbody>
             </table>
-            <div class="px-6 py-2">
-               {{ $transactions->links() }}  <!-- Pagination links -->
+            <div>
+            <!-- PAGINATION -->
             </div>
          </div>
       </div>
