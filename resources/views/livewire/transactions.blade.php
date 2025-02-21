@@ -191,7 +191,12 @@
 </div>
 
 <script>
-   setTimeout(() => {
-      document.querySelector('.flash').style.display = 'none';
-   }, 3000); // 3 seconds
+   document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+         const flash = document.querySelector('.flash');
+         if (flash) {
+            flash.style.display = 'none';
+         }
+      }, 3000); // 3 seconds
+   });
 </script>
