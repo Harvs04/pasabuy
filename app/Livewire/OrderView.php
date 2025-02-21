@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Notification;
 use App\Models\Rating;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Conversation;
 
 class OrderView extends Component
 {
@@ -165,6 +166,7 @@ class OrderView extends Component
     {
         $transaction = Post::where('id', $this->t_id)->first();
         $user = User::where('id', $this->order->customer_id)->first();
-        return view('livewire.order-view', ['transaction' => $transaction, 'user' => $user]);
+        $convo_id = Conversation::where('order_id', $this->order->id)->where('provider_id', $this->order->provider_id)->where('customer_id', $this->order->customer_id)->first()->id;
+        return view('livewire.order-view', ['transaction' => $transaction, 'user' => $user, 'convo_id' => $convo_id]);
     }
 }

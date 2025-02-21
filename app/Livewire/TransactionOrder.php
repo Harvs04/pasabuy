@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Conversation;
 
 class TransactionOrder extends Component
 {
@@ -136,7 +137,8 @@ class TransactionOrder extends Component
     public function render()
     {
         $transaction = Post::where('id', $this->t_id)->first();
-        $user = User::where('id', $this->order->customer_id)->first();
-        return view('livewire.transaction-order', ['transaction' => $transaction, 'user' => $user]);
+        $user = User::where('id', $this->order->provider_id)->first();
+        $convo_id = Conversation::where('order_id', $this->order->id)->where('provider_id', $this->order->provider_id)->where('customer_id', $this->order->customer_id)->first()->id;
+        return view('livewire.transaction-order', ['transaction' => $transaction, 'user' => $user, 'convo_id' => $convo_id]);
     }
 }

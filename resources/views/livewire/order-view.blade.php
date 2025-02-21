@@ -389,8 +389,8 @@
                         <hr class="my-4">
                         <div class="flex flex-col gap-2 text-md">
                             <div class="flex flex-row">
-                                <p class="text-lg font-semibold">Provider details:</p>
-                                <button type="button"
+                                <p class="text-lg font-semibold">Provider details:</p>                            
+                                <a href="{{ route('message.view', ['convo_id' => $convo_id]) }}"
                                     :disabled="transactionStatus === 'cancelled' || status === 'Cancelled'"
                                     class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
                                     <!-- TODO: CHANGE PROVIDER DETAILS IN CUSTOMER VIEW -->
@@ -403,7 +403,7 @@
 
                                     <!-- Dynamic Text -->
                                     <span class="hidden sm:block">Message</span>
-                                </button>
+                                </a>
                             </div>
 
                             <div class="flex flex-wrap items-start gap-4 text-gray-700">
@@ -457,16 +457,16 @@
             </div>
         </div>
         <div class="pt-4 pb-0 mid:pb-4 pr-4 pl-4 mid:pl-0 w-full mid:w-1/3">
-            <a href="{{ route('my-orders.view', ['id' => $order->post_id ]) }}"
-                class="w-fit p-1.5 hover:bg-gray-100 hover:rounded-full block mid:hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                </svg>
-            </a>
             <div class="relative h-fit bg-white rounded-lg shadow-md px-5 pt-5 pb-5 mid:pb-0 flex flex-col lg:gap-0">
-                <div>
-                    <p class="text-lg text-[#014421] font-semibold mb-2">Transaction details: </p>
+                <div class="flex items-center mb-2 gap-1">
+                    <a href="{{ route('my-orders.view', ['id' => $order->post_id ]) }}"
+                        class="w-fit p-1.5 hover:bg-gray-100 hover:rounded-full block mid:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                    </a>
+                    <p class="text-lg text-[#014421] font-semibold">Transaction details: </p>
                 </div>
                 <div class="flex flex-col sm:flex-row mid:flex-col gap-4">
                     @if ($transaction->item_image)
