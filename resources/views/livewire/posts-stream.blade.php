@@ -1,17 +1,17 @@
 <div class="" x-cloak>
     <div class="flex flex-col gap-2 sm:gap-4">
         @if($posts->count() === 0)
-        <script>
-            document.body.style.overflow = "hidden";
-        </script>
-        <div class="h-[calc(100vh-7rem)] fixed top-1/2 flex flex-col sm:flex-row self-center items-center gap-2 text-sm sm:text-base text-gray-400">
-            <p class="">Seems empty in here.</p>
-            @if ($type === 'dashboard')
-                <button @click="createPostModalOpen = true" class="underline">Create a post</button>
-            @elseif($type === 'saved')
-                <a href="{{ route('dashboard') }}" class="underline">Back to dashboard</a>
-            @endif
-        </div>
+            <script>
+                document.body.style.overflow = "hidden";
+            </script>
+            <div class="h-[calc(100vh-7rem)] fixed top-1/2 flex flex-col sm:flex-row self-center items-center gap-2 text-sm sm:text-base text-gray-400">
+                <p class="">Seems empty in here.</p>
+                @if ($type === 'dashboard')
+                    <button @click="createPostModalOpen = true" class="underline">Create a post</button>
+                @elseif($type === 'saved')
+                    <a href="{{ route('dashboard') }}" class="underline">Back to dashboard</a>
+                @endif
+            </div>
         @else
             @foreach($posts as $post)
                 <div class="pt-3 px-3 pb-2 bg-white border sm:rounded-md text-gray-800 text-sm" x-data="{ openComment: false }">
