@@ -228,7 +228,7 @@
                 </svg>
             </a>
             <div
-                class="relative bg-white rounded-lg shadow-md h-fit px-5 pt-5 pb-5 lg:pb-0 flex flex-col mid:gap-4 lg:gap-0">
+                class="relative bg-white rounded-lg shadow-md h-fit px-5 pt-5 pb-5 lg:pb-0 flex flex-col lg:gap-0">
                 <div class="">
                     <p class="text-lg text-[#014421] font-semibold mb-2">Transaction details: </p>
                     <button class="absolute right-2 top-2 p-2 hover:bg-gray-100 hover:rounded-full"
@@ -242,16 +242,12 @@
                     <div x-show="openTransactionDots" @click.outside="openTransactionDots = false"
                         class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
                         <button
-                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            x-bind:disabled="transactionStatus === 'open' || transactionStatus === 'cancelled'"
-                            @click="changeStatusModalOpen = true; statusChange = 'open';">Open</button>
-                        <button
-                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            x-bind:disabled="transactionStatus === 'ongoing' || transactionStatus === 'cancelled'"
+                            class="enabled:hover:bg-green-600 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            x-show="transactionStatus === 'open'"
                             @click="changeStatusModalOpen = true; statusChange = 'ongoing';">Start</button>
                         <button
-                            class="enabled:hover:bg-gray-100 bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            :disabled="transactionStatus === 'cancelled'"
+                            class="enabled:hover:bg-red-500 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            x-show="['ongoing', 'open'].includes(transactionStatus)"
                             @click="changeStatusModalOpen = true; statusChange = 'cancelled';">Cancel</button>
                     </div>
                 </div>
