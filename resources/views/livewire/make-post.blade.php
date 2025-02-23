@@ -580,7 +580,7 @@
                                 }
                             }      
                         " x-text="item_details ? 'Cancel' : 'Return'"
-                        class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">
+                        class="font-medium w-20 py-1 sm:py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">
                     </button>
                     <button x-data="{ disabled:false }"
                         x-bind:disabled="
@@ -606,7 +606,7 @@
                                 clicked = true;
                             }
                         }
-                        " x-text="item_details ? 'Next' : 'Post'"
+                        " x-text="item_details && role === 'provider' ? 'Next' : 'Post'"
                         class="font-medium w-20 py-1 sm:py-1.5 text-sm enabled:bg-[#014421] disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md enabled:hover:bg-green-800"></button>
                 </div>
             </div>

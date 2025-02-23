@@ -20,7 +20,7 @@
                         <div class="flex flex-col">
                             <div class="flex flex-col sm:flex-row sm:items-center text-sm gap-0 sm:gap-1">
                                 <p class="font-semibold"> {{ $post->poster_name }} </p>
-                                <p class="leading-none">{{  $post->type === 'item_request' ? 'is looking for:' : 'is buying:' }} </p>
+                                <p class="">{{  $post->type === 'item_request' ? 'is looking for:' : 'is buying:' }} </p>
                             </div>
                             <p class="text-xs"> {{ $post->created_at->timezone('Asia/Singapore')->format('F j, Y \a\t H:i') }}</p>
                         </div>
@@ -37,7 +37,7 @@
                         <div class="flex flex-row gap-1 ml-auto">
                             <span class="{{ $colorClass }}">
                                 <!-- For larger screens (>=640px) -->
-                                <span class="hidden xl:inline">
+                                <span class="hidden md:inline">
                                     {{ ucwords($post->status) }}
                                     @if($post->status !== 'completed' && $post->status !== 'cancelled' && $post->type === 'transaction')
                                         {{ $post->type === 'item_request' ? 'Item request' : 'transaction'}}: {{ count($post->orders) }}/{{ $post->max_orders }}
@@ -47,7 +47,7 @@
                                 </span>
 
                                 <!-- For smaller screens (<640px) -->
-                                <span class="flex flex-row gap-1 xl:hidden">
+                                <span class="flex flex-row gap-1 md:hidden">
                                     @if($post->type === 'item_request')
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 flex-shrink-0">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
