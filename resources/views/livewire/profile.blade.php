@@ -1,4 +1,4 @@
-<div class="text-gray-800 mx-2 my-4" x-data="{ orders: '{{ count($user->orders) }}', transactions: '{{ count($user->transactions) }}' }">
+<div class="text-gray-800 mx-2 my-4" x-data="{ orders: '{{ count($user->orders) }}', transactions: '{{ count($user->transactions) }}', rating_count: '{{ count($user->ratings) }}' }">
     <div class="flex flex-col font-poppins" x-cloak>
         <!-- ALERT MESSAGES -->
         @if(session('change_role_success'))
@@ -124,7 +124,7 @@
                 <div class="flex flex-col">
                     <div class="flex flex-row items-center lg:items-start xl:items-center gap-2 mb-2">
                         <a href={{ route('dashboard') }} class="p-1.5 hover:bg-gray-200 hover:rounded-full">
-                            <svg class="w-5"
+                            <svg class="w-6"
                                 viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M8.75 18.75H33.75C34.0815 18.75 34.3995 18.8817 34.6339 19.1161C34.8683 19.3505 35 19.6685 35 20C35 20.3315 34.8683 20.6495 34.6339 20.8839C34.3995 21.1183 34.0815 21.25 33.75 21.25H8.75C8.41848 21.25 8.10054 21.1183 7.86612 20.8839C7.6317 20.6495 7.5 20.3315 7.5 20C7.5 19.6685 7.6317 19.3505 7.86612 19.1161C8.10054 18.8817 8.41848 18.75 8.75 18.75Z"
@@ -203,7 +203,7 @@
                                         </svg>
                                         <p class="font-medium text-lg">Provider</p>
                                     </div>
-                                    <div class="flex flex-col text-sm gap-1">
+                                    <div class="flex flex-col text-sm gap-1" x-data="{ wordcloudOpen: false }">
                                         <div class="flex flex-row items-center gap-1">
                                             <p class="">Rating:</p>
                                             <div class="flex flex-row">
@@ -250,9 +250,53 @@
                                         </div>
                                         <p>Successful Deliveries: {{ $user->successful_deliveries }}</p>
                                         <p>Cancelled transactions: {{ $user->cancelled_transactions }}</p>
-                                        <button
-                                            class="w-fit py-2 px-4 mt-1 xl:mt-3 bg-[#014421] hover:bg-green-900 text-white text-sm rounded-md font-medium">
-                                            View wordcloud </button>
+                                        <button 
+                                            @click="wordcloudOpen = !wordcloudOpen" 
+                                            :disabled="rating_count == 0"
+                                            class="flex items-center gap-2 w-fit py-2 px-4 mt-1 xl:mt-3 enabled:bg-[#014421] enabled:hover:bg-green-900 text-white disabled:bg-gray-300 disabled:cursor-not-allowed text-sm rounded-md font-medium"
+                                        >
+                                        <svg 
+                                                xmlns="http://www.w3.org/2000/svg" 
+                                                fill="none" 
+                                                viewBox="0 0 24 24" 
+                                                stroke-width="1.5" 
+                                                stroke="currentColor" 
+                                                class="size-5"
+                                            >
+                                                <path 
+                                                    stroke-linecap="round" 
+                                                    stroke-linejoin="round" 
+                                                    d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"
+                                                />
+                                            </svg>
+                                            <span x-text="!wordcloudOpen ? 'View word cloud' : 'Hide word cloud'"></span>                                    
+                                        </button>
+
+                                        @php
+                                        $remarks = $user->ratings->pluck('remarks')->implode(' ');
+                                        $wordCloudUrl = 'https://quickchart.io/wordcloud?' . http_build_query([
+                                            'text' => $remarks,
+                                            'format' => 'png',
+                                            'width' => 450,
+                                            'height' => 450,
+                                            'backgroundColor' => '#ffffff',
+                                            'fontFamily' => 'Arial',
+                                            'fontWeight' => 'bold',
+                                            'fontScale' => 45,
+                                            'scale' => 'sqrt',
+                                            'padding' => 4,
+                                            'rotation' => 0,
+                                            'maxNumWords' => 100,
+                                            'minWordLength' => 3,
+                                            'case' => 'lower',
+                                            'colors' => json_encode(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']),
+                                            'removeStopwords' => true,
+                                            'cleanWords' => true,
+                                            'language' => 'en',
+                                            'useWordList' => false,
+                                        ]);
+                                    @endphp
+                                    <img x-show="wordcloudOpen" src="{{ $wordCloudUrl }}" alt="provider_wordcloud" class="w-2/3 max-w-[250px] sm:w-1/2 lg:w-full border rounded-lg">
                                     </div>
                                 </div>
                             </div>
@@ -536,7 +580,7 @@
                                     infoModalOpen = true;
                                     document.body.style.overflow = 'hidden';
                                   }
-                              " class="w-full md:w-1/6 h-12 bg-[#014421] rounded-md text-white hover:bg-green-900 flex items-center justify-center">Save
+                              ">Save
                                     changes</button>
                             </div>
                             <div @keydown.escape.window="infoModalOpen = false; document.body.style.overflow = 'auto';"
