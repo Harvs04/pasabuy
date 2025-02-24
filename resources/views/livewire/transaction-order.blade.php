@@ -107,7 +107,7 @@
                                     <!-- Update/Save Button -->
                                     <button type="button"
                                         @click="if (!updateMode){ updateMode = true; } else if (updateMode) { saveChangesModalOpen = true; document.body.style.overflow = 'hidden'; }"
-                                        :disabled="transactionStatus === 'cancelled' || transactionStatus === 'open' || ['Cancelled', 'Waiting', 'Delivered', 'Rated', 'Unavailable'].includes(status)"
+                                        :disabled="transactionStatus === 'cancelled' || transactionStatus === 'open' || transactionStatus === 'full' || ['Cancelled', 'Waiting', 'Delivered', 'Rated', 'Unavailable'].includes(status)"
                                         class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed disabled:bg-gray-300">
 
                                         <!-- SVG Icon -->
@@ -433,11 +433,11 @@
                         class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
                         <button
                             class="enabled:hover:bg-green-600 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            x-show="transactionStatus === 'open'"
+                            x-show="['open', 'full'].includes(transactionStatus)"
                             @click="changeStatusModalOpen = true; statusChange = 'ongoing';">Start</button>
                         <button
                             class="enabled:hover:bg-red-500 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            x-show="['ongoing', 'open'].includes(transactionStatus)"
+                            x-show="['ongoing', 'open', 'full'].includes(transactionStatus)"
                             @click="changeStatusModalOpen = true; statusChange = 'cancelled';">Cancel</button>
                     </div>
                 </div>
