@@ -15,10 +15,16 @@ class TransactionOrder extends Component
     public $t_id;
     public $order;
     public $user;
+    public $convo_id;
 
     public function __construct()
     {
         $this->user = User::where('id',Auth::user()->id)->first();
+    }
+
+    public function mount()
+    {
+        $this->convo_id = Conversation::where('provider_id', $this->order->provider_id)->where('customer_id', $this->order->customer_id)->first()->id;
     }
 
     public function saveChanges($purchased, $delivered, $isPaid)
@@ -138,7 +144,6 @@ class TransactionOrder extends Component
     {
         $transaction = Post::where('id', $this->t_id)->first();
         $user = User::where('id', $this->order->provider_id)->first();
-        $convo_id = Conversation::where('order_id', $this->order->id)->where('provider_id', $this->order->provider_id)->where('customer_id', $this->order->customer_id)->first()->id;
-        return view('livewire.transaction-order', ['transaction' => $transaction, 'user' => $user, 'convo_id' => $convo_id]);
+        return view('livewire.transaction-order', ['transaction' => $transaction, 'user' => $user]);
     }
 }
