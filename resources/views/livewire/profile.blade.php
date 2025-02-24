@@ -290,7 +290,7 @@
                                             'minWordLength' => 3,
                                             'case' => 'lower',
                                             'colors' => json_encode(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']),
-                                            'removeStopwords' => true,
+                                            'removeStopwords' => false,
                                             'cleanWords' => true,
                                             'language' => 'en',
                                             'useWordList' => false,
