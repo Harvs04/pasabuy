@@ -36,7 +36,7 @@
                      Browse your previous orders, view detailed order history, and revisit your past purchases for easy reference or reordering.
                      </p>
                   @elseif ($user->role === 'provider')
-                     <p>Transaction history</p>
+                     <p>Delivery history</p>
                      <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400 break-words">
                         Browse your previous transactions and view ratings from customers.
                      </p>
