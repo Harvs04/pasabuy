@@ -162,7 +162,7 @@
         {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
         w-fit text-xs font-medium px-2.5 py-0.5 rounded-full inline-flex text-center relative
     ">
-        {{ ucwords($order->item_status) }}
+    {{ $order->item_status === 'Waiting' ? "Delivered - " . ucwords($order->item_status) : ucwords($order->item_status) }}
 
         <!-- Info Icon -->
         <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true"
@@ -243,11 +243,11 @@
                         class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
                         <button
                             class="enabled:hover:bg-green-600 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            x-show="transactionStatus === 'open'"
+                            x-show="['open', 'full'].includes(transactionStatus)"
                             @click="changeStatusModalOpen = true; statusChange = 'ongoing';">Start</button>
                         <button
                             class="enabled:hover:bg-red-500 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            x-show="['ongoing', 'open'].includes(transactionStatus)"
+                            x-show="['ongoing', 'open', 'full'].includes(transactionStatus)"
                             @click="changeStatusModalOpen = true; statusChange = 'cancelled';">Cancel</button>
                     </div>
                 </div>

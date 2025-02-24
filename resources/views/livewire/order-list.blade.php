@@ -162,7 +162,7 @@
         {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
         w-fit text-xs font-medium px-2.5 py-0.5 rounded-full inline-flex text-center relative
     ">
-        {{ ucwords($order->item_status) }}
+        {{ $order->item_status === 'Waiting' ? "Delivered - " . ucwords($order->item_status) : ucwords($order->item_status) }}
 
         <!-- Info Icon -->
         <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true"
@@ -374,7 +374,8 @@
                         d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p class="text-sm">Cancelling your order will incur a decrease of 5 pasabuy points</p>
+                <p x-show="transactionStatus === 'ongoing'" class="text-sm text-center">Cancelling your order in an ongoing transaction will incur a decrease of 5 pasabuy points</p>
+                <p x-show="['open', 'full'].includes(transactionStatus)" class="text-sm text-center">Cancelling will notify the provider and remove and remove your order from the roster of orders.</p>
                 <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
