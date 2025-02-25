@@ -356,7 +356,7 @@
                             <div class="flex flex-row">
                                 <p class="text-lg font-semibold">Customer details:</p>
                                 <a href="{{ route('message.view', ['convo_id' => $convo_id]) }}"                                    
-                                    class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
+                                    class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] hover:bg-green-800 rounded-lg text-center">
                                     <!-- SVG Icon -->
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                         class="w-4 h-4 text-white sm:me-2">

@@ -153,7 +153,7 @@
                                         <span class="hidden sm:block">Rate transaction</span>
                                     </button>
 
-                                    <button class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-red-700 enabled:hover:bg-red-600 rounded-lg text-center disabled:bg-gray-300 disabled:cursor-not-allowed"
+                                    <button class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-red-700 hover:bg-red-600 rounded-lg text-center"
                                             x-show="status === 'Pending'"
                                             @click="cancelOrderModalOpen = true; document.body.style.overflow = 'hidden';">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-white sm:me-2">
@@ -391,8 +391,7 @@
                             <div class="flex flex-row">
                                 <p class="text-lg font-semibold">Provider details:</p>                            
                                 <a href="{{ route('message.view', ['convo_id' => $convo_id]) }}"
-                                    :disabled="transactionStatus === 'cancelled' || status === 'Cancelled'"
-                                    class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
+                                    class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] hover:bg-green-800 rounded-lg text-center">
                                     <!-- TODO: CHANGE PROVIDER DETAILS IN CUSTOMER VIEW -->
                                     <!-- SVG Icon -->
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -565,7 +564,8 @@
                         d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p class="text-sm">Cancelling your order will incur a decrease of 5 pasabuy points</p>
+                <p class="text-sm text-center" x-show="['open', 'full'].includes(transactionStatus)">Cancelling will notify the provider and remove and remove your order from the roster of orders.</p>
+                <p class="text-sm text-center" x-show="transactionStatus === 'ongoing'">Cancelling your order will incur a decrease of 5 pasabuy points</p>                
                 <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
