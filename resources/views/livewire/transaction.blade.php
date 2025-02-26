@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, transactionStatus: '{{ $transaction->status }}', isChangeRoleModalOpen: false, deleteOrderModalOpen: false, deleteIndex: null, openTransactionDots: false, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '' }"
+    x-data="{ openBurger: false, transactionStatus: '{{ $transaction->status }}', isChangeRoleModalOpen: false, deleteOrderModalOpen: false, deleteIndex: null, search: '', all: false, selected: [], openTransactionDots: false, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '' }"
     x-cloak>
 
     @if(session('start_success'))
@@ -86,7 +86,7 @@
         style="margin-top: 4.3rem;">
         <div class="p-4 w-full">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ search: '', all: false, selected: [] }">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t">
                     <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                         <div class="flex flex-row gap-2 items-center">
                             <a href="{{ route('transactions') }}"
@@ -104,14 +104,14 @@
                             Browse a list of transaction's orders, update payment and order status, and delete some if
                             applicable.
                         </p>
-                        <div class="flex items-center gap-2 sm:gap-4 mt-2">
+                        <div class="flex items-center gap-2 sm:gap-4 mt-4">
                             <div class="relative w-1/2">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                     <svg class="w-3 h-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="text" id="search-filter" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders...">
+                                <input type="text" id="search-filter" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders...">
                             </div>
                             <div class="inline-block h-[35px] w-[0.5px] self-stretch bg-gray-200"></div>
                             <div class="flex items-center gap-2 h-fit text-gray-700">
