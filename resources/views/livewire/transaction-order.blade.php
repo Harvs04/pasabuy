@@ -308,7 +308,7 @@
                                             Order added:
                                         </span>
                                         <p class="text-gray-600 font-normal break-words">
-                                            {{ $order->created_at->Timezone('Singapore')->format('F j, Y') . " at " . Carbon\Carbon::parse($order->created_at)->Timezone('Singapore')->format('g:i A') }}
+                                            {{ $order->created_at->timezone('Asia/Singapore')->format('F j, Y \a\t g:i A') }}
                                         </p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
