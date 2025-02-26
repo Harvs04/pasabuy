@@ -21,32 +21,42 @@ class OrderList extends Component
     }
 
 
-    public function cancelOrder($t_id, $id)
+    public function cancelOrder($t_id, $ids)
     {
         try {
-            $order = Order::where('id', $id)->first();
-            if (!$order) {
+            $transaction = Post::where('id', $t_id)->first();
+            if (!$transaction) {
                 session()->flash('error', 'An error occurred. Please try again.');
                 return $this->redirect(route('my-orders.view', ['id' =>  $t_id]), true);
             }
 
-            $order->item_status = 'Cancelled';
-            $order->save();
+            foreach ($ids as $id) {
+                $order = Order::where('id', $id)->first();
+                if (!$order) {
+                    session()->flash('error', 'An error occurred. Please try again.');
+                    return $this->redirect(route('my-orders.view', ['id' =>  $t_id]), true);
+                }
 
-            $transaction = Post::where('id', $t_id)->first();
+                if ($order->item_status === 'Pending') {
+                    $order->item_status = 'Cancelled';
+                    $order->save();
+                }
+
+                $this->user->cancelled_orders += count($ids);
+            }
+            
             if ($transaction->status === 'ongoing') {
                 $this->user->pasabuy_points -= 5;
             }
             
-            $this->user->cancelled_orders += 1;
             $this->user->save();
-            
                     
             Notification::create([
                 'type' => 'cancelled order',
                 'post_id' => $order->post_id,
                 'actor_id' => $this->user->id,
-                'poster_id' => $order->provider_id
+                'poster_id' => $order->provider_id,
+                'order_count' => count($ids)
             ]);
                 
 
