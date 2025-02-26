@@ -45,13 +45,6 @@ class OrderView extends Component
                 'poster_id' => $this->order->provider_id
             ]);
 
-            // Notification::create([
-            //     'type' => 'item delivered',
-            //     'post_id' => $this->order->post_id,
-            //     'actor_id' => $this->order->provider_id,
-            //     'poster_id' => $this->order->customer_id
-            // ]);
-
             $customer = User::where('id', $this->order->customer_id)->first();
             $customer->successful_orders += 1;
             $customer->save();
@@ -60,7 +53,6 @@ class OrderView extends Component
             $provider->successful_deliveries += 1;
             $provider->save();
 
-            ;
             session()->flash('order_updated_success', 'Delivery Confirmed!');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
 
@@ -96,7 +88,6 @@ class OrderView extends Component
                 }
             }
 
-            ;
             session()->flash('start_success', 'Transaction status updated!');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
@@ -118,8 +109,6 @@ class OrderView extends Component
             }
             
             $this->user->save();
-            
-            ;
 
             Notification::create([
                 'type' => 'cancelled order',
@@ -159,7 +148,6 @@ class OrderView extends Component
                 'poster_id' => $this->order->provider_id
             ]);
 
-            ;
             session()->flash('item_rated_success', 'Transaction rated!');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
