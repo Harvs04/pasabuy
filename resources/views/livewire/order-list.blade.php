@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, isChangeRoleModalOpen: false, cancelOrderModalOpen: false, deleteIndex: null, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '', transactionStatus: '{{ $transaction->status }}' }"
+    x-data="{ openBurger: false, isChangeRoleModalOpen: false, cancelOrderModalOpen: false, rateTransactionModalOpen: false, confirmIndeces: [], cancelIndeces: [], search: '', all: false, selected: [], changeTransactionStatus: false, confirmModalOpen: false, statusChange: '', transactionStatus: '{{ $transaction->status }}' }"
     x-cloak>
 
     @if(session('start_success'))
@@ -14,6 +14,44 @@
 
             <div class="text-center text-sm">
                 {{ session('start_success') }}
+            </div>
+        </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
+    @elseif(session('order_updated_success'))
+    <div
+        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+
+            <div class="text-center text-sm">
+                {{ session('order_updated_success') }}
+            </div>
+        </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
+    @elseif(session('item_rated_success'))
+    <div
+        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+
+            <div class="text-center text-sm">
+                {{ session('item_rated_success') }}
             </div>
         </div>
         <!-- Close Button -->
@@ -64,7 +102,7 @@
     <livewire:sidebar />
 
     @teleport('body')
-    <div wire:loading.delay wire:target="updateStatus, cancelOrder"
+    <div wire:loading.delay wire:target="confirmDelivery, cancelOrder"
         class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
             class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
@@ -86,8 +124,8 @@
         style="margin-top: 4.3rem;">
         <div class="p-4 w-full">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <caption class="p-5 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t">
+                    <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                         <div class="flex flex-row gap-2 items-center">
                             <a href="{{ route('my-orders') }}"
                                 class="p-1.5 hover:bg-gray-100 hover:rounded-full hidden mid:block">
@@ -104,11 +142,50 @@
                             Browse a list of transaction's orders, update payment and order status, and delete some if
                             applicable.
                         </p>
+                        <div class="flex items-center gap-2 sm:gap-4 mt-4">
+                            <div class="relative w-1/2">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-3 h-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </div>
+                                <input type="text" id="search-filter" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders...">
+                            </div>
+                            <div class="inline-block h-[35px] w-[0.5px] self-stretch bg-gray-200"></div>
+                            <div class="flex items-center gap-2 h-fit text-gray-700">
+                                <p class="font-medium">Set order status:</p>
+                                <button x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                    const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
+                                    return orderStatuses[id] === 'Waiting';
+                                })" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
+                                    @click="confirmModalOpen = true; document.body.style.overflow = 'hidden'; confirmIndeces = selected;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-check"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
+                                    <p class="hidden lg:block">Confirm</p>
+                                </button>
+                                <button x-bind:disabled="selected.length !== 1 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                    const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
+                                    return orderStatuses[id] === 'Delivered';
+                                })" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
+                                    @click="rateTransactionModalOpen = true; document.body.style.overflow = 'hidden';">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                                    <p class="hidden lg:block">Rate</p>
+                                </button>
+                                <button class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
+                                        x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                    const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
+                                    return orderStatuses[id] === 'Pending';
+                                })"
+                                    @click="cancelOrderModalOpen = true; document.body.style.overflow = 'hidden'; cancelIndeces = selected;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-x"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/><path d="m17 13 5 5m-5 0 5-5"/></svg>
+                                    <p class="hidden lg:block">Cancel</p>
+                                </button>
+                            </div>
+                        </div>
                     </caption>
                     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-3 py-3 text-center">
-                                Order id
+                            <th scope="col" class="pl-6 sm:pl-3 pr-3 py-3 text-center">
+                                <input type="checkbox" x-model="all" @change="selected = all ? {{ $orders->pluck('id') }} : []">
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Customer name
@@ -129,11 +206,8 @@
                     <tbody>
                         @forelse ($orders as $order)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
-                            <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
-                                <span>
-                                    {{ $order->id }}
-                                </span>
-
+                            <th scope="row" class="pl-6 sm:pl-3 pr-3 py-3 font-medium text-gray-900 whitespace-nowrap text-center">
+                                <input type="checkbox" :value="{{ $order->id }}" x-model="selected">
                             </th>
                             <td class="px-6 py-4">
                                 {{ App\Models\User::where('id', $order->customer_id)->first()->name }}
@@ -185,7 +259,7 @@
 
 
 
-                            <td class="px-6 py-4 align-middle" x-data="{ orderStatus: '{{ $order->item_status }}' }">
+                            <td class="px-6 py-4 align-middle">
                                 <span class="flex flex-row gap-4 items-center justify-center">
                                     <a href="{{ route('my-orders-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
                                         class="">
@@ -202,18 +276,6 @@
                                                 class="font-semibold hidden sm:block hover:underline hover:text-gray-900">View</span>
                                         </div>
                                     </a>
-                                    <button class="text-red-500 enabled:hover:text-red-600 disabled:cursor-not-allowed"
-                                        x-bind:disabled="orderStatus === 'Cancelled' || transactionStatus === 'cancelled' || ['Acquired', 'Delivered', 'Waiting', 'Rated'].includes(orderStatus)"
-                                        @click="cancelOrderModalOpen = true; document.body.style.overflow = 'hidden'; deleteIndex = {{ $order->id }};">
-                                        <div class="flex">
-                                            <svg class="size-5 block sm:hidden" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                            </svg>
-                                            <span class="hidden sm:block font-semibold hover:underline">Cancel</span>
-                                        </div>
-                                    </button>
                                 </span>
                             </td>
                         </tr>
@@ -329,9 +391,10 @@
         </div>
     </div>
 
-    <!-- MODAL -->
-    <div @keydown.escape.window="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
-        x-show="changeStatusModalOpen" x-transition:enter.duration.25ms
+    <!-- CONFIRM ORDER MODAL -->
+    <div @keydown.escape.window="confirmModalOpen = false; document.body.style.overflow = 'auto';"
+        x-show="confirmModalOpen" x-transition:enter.duration.25ms
+        x-data="{ orders: json_encode($orders) }"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
             <div class="flex flex-row items-center gap-2 sm:gap-3">
@@ -341,7 +404,7 @@
                         d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
-                <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
+                <button @click="confirmModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="#000000" class="size-6">
@@ -349,20 +412,96 @@
                     </svg>
                 </button>
             </div>
-            <p class="text-sm mt-2 sm:ml-2">Do you wish to save your changes?</p>
+            <p class="text-sm mt-2 sm:mt-8 sm:ml-2">Do you confirm that your <span x-text="selected.length > 1 ? 'orders' : 'order'"></span> 
+                <span 
+                    class="font-semibold" 
+                    x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }" 
+                    x-text="selected.map(id => orders[id]).filter(Boolean).join(', ')">
+                </span>
+
+                <span x-text="selected.length > 1 ? 'have been' : 'has been'"></span> 
+                    delivered by provider, 
+                <span
+                    class="font-semibold"> {{ App\Models\User::where('id', $order->provider_id)->first()->name }}
+                </span> at 
+                <span class="font-semibold">
+                    {{ App\Models\Post::where('id', $order->post_id)->first()->meetup_place }}?
+                </span>
+            </p>
 
             <div class="mt-5 flex justify-end gap-2">
-                <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
+                <button @click="confirmModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
-                    @click="disabled = true; changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';"
+                    @click="disabled = true; confirmModalOpen = false; document.body.style.overflow = 'auto'; $wire.confirmDelivery({{$transaction->id}}, confirmIndeces); confirmIndeces = []; selected = [];"
                     class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL -->
-    @teleport('body')
+    <!-- RATE TRANSACTION MODAL -->
+    <div @keydown.escape.window="rateTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+        x-show="rateTransactionModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg w-11/12 sm:w-5/6 lg:w-7/12 xl:w-4/12 relative flex flex-col items-center" x-data="{ rating: $wire.entangle('star_rating'), tempRating: 0, remarks: $wire.entangle('remarks') }">
+            
+            <div class="flex self-start items-center gap-2">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="#014421" class="size-6 md:size-7">
+                             <path stroke-linecap="round" stroke-linejoin="round"
+                                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                         </svg>
+                         <p class="text-xl font-semibold text-[#014421]">Transaction rating</p>
+                        </div>
+
+            <!-- Image at the Top Center -->
+            <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738989291/1_fn3fqa.png" alt="Rating_Image"
+                class="w-36 h-36 sm:w-48 sm:h-48 object-cover">
+
+            <p class="text-sm text-center">We want to hear from you!</p>
+
+            <!-- Star Rating -->
+            <div class="flex justify-center mb-4">
+                <template x-for="star in 5">
+                    <svg @mouseover="tempRating = star" @mouseleave="tempRating = rating" @click="rating = star"
+                        :class="(star <= tempRating || star <= rating) ? 'fill-yellow-400' : 'fill-gray-100'"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421"
+                        class="w-8 h-8 cursor-pointer transition-colors duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                    </svg>
+                </template>
+            </div>
+
+            <!-- Textual Feedback -->
+            <textarea
+                class="text-sm w-full border border-gray-300 rounded-md p-2 mb-4 focus:outline-none focus:border-[#014421]"
+                placeholder="Leave feedback for the provider..." rows="5"
+                style="resize: none; max-height: 200px;" x-model="remarks"></textarea>
+
+            <!-- Buttons -->
+            <div class="flex justify-end w-full gap-2">
+                <button @click="rateTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="px-3 py-1 text-sm border rounded-md hover:bg-slate-200">Cancel</button>
+
+                <button x-data="{ disabled: false }"
+                    @click="rateTransactionModalOpen = false; disabled = true; document.body.style.overflow = 'auto'; $wire.rateTransaction({{ $transaction->id }}, selected[0]);"
+                    :disabled="rating === 0 || !remarks || disabled"
+                    class="px-3 py-1 text-sm enabled:bg-[#014421] text-white rounded-md enabled:hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-gray-300">Submit</button>
+            </div>
+
+            <!-- Close Button -->
+            <button @click="rateTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+                class="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="#000000" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- CANCEL ORDER MODAL -->
     <div @keydown.escape.window="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
         x-data="{ confirm: '', errors: {} }" x-show="cancelOrderModalOpen" x-transition:enter.duration.25ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
@@ -374,8 +513,8 @@
                         d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p x-show="transactionStatus === 'ongoing'" class="text-sm text-center">Cancelling your order in an ongoing transaction will incur a decrease of 5 pasabuy points</p>
-                <p x-show="['open', 'full'].includes(transactionStatus)" class="text-sm text-center">Cancelling will notify the provider and remove and remove your order from the roster of orders.</p>
+                <p x-show="transactionStatus === 'ongoing'" class="text-sm text-center">Cancelling in an ongoing transaction will incur a decrease of 5 pasabuy points.</p>
+                <p x-show="['open', 'full'].includes(transactionStatus)" class="text-sm text-center">Cancelling will notify the provider and remove your order from the order list.</p>
                 <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -388,14 +527,15 @@
                 <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
-                    @click="disabled = true; cancelOrderModalOpen = false; $wire.cancelOrder({{$transaction->id}}, deleteIndex); deleteIndex = null;"
+                    @click="disabled = true; cancelOrderModalOpen = false; $wire.cancelOrder({{$transaction->id}}, cancelIndeces); cancelIndeces = []; selected = [];"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-red-700 text-white rounded-md hover:bg-red-600">
                     Confirm
                 </button>
             </div>
         </div>
     </div>
-    @endteleport
+
+
 </div>
 
 
