@@ -86,8 +86,8 @@
         style="margin-top: 4.3rem;">
         <div class="p-4 w-full">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <caption class="p-5 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ search: '', all: false, selected: [] }">
+                    <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                         <div class="flex flex-row gap-2 items-center">
                             <a href="{{ route('transactions') }}"
                                 class="p-1.5 hover:bg-gray-100 hover:rounded-full hidden mid:block">
@@ -104,11 +104,39 @@
                             Browse a list of transaction's orders, update payment and order status, and delete some if
                             applicable.
                         </p>
+                        <div class="flex items-center gap-2 sm:gap-4 mt-2">
+                            <div class="relative w-1/2">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-3 h-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </div>
+                                <input type="text" id="search-filter" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders...">
+                            </div>
+                            <div class="inline-block h-[35px] w-[0.5px] self-stretch bg-gray-200"></div>
+                            <div class="flex items-center gap-2 h-fit text-gray-700">
+                                <p class="font-medium">Set order status:</p>
+                                <button :disabled="selected.length === 0" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                    </svg>
+                                    <p class="hidden lg:block">Acquired</p>
+                                </button>
+                                <button :disabled="selected.length === 0" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-check"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
+                                    <p class="hidden lg:block">Delivered</p>
+                                </button>
+                                <button :disabled="selected.length === 0" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-x"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/><path d="m17 13 5 5m-5 0 5-5"/></svg>
+                                    <p class="hidden lg:block">Unavailable</p>
+                                </button>
+                            </div>
+                        </div>
                     </caption>
                     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-3 py-3 text-center">
-                                Order id
+                            <th scope="col" class="pl-6 sm:pl-3 pr-3 py-3 text-center">
+                                <input type="checkbox" x-model="all" @change="selected = all ? {{ $orders->pluck('id') }} : []">
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Customer name
@@ -129,11 +157,8 @@
                     <tbody>
                         @forelse ($orders as $order)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
-                            <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
-                                <span>
-                                    {{ $order->id }}
-                                </span>
-
+                            <th scope="row" class="pl-6 sm:pl-3 pr-3 py-3 font-medium text-gray-900 whitespace-nowrap text-center">
+                                <input type="checkbox" :value="{{ $order->id }}" x-model="selected">
                             </th>
                             <td class="px-6 py-4">
                                 {{ App\Models\User::where('id', $order->customer_id)->first()->name }}
