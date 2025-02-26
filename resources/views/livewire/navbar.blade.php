@@ -61,7 +61,7 @@
                                           <span class="font-normal">You've added {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
                                        @endif
                                     @elseif ($notif->type === 'cancelled order')
-                                       <span class="font-normal">cancelled an order.</span>
+                                       <span class="font-normal">cancelled {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
                                     @elseif ($notif->type === 'converted post')
                                        <span class="font-normal">converted your post to a transaction.</span>
                                     @elseif ($notif->type === 'item bought')
