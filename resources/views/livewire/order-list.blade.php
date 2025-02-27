@@ -429,7 +429,7 @@
             <div class="mt-5 flex gap-2">
                 <button @click="confirmModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button x-data="{ disabled: false }" :disabled="disabled"
+                <button x-data="{ disabled: false }" x-bind:disabled="disabled"
                     @click="disabled = true; confirmModalOpen = false; document.body.style.overflow = 'auto'; $wire.confirmDelivery({{$transaction->id}}, confirmIndeces); confirmIndeces = []; selected = [];"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">
                     Confirm
@@ -463,7 +463,7 @@
             <div class="flex justify-center mb-4">
                 <template x-for="star in 5">
                     <svg @mouseover="tempRating = star" @mouseleave="tempRating = rating" @click="rating = star"
-                        :class="(star <= tempRating || star <= rating) ? 'fill-yellow-400' : 'fill-gray-100'"
+                        x-bind:class="(star <= tempRating || star <= rating) ? 'fill-yellow-400' : 'fill-gray-100'"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="#014421"
                         class="w-8 h-8 cursor-pointer transition-colors duration-200">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -530,7 +530,7 @@
             <div class="mt-5 flex gap-2">
                 <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button x-data="{ disabled: false }" :disabled="disabled"
+                <button x-data="{ disabled: false }" x-bind:disabled="disabled"
                     @click="disabled = true; cancelOrderModalOpen = false; $wire.cancelOrder({{$transaction->id}}, cancelIndeces); cancelIndeces = []; selected = [];"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-red-700 text-white rounded-md hover:bg-red-600">
                     Confirm
