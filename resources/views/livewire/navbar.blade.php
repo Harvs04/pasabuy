@@ -39,7 +39,7 @@
                   </button>
    
                   <!-- NOTIFICATION FIELD -->
-                  <div x-show="openNotification" class="break-words w-full sm:w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:right-0 top-16 bg-white rounded-md shadow border px-3 py-4">
+                  <div x-show="openNotification" class="break-words w-full sm:w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:-right-4 top-[62px] bg-white rounded-md shadow border px-3 py-4">
                      <h1 class="text-lg md:text-xl font-semibold text-gray-800 ml-1">Notifications</h1>
                      <div class="mt-4">
                         @forelse ($user->notification_as_poster as $notif)
