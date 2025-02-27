@@ -43,7 +43,7 @@
     <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;":class="{'lg:ml-64 xl:ml-96': openBurger, 'md:ml-0': !openBurger}">
       <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ search: '' }">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" >
                <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                   <p class="text-lg mid:text-xl font-semibold">
                      List of transactions containing your orders:
@@ -83,7 +83,14 @@
                </thead>
                <tbody>
                      @forelse ($transactions as $transaction)
-                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
+                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
+                           x-show="search === '' || 
+                                ['{{ strtolower($transaction->item_name) }}',
+                                '{{ strtolower($transaction->status) }}', 
+                                '{{ strtolower($transaction->item_origin) }}',
+                                ].some(value => value.includes(search.toLowerCase()))
+                            "  
+                        >
                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
                               <span class="
                                  {{ $transaction->status === 'open' ? 'bg-green-900 text-green-300' : '' }}

@@ -111,7 +111,14 @@
                </thead>
                <tbody>
                      @forelse ($transactions as $transaction)
-                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
+                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
+                           x-show="search === '' || 
+                                ['{{ strtolower($transaction->item_name) }}',
+                                '{{ strtolower($transaction->status) }}', 
+                                '{{ strtolower($transaction->item_origin) }}',
+                                ].some(value => value.includes(search.toLowerCase()))
+                            "    
+                        >
                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
                               <span class="
                                  {{ $transaction->status === 'open' ? 'bg-green-900 text-green-300' : '' }}
