@@ -56,20 +56,20 @@
                                        <span class="font-normal">commented on your post.</span>
                                     @elseif ($notif->type === 'new order')
                                        @if ($notif->actor_id !== $notif->poster_id)
-                                          <span class="font-normal">added {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
+                                          <span class="font-normal">added {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'an order' }}.</span>
                                        @else
-                                          <span class="font-normal">You've added {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
+                                          <span class="font-normal">You've added {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'an order' }}.</span>
                                        @endif
                                     @elseif ($notif->type === 'cancelled order')
-                                       <span class="font-normal">cancelled {{ $notif->order_count }} {{ $notif->order_count > 1 ? ' orders' : 'order' }}.</span>
+                                       <span class="font-normal">cancelled {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'an order' }}.</span>
                                     @elseif ($notif->type === 'converted post')
                                        <span class="font-normal">converted your post to a transaction.</span>
                                     @elseif ($notif->type === 'item bought')
-                                       <span class="font-normal">successfully acquired your order.</span>
+                                       <p class="font-normal">successfully acquired your <span> {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'order' }}</span>.</p>
                                     @elseif ($notif->type === 'item unavailable')
-                                       <span class="font-normal">was not able to buy your order.</span>
+                                       <p class="font-normal">was not able to buy your <span> {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'order' }}</span>.</p>
                                     @elseif ($notif->type === 'item waiting')
-                                       <span class="font-normal">marked your order as delivered.</span>
+                                       <p class="font-normal">marked your <span> {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'order' }}</span> as delivered.</p>
                                     @elseif ($notif->type === 'item confirmed')
                                        <span class="font-normal">has confirmed your delivery.</span>
                                     @elseif ($notif->type === 'item rated')
