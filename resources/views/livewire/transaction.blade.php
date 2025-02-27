@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, transactionStatus: '{{ $transaction->status }}', isChangeRoleModalOpen: false, deleteOrderModalOpen: false, deleteIndex: null, search: '', all: false, selected: [], openTransactionDots: false, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '' }"
+    x-data="{ openBurger: false, transactionStatus: '{{ $transaction->status }}', isChangeRoleModalOpen: false, deleteOrderModalOpen: false, deleteIndex: null, search: '', all: false, selected: [], acquireOrderModalOpen: false, deliveredOrderModalOpen: false, unavailOrderModalOpen: false, acquiredIndeces: [], deliveredIndeces: [], unavailableIndeces: [], openTransactionDots: false, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '' }"
     x-cloak>
 
     @if(session('start_success'))
@@ -14,6 +14,25 @@
 
             <div class="text-center text-sm">
                 {{ session('start_success') }}
+            </div>
+        </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
+    @elseif(session('action_success'))
+    <div
+        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+
+            <div class="text-center text-sm">
+                {{ session('action_success') }}
             </div>
         </div>
         <!-- Close Button -->
@@ -64,7 +83,7 @@
     <livewire:sidebar />
 
     @teleport('body')
-    <div wire:loading.delay wire:target="updateStatus, deleteOrder"
+    <div wire:loading.delay wire:target="updateStatus, acquireOrder, deliverOrder, unavailableOrder"
         class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
             class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
@@ -111,22 +130,40 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="text" id="search-filter" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders...">
+                                <input type="text" id="search-filter" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders, and status...">
                             </div>
                             <div class="inline-block h-[35px] w-[0.5px] self-stretch bg-gray-200"></div>
                             <div class="flex items-center gap-2 h-fit text-gray-700">
                                 <p class="font-medium">Set order status:</p>
-                                <button :disabled="selected.length === 0" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md">
+                                <button class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
+                                    x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                        const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
+                                        return orderStatuses[id] === 'Pending';
+                                    })"
+                                    @click="acquireOrderModalOpen = true; document.body.style.overflow = 'hidden'; acquiredIndeces = selected;"
+                                >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                     </svg>
-                                    <p class="hidden lg:block">Acquired</p>
+                                    <p class="hidden lg:block">Acquire</p>
                                 </button>
-                                <button :disabled="selected.length === 0" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md">
+                                <button class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
+                                    x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                        const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
+                                        return orderStatuses[id] === 'Acquired';
+                                    })"
+                                    @click="deliveredOrderModalOpen = true; document.body.style.overflow = 'hidden'; deliveredIndeces = selected;"
+                                >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-check"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
-                                    <p class="hidden lg:block">Delivered</p>
+                                    <p class="hidden lg:block">Deliver</p>
                                 </button>
-                                <button :disabled="selected.length === 0" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md">
+                                <button  class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
+                                    x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                        const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
+                                        return orderStatuses[id] === 'Pending';
+                                    })"
+                                    @click="unavailOrderModalOpen = true; document.body.style.overflow = 'hidden'; unavailableIndeces = selected;"
+                                >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-x"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/><path d="m17 13 5 5m-5 0 5-5"/></svg>
                                     <p class="hidden lg:block">Unavailable</p>
                                 </button>
@@ -156,7 +193,14 @@
                     </thead>
                     <tbody>
                         @forelse ($orders as $order)
-                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
+                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
+                            x-show="search === '' || 
+                                ['{{ strtolower(App\Models\User::where("id", $order->customer_id)->first()->name) }}',
+                                '{{ strtolower($order->order) }}', 
+                                '{{ strtolower($order->item_status) }}',
+                                ].some(value => value.includes(search.toLowerCase()))
+                            "    
+                        >
                             <th scope="row" class="pl-6 sm:pl-3 pr-3 py-3 font-medium text-gray-900 whitespace-nowrap text-center">
                                 <input type="checkbox" :value="{{ $order->id }}" x-model="selected">
                             </th>
@@ -238,10 +282,6 @@
                         @endforelse
                     </tbody>
                 </table>
-                <div class="px-6 py-2">
-                    {{ $orders->links() }}
-                    <!-- Pagination links -->
-                </div>
             </div>
         </div>
         <div class="pt-4 pb-0 mid:pb-4 pr-4 pl-4 mid:pl-0 w-full mid:w-1/3">
@@ -392,21 +432,26 @@
         </div>
     </div>
 
-    <div @keydown.escape.window="deleteOrderModalOpen = false; document.body.style.overflow = 'auto';"
-        x-data="{ confirm: '', errors: {} }" x-show="deleteOrderModalOpen" x-transition:enter.duration.25ms
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <!-- ACQUIRE ORDER MODAL -->
+    <div @keydown.escape.window="acquireOrderModalOpen = false; document.body.style.overflow = 'auto';"
+        x-data="{ confirm: '', errors: {} }" x-show="acquireOrderModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
         <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
             <div class="flex flex-col items-center gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="#ff4545" class="size-12">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                 </svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p class="text-sm">Make sure to inform the customer before cancelling the order. Cancelling order
-                    without
-                    the customer's consent might cause conflicts.</p>
-                <button @click="deleteOrderModalOpen = false; document.body.style.overflow = 'auto';"
+                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-medium underline">acquired</span>:</p>
+                <div class="p-2 border rounded-lg w-full">
+                    <ul class="list-disc pl-5" 
+                        x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
+                        <template x-for="id in selected" :key="id">
+                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                        </template>
+                    </ul>
+                </div>
+                <button @click="acquireOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="#000000" class="size-6">
@@ -415,14 +460,87 @@
                 </button>
             </div>
             <div class="mt-5 flex gap-2">
-                <button @click="deleteOrderModalOpen = false; document.body.style.overflow = 'auto';"
+                <button @click="acquireOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
-                    @click="disabled = true; $wire.deleteOrder(deleteIndex); deleteIndex = null;"
-                    class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]">
+                    @click="disabled = true; acquireOrderModalOpen = false; $wire.acquireOrder({{$transaction->id}}, acquiredIndeces); acquiredIndeces = []; selected = [];"
+                    class="px-2 sm:px-3 py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">
                     Confirm
                 </button>
+            </div>
+        </div>
+    </div>
 
+    <!-- DELIVER ORDER MODAL -->
+    <div @keydown.escape.window="deliveredOrderModalOpen = false; document.body.style.overflow = 'auto';"
+        x-data="{ confirm: '', errors: {} }" x-show="deliveredOrderModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
+        <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
+            <div class="flex flex-col items-center gap-2 sm:gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#014421" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-check"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
+                <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
+                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-medium underline">delivered</span>:</p>
+                <div class="p-2 border rounded-lg w-full">
+                    <ul class="list-disc pl-5" 
+                        x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
+                        <template x-for="id in selected" :key="id">
+                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                        </template>
+                    </ul>
+                </div>
+                <button @click="deliveredOrderModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="#000000" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-5 flex gap-2">
+                <button @click="deliveredOrderModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                <button x-data="{ disabled: false }" :disabled="disabled"
+                    @click="disabled = true; deliveredOrderModalOpen = false; $wire.deliverOrder({{$transaction->id}}, deliveredIndeces); deliveredIndeces = []; selected = [];"
+                    class="px-2 sm:px-3 py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UNAVAILABLE ORDER MODAL -->
+    <div @keydown.escape.window="unavailOrderModalOpen = false; document.body.style.overflow = 'auto';"
+        x-data="{ confirm: '', errors: {} }" x-show="unavailOrderModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
+        <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
+            <div class="flex flex-col items-center gap-2 sm:gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff002b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-x"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/><path d="m17 13 5 5m-5 0 5-5"/></svg>
+                <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
+                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-red-600 font-medium underline">unavailable</span>:</p>
+                <div class="p-2 border rounded-lg w-full">
+                    <ul class="list-disc pl-5" 
+                        x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
+                        <template x-for="id in selected" :key="id">
+                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                        </template>
+                    </ul>
+                </div>
+                <button @click="unavailOrderModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="#000000" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-5 flex gap-2">
+                <button @click="unavailOrderModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                <button x-data="{ disabled: false }" :disabled="disabled"
+                    @click="disabled = true; unavailOrderModalOpen = false; $wire.unavailableOrder({{$transaction->id}}, unavailableIndeces); unavailableIndeces = []; selected = [];"
+                    class="px-2 sm:px-3 py-1.5 text-sm bg-red-700 text-white rounded-md hover:bg-red-600">
+                    Confirm
+                </button>
             </div>
         </div>
     </div>
