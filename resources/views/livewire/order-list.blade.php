@@ -139,8 +139,7 @@
                             </p>
                         </div>
                         <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400 break-words">
-                            Browse a list of transaction's orders, update payment and order status, and delete some if
-                            applicable.
+                            Browse a list of your orders in a transaction, confirm delivery, and rate the transaction is applicable.
                         </p>
                         <div class="flex items-center gap-2 sm:gap-4 mt-4">
                             <div class="relative w-1/2">
@@ -149,7 +148,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="text" id="search-filter" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders...">
+                                <input type="text" id="search-filter-list-orders" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders, and status...">
                             </div>
                             <div class="inline-block h-[35px] w-[0.5px] self-stretch bg-gray-200"></div>
                             <div class="flex items-center gap-2 h-fit text-gray-700">
@@ -205,7 +204,15 @@
                     </thead>
                     <tbody>
                         @forelse ($orders as $order)
-                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
+                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
+                            x-show="search === '' || 
+                            ['{{ strtolower(App\Models\User::where("id", $order->customer_id)->first()->name) }}',
+                            '{{ strtolower($order->order) }}', 
+                            '{{ strtolower($order->item_status) }}',
+                            ]
+                                .some(value => value.includes(search.toLowerCase()))
+                            "    
+                        >
                             <th scope="row" class="pl-6 sm:pl-3 pr-3 py-3 font-medium text-gray-900 whitespace-nowrap text-center">
                                 <input type="checkbox" :value="{{ $order->id }}" x-model="selected">
                             </th>
@@ -226,39 +233,36 @@
                                 @endif
                             </td>
                             <td 
-    class="px-1 py-4 align-middle text-center"
-    x-data="{ waitingInfo: false, status: '{{ $order->item_status }}' }">
+                                class="px-1 py-4 align-middle text-center"
+                                x-data="{ waitingInfo: false, status: '{{ $order->item_status }}' }">
 
-    <span class="
-        {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'bg-green-900 text-green-300' : '' }}
-        {{ in_array($order->item_status, ['Pending', 'Waiting']) ? 'bg-yellow-900 text-yellow-300' : '' }}
-        {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
-        {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
-        w-fit text-xs font-medium px-2.5 py-0.5 rounded-full inline-flex text-center relative
-    ">
-        {{ $order->item_status === 'Waiting' ? "Delivered - " . ucwords($order->item_status) : ucwords($order->item_status) }}
+                                <span class="
+                                    {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'bg-green-900 text-green-300' : '' }}
+                                    {{ in_array($order->item_status, ['Pending', 'Waiting']) ? 'bg-yellow-900 text-yellow-300' : '' }}
+                                    {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
+                                    {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
+                                    w-fit text-xs font-medium px-2.5 py-0.5 rounded-full inline-flex text-center relative
+                                ">
+                                    {{ $order->item_status === 'Waiting' ? "Delivered - " . ucwords($order->item_status) : ucwords($order->item_status) }}
 
-        <!-- Info Icon -->
-        <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true"
-            @mouseleave="waitingInfo = false" xmlns="http://www.w3.org/2000/svg"
-            class="w-3.5 h-3.5 ml-1 cursor-pointer inline-block" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
-        </svg>
+                                    <!-- Info Icon -->
+                                    <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true"
+                                        @mouseleave="waitingInfo = false" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-3.5 h-3.5 ml-1 cursor-pointer inline-block" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                    </svg>
 
-        <!-- Tooltip -->
-        <div x-show="waitingInfo && status === 'Waiting'"
-            class="absolute bottom-full mb-1 -right-12 bg-white text-gray-600 p-2 text-xs shadow-lg rounded-md z-10 
-                    whitespace-wrap sm:whitespace-nowrap max-w-max"
-            x-cloak>
-            You must confirm whether the order has been delivered.
-        </div>
-    </span>
-</td>
-
-
-
+                                    <!-- Tooltip -->
+                                    <div x-show="waitingInfo && status === 'Waiting'"
+                                        class="absolute bottom-full mb-1 -right-12 bg-white text-gray-600 p-2 text-xs shadow-lg rounded-md z-10 
+                                                whitespace-wrap sm:whitespace-nowrap max-w-max"
+                                        x-cloak>
+                                        You must confirm whether the order has been delivered.
+                                    </div>
+                                </span>
+                            </td>
                             <td class="px-6 py-4 align-middle">
                                 <span class="flex flex-row gap-4 items-center justify-center">
                                     <a href="{{ route('my-orders-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
@@ -287,11 +291,7 @@
                         </tr>
                         @endforelse
                     </tbody>
-                </table>
-                <div class="px-6 py-2">
-                    {{ $orders->links() }}
-                    <!-- Pagination links -->
-                </div>
+                </table>    
             </div>
         </div>
         <div class="pt-4 pb-0 mid:pb-4 pr-4 pl-4 mid:pl-0 w-full mid:w-1/3">
