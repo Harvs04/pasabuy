@@ -187,7 +187,7 @@
                                 <input type="checkbox" x-model="all" @change="selected = all ? {{ $orders->pluck('id') }} : []">
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Customer name
+                                Provider name
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Order
@@ -206,18 +206,17 @@
                         @forelse ($orders as $order)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
                             x-show="search === '' || 
-                            ['{{ strtolower(App\Models\User::where("id", $order->customer_id)->first()->name) }}',
-                            '{{ strtolower($order->order) }}', 
-                            '{{ strtolower($order->item_status) }}',
-                            ]
-                                .some(value => value.includes(search.toLowerCase()))
+                                ['{{ strtolower(App\Models\User::where("id", $order->provider_id)->first()->name) }}',
+                                '{{ strtolower($order->order) }}', 
+                                '{{ strtolower($order->item_status) }}',
+                                ].some(value => value.includes(search.toLowerCase()))
                             "    
                         >
                             <th scope="row" class="pl-6 sm:pl-3 pr-3 py-3 font-medium text-gray-900 whitespace-nowrap text-center">
                                 <input type="checkbox" :value="{{ $order->id }}" x-model="selected">
                             </th>
                             <td class="px-6 py-4">
-                                {{ App\Models\User::where('id', $order->customer_id)->first()->name }}
+                                {{ App\Models\User::where('id', $order->provider_id)->first()->name }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $order->order }}
@@ -393,17 +392,32 @@
 
     <!-- CONFIRM ORDER MODAL -->
     <div @keydown.escape.window="confirmModalOpen = false; document.body.style.overflow = 'auto';"
-        x-show="confirmModalOpen" x-transition:enter.duration.25ms
-        x-data="{ orders: json_encode($orders) }"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
-            <div class="flex flex-row items-center gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="#014421" class="size-6 md:size-7">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
+        x-data="{ confirm: '', errors: {} }" x-show="confirmModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
+        <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
+            <div class="flex flex-col items-center gap-2 sm:gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#014421" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-check"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
+                <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
+                <p class="text-sm text-center">
+                    You are confirming that your <span x-text="selected.length > 1 ? 'orders' : 'order'"></span> 
+                    <span x-text="selected.length > 1 ? 'have been' : 'has been'"></span> 
+                        delivered by provider, 
+                    <span
+                        class="font-semibold"> {{ App\Models\User::where('id', $order->provider_id)->first()->name }}
+                    </span> at 
+                    <span class="font-semibold">
+                        {{ App\Models\Post::where('id', $order->post_id)->first()->meetup_place }}?
+                    </span>
+                </p>
+                <div class="p-2 border rounded-lg w-full">
+                    <p class="font-medium">Order/s:</p>
+                    <ul class="list-disc pl-5" 
+                        x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
+                        <template x-for="id in selected" :key="id">
+                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                        </template>
+                    </ul>
+                </div>
                 <button @click="confirmModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -412,29 +426,14 @@
                     </svg>
                 </button>
             </div>
-            <p class="text-sm mt-2 sm:mt-8 sm:ml-2">Do you confirm that your <span x-text="selected.length > 1 ? 'orders' : 'order'"></span> 
-                <span 
-                    class="font-semibold" 
-                    x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }" 
-                    x-text="selected.map(id => orders[id]).filter(Boolean).join(', ')">
-                </span>
-
-                <span x-text="selected.length > 1 ? 'have been' : 'has been'"></span> 
-                    delivered by provider, 
-                <span
-                    class="font-semibold"> {{ App\Models\User::where('id', $order->provider_id)->first()->name }}
-                </span> at 
-                <span class="font-semibold">
-                    {{ App\Models\Post::where('id', $order->post_id)->first()->meetup_place }}?
-                </span>
-            </p>
-
-            <div class="mt-5 flex justify-end gap-2">
+            <div class="mt-5 flex gap-2">
                 <button @click="confirmModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
                     @click="disabled = true; confirmModalOpen = false; document.body.style.overflow = 'auto'; $wire.confirmDelivery({{$transaction->id}}, confirmIndeces); confirmIndeces = []; selected = [];"
-                    class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                    class="px-2 sm:px-3 py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">
+                    Confirm
+                </button>
             </div>
         </div>
     </div>
@@ -446,13 +445,13 @@
         <div class="bg-white p-6 rounded-lg w-11/12 sm:w-5/6 lg:w-7/12 xl:w-4/12 relative flex flex-col items-center" x-data="{ rating: $wire.entangle('star_rating'), tempRating: 0, remarks: $wire.entangle('remarks') }">
             
             <div class="flex self-start items-center gap-2">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="#014421" class="size-6 md:size-7">
-                             <path stroke-linecap="round" stroke-linejoin="round"
-                                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                         </svg>
-                         <p class="text-xl font-semibold text-[#014421]">Transaction rating</p>
-                        </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="#014421" class="size-6 md:size-7">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <p class="text-xl font-semibold text-[#014421]">Transaction rating</p>
+            </div>
 
             <!-- Image at the Top Center -->
             <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738989291/1_fn3fqa.png" alt="Rating_Image"
@@ -486,7 +485,7 @@
 
                 <button x-data="{ disabled: false }"
                     @click="rateTransactionModalOpen = false; disabled = true; document.body.style.overflow = 'auto'; $wire.rateTransaction({{ $transaction->id }}, selected[0]);"
-                    :disabled="rating === 0 || !remarks || disabled"
+                    x-bind:disabled="rating === 0 || !remarks || disabled"
                     class="px-3 py-1 text-sm enabled:bg-[#014421] text-white rounded-md enabled:hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-gray-300">Submit</button>
             </div>
 
@@ -507,14 +506,19 @@
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
         <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
             <div class="flex flex-col items-center gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="#ff4545" class="size-12">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff002b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-x"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/><path d="m17 13 5 5m-5 0 5-5"/></svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p x-show="transactionStatus === 'ongoing'" class="text-sm text-center">Cancelling in an ongoing transaction will incur a decrease of 5 pasabuy points.</p>
-                <p x-show="['open', 'full'].includes(transactionStatus)" class="text-sm text-center">Cancelling will notify the provider and remove your order from the order list.</p>
+                <p class="text-sm text-center">You will be <span class="font-medium underline">cancelling</span> the following order/s:</p>
+                <div class="p-2 border rounded-lg w-full">
+                    <ul class="list-disc pl-5" 
+                        x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
+                        <template x-for="id in selected" :key="id">
+                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                        </template>
+                    </ul>
+                </div>
+                <!-- <p x-show="transactionStatus === 'ongoing'" class="text-sm text-center">Cancelling in an ongoing transaction will incur a decrease of 5 pasabuy points.</p>
+                <p x-show="['open', 'full'].includes(transactionStatus)" class="text-sm text-center">Cancelling will notify the provider and remove your order from the order list.</p> -->
                 <button @click="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -534,7 +538,6 @@
             </div>
         </div>
     </div>
-
 
 </div>
 

@@ -152,7 +152,7 @@ class OrderList extends Component
                 'order_count' => count($ids)
             ]);
                 
-            session()->flash('cancel_success', 'Transaction cancelled!');
+            session()->flash('cancel_success', 'order cancelled!');
             return $this->redirect(route('my-orders.view', ['id' => $t_id]), true);
 
         } catch (\Throwable $th) {
