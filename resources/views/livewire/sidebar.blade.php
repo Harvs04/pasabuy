@@ -1,5 +1,5 @@
 <div id="logo-sidebar" 
-     class="fixed top-0 left-0 z-20 w-64 xl:w-96 h-screen pt-20 bg-white border-r border-gray-200"
+     class="fixed top-0 left-0 z-20 w-64 xl:w-96 h-screen pt-20 bg-white border-r border-gray-200 shadow-lg"
      aria-label="Sidebar" 
      x-show="openBurger"
      x-transition:enter="transition ease-out duration-300 transform"
