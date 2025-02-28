@@ -104,7 +104,6 @@ class TransactionOrder extends Component
                 }
             }
 
-            ;
             session()->flash('start_success', 'Transaction status updated!');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
@@ -113,30 +112,30 @@ class TransactionOrder extends Component
         }
     }
 
-    public function deleteOrder()
+    public function unavailableOrder()
     {
         try {
             $transaction = Post::where('id', $this->t_id)->first();
-            $customer_id = $this->order->customer_id;
-            $this->order->delete();
-            
-            // $transaction->order_count--;
-            $transaction->status = 'open';
-            $transaction->save();
-            ;
+            if (!$transaction) {
+                session()->flash('error', 'An error occurred. Please try again.');
+                return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+            } 
 
+            $this->order->item_status = 'Unavailable';
+            $this->order->save();
+            
             Notification::create([
-                'type' => 'item deleted',
+                'type' => 'item unavailable',
                 'post_id' => $this->t_id,
                 'actor_id' => Auth::user()->id,
-                'poster_id' => $customer_id
+                'poster_id' => $this->order->customer_id
             ]);
 
-            session()->flash('delete_success', 'Order deleted!');
-            return $this->redirect(route('transaction.view', ['id' => $this->t_id]), true);
+            session()->flash('delete_success', 'Order status set to unavailable!');
+            return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
-            return $this->redirect(route('transaction.view', ['id' => $this->t_id]), true);
+            return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         }
     }
 
