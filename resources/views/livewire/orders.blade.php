@@ -58,7 +58,7 @@
                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                            </svg>
                         </div>
-                        <input type="text" id="search-filter-transaction-list" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders...">
+                        <input type="text" id="search-filter-transaction-list" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search orders, item origin, meetup place...">
                      </div>
                   </div>
                </caption>
@@ -77,7 +77,10 @@
                            Order count
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           <span class="">Actions</span>
+                           Meetup place
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                           <span class="">Action</span>
                         </th>
                      </tr>
                </thead>
@@ -86,7 +89,7 @@
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
                            x-show="search === '' || 
                                 ['{{ strtolower($transaction->item_name) }}',
-                                '{{ strtolower($transaction->status) }}', 
+                                '{{ strtolower($transaction->meetup_place) }}', 
                                 '{{ strtolower($transaction->item_origin) }}',
                                 ].some(value => value.includes(search.toLowerCase()))
                             "  
@@ -112,6 +115,9 @@
                            <td class="px-6 py-3 text-center">
                                  {{ count($transaction->orders->where('customer_id', $user->id)) }}
                            </td>
+                           <td class="px-6 py-3 text-center">
+                                 {{ $transaction->meetup_place }}
+                           </td>
                            <td class="px-6 text-center" x-data="{ transactionStatus: '{{ $transaction->status }}' }">
                               <div class="flex flex-row gap-4 items-center justify-center">
                                  <a href="{{ route('my-orders.view', ['id' => $transaction->id]) }}" class="">
@@ -136,7 +142,6 @@
                </tbody>
             </table>
             <div class="px-6 py-2">
-               {{ $transactions->links() }}  <!-- Pagination links -->
             </div>
          </div>
       </div>
