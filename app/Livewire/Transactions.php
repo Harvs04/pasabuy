@@ -15,55 +15,63 @@ class Transactions extends Component
     use WithPagination;
     public $user;
 
-    public function cancelTransaction($id)
+    public function updateTransaction($ids, $type) 
     {
         try {
-            $transaction = Post::where('id', $id)->first();
-            if (!$transaction) {
-                session()->flash('error', 'An error occurred. Please try again.');
-                return $this->redirect(route('transactions'), true);
-            }
+            foreach ($ids as $id) {
+                $transaction = Post::where('id', $id)->first();
+                if (!$transaction) {
+                    session()->flash('error', 'An error occurred. Please try again.');
+                    return $this->redirect(route('transactions'), true);
+                }
 
-            $transaction->status = 'cancelled';
-            $transaction->save();
+                $transaction->status = $type;
+                $transaction->save();
 
-            $this->user->cancelled_transactions += 1;
+                if (count($transaction->orders) > 0 && $type === 'cancelled') {
 
-            if (count($transaction->orders) > 0) {
-                $this->user->pasabuy_points -= 5;
-    
-                foreach($transaction->orders as $order) {
-                    $order->item_status = 'Cancelled';
-                    $order->save();
-                    
-                    Notification::create([
-                        'type' => 'transaction cancelled',
-                        'post_id' => $id,
-                        'actor_id' => $this->user->id,
-                        'poster_id' => User::where('id', $order->customer_id)->first()->id
-                    ]);
+                    if ($transaction->status === 'ongoing') {
+                        $this->user->pasabuy_points -= 5;
+                    }
+        
+                    $ordersGroupedByCustomer = $transaction->orders->groupBy('customer_id');
+
+                    foreach ($ordersGroupedByCustomer as $customerId => $orders) {
+                        foreach ($orders as $order) {
+                            if ($order->item_status === 'Pending') {
+                                $order->item_status = 'Cancelled';
+                                $order->save();
+                            }
+                        }
+
+                        // Send only one notification per customer
+                        Notification::create([
+                            'type' => 'transaction cancelled',
+                            'post_id' => $id,
+                            'actor_id' => $this->user->id,
+                            'poster_id' => $customerId
+                        ]);
+                    }
+
                 }
             }
 
+            $this->user->cancelled_transactions += count($ids);
             $this->user->save();
 
-            ;
-            session()->flash('cancel_success', 'Transaction deleted!');
+            session()->flash('action_success', $type === 'ongoing' ? 'Transaction started' : 'Transaction cancelled!');
             return $this->redirect(route('transactions'), true);
 
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
             return $this->redirect(route('transactions'), true);
         }
-        
-
-    
     }
 
     public function render()
     {
         $this->user = Auth::user();
-        $transactions = Post::where('user_id', $this->user->id)->where('type', 'transaction')->orderByDesc('created_at')->paginate(10);
+        $transactions = Post::where('user_id', $this->user->id)->where('type', 'transaction')->orderByDesc('created_at')->get();
         return view('livewire.transactions', ['user' => $this->user, 'transactions' => $transactions]);
     }
 }
