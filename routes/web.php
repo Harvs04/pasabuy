@@ -54,14 +54,14 @@ Route::get('/messages/{convo_id}', function($convo_id){
 
     if (Auth::user()->role === 'provider') {
         foreach (Auth::user()->conversations_as_provider as $convo) {
-            if ($convo->id == (int)$convo_id) {
+            if ($convo->id == $convo_id) {
                 $found = true;
                 break; 
             }
         }
     } else if (Auth::user()->role === 'customer') {
         foreach (Auth::user()->conversations_as_customer as $convo) {
-            if ($convo->id == (int)$convo_id) {
+            if ($convo->id == $convo_id) {
                 $found = true;
                 break; 
             }
@@ -99,7 +99,7 @@ Route::get('my-orders/{id}', function($id) {
     // dd(Auth::user()->orders);
 
     foreach (Auth::user()->orders as $order) {
-        if ($order->post_id == (int)$id) {
+        if ($order->post_id == $id) {
             $found = true;
             break; 
         }
@@ -129,7 +129,7 @@ Route::get('my-orders/{transaction_id}/order/{order_id}', function($transaction_
 
     $found = false;
     foreach($post->orders as $order_info) {
-        if ($order_info->id === (int)$order_id) {
+        if ($order_info->id === $order_id) {
             $found = true;
             break;
         }
@@ -192,7 +192,7 @@ Route::get('transactions/{transaction_id}/order/{order_id}', function($transacti
 
     $found = false;
     foreach($post->orders as $order_info) {
-        if ($order_info->id === (int)$order_id) {
+        if ($order_info->id === $order_id) {
             $found = true;
             break;
         }
@@ -224,7 +224,7 @@ Route::get('my-history/{order_id}', function($order_id) {
         return view('missing');
     }
 
-    if (!in_array($order->item_status, ['Delivered', 'Rated', 'Unavailable'])) {
+    if (!in_array($order->item_status, ['Delivered', 'Rated', 'Unavailable', 'Cancelled'])) {
         return view('missing');
     }
 
