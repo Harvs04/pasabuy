@@ -29,7 +29,7 @@ class MessageView extends Component
     {
         try {
             $new_message = [
-                'conversation_id' => (int)$this->convo_id,
+                'conversation_id' => $this->convo_id,
                 'sender_id' => $this->user->id,
                 'receiver_id' => $receiver_id,
                 'message' => $message
@@ -37,17 +37,17 @@ class MessageView extends Component
 
             $new = Message::create($new_message);
 
-            $userId = (int) $receiver_id;
+            $userId =  $receiver_id;
             $senderId = Auth::user()->id;
             $senderName = Auth::user()->name;
-            $convoId = (int) $this->convo_id;
+            $convoId =  $this->convo_id;
             $message = $message ?? "You have new notification!"; 
 
             broadcast(new PrivateMessageEvent($userId, $senderId, $senderName, $convoId, $message, $this->user->profile_pic_url, $new->created_at));
 
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
-            return $this->redirect(route('message.view', ['convo_id', (int)$this->convo->id]), true);  
+            return $this->redirect(route('message.view', ['convo_id', $this->convo->id]), true);  
         }
     }
 
