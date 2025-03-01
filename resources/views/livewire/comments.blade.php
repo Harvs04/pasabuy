@@ -28,7 +28,7 @@
                     </button>
                 </div>
                 <div class="w-4/6 sm:w-5/6 flex flex-row gap-1 ml-auto">
-                    <button @click="liked = !liked; $wire.likePost({{ $post->id }}, liked).then(() => $wire.call('refresh')); " class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md" :class="'{{ $user->role }}' === 'provider' ? 'hidden' : 'block'">
+                    <button @click="liked = !liked; $wire.likePost('{{ $post->id }}', liked).then(() => $wire.call('refresh')); " class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md" :class="'{{ $user->role }}' === 'provider' ? 'hidden' : 'block'">
                         <div class="flex flex-row items-center justify-center gap-3" :class="liked ? 'text-[#014421]' : ''">
                             
                             <div wire:loading.delay.long wire:target="likePost" role="status">
@@ -60,7 +60,7 @@
                             <p class="hidden lg:font-medium lg:block" >Comment</p>
                         </div>
                     </button>
-                    <button @click=" saved = !saved; $wire.savePost({{ $post->id }}, saved).then(() => $wire.call('refresh')); " :class="saved ? 'text-[#014421]' : ''" class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
+                    <button @click=" saved = !saved; $wire.savePost('{{ $post->id }}', saved).then(() => $wire.call('refresh')); " :class="saved ? 'text-[#014421]' : ''" class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
                         <div class="flex flex-row items-center justify-center gap-3">
                             <div wire:loading.delay.long wire:target="savePost" role="status">
                                 <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-[#014421]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +106,7 @@
                     </button>
                 </div>
                 <div class="w-4/6 sm:w-5/6 flex flex-row gap-1 ml-auto">
-                    <button @click="liked = !liked; $wire.likePost({{ $post->id }}, liked).then(() => $wire.call('refresh')); " class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md" :class="'{{ $user->role }}' === 'customer' ? 'hidden' : 'block'">
+                    <button @click="liked = !liked; $wire.likePost('{{ $post->id }}', liked).then(() => $wire.call('refresh')); " class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md" :class="'{{ $user->role }}' === 'customer' ? 'hidden' : 'block'">
                         <div class="flex flex-row items-center justify-center gap-3" :class="liked ? 'text-[#014421]' : ''">
                             <div wire:loading.delay.long wire:target="likePost" role="status">
                                 <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-[#014421]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -137,7 +137,7 @@
                             <p class="hidden lg:font-medium lg:block" >Comment</p>
                         </div>
                     </button>
-                    <button @click="saved = !saved; $wire.savePost({{ $post->id }}, saved).then(() => $wire.call('refresh')); " :class="saved ? 'text-[#014421]' : ''"  class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
+                    <button @click="saved = !saved; $wire.savePost('{{ $post->id }}', saved).then(() => $wire.call('refresh')); " :class="saved ? 'text-[#014421]' : ''"  class="w-4/12 md:w-5/12 py-1.5 hover:bg-gray-200 hover:rounded-md ">
                         <div class="flex flex-row items-center justify-center gap-3">
                             <div wire:loading.delay.long wire:target="savePost" role="status">
                                 <svg aria-hidden="true" class="w-4 h-4 text-gray-200 animate-spin fill-[#014421]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -222,10 +222,10 @@
                             rows="1"
                             @keydown.shift="shiftPressed = true"
                             @keyup.shift="shiftPressed = false"
-                            @keydown.enter.prevent="if (!shiftPressed && comment) { comments.push(comment); $wire.addComment({{ $post->id }}); comment = ''; } else if (shiftPressed && comment) { $event.target.value = $event.target.value + '\n'; } "
+                            @keydown.enter.prevent="if (!shiftPressed && comment) { comments.push(comment); $wire.addComment('{{ $post->id }}'); comment = ''; } else if (shiftPressed && comment) { $event.target.value = $event.target.value + '\n'; } "
                             >
                         </textarea>
-                        <button class="ml-auto absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" @click="if (comment) { comments.push(comment); $wire.addComment({{ $post->id }}); comment = ''; } " :class="{ 'cursor-not-allowed': !comment }">
+                        <button class="ml-auto absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" @click="if (comment) { comments.push(comment); $wire.addComment('{{ $post->id }}'); comment = ''; } " :class="{ 'cursor-not-allowed': !comment }">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"

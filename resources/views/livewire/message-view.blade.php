@@ -412,9 +412,9 @@
                                     class="flex w-full border rounded-full text-sm focus:outline-none focus:border-gray-300 pl-4 h-10 pe-6"
                                     x-model="chatMessage" @keydown.enter.window="if (chatMessage) { 
                                     if (role === 'provider') { 
-                                        $wire.sendMessage(chatMessage, {{ $conversation->customer_id }}); 
+                                        $wire.sendMessage(chatMessage, '{{ $conversation->customer_id }}'); 
                                     } else if (role === 'customer') { 
-                                        $wire.sendMessage(chatMessage, {{ $conversation->provider_id }}); 
+                                        $wire.sendMessage(chatMessage, '{{ $conversation->provider_id }}'); 
                                     } 
                                     chatMessage = ''; 
                                     }" />
@@ -426,9 +426,9 @@
                                 :disabled="!chatMessage" @click="
                                 if (chatMessage) { 
                                     if (role === 'provider') { 
-                                        $wire.sendMessage(chatMessage, {{ $conversation->customer_id }}); 
+                                        $wire.sendMessage(chatMessage, '{{ $conversation->customer_id }}'); 
                                     } else if (role === 'customer') { 
-                                        $wire.sendMessage(chatMessage, {{ $conversation->provider_id }}); 
+                                        $wire.sendMessage(chatMessage, '{{ $conversation->provider_id }}'); 
                                     } 
                                     chatMessage = ''; 
                                 }">
