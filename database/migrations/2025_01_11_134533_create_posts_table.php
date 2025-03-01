@@ -13,10 +13,10 @@ return new class extends Migration
     {
         if (!Schema::hasTable('posts')) {
             Schema::create('posts', function (Blueprint $table) {
-                $table->id();
+                $table->uuid('id')->primary();
                 $table->enum('type', ['item_request', 'transaction']);
                 $table->enum('status', ['open', 'full', 'converted', 'ongoing', 'completed', 'cancelled'])->default('open');
-                $table->unsignedBigInteger('user_id');
+                $table->uuid('user_id');
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->string('poster_name');
                 $table->string('item_name');

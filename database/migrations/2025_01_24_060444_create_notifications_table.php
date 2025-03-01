@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->enum('type', ['like' ,'comment', 'new order', 'new item request', 'new transaction', 'cancelled order', 'converted post', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable', 'transaction cancelled']);
-            $table->unsignedBigInteger('post_id');
+            $table->uuid('post_id');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-            $table->unsignedBigInteger('actor_id');
+            $table->uuid('actor_id');
             $table->foreign('actor_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('poster_id');
+            $table->uuid('poster_id');
             $table->foreign('poster_id')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('isSeen')->default(false);
             $table->integer('order_count')->nullable();

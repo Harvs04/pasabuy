@@ -13,10 +13,10 @@ return new class extends Migration
     {
         if (!Schema::hasTable('comments')) {
             Schema::create('comments', function (Blueprint $table) {
-                $table->id();
-                $table->unsignedBigInteger('post_id');
+                $table->uuid('id')->primary();
+                $table->uuid('post_id');
                 $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-                $table->unsignedBigInteger('user_id');
+                $table->uuid('user_id');
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->string('commenter');
                 $table->longText('comment');
