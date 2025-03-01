@@ -116,7 +116,7 @@
                                         d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                                 </svg>
                             </a>
-                            <p class="text-lg mid:text-xl font-semibold">Orders list: Transaction#{{ $transaction->id }}
+                            <p class="text-lg mid:text-xl font-semibold">Orders list:
                             </p>
                         </div>
                         <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400 break-words">
@@ -136,7 +136,7 @@
                             <div class="flex items-center gap-2 h-fit text-gray-700">
                                 <p class="font-medium">Set order status:</p>
                                 <button class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
-                                    x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                    x-bind:disabled="selected.length === 0 || ['cancelled', 'open', 'full'].includes(transactionStatus) || !selected.every(id => {
                                         const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
                                         return orderStatuses[id] === 'Pending';
                                     })"
@@ -148,7 +148,7 @@
                                     <p class="hidden lg:block">Acquire</p>
                                 </button>
                                 <button class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
-                                    x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                    x-bind:disabled="selected.length === 0 || ['cancelled', 'open', 'full'].includes(transactionStatus) || !selected.every(id => {
                                         const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
                                         return orderStatuses[id] === 'Acquired';
                                     })"
@@ -158,7 +158,7 @@
                                     <p class="hidden lg:block">Deliver</p>
                                 </button>
                                 <button  class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
-                                    x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                    x-bind:disabled="selected.length === 0 || ['cancelled', 'open', 'full'].includes(transactionStatus) || !selected.every(id => {
                                         const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
                                         return orderStatuses[id] === 'Pending';
                                     })"
@@ -170,15 +170,15 @@
                             </div>
                         </div>
                     </caption>
-                    <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
+                    <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-b">
                         <tr>
                             <th scope="col" class="pl-6 sm:pl-3 pr-3 py-3 text-center">
                                 <input type="checkbox" x-model="all" @change="selected = all ? {{ $orders->pluck('id') }} : []">
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-6 py-3 text-center">
                                 Customer name
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-6 py-3 text-center">
                                 Order
                             </th>
                             <th scope="col" class="px-1 py-0 text-center">
@@ -202,12 +202,12 @@
                             "    
                         >
                             <th scope="row" class="pl-6 sm:pl-3 pr-3 py-3 font-medium text-gray-900 whitespace-nowrap text-center">
-                                <input type="checkbox" :value="{{ $order->id }}" x-model="selected">
+                                <input type="checkbox" :value="'{{ $order->id }}'" x-model="selected">
                             </th>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-center">
                                 {{ App\Models\User::where('id', $order->customer_id)->first()->name }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-center">
                                 {{ $order->order }}
                             </td>
                             <td class="px-1 py-4 text-center">
@@ -275,13 +275,17 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-2 text-center text-gray-500">
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                                 No orders yet.
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
+                @if (count($orders) > 0)
+                    <div class="py-2">
+                    </div>
+                @endif
             </div>
         </div>
         <div class="pt-4 pb-0 mid:pb-4 pr-4 pl-4 mid:pl-0 w-full mid:w-1/3">
@@ -463,7 +467,7 @@
                 <button @click="acquireOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
-                    @click="disabled = true; acquireOrderModalOpen = false; $wire.acquireOrder({{$transaction->id}}, acquiredIndeces); acquiredIndeces = []; selected = [];"
+                    @click="disabled = true; acquireOrderModalOpen = false; $wire.acquireOrder('{{$transaction->id}}', acquiredIndeces); acquiredIndeces = []; selected = [];"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">
                     Confirm
                 </button>
@@ -500,7 +504,7 @@
                 <button @click="deliveredOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
-                    @click="disabled = true; deliveredOrderModalOpen = false; $wire.deliverOrder({{$transaction->id}}, deliveredIndeces); deliveredIndeces = []; selected = [];"
+                    @click="disabled = true; deliveredOrderModalOpen = false; $wire.deliverOrder('{{$transaction->id}}', deliveredIndeces); deliveredIndeces = []; selected = [];"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">
                     Confirm
                 </button>
@@ -537,7 +541,7 @@
                 <button @click="unavailOrderModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
-                    @click="disabled = true; unavailOrderModalOpen = false; $wire.unavailableOrder({{$transaction->id}}, unavailableIndeces); unavailableIndeces = []; selected = [];"
+                    @click="disabled = true; unavailOrderModalOpen = false; $wire.unavailableOrder('{{$transaction->id}}', unavailableIndeces); unavailableIndeces = []; selected = [];"
                     class="px-2 sm:px-3 py-1.5 text-sm bg-red-700 text-white rounded-md hover:bg-red-600">
                     Confirm
                 </button>

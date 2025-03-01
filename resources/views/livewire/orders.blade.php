@@ -62,15 +62,15 @@
                      </div>
                   </div>
                </caption>
-               <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
+               <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-b">
                      <tr>
                         <th scope="col" class="px-6 py-3 text-center">
                            Transaction status
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3 text-center">
                            Item name
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3 text-center">
                            Item origin
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
@@ -106,10 +106,10 @@
                               </span>
    
                            </th>
-                           <td class="px-6 py-4">
+                           <td class="px-6 py-4 text-center">
                                  {{ $transaction->item_name }}
                            </td>
-                           <td class="px-6 py-4">
+                           <td class="px-6 py-4 text-center">
                                  {{ $transaction->item_origin }}
                            </td>
                            <td class="px-6 py-3 text-center">
@@ -134,15 +134,17 @@
                         </tr>
                      @empty
                            <tr>
-                                 <td colspan="5" class="px-6 py-2 text-center text-gray-500">
+                                 <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                                     No transactions yet.
                                  </td>
                            </tr>
                      @endforelse
                </tbody>
             </table>
-            <div class="px-6 py-2">
-            </div>
+            @if (count($transactions) > 0)
+               <div class="py-2">
+               </div>
+            @endif
          </div>
       </div>
    </div>

@@ -116,7 +116,7 @@
                      </div>
                   </div>
                </caption>
-               <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
+               <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-b">
                      <tr>
                         <th scope="col" class="pl-6 py-3 text-center">
                            <input type="checkbox" x-model="all" @change="selected = all ? {{ $transactions->pluck('id') }} : []">
@@ -124,10 +124,10 @@
                         <th scope="col" class="pr-6 pl-3 py-3 text-center">
                            Transaction status
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3 text-center">
                            Item name
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-3 text-center">
                            Item origin
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
@@ -152,8 +152,8 @@
                             "    
                         >
                            <th scope="row" class="pl-6 py-3 font-medium text-gray-900 whitespace-nowrap text-center">
-                                <input type="checkbox" :value="{{ $transaction->id }}" x-model="selected">
-                            </th>
+                              <input type="checkbox" :value="'{{ $transaction->id }}'" x-model="selected">
+                           </th>
                            <th scope="row" class="pr-6 pl-3 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
                               <span class="
                                  {{ $transaction->status === 'open' ? 'bg-green-900 text-green-300' : '' }}
@@ -166,17 +166,17 @@
                               </span>
    
                            </th>
-                           <td class="px-6 py-4">
-                                 {{ $transaction->item_name }}
+                           <td class="px-6 py-4 text-center">
+                              {{ $transaction->item_name }}
                            </td>
-                           <td class="px-6 py-4">
-                                 {{ $transaction->item_origin }}
-                           </td>
-                           <td class="px-6 py-3 text-center">
-                                 {{ count($transaction->orders) . "/" . $transaction->max_orders }}
+                           <td class="px-6 py-4 text-center">
+                              {{ $transaction->item_origin }}
                            </td>
                            <td class="px-6 py-3 text-center">
-                                 {{ $transaction->meetup_place }}
+                              {{ count($transaction->orders) . "/" . $transaction->max_orders }}
+                           </td>
+                           <td class="px-6 py-3 text-center">
+                              {{ $transaction->meetup_place }}
                            </td>
                            <td class="px-6 text-center" x-data="{ transactionStatus: '{{ $transaction->status }}' }">
                               <div class="flex flex-row gap-4 items-center justify-center">
@@ -194,15 +194,17 @@
                         </tr>
                      @empty
                            <tr>
-                                 <td colspan="5" class="px-6 py-2 text-center text-gray-500">
+                                 <td colspan="7" class="px-6 py-4 text-center text-gray-500">
                                     No transactions yet.
                                  </td>
                            </tr>
                      @endforelse
                </tbody>
             </table>
-            <div class="px-6 py-2">
-            </div>
+            @if (count($transactions) > 0)
+               <div class="py-2">
+               </div>
+            @endif
          </div>
       </div>
 
