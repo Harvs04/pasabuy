@@ -213,31 +213,33 @@ Route::get('transactions/{transaction_id}/order/{order_id}', function($transacti
 Route::get('/my-history', [SidebarController::class, 'history'])->name('pasabuy-history');
 
 Route::get('my-history/{order_id}', function($order_id) {
+
     if (!Auth::check()) {
         return redirect()->route('login');
     }
 
     $order = Order::where('id', $order_id)->first();
     
-
     if (!$order) {
         return view('missing');
     }
 
-    if (!in_array($order->item_status, ['Delivered', 'Rated'])) {
+    if (!in_array($order->item_status, ['Delivered', 'Rated', 'Unavailable'])) {
         return view('missing');
     }
 
     $list = Auth::user()->role === 'customer' ? Auth::user()->orders : Auth::user()->deliveries;
+    $found = false; 
 
-    if (Auth::user()->role === 'customer') {
-        if (Auth::user()->id !== $order->customer_id) {
-            return view('forbidden');
+    foreach ($list as $list_item) {
+        if ($order->id === $list_item->id) {
+            $found = true; 
+            break;
         }
-    } else if (Auth::user()->role === 'provider') {
-        if (Auth::user()->id !== $order->provider_id) {
-            return view('forbidden');
-        }
+    }
+
+    if (!$found) {
+        return view('missing');
     }
 
     return view('history-order', ['order' => $order]);
