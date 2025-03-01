@@ -4,7 +4,7 @@
             <script>
                 document.body.style.overflow = "hidden";
             </script>
-            <div class="h-[calc(100vh-7rem)] fixed top-1/2 flex flex-col sm:flex-row self-center items-center gap-2 text-sm sm:text-base text-gray-400">
+            <div class="h-[calc(100vh-7rem)] fixed top-1/2 flex flex-col sm:flex-row self-center items-center gap-2 text-sm sm:text-base text-gray-400 -z-10">
                 <p class="">Seems empty in here.</p>
                 @if ($type === 'dashboard')
                     <button @click="createPostModalOpen = true" class="underline">Create a post</button>
