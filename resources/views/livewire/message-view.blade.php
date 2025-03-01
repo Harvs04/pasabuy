@@ -219,7 +219,7 @@
                             @endphp
 
                             <!-- Filtering based on name -->
-                                @if ((int)$convo_id !== (int)$convo->id)
+                                @if ($convo_id !== $convo->id)
                                     <a x-show="search === '' || '{{ strtolower($otherUser->name) }}'.includes(search.toLowerCase())"
                                         class="flex flex-row items-start hover:bg-gray-200 rounded-md p-1.5 gap-2 truncate"
                                         href="{{ route('message.view', ['convo_id' => $convo->id]) }}">

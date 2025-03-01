@@ -42,7 +42,7 @@
                      </p>
                   @endif
                </caption>
-               <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50">
+               <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50 border-y">
                      <tr>
                         <th scope="col" class="px-6 py-3 text-center">
                            Order
@@ -109,8 +109,8 @@
                            </td>
 
                            <td class="px-6 py-3 text-center">
-                              @if (in_array($order->item_status, ['Delivered', 'Rated']))                           
-                                 {{ $order->date_delivered->timezone('Asia/Singapore')->format('F j, Y \a\t g:i A') }}
+                              @if (in_array($order->item_status, ['Delivered', 'Rated']))                    
+                                 {{ $order->date_delivered ? $order->date_delivered->timezone('Asia/Singapore')->format('F j, Y \a\t g:i A') : 'N/A' }}   
                               @elseif(in_array($order->item_status, ['Cancelled', 'Unavailable']))
                                  ---
                               @endif
@@ -131,16 +131,13 @@
                         </tr>
                      @empty
                            <tr>
-                                 <td colspan="5" class="px-6 py-2 text-center text-gray-500">
-                                    No transactions yet.
+                                 <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                    No PASABUY history.
                                  </td>
                            </tr>
                      @endforelse
                </tbody>
             </table>
-            <div>
-            <!-- PAGINATION -->
-            </div>
          </div>
       </div>
     </div>
