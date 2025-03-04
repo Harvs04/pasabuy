@@ -339,7 +339,7 @@
    <livewire:sidebar />
 
    <!-- CHATBOT -->
-   <livewire:chatbot />
+   <livewire:chatbot :current_route="'dashboard'"/>
    
    <!-- MAIN CONTENT -->
    <div class="sm:transition-all sm:duration-300 sm:transform relative" style="margin-top: 4.3rem;"
