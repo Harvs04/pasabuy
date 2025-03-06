@@ -12,7 +12,12 @@ class Chatbot extends Component
     public $user;
     public $conversation = [];
     public $actions = [
-        'dashboard' => ['How to make a post?0', 'How to log out?0', 'How to add order?0'],
+        'dashboard' => ['How can I help you?', 'How to make a post?', 'How to log out?', 'How to add order?'],
+        'messages' => ['How can I help you?', 'How to make a post?', 'How to log out?', 'How to add order?'],
+        'saved' => ['How can I help you?', 'How to make a post?', 'How to log out?', 'How to add order?'],
+        'orders' => ['How can I help you?', 'How to make a post?', 'How to log out?', 'How to add order?'],
+        'transactions' => ['How can I help you?', 'How to make a post?', 'How to log out?', 'How to add order?'],
+        'history' => ['How can I help you?', 'How to make a post?', 'How to log out?', 'How to add order?']
     ]; 
 
     public function __construct() 
@@ -24,12 +29,20 @@ class Chatbot extends Component
     {   
         if ($message === 'stay here1') {
             if ($this->current_route === 'dashboard') {
-                // foreach ($this->actions['dashboard'] as $action) {
-                //     array_push($this->conversation, $action);
-                // }
                 array_push($this->conversation, $this->actions['dashboard']);
+            } else if ($this->current_route === 'messages') {
+                array_push($this->conversation, $this->actions['messages']);
+            } else if ($this->current_route === 'saved') {
+                array_push($this->conversation, $this->actions['saved']);
+            } else if ($this->current_route === 'orders') {
+                array_push($this->conversation, $this->actions['orders']);
+            } else if ($this->current_route === 'transactions') {
+                array_push($this->conversation, $this->actions['transactions']);
+            } else if ($this->current_route === 'history') {
+                array_push($this->conversation, $this->actions['history']);
             }
         }
+        // dd($this->conversation);
     }
 
     public function render()

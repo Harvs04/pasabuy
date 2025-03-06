@@ -4,7 +4,7 @@
          x-transition:enter="scale-in-br" 
          x-transition:leave="scale-out-br"
          @click.outside="openBot = false; firstOpen = false; firstClose = true;"
-         class="fixed bottom-20 right-6 w-2/3 sm:w-80 bg-white max-h-3/5 h-3/5 border border-slate-200 rounded-l-xl rounded-t-xl shadow z-50"
+         class="fixed bottom-20 right-6 w-2/3 sm:w-80 bg-white max-h-[calc(100svh-20rem)] h-3/5 border border-slate-200 rounded-l-xl rounded-t-xl shadow z-50"
     >
         <div class="flex items-center w-full h-10 bg-[#014421] rounded-t-xl px-3 text-white">
             <div class="flex items-center gap-2">
@@ -17,14 +17,14 @@
                 </svg>    
             </button>
         </div>
-        <div class="flex flex-col gap-2 p-2.5">
+        <div id="chat-container" class="flex flex-col gap-2 p-2.5 max-h-[calc(100svh-23rem)] overflow-y-auto">
             <div class=" flex items-start gap-2">
                 <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
                 </div>
                 <div class="flex flex-col gap-2">
                     <div class="px-2 border rounded-b-lg rounded-r-lg" :class="{ 'typewriter': openBot && firstOpen }">
-                        <h1>Hi! If ever you feel lost, I am here to assist you.</h1>
+                        <h1>Hi! If you ever feel lost in the app, I am here to assist you.</h1>
                     </div>
                     <h1 class="px-2 border rounded-b-lg rounded-r-lg">You are currently in the <span class="font-medium underline">{{ $current_route }}</span>.</h1>
                     @php
@@ -49,11 +49,11 @@
                     <div class="flex-wrap">
                         @foreach($main_routes as $route => $link)
                             @if($route !== $current_route)
-                                <a href="{{ $link }}" class="border rounded-md w-fit px-1.5 py-0.5 hover:bg-gray-100">
+                                <a href="{{ $link }}" class="px-2 border rounded-md rounded-r-lg hover:bg-gray-100">
                                     {{ $route }}
                                 </a>
                             @else
-                                <button class="border rounded-md w-fit px-1.5 py-0.5 hover:bg-gray-100" @click="stayInCurrent = true; if (!conversation.includes('stay here1')) { conversation.push('stay here1'); $wire.add_message('stay here1')}">
+                                <button class="px-2 border rounded-md hover:bg-gray-100" @click="stayInCurrent = true; if (!conversation.includes('stay here1')) { conversation.push('stay here1'); $wire.add_message('stay here1'); }">
                                     Stay here
                                 </button>
                             @endif
@@ -61,35 +61,35 @@
                     </div>
                 </div>
             </div>
-            <div class="">
-                <template x-for="convo in conversation">
-                    <div class="flex" x-data="{ message: String(convo).trim() }">
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot">
-                                <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
-                            </svg>
-                        </div>
-                        <template x-if="message.length > 0 && !message.endsWith('1')">
-                            <template x-for="reply in message.split(',')">
-                                <div class="flex gap-2">
-                                    <button class="px-2 border rounded-b-lg rounded-r-lg hover:bg-gray-100" x-text="reply.slice(0, -1)"></button>
-                                </div>
-                            </template>
-                        </template>
-
-                        <!-- If message ends with '1' -->
-                        <template x-if="message.endsWith('1')">
-                            <div class="flex ml-auto gap-2">
-                                <p class="px-2 bg-green-800 text-white border rounded-b-lg rounded-l-lg" x-text="message.slice(0, -1)"></p>
-                                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot">
-                                        <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
-                                    </svg>
-                                </div>
+            <div class="w-full flex flex-col gap-2">
+                @foreach ($conversation as $convo)
+                    @if(gettype($convo) === 'string')
+                        <div class="flex items-center gap-2">
+                            <p class="ml-auto rounded-md w-fit px-1.5 py-0.5 bg-green-800 text-white"> {{ rtrim($convo, '1') }} </p>
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
+                                <img src="{{ $user->profile_pic_url }}" alt="" class="rounded-full">
                             </div>
-                        </template>
-                    </div>
-                </template>
+                        </div>
+                    @else
+                        <div class="flex items-start gap-2">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                            </div>
+                            <div class="flex-wrap">
+                                @for($i = 0; $i < count($convo); $i++)
+                                    <button class="border {{ $i == 0 ? 'rounded-b-lg rounded-r-lg' : 'mt-0.5 rounded-md' }} w-fit px-1.5 py-0.5 enabled:hover:bg-gray-100" @if($i == 0) disabled @endif @click="conversation.push('{{ $convo[$i] }}'); $wire.add_message('{{ $convo[$i] }}')
+                                        .then(() => {
+                                            // Wait for the DOM to update after Livewire finishes
+                                            setTimeout(() => {
+                                                let chatContainer = document.getElementById('chat-container');
+                                                chatContainer.scrollTop = chatContainer.scrollHeight;
+                                            }, 25);
+                                        });"> {{ $convo[$i] }} </button>
+                                @endfor
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             </div>
         </div>
     </div>    
