@@ -61,33 +61,55 @@
                     </div>
                 </div>
             </div>
-            <div class="w-full flex flex-col gap-2">
+            <div class="w-full flex flex-col">
                 @foreach ($conversation as $convo)
                     @if(gettype($convo) === 'string')
-                        <div class="flex items-center gap-2">
-                            <p class="ml-auto rounded-md w-fit px-1.5 py-0.5 bg-green-800 text-white"> {{ rtrim($convo, '1') }} </p>
-                            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
-                                <img src="{{ $user->profile_pic_url }}" alt="" class="rounded-full">
+                        @if (substr($convo, -1) === '1')
+                            <div class="flex items-center gap-2 mt-2">
+                                <p class="ml-auto rounded-md w-fit px-1.5 py-0.5 bg-green-800 text-white"> {{ rtrim($convo, '1') }} </p>
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
+                                    <img src="{{ $user->profile_pic_url }}" alt="" class="rounded-full">
+                                </div>
                             </div>
-                        </div>
+                        @elseif (substr($convo, -1) === '0')
+                            <div class="flex items-start gap-2 mt-2">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                                </div>
+                                <p class="border rounded-b-lg rounded-r-lg w-fit px-1.5 py-0.5"> {{ rtrim($convo, '0') }} </p>
+                            </div>
+                        @endif
                     @else
-                        <div class="flex items-start gap-2">
-                            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                        @if($conversation[count($conversation)-1] === 'Reset conversation1')
+                            <div class="ml-[48px] mt-0.5">
+                                @foreach($main_routes as $route => $link)
+                                    @if($route !== $current_route)
+                                        <a href="{{ $link }}" class="px-2 border rounded-md rounded-r-lg hover:bg-gray-100">
+                                            {{ $route }}
+                                        </a>
+                                    @else
+                                        <button class="px-2 border rounded-md hover:bg-gray-100" @click="stayInCurrent = true; if (!conversation.includes('stay here1')) { conversation.push('stay here1'); $wire.add_message('stay here1'); }">
+                                            Stay here
+                                        </button>
+                                    @endif
+                                @endforeach
                             </div>
-                            <div class="flex-wrap">
-                                @for($i = 0; $i < count($convo); $i++)
-                                    <button class="border {{ $i == 0 ? 'rounded-b-lg rounded-r-lg' : 'mt-0.5 rounded-md' }} w-fit px-1.5 py-0.5 enabled:hover:bg-gray-100" @if($i == 0) disabled @endif @click="conversation.push('{{ $convo[$i] }}'); $wire.add_message('{{ $convo[$i] }}')
-                                        .then(() => {
-                                            // Wait for the DOM to update after Livewire finishes
-                                            setTimeout(() => {
-                                                let chatContainer = document.getElementById('chat-container');
-                                                chatContainer.scrollTop = chatContainer.scrollHeight;
-                                            }, 25);
-                                        });"> {{ $convo[$i] }} </button>
-                                @endfor
+                        @else
+                            <div class="flex items-start gap-2">
+                                <div class="flex-wrap ml-[48px]">
+                                    @for($i = 0; $i < count($convo); $i++)
+                                        <button class="border mt-0.5 rounded-md w-fit px-1.5 py-0.5 enabled:hover:bg-gray-100" @click="conversation.push('{{ $convo[$i] . '1' }}'); $wire.add_message('{{ $convo[$i] . '1' }}')
+                                            .then(() => {
+                                                // Wait for the DOM to update after Livewire finishes
+                                                setTimeout(() => {
+                                                    let chatContainer = document.getElementById('chat-container');
+                                                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                                                }, 25);
+                                            });"> {{ $convo[$i] }} </button>
+                                    @endfor
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     @endif
                 @endforeach
             </div>
@@ -141,7 +163,7 @@
 
 
         /* TYPING EFFECT */
-        .typewriter h1 {
+        .typewriter {
             animation: 
                 typing 1s steps(40, end)
         }
