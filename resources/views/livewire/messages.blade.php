@@ -29,6 +29,8 @@
 
     <livewire:navbar />
     <livewire:sidebar />
+    <!-- CHATBOT -->
+    <livewire:chatbot :current_route="'messages'"/>
     <div class="sm:transition-all sm:duration-300 sm:transform flex w-full"
         style="margin-top: 4.3rem; height: calc(100vh - 4.3rem); overflow: hidden;">
         <div class="flex antialiased text-gray-800 w-full">

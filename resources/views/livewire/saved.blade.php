@@ -28,6 +28,10 @@
 
     <livewire:navbar />
     <livewire:sidebar />
+
+    <!-- CHATBOT -->
+   <livewire:chatbot :current_route="'saved'"/>
+
     <div wire:loading wire:target="applyFilter, clearFilter" class="w-full">
         <livewire:dashboard-skeleton />
     </div>

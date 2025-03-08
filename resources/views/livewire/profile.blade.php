@@ -1,4 +1,5 @@
 <div class="text-gray-800 mx-2 my-4" x-data="{ orders: '{{ count($user->orders) }}', transactions: '{{ count($user->transactions) }}', rating_count: '{{ count($user->ratings) }}' }">
+    
     <div class="flex flex-col font-poppins" x-cloak>
         <!-- ALERT MESSAGES -->
         @if(session('change_role_success'))
@@ -26,7 +27,6 @@
         }, 3000); // 3 seconds
         </script>
         @endif
-
         @if(session('change_pass_success'))
         <div
             class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow">
@@ -52,7 +52,6 @@
         }, 3000); // 3 seconds
         </script>
         @endif
-
         @if(session('change_info_success'))
         <div
             class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow">
@@ -103,6 +102,7 @@
             }, 3000); // 3 seconds
         </script>
         @endif
+
         <div class="flex flex-row items-center gap-3 md:gap-5" style="margin-top: 3.5rem;">
             <!-- SPINNER -->
             <div wire:loading.delay wire:target="changeRole, saveInfoChanges, savePassChanges, deleteAccount, logOut"
@@ -118,6 +118,9 @@
                 </svg>
             </div>
         </div>
+
+        <!-- CHATBOT -->
+        <livewire:chatbot :current_route="'profile'"/>
         <div class="flex justify-center">
             <div class="w-full sm:w-5/6 flex flex-col lg:flex-row gap-4">
                 <!-- PASABUY INFO & IMAGE -->

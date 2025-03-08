@@ -40,6 +40,9 @@
 
     <livewire:navbar />
     <livewire:sidebar />
+
+    <!-- CHATBOT -->
+   <livewire:chatbot :current_route="'orders'"/>
     <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;":class="{'lg:ml-64 xl:ml-96': openBurger, 'md:ml-0': !openBurger}">
       <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
