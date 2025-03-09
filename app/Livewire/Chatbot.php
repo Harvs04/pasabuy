@@ -26,11 +26,12 @@ class Chatbot extends Component
 
     public $action_answers = [
         'dashboard' => ['To make a post, just click the oval shape containing the phrase \'Looking for items? Click here.\' or \'Making a transactions? Click here.\'0', 'To log out, click your profile picture at the top right corner of your device and click the \'log out\' button0', 'To add an order, click the \'Order item\' button at the bottom of an open transaction in your dashboard.0'],
-        'messages' => ['How to make a post?0', 'How to log out?0', 'How to add order?0'],
-        'saved' => ['How to make a post?0', 'How to log out?0', 'How to add order?0'],
-        'orders' => ['How to make a post?0', 'How to log out?0', 'How to add order?0'],
-        'transactions' => ['How to make a post?0', 'How to log out?0', 'How to add order?0'],
-        'history' => ['How to make a post?0', 'How to log out?0', 'How to add order?0']
+        'messages' => ['Creating conversations can be done through ordering items in a transaction as a customer or having new orders as a provider.0', 'Yes, you can message other users as long as they have a current order or transaction with you.0', 'You can message another user as long as the order of the user is not yet rated.0'],
+        'saved' => ['To save a post, click the \'Save\' button at the bottom right of a post.0', 'Yes, you can order to a saved transaction as long as it is still open for orders.0', 'To go back to dashboard, you can use the sidebar and click \'Dashboard\' or you can also click the PASABUY logo in the navigation bar on top?0'],
+        'orders' => ['To view a specific order, kindly choose the transaction with the order in mind, then you will see a list of orders and by clicking the \'View\' button or the eye icon, you will be redirected to your order.0', 'You can confirm a delivery of an order either via the \'Confirm\' button found in the list of orders or in the page of that specific order.0', 'You can rate the transaction and the provider either via the \'Rate\' button found in the list of orders or in the page of that specific order. Take note that you can only rate the transaction after you have confirmed that your order is delivered.0', 'You can cancel an order either via the \'Cancel\' button found in the list of orders or in the page of that specific order. Take note that you can only cancel an order as long as it is not yet acquired or bought by the provider.0'],
+        'transactions' => ['To view a specific transaction, click the \'View\' button or the eye icon in the list of transactions.0', 'To start a transaction, you can either use the \'Start\' button in the list of transactions, start option found when you click the triple dots on top of a transaction\'s details, or using the start option in the page of a specific order.0', 'You can update the status of an either via the \'Acquire\', \'Deliver\', and \'Cancel\'  buttons found in the list of orders or in the page of each order.0'],
+        'history' => ['To view the customer\'s rating, view a specific order history and navigate to the bottom of the page.0', 'To rate a transaction, click a specific order history using the \'View\' button or the eye icon. Then click the \'Rate\' button on the top of order details.0', 'To go back to dashboard, you can use the sidebar and click \'Dashboard\' or you can also click the PASABUY logo in the navigation bar on top?0'],
+        'profile' => []
     ]; 
 
     public $answer = [];
@@ -69,11 +70,12 @@ class Chatbot extends Component
         if ($message === 'stay here1') {
             array_push($this->conversation, $this->starter);
             array_push($this->conversation, $this->actions[$this->current_route]);
+            // may error pa sa stay here na second time
         } else if ($message === 'Thank you!') {
             array_push($this->conversation, $this->final);
-        } else if ($message === 'Reset conversation1') {
+        } else if ($message === 'Reset conversation') {
             array_push($this->conversation, $this->routes);
-            dd($this->conversation);
+            // dd($this->conversation);
         } else {
             $this->action_index = array_search($message, $this->actions[$this->current_route]);
             // dd($this->action_index);
