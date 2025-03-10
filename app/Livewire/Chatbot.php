@@ -70,10 +70,15 @@ class Chatbot extends Component
         if ($message === 'stay here1') {
             array_push($this->conversation, $this->starter);
             array_push($this->conversation, $this->actions[$this->current_route]);
-            // may error pa sa stay here na second time
-        } else if ($message === 'Thank you!') {
+        } else if ($message === 'stay here2') {
+            array_push($this->conversation, $this->starter);
+            array_push($this->conversation, $this->actions[$this->current_route]);
+            // dd($this->conversation);
+        } 
+         else if ($message === 'Thank you!') {
             array_push($this->conversation, $this->final);
         } else if ($message === 'Reset conversation') {
+            array_push($this->conversation, $this->starter);
             array_push($this->conversation, $this->routes);
             // dd($this->conversation);
         } else {
