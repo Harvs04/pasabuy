@@ -3,42 +3,42 @@
     x-cloak>
 
     @if(session('error'))
-        <div
-            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <div class="text-center text-sm">
-                    {{ session('error') }}
-                </div>
+    <div
+        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <div class="text-center text-sm">
+                {{ session('error') }}
             </div>
-            <!-- Close Button -->
-            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-                &times;
-            </button>
         </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
     @elseif(session('item_rated_success'))
-        <div
-            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
+    <div
+        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
 
-                <div class="text-center text-sm">
-                    {{ session('item_rated_success') }}
-                </div>
+            <div class="text-center text-sm">
+                {{ session('item_rated_success') }}
             </div>
-            <!-- Close Button -->
-            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-                &times;
-            </button>
         </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
     @endif
 
     <livewire:navbar />
@@ -46,19 +46,19 @@
 
     <!-- LOADING STATE -->
     @teleport('body')
-        <div wire:loading.delay wire.target="rateTransaction"
-            class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
-                class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
-                style="position: absolute; top: 50%; left: 50%;">
-                <path
-                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                    fill="currentColor" />
-                <path
-                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                    fill="currentFill" />
-            </svg>
-        </div>
+    <div wire:loading.delay wire.target="rateTransaction"
+        class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
+            class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
+            style="position: absolute; top: 50%; left: 50%;">
+            <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor" />
+            <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill" />
+        </svg>
+    </div>
     @endteleport
 
     <!-- CONTENT -->
@@ -66,7 +66,7 @@
         style="margin-top: 4.3rem;">
         <div class="p-4 w-full">
             <div class="relative overflow-x-auto shadow-md rounded-lg w-full">
-                <div class="p-5 text-left rtl:text-right text-gray-800 bg-white overflow-hidden flex flex-col">
+                <div class="p-5 text-left rtl:text-right text-gray-700 bg-white overflow-hidden flex flex-col">
                     <div class="flex flex-row gap-2 items-center">
                         <a href="{{ route('pasabuy-history') }}"
                             class="p-1.5 hover:bg-gray-100 hover:rounded-full hidden mid:block">
@@ -86,7 +86,6 @@
                                 <p class="text-lg font-semibold">Order tracking: {{ $order->item_status }}</p>
                                 <button x-show="status === 'Delivered'" type="button"
                                     @click="rateTransactionModalOpen = true; document.body.style.overflow = 'hidden';"
-                                    
                                     class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:bg-gray-300 disabled:cursor-not-allowed ml-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white sm:me-2">
@@ -102,8 +101,7 @@
                                 <ol class="hidden md:flex w-full gap-8 items-center">
                                     <!-- Step 1: Item purchased -->
                                     <li class="group relative flex-1 after:content-[''] after:bg-gray-200 after:h-0.5 after:w-full after:absolute after:top-1/2 after:right-[-50%] after:z-0"
-                                        :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || thirdClicked}"
-                                        >
+                                        :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || thirdClicked}">
                                         <div :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : firstClicked || secondClicked || thirdClicked}"
                                             class="flex items-center gap-4 h-24 p-4 bg-gray-50 rounded-lg shadow z-10 relative">
                                             <div class="rounded-lg flex items-center justify-center h-10 w-10 bg-gray-200"
@@ -132,8 +130,7 @@
 
                                     <!-- Step 2: Item Delivered -->
                                     <li class="group relative flex-1 after:content-[''] after:h-0.5 after:w-full after:bg-gray-200 after:absolute after:top-1/2 after:right-[-50%] after:z-0"
-                                        :class="{'hover:after:bg-green-700 cursor-pointer' : updateMode, 'after:bg-green-700' : secondClicked || thirdClicked }"
-                                        >
+                                        :class="{'hover:after:bg-green-700 cursor-pointer' : updateMode, 'after:bg-green-700' : secondClicked || thirdClicked }">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow z-10 relative"
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : secondClicked || thirdClicked }">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
@@ -158,8 +155,7 @@
                                     </li>
 
                                     <!-- Step 3: Transaction rating -->
-                                    <li class="relative flex-1 group"
-                                        >
+                                    <li class="relative flex-1 group">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow"
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : thirdClicked}">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
@@ -186,8 +182,7 @@
 
                                 <ol class="block md:hidden space-y-8">
                                     <li class="group after:bg-gray-200 relative flex-1 after:content-[''] after:w-0.5 after:h-full after:inline-block after:absolute after:-bottom-11 after:left-1/2"
-                                        :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || thirdClicked}"
-                                        >
+                                        :class="{ 'hover:after:bg-green-800': updateMode , 'after:bg-green-800' : firstClicked || secondClicked || thirdClicked}">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow z-10 relative"
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421] cursor-pointer' : firstClicked || secondClicked || thirdClicked}">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
@@ -213,8 +208,7 @@
 
                                     <!-- Step 2: Item Delivered -->
                                     <li class="group relative flex-1 after:content-[''] after:w-0.5 after:h-full after:bg-gray-200 after:inline-block after:absolute after:-bottom-11 after:left-1/2"
-                                        :class="{'hover:after:bg-green-700 cursor-pointer' : updateMode, 'after:bg-green-700' : secondClicked || thirdClicked }"
-                                        >
+                                        :class="{'hover:after:bg-green-700 cursor-pointer' : updateMode, 'after:bg-green-700' : secondClicked || thirdClicked }">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow z-10 relative"
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : secondClicked || thirdClicked }">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
@@ -239,8 +233,7 @@
                                     </li>
 
                                     <!-- Step 3: Transaction rating -->
-                                    <li class="relative flex-1 group"
-                                        >
+                                    <li class="relative flex-1 group">
                                         <div class="flex items-center gap-4 bg-gray-50 h-24 p-4 rounded-lg shadow"
                                             :class="{'group-hover:bg-green-50 group-hover:border group-hover:border-[#014421] cursor-pointer' : updateMode, 'bg-green-50 border border-[#014421]' : thirdClicked}">
                                             <div class="rounded-lg bg-gray-200 flex items-center justify-center h-10 w-10"
@@ -323,10 +316,10 @@
                         <hr class="my-4">
                         <div class="flex flex-col gap-2 text-md">
                             <div class="flex flex-row">
-                                <p class="text-lg font-semibold"> {{ $user->role === 'customer' ? 'Provider details:' : 'Customer details:' }} </p>
-                                
-                                <a 
-                                    href="{{ route('message.view', ['convo_id' => $convo_id]) }}"
+                                <p class="text-lg font-semibold">
+                                    {{ $user->role === 'customer' ? 'Provider details:' : 'Customer details:' }} </p>
+
+                                <a href="{{ route('message.view', ['convo_id' => $convo_id]) }}"
                                     class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:cursor-not-allowed">
                                     <!-- TODO: CHANGE PROVIDER DETAILS IN CUSTOMER VIEW -->
                                     <!-- SVG Icon -->
@@ -351,14 +344,16 @@
                                             Name:
                                         </span>
                                         <p class="text-gray-600 font-normal break-words">
-                                            {{ $user->role === 'customer' ? App\Models\User::where('id', $order->provider_id)->first()->name : App\Models\User::where('id', $order->customer_id)->first()->name }}</p>
+                                            {{ $user->role === 'customer' ? App\Models\User::where('id', $order->provider_id)->first()->name : App\Models\User::where('id', $order->customer_id)->first()->name }}
+                                        </p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
                                             Email:
                                         </span>
                                         <p class="text-gray-600 font-normal break-words">
-                                            {{ $user->role === 'customer' ? App\Models\User::where('id', $order->provider_id)->first()->email : App\Models\User::where('id', $order->customer_id)->first()->email }}</p>
+                                            {{ $user->role === 'customer' ? App\Models\User::where('id', $order->provider_id)->first()->email : App\Models\User::where('id', $order->customer_id)->first()->email }}
+                                        </p>
                                     </div>
                                     <div class="flex flex-row items-start gap-1">
                                         <span class="font-medium whitespace-nowrap">
@@ -392,16 +387,17 @@
             </div>
         </div>
         <div class="pt-4 pb-0 mid:pb-4 pr-4 pl-4 mid:pl-0 w-full mid:w-1/3">
-            <div class="relative h-fit bg-white rounded-lg shadow-md px-5 pt-5 pb-5 mid:pb-0 flex flex-col lg:gap-0">
+            <div class="relative h-fit bg-white rounded-lg shadow-md px-5 py-5 flex flex-col lg:gap-0">
                 <div class="flex items-center mb-2 gap-1">
                     <a href="{{ route('pasabuy-history') }}"
                         class="w-fit p-1.5 hover:bg-gray-100 hover:rounded-full block mid:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                         </svg>
                     </a>
-                    <p class="text-lg text-[#014421] font-semibold">Transaction details: </p>
+                    <p class="text-lg text-gray-700 font-semibold">Transaction details: </p>
                 </div>
                 <div class="flex flex-col sm:flex-row mid:flex-col gap-4">
                     @if ($transaction->item_image)
@@ -411,7 +407,7 @@
                     <img src="https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
                         alt="" class="w-2/5 sm:w-1/3 md:w-1/4 mid:w-1/2 sm:mb-0 self-start h-auto rounded bg-gray-100">
                     @endif
-                    <div class="mid:pb-4 text-sm flex flex-col gap-2 items-start">
+                    <div class="text-sm flex flex-col gap-2 items-start">
                         <div class="flex flex-wrap items-center gap-2 text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                 class="size-5 flex-shrink-0">
@@ -481,6 +477,52 @@
                             </span>
                             <p class="text-gray-600 font-normal break-words">{{ $transaction->meetup_place }}</p>
                         </div>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div class="transaction-rating p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row mid:flex-col items-start sm:items-center mid:items-start justify-between mb-3">
+                        <h3 class="text-lg font-semibold text-gray-700">Rating</h3>
+                        <span class="mt-1 sm:mt-0 mid:mt-1 px-2 py-1 bg-gray-100 text-gray-700 text-sm rounded-md">
+                            ID: #{{ $rating_instance->id }}
+                        </span>
+                    </div>
+                    
+                    <!-- Star Rating Display -->
+                    <div class="flex items-center mb-4">
+                        <div class="flex mr-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $rating_instance->star_rating)
+                                    <!-- Filled Star -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-yellow-400">
+                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                    </svg>
+                                @else
+                                    <!-- Empty Star -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-300">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                    </svg>
+                                @endif
+                            @endfor
+                        </div>
+                        <span class="text-lg font-medium text-gray-700">{{ $rating_instance->star_rating }}/5</span>
+                    </div>
+                    
+                    <!-- Remarks Section -->
+                    <div class="mb-3">
+                        <h4 class="text-sm font-medium text-gray-600 mb-1">Customer Remarks:</h4>
+                        @if(empty($rating_instance->remarks))
+                            <p class="text-gray-500 italic">No remarks provided</p>
+                        @else
+                            <div class="p-3 bg-gray-50 rounded-md text-gray-700">
+                                <p>{{ $rating_instance->remarks }}</p>
+                            </div>
+                        @endif
+                    </div>
+                    
+                    <!-- Timestamp and Reference -->
+                    <div class="flex justify-between items-center mt-4 pt-3 border-t border-gray-100 text-xs text-gray-500">
+                        <div>Rated on: {{ \Carbon\Carbon::parse($rating_instance->created_at)->setTimezone('Asia/Singapore')->format('M d, Y \a\t h:i A') }}</div>
                     </div>
                 </div>
             </div>
@@ -561,16 +603,17 @@
     <div @keydown.escape.window="rateTransactionModalOpen = false; document.body.style.overflow = 'auto';"
         x-show="rateTransactionModalOpen" x-transition:enter.duration.25ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg w-11/12 sm:w-5/6 lg:w-7/12 xl:w-4/12 relative flex flex-col items-center" x-data="{ rating: $wire.entangle('star_rating'), tempRating: 0, remarks: $wire.entangle('remarks') }">
-            
+        <div class="bg-white p-6 rounded-lg w-11/12 sm:w-5/6 lg:w-7/12 xl:w-4/12 relative flex flex-col items-center"
+            x-data="{ rating: $wire.entangle('star_rating'), tempRating: 0, remarks: $wire.entangle('remarks') }">
+
             <div class="flex self-start items-center gap-2">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="#014421" class="size-6 md:size-7">
-                             <path stroke-linecap="round" stroke-linejoin="round"
-                                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                         </svg>
-                         <p class="text-xl font-semibold text-[#014421]">Transaction rating</p>
-                        </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="#014421" class="size-6 md:size-7">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <p class="text-xl font-semibold text-[#014421]">Transaction rating</p>
+            </div>
 
             <!-- Image at the Top Center -->
             <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738989291/1_fn3fqa.png" alt="Rating_Image"
@@ -594,8 +637,8 @@
             <!-- Textual Feedback -->
             <textarea
                 class="text-sm w-full border border-gray-300 rounded-md p-2 mb-4 focus:outline-none focus:border-[#014421]"
-                placeholder="Leave feedback for the provider..." rows="5"
-                style="resize: none; max-height: 200px;" x-model="remarks"></textarea>
+                placeholder="Leave feedback for the provider..." rows="5" style="resize: none; max-height: 200px;"
+                x-model="remarks"></textarea>
 
             <!-- Buttons -->
             <div class="flex justify-end w-full gap-2">

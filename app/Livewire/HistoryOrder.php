@@ -17,10 +17,20 @@ class HistoryOrder extends Component
     public $star_rating = 0;
     public $remarks;
     public $convo_id;
+    public $has_rating;
+    public $rating_instance;
 
     public function __construct()
     {
         $this->user = Auth::user();
+    }
+
+    public function mount()
+    {
+        $this->has_rating = Rating::where('order_id', $this->order->id)->first()->exists();
+        if ($this->has_rating) {
+            $this->rating_instance = Rating::where('order_id', $this->order->id)->first();
+        }
     }
 
     public function rateTransaction()
@@ -46,7 +56,7 @@ class HistoryOrder extends Component
                 'poster_id' => $this->order->provider_id
             ]);
 
-            ;
+            
             session()->flash('item_rated_success', 'Transaction rated!');
             return $this->redirect(route('history.view', ['order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
