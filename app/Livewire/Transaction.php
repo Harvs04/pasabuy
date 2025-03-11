@@ -85,6 +85,7 @@ class Transaction extends Component
             foreach ($orders as $customer_id => $customerOrders) {
                 foreach ($customerOrders as $order) {
                     $order->item_status = 'Waiting';
+                    $order->date_delivered = now();
                     $order->save();
                 }
 
