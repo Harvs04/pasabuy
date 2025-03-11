@@ -1,4 +1,4 @@
-<div class="font-poppins bg-gray-50" x-data="{ openBurger: false, isChangeRoleModalOpen: false }" x-cloak>
+<div class="font-poppins bg-gray-50" x-data="{ openBurger: false, isChangeRoleModalOpen: false, search: '' }" x-cloak>
 
     @if(session('change_role_success'))
       <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
@@ -31,18 +31,28 @@
     <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-               <caption class="p-5 text-lg mid:text-xl font-semibold text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
+               <caption class="p-5 text-lg mid:text-xl text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                   @if ($user->role === 'customer')
-                     <p>Order history</p>
+                     <p class="font-semibold">Order history</p>
                      <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400 break-words">
                      Browse your previous orders, view detailed order history, and revisit your past purchases for easy reference or reordering.
                      </p>
                   @elseif ($user->role === 'provider')
-                     <p>Delivery history</p>
+                     <p class="font-semibold">Delivery history</p>
                      <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400 break-words">
                         Browse your previous transactions and view ratings from customers.
                      </p>
                   @endif
+                  <div class="flex items-center gap-2 sm:gap-4 mt-4">
+                     <div class="relative w-1/2 sm:w-1/3">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                           <svg class="w-3 h-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                           </svg>
+                        </div>
+                        <input type="text" id="search-filter-transactions" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search orders, item origin, meetup place...">
+                     </div>
+                  </div>
                </caption>
                <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50 border-y">
                      <tr>
@@ -72,7 +82,14 @@
                         $list = $user->role === 'customer' ? $user->orders()->whereIn('item_status', ['Delivered', 'Rated', 'Cancelled', 'Unavailable'])->get() : $user->deliveries()->whereIn('item_status', ['Delivered', 'Rated', 'Cancelled', 'Unavailable'])->get();
                      @endphp
                      @forelse ($list as $order)
-                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100">
+                        <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
+                           x-show="search === '' || 
+                                ['{{ strtolower($order->order) }}',
+                                '{{ strtolower(App\Models\User::where('id', $order->provider_id)->first()->name) }}',
+                                '{{ strtolower($order->item_status) }}'
+                                ].some(value => value.includes(search.toLowerCase()))
+                            "    
+                        >
                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
                               {{ $order->order }}
                            </th>
