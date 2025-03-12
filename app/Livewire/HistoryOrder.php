@@ -27,7 +27,7 @@ class HistoryOrder extends Component
 
     public function mount()
     {
-        $this->has_rating = Rating::where('order_id', $this->order->id)->first()->exists();
+        $this->has_rating = Rating::where('order_id', $this->order->id)->exists();
         if ($this->has_rating) {
             $this->rating_instance = Rating::where('order_id', $this->order->id)->first();
         }
