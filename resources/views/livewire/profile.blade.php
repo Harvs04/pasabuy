@@ -127,7 +127,7 @@
                 <div class="flex flex-col">
                     <div class="flex flex-row items-center lg:items-start xl:items-center gap-2 mb-2">
                         <a href={{ route('dashboard') }} class="p-1.5 hover:bg-gray-200 hover:rounded-full">
-                            <svg class="w-6"
+                            <svg class="w-5 md:w-6"
                                 viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M8.75 18.75H33.75C34.0815 18.75 34.3995 18.8817 34.6339 19.1161C34.8683 19.3505 35 19.6685 35 20C35 20.3315 34.8683 20.6495 34.6339 20.8839C34.3995 21.1183 34.0815 21.25 33.75 21.25H8.75C8.41848 21.25 8.10054 21.1183 7.86612 20.8839C7.6317 20.6495 7.5 20.3315 7.5 20C7.5 19.6685 7.6317 19.3505 7.86612 19.1161C8.10054 18.8817 8.41848 18.75 8.75 18.75Z"
