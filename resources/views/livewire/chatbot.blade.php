@@ -26,7 +26,7 @@
                     <div class="px-2 border rounded-b-lg rounded-r-lg" :class="{ 'typewriter': openBot && firstOpen }">
                         <h1>Hi! If you ever feel lost in the app, I am here to assist you.</h1>
                     </div>
-                    <h1 class="px-2 border rounded-b-lg rounded-r-lg">You are currently in the <span class="font-medium underline">{{ $current_route }}</span>.</h1>
+                    <h1 class="px-2 border rounded-b-lg rounded-r-lg">You are currently in <span class="font-semibold underline">{{ $current_route === 'saved' ? 'Saved post' : $current_route }}</span> page.</h1>
                     @php
                         $main_routes = $user->role === 'customer' 
                         ? [
