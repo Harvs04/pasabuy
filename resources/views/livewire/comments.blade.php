@@ -185,7 +185,7 @@
                                     alt="user_photo">
                                 <div class="flex flex-col items-start w-full">
                                     <div class="flex flex-row gap-2 items-center relative">
-                                        <p class="font-medium">{{ $comment->commenter }}</p>
+                                        <p class="font-medium">{{ $comment->commenter }} {{ $post->user_id === $comment->user_id ? '* OP' : '' }}</p>
                                         <p class="text-xs hover:underline" 
                                             @mouseenter="showDate = true" 
                                             @mouseleave="showDate = false">
