@@ -8,7 +8,7 @@ use App\Models\Post;
 
 class Saved extends Component
 {
-
+    
     public $user;
     public $posts;
     public $search = "";
@@ -33,53 +33,47 @@ class Saved extends Component
 
     public function applyFilter()
     {
-        
-        // Apply search filter
+        $query = Post::query();
+
         if (!empty($this->search)) {
-            $this->posts = $this->posts->filter(function ($post) {
-                return stripos($post['item_name'], $this->search) !== false ||
-                    stripos($post['item_origin'], $this->search) !== false ||
-                    stripos($post['meetup_place'], $this->search) !== false;
+            $query->where(function ($query) {
+                $query->where('item_name', 'like', '%' . strtolower($this->search) . '%')
+                      ->orWhere('item_origin', 'like', '%' . strtolower($this->search) . '%')
+                      ->orWhere('meetup_place', 'like', '%' . strtolower($this->search) . '%');
             });
         }
 
         // Apply 'type' filter if it's not null or empty
         if (!empty($this->post_type)) {
-            $this->posts = $this->posts->where('type', strtolower($this->post_type));
+            $query->where('type', strtolower($this->post_type));
         }
 
         // Apply 'item_type' filter if it's an array and not empty
         if (!empty($this->item_type) && is_array($this->item_type)) {
-            $this->posts = $this->posts->filter(function ($post) {
+            $query->where(function ($innerQuery) {
                 foreach ($this->item_type as $type) {
-                    if (stripos(json_encode($post['item_type']), $type) !== false) {
-                        return true;
-                    }
+                    // Use raw SQL to decode the JSON column and check if the filter value exists in the decoded array
+                    $innerQuery->orWhere('item_type', 'like', '%' . $type . '%');
                 }
-                return false;
             });
         }
 
         // Apply 'mode_of_payment' filter if it's an array and not empty
         if (!empty($this->mode_of_payment) && is_array($this->mode_of_payment)) {
-            $this->posts = $this->posts->filter(function ($post) {
+            $query->where(function ($innerQuery) {
                 foreach ($this->mode_of_payment as $payment) {
-                    if (stripos(json_encode($post['mode_of_payment']), $payment) !== false) {
-                        return true;
-                    }
+                    $innerQuery->orWhere('mode_of_payment', 'like', '%' . $payment . '%');
                 }
-                return false;
             });
         }
 
         // Apply 'delivery_date' filter if it's not null or empty
         if (!empty($this->delivery_date)) {
-            $this->posts = $this->posts->where('delivery_date', $this->delivery_date);
+            $query->where('delivery_date', $this->delivery_date);
         }
 
-        // Order results by created_at (descending)
-        $this->posts = $this->posts->sortByDesc('created_at')->values(); // Re-index array
-
+        // Order results
+        $this->posts = $query->orderByDesc('created_at')->get();
     }
 
 

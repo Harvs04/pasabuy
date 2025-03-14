@@ -35,10 +35,18 @@
     <div wire:loading wire:target="applyFilter, clearFilter" class="w-full">
         <livewire:dashboard-skeleton />
     </div>
+
+    <div class="fixed bottom-4 right-20 z-10 lg:hidden">
+      <button @click="openFilterSaved = true" class="bg-[#014421] hover:bg-green-800 shadow-lg rounded-full w-12 h-12 flex items-center justify-center">
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="size-5">
+            <path fill-rule="evenodd" d="M3.792 2.938A49.069 49.069 0 0 1 12 2.25c2.797 0 5.54.236 8.209.688a1.857 1.857 0 0 1 1.541 1.836v1.044a3 3 0 0 1-.879 2.121l-6.182 6.182a1.5 1.5 0 0 0-.439 1.061v2.927a3 3 0 0 1-1.658 2.684l-1.757.878A.75.75 0 0 1 9.75 21v-5.818a1.5 1.5 0 0 0-.44-1.06L3.13 7.938a3 3 0 0 1-.879-2.121V4.774c0-.897.64-1.683 1.542-1.836Z" clip-rule="evenodd" />
+         </svg>
+      </button>
+   </div>
     
     <div 
      class="lg:hidden fixed top-0 right-0 z-20 w-64 xl:w-96 h-full max-h-[calc(100svh-10rem)] my-20 bg-white rounded-l-3xl drop-shadow-md"
-     
+     x-show="openFilterSaved"
      x-transition:enter="transition ease-out duration-300 transform"
      x-transition:enter-start="translate-x-full"
      x-transition:enter-end="-translate-x-0"
@@ -55,7 +63,7 @@
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                </svg>
             </div>
-            <input type="text" id="search-filter-mobile" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-full bg-white focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
+            <input type="text" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-full bg-white focus:outline-none focus:border-[#014421]" placeholder="Search posts, items...">
          </div>
          <div class="mt-2">
             <button class="flex w-full" @click="openPostType = !openPostType">
@@ -72,12 +80,12 @@
             <div class="" x-show="openPostType">
                <div class="ml-4 text-sm" >
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="radio" id="transaction" value="transaction" name="post_type" @change="change = true" x-model="post_type">
-                     <label for="transaction">Transactions</label>
+                     <input type="radio" id="transaction_filter" value="transaction" name="post_type" @change="change = true" x-model="post_type">
+                     <label for="transaction_filter">Transactions</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="radio" id="item_request" value="item_request" name="post_type" @change="change = true" x-model="post_type">
-                     <label for="item_request">Item Requests</label>
+                     <input type="radio" id="item_request_filter" value="item_request" name="post_type" @change="change = true" x-model="post_type">
+                     <label for="item_request_filter">Item Requests</label>
                   </div>
                </div>
             </div>
@@ -98,44 +106,44 @@
             <div class="" x-show="openItemType">
                <div class="lg:grid lg:grid-cols-2 ml-3 text-sm">
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="food" value="Food" @change="change = true" x-model="item_type">
-                     <label for="food">Food</label>
+                     <input type="checkbox" id="food_filter" value="Food" @change="change = true" x-model="item_type">
+                     <label for="food_filter">Food</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="grocery" value="Grocery item" @change="change = true" x-model="item_type">
-                     <label for="grocery">Grocery items</label>
+                     <input type="checkbox" id="grocery_filter" value="Grocery item" @change="change = true" x-model="item_type">
+                     <label for="grocery_filter">Grocery items</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="produce" value="Local produce" @change="change = true" x-model="item_type">
-                     <label for="produce">Local produce</label>
+                     <input type="checkbox" id="produce_filter" value="Local produce" @change="change = true" x-model="item_type">
+                     <label for="produce_filter">Local produce</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="pet" value="Pet needs" @change="change = true" x-model="item_type">
-                     <label for="pet">Pet needs</label>
+                     <input type="checkbox" id="pet_filter" value="Pet needs" @change="change = true" x-model="item_type">
+                     <label for="pet_filter">Pet needs</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="apparel" value="Apparel" @change="change = true" x-model="item_type">
-                     <label for="apparel">Apparel</label>
+                     <input type="checkbox" id="apparel_filter" value="Apparel" @change="change = true" x-model="item_type">
+                     <label for="apparel_filter">Apparel</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="footwear" value="Footwear" @change="change = true" x-model="item_type">
-                     <label for="footwear">Footwear</label>
+                     <input type="checkbox" id="footwear_filter" value="Footwear" @change="change = true" x-model="item_type">
+                     <label for="footwear_filter">Footwear</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="merchandise" value="Merchandise" @change="change = true" x-model="item_type">
-                     <label for="merchandise">Merchandise</label>
+                     <input type="checkbox" id="merchandise_filter" value="Merchandise" @change="change = true" x-model="item_type">
+                     <label for="merchandise_filter">Merchandise</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="personal_care" value="Personal care" @change="change = true" x-model="item_type">
-                     <label for="personal_care">Personal care</label>
+                     <input type="checkbox" id="personal_care_filter" value="Personal care" @change="change = true" x-model="item_type">
+                     <label for="personal_care_filter">Personal care</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="celebratory" value="Celebratory" @change="change = true" x-model="item_type">
-                     <label for="celebratory">Celebratory</label>
+                     <input type="checkbox" id="celebratory_filter" value="Celebratory" @change="change = true" x-model="item_type">
+                     <label for="celebratory_filter">Celebratory</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="hobbies" value="Hobbies" @change="change = true" x-model="item_type">
-                     <label for="hobbies">Hobbies</label>
+                     <input type="checkbox" id="hobbies_filter" value="Hobbies" @change="change = true" x-model="item_type">
+                     <label for="hobbies_filter">Hobbies</label>
                   </div>
                </div>
             </div>
@@ -156,20 +164,20 @@
             <div class="" x-show="openMOP">
                <div class="lg:grid lg:grid-cols-2 ml-3 text-sm">
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="cash" value="Cash" @change="change = true" x-model="mode_of_payment">
-                     <label for="cash">Cash</label>
+                     <input type="checkbox" id="cash_filter" value="Cash" @change="change = true" x-model="mode_of_payment">
+                     <label for="cash_filter">Cash</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="digital_wallet" value="Digital Wallet" @change="change = true" x-model="mode_of_payment">
-                     <label for="digital_wallet">Digital wallet</label>
+                     <input type="checkbox" id="digital_wallet_filter" value="Digital Wallet" @change="change = true" x-model="mode_of_payment">
+                     <label for="digital_wallet_filter">Digital wallet</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="debit_credit" value="Debit Credit" @change="change = true" x-model="mode_of_payment">
-                     <label for="debit_credit">Debit/Credit</label>
+                     <input type="checkbox" id="debit_credit_filter" value="Debit Credit" @change="change = true" x-model="mode_of_payment">
+                     <label for="debit_credit_filter">Debit/Credit</label>
                   </div>
                   <div class="flex flex-row items-center gap-2 mt-2">
-                     <input type="checkbox" id="bank_transfer" value="Bank Transfer" @change="change = true" x-model="mode_of_payment">
-                     <label for="bank_transfer">Bank transfer</label>
+                     <input type="checkbox" id="bank_transfer_filter" value="Bank Transfer" @change="change = true" x-model="mode_of_payment">
+                     <label for="bank_transfer_filter">Bank transfer</label>
                   </div>
                </div>
             </div>
@@ -189,7 +197,7 @@
             </button>
             <div class="mb-4  mt-2" x-show="openDateFilter">
                <div class="relative">
-                  <input id="datepicker"
+                  <input id="datepicker_filter"
                         @change="
                               change = true;
                               console.log($event.target.value);
@@ -380,7 +388,7 @@
         <div class="mt-2">
             <p class="font-medium">Date of delivery</p>
             <div class="relative mt-2">
-                <input id="datepicker" @change="
+                <input @change="
             change = true;
             console.log($event.target.value);
             let selectedDate = new Date($event.target.value);
