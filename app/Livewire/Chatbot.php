@@ -19,7 +19,8 @@ class Chatbot extends Component
         'saved' => ['How to save a post?', 'Can I order an item in saved post page?', 'How to go back in the dashboard?'],
         'orders' => ['How to view a specific order?', 'How to confirm an order as delivered?', 'How to rate a transaction?', 'How to cancel an order?'],
         'transactions' => ['How to view a specific transaction?', 'How to start a transaction?', 'How to update the status of orders?'],
-        'history' => ['Where can I see customer\'s rating?', 'How to rate a transaction?', 'Can I still send message after an order is delivered?', 'How to go back in the dashboard?']
+        'history' => ["Where can I see customer᾽s rating?", 'How to rate a transaction?', 'Can I still send message after an order is delivered?', 'How to go back in the dashboard?'],
+        'profile' => ['How to change role (Customer to Provider and Vice Versa)?', 'How do I get my own PASABUY wordcloud?', "Why can᾽t I change my password?"]
     ];
     
     public $routes;
@@ -31,7 +32,7 @@ class Chatbot extends Component
         'orders' => ['To view a specific order, kindly choose the transaction with the order in mind, then you will see a list of orders and by clicking the \'View\' button or the eye icon, you will be redirected to your order.0', 'You can confirm a delivery of an order either via the \'Confirm\' button found in the list of orders or in the page of that specific order.0', 'You can rate the transaction and the provider either via the \'Rate\' button found in the list of orders or in the page of that specific order. Take note that you can only rate the transaction after you have confirmed that your order is delivered.0', 'You can cancel an order either via the \'Cancel\' button found in the list of orders or in the page of that specific order. Take note that you can only cancel an order as long as it is not yet acquired or bought by the provider.0'],
         'transactions' => ['To view a specific transaction, click the \'View\' button or the eye icon in the list of transactions.0', 'To start a transaction, you can either use the \'Start\' button in the list of transactions, start option found when you click the triple dots on top of a transaction\'s details, or using the start option in the page of a specific order.0', 'You can update the status of an either via the \'Acquire\', \'Deliver\', and \'Cancel\'  buttons found in the list of orders or in the page of each order.0'],
         'history' => ['To view the customer\'s rating, view a specific order history and navigate to the bottom of the page.0', 'To rate a transaction, click a specific order history using the \'View\' button or the eye icon. Then click the \'Rate\' button on the top of order details.0', 'To go back to dashboard, you can use the sidebar and click \'Dashboard\' or you can also click the PASABUY logo in the navigation bar on top?0'],
-        'profile' => []
+        'profile' => ['To change your role, click the \'Change Role\' button. For mobile users, click the green button with switch icon in the General Information section of your profile page.0', 'To obtain a wordcloud, customers who ordered in your transaction should provide a feedback. Those feedback are then used in the wordcloud.0', 'Only users who registered in the application are allowed to change their passwords. For users who used their UP Email, they can change their passwords directly in their own google account.0']
     ]; 
 
     public $answer = [];
