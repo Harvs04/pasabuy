@@ -185,18 +185,17 @@
                                     alt="user_photo">
                                 <div class="flex flex-col items-start w-full">
                                     <div class="flex flex-row gap-2 items-center relative">
-                                        <p class="font-medium">{{ $comment->commenter }} {{ $post->user_id === $comment->user_id ? '* OP' : '' }}</p>
+                                        <p class="font-medium">{{ $comment->commenter }} <span class="text-gray-600 text-xs">{{ $post->user_id === $comment->user_id ? '⋅ OP' : '' }}</span></p>
                                         <p class="text-xs hover:underline" 
                                             @mouseenter="showDate = true" 
                                             @mouseleave="showDate = false">
                                             {{ $comment->created_at->diffForHumans(null, false, true) }}
                                         </p>
                                         <div x-show="showDate" 
-                                            class="text-xs absolute -top-14 left-0 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow px-2.5 py-2">
+                                            class="text-xs absolute -top-12 left-14 z-50 border rounded-lg bg-gray-200 text-gray-700 shadow px-2.5 py-2">
                                             <p>{{ $comment->created_at->timezone('Singapore')->format('l F j, Y \a\t H:i') }}</p>       
                                         </div>
                                     </div>
-
                                     <p class="text-sm break-all whitespace-pre-line">{{$comment->comment}}</p>
                                 </div>
                             </div>
