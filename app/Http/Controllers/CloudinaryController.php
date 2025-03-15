@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class CloudinaryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
+    public $user;
+
+
+    public function __construct()
+    {
+        $this->user = User::where('id', Auth::user()->id)->firstOrFail();
+    }
+
     public function index()
     {
         //
@@ -29,17 +36,12 @@ class CloudinaryController extends Controller
      */
     public function store(Request $request)
     {
-        $uploadedFile = $request->file('file');
-        $uploadResult = Cloudinary::upload($uploadedFile->getRealPath(), [
-            'folder' => 'Upload Images'
-        ]);
-
-        Image::create([
-            'image_url' => $uploadResult->getSecurePath(),
-            'public_id' => $uploadResult->getPublicId()
-        ]);
-
-        return dd($uploadResult);
+        $uploaded = Cloudinary::uploadFile($request->file('file')->getRealPath())->getSecurePath(); 
+        // dd($uploaded);
+        $this->user->profile_pic_url = $uploaded;
+        $this->user->save();
+        session()->flash('dp_change', 'Profile picture changed successfully!');
+        return redirect(route('profile', ['name' => $this->user->name]));
     }
 
 
