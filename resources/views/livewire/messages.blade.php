@@ -106,7 +106,7 @@
 
                                 <div class="flex flex-shrink-0">
                                     <img src="{{ $otherUser->profile_pic_url }}" alt="profile_image"
-                                        class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                        class="object-contain h-10 w-10 bg-gray-200 rounded-full border shadow">
                                 </div>
 
                                 <div class="flex flex-col text-sm font-semibold w-full">
@@ -147,7 +147,7 @@
                                 class="flex flex-row items-center hover:bg-gray-200 rounded-md p-1 gap-2">
                                 <div class="flex flex-shrink-0">
                                     <img src="{{ $user->profile_pic_url }}" alt="user_img"
-                                        class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                        class="object-contain h-10 w-10 bg-gray-200 rounded-full border shadow">
                                 </div>
                                 <div class="text-sm font-semibold"> {{ $user->name }} </div>
                             </a>
