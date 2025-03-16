@@ -119,8 +119,8 @@
         </div>
     </div>    
 
-    <button class="fixed flex items-center justify-center z-10 lg:z-30 bottom-4 right-4 w-12 h-12 rounded-full bg-[#014421] hover:bg-green-800 shadow-xl" 
-            @click="openBot = !openBot">
+    <button class="fixed flex items-center justify-center z-10 lg:z-30 bottom-4 right-4 w-12 h-12 rounded-full bg-[#014421] hover:bg-green-800 shadow-xl transform transition-transform duration-300 hover:scale-110" 
+        @click="openBot = !openBot">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot">
             <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/>
             <path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
