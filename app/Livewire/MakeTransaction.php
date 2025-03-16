@@ -25,6 +25,11 @@ class MakeTransaction extends Component
     public $arrival_time;
     public $meetup_place;
 
+    public function mount()
+    {
+        $this->item_origin = $this->post->item_origin;
+    }
+
     public function makePost($item_name, $item_origin, $item_type, $subtype, $mode_of_payment)
     {
         try {
