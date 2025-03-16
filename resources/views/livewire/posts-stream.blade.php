@@ -16,7 +16,7 @@
             @foreach($posts as $post)
                 <div class="pt-3 px-3 pb-2 bg-white border sm:rounded-md text-gray-800 text-sm" x-data="{ openComment: false }">
                     <div class="flex flex-row items-start gap-3">
-                        <img class="w-9 md:w-10 rounded-full" src="{{ App\Models\User::where('id', $post->user_id)->first()->profile_pic_url }}" alt="user_photo">
+                        <img class="w-9 h-9 md:w-10 md:h-10 object-cover rounded-full" src="{{ App\Models\User::where('id', $post->user_id)->first()->profile_pic_url }}" alt="user_photo">
                         <div class="flex flex-col">
                             <div class="flex flex-col sm:flex-row sm:items-center text-sm gap-0 sm:gap-1">
                                 <p class="font-semibold"> {{ $post->poster_name }} </p>

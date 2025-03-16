@@ -169,7 +169,7 @@
                         <div class="rounded-md bg-white shadow w-full p-4">
                             <div class="w-full flex flex-col xl:flex-row justify-start items-center gap-4">
                                 <img src="{{ $user->profile_pic_url }}"
-                                    class="h-14 xl:h-20 aspect-auto rounded-full border shadow" alt="user_photo" />
+                                    class="h-14 w-14 xl:h-20 xl:w-20 object-cover rounded-full border shadow" alt="user_photo" />
                                 <div class="flex flex-col justify-center items-center xl:items-start">
                                     <p class="text-lg lg:text-base xl:text-lg font-medium md:font-semibold break-words">
                                         {{ $user->name }} </p>

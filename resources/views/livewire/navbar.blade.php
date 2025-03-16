@@ -101,7 +101,7 @@
                <div class="flex items-center ms-3">
                   <div>
                      <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" @click="open = !open">
-                        <img class="size-9 rounded-full" src="{{ $user->profile_pic_url }}" alt="user photo">
+                        <img class="size-9 object-cover rounded-full" src="{{ $user->profile_pic_url }}" alt="user photo">
                      </button>
                   </div>
                   <div class="absolute right-1 sm:right-0 top-10 z-40 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
