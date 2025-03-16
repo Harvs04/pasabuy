@@ -55,13 +55,13 @@
                     </div>
                     <div
                         class="flex flex-col md:flex-row gap-2 items-start bg-gray-50 border border-gray-200 mt-2 w-full py-6 px-4 rounded-lg">
-                        <div class="h-20 w-20 rounded-full border overflow-hidden">
+                        <div class="rounded-full border flex-shrink-0 overflow-hidden">
                             @if ($user->role === 'provider')
                             <img src="{{ App\Models\User::where('id', $conversation->customer_id)->first()->profile_pic_url }}"
-                                alt="Avatar" class="h-full w-full object-contain flex-shrink-0" />
+                                alt="Avatar" class="h-20 w-20 rounded-full object-contain" />
                             @elseif ($user->role === 'customer')
                             <img src="{{ App\Models\User::where('id', $conversation->provider_id)->first()->profile_pic_url }}"
-                                alt="Avatar" class="h-full w-full object-contain flex-shrink-0" />
+                                alt="Avatar" class="h-20 w-20 rounded-full object-contain" />
                             @endif
                         </div>
                         <div>
@@ -120,7 +120,7 @@
                                     <div class="flex flex-shrink-0">
                                         <img src="{{ App\Models\User::where('id', $conversation->customer_id)->first()->profile_pic_url }}"
                                             alt="customer_image"
-                                            class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                            class="object-contain h-10 w-10 bg-gray-200 rounded-full border shadow">
                                     </div>
                                     <div class="flex flex-col text-sm font-semibold truncate">
                                         <p>
@@ -167,7 +167,7 @@
                                     <div class="flex flex-shrink-0">
                                         <img src="{{ App\Models\User::where('id', $conversation->provider_id)->first()->profile_pic_url }}"
                                             alt="customer_image"
-                                            class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                            class="object-contain h-10 w-10 bg-gray-200 rounded-full border shadow">
                                     </div>
                                     <div class="flex flex-col text-sm font-semibold truncate">
                                         <p>
@@ -226,7 +226,7 @@
 
                                         <div class="flex flex-shrink-0">
                                             <img src="{{ $otherUser->profile_pic_url }}" alt="profile_image"
-                                                class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                                class="object-contain h-10 w-10 bg-gray-200 rounded-full border shadow">
                                         </div>
 
                                         <div class="flex flex-col text-sm font-semibold w-full">
@@ -268,7 +268,7 @@
                                 class="flex flex-row items-center hover:bg-gray-200 rounded-md p-1 gap-2">
                                 <div class="flex flex-shrink-0">
                                     <img src="{{ $user->profile_pic_url }}" alt="user_img"
-                                        class="object-contain h-10 w-10 bg-indigo-200 rounded-full border shadow">
+                                        class="object-contain h-10 w-10 bg-gray-200 rounded-full border shadow">
                                 </div>
                                 <div class="text-sm font-semibold"> {{ $user->name }} </div>
                             </a>
@@ -301,42 +301,62 @@
                         <div class="flex gap-2 items-center font-poppins" @click="showDetailsOpen = true"
                             @click.outside="showDetailsOpen = false">
                             <img src="{{ $receiver->profile_pic_url }}" alt=""
-                                class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
+                                class="h-10 w-10 object-contain rounded-full flex-shrink-0 border shadow">
                             <p class="font-medium">{{ $receiver->name }}</p>
                         </div>
                     </div>
                     @teleport('body')
                     <div @keydown.escape.window="showDetailsOpen = false; document.body.style.overflow = 'auto';"
-                        x-show="showDetailsOpen" x-transition:enter.duration.25ms
-                        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative space-y-4">
-                            <div class="flex flex-row items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#014421"
-                                    class="size-5">
-                                    <path fill-rule="evenodd"
-                                        d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <p class="text-lg font-semibold text-[#014421]">User details</p>
+                        x-show="showDetailsOpen" 
+                        class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 backdrop-blur-sm">
+                        <div class="bg-white p-8 rounded-xl w-11/12 sm:w-4/6 xl:w-4/12 relative space-y-6 shadow-2xl">
+                            <!-- Header with improved design -->
+                            <div class="flex flex-row items-center gap-3 border-b border-gray-100 pb-4">
+                                <div class="bg-[#014421] bg-opacity-10 p-2 rounded-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#014421"
+                                        class="w-6 h-6">
+                                        <path fill-rule="evenodd"
+                                            d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <p class="text-xl font-semibold text-[#014421]">User Details</p>
                                 <button @click="showDetailsOpen = false; document.body.style.overflow = 'auto';"
-                                    class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                                    class="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition duration-150 focus:outline-none focus:ring-2 focus:ring-[#014421] focus:ring-opacity-50">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="2" stroke="#000000" class="size-4">
+                                        stroke-width="2" stroke="#000000" class="w-5 h-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
-                            <div class="flex flex-col">
-                                <div class="h-20 w-20 rounded-full border overflow-hidden">
-                                    <img src="{{ $receiver->profile_pic_url }}" alt="Avatar"
-                                        class="h-full w-full object-contain flex-shrink-0" />
+                            
+                            <!-- User profile area with improved design -->
+                            <div class="flex flex-row items-center space-x-4">
+                                <div class="h-24 w-24 rounded-full border-4 border-[#014421] border-opacity-20 overflow-hidden shadow-md">
+                                    <img src="{{ $receiver->profile_pic_url }}" alt="{{ $receiver->name }}'s Avatar"
+                                        class="h-full w-full object-cover flex-shrink-0" onerror="this.src='/images/default-avatar.png';" />
                                 </div>
-                                <p class="text-sm font-semibold mt-2">{{ $receiver->name }} </p>
-                                <div class="text-sm text-gray-500">
-                                    <p> {{ $user->role === 'provider' ? 'your customer in transaction #' : 'your provider in transaction #' }}{{ App\Models\Post::where('id', $order->post_id)->first()->id }}
+                                <div>
+                                    <p class="text-lg font-bold text-gray-800">{{ $receiver->name }}</p>
+                                    <p class="text-sm text-[#014421] italic font-medium">
+                                        {{ $user->role === 'provider' ? 'Your customer' : 'Your provider' }}
                                     </p>
-                                    <p>Item: {{ App\Models\Post::where('id', $order->post_id)->first()->item_name }}</p>
-                                    <p>Order: {{ $order->order }}</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Transaction details with improved design -->
+                            <div class="bg-gray-50 p-4 rounded-lg space-y-2 mt-4">
+                                <div class="flex justify-between items-center">
+                                    <p class="text-sm font-medium text-gray-500">Transaction ID</p>
+                                    <p class="text-sm font-semibold">#{{ App\Models\Post::where('id', $order->post_id)->first()->id }}</p>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-gray-200 pt-2">
+                                    <p class="text-sm font-medium text-gray-500">Item</p>
+                                    <p class="text-sm font-semibold">{{ App\Models\Post::where('id', $order->post_id)->first()->item_name }}</p>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-gray-200 pt-2">
+                                    <p class="text-sm font-medium text-gray-500">Order</p>
+                                    <p class="text-sm font-semibold">{{ $order->order }}</p>
                                 </div>
                             </div>
                         </div>
@@ -351,7 +371,7 @@
                                 x-data="{ showDateOpen: false }">
                                 <div class="flex items-center justify-center">
                                     <img src="{{ $user->profile_pic_url }}" alt=""
-                                        class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
+                                        class="h-10 w-10 object-contain rounded-full flex-shrink-0 border shadow">
                                 </div>
                                 <div class="relative mr-3 text-sm bg-green-100 py-1.5 px-4 shadow rounded-md max-w-[250px] sm:max-w-[275x] md:max-w-[300px] lg:max-w-lg xl:max-w-3xl"
                                     @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
@@ -372,10 +392,10 @@
                         <div class="p-3 rounded-lg ml-2">
                             <div class="flex flex-row items-center" x-data="{ showDateOpen : false }">
                                 <div
-                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 flex-shrink-0">
                                     <!-- image of chatter -->
                                     <img src="{{ App\Models\User::where('id', $receiver->id)->first()->profile_pic_url }}"
-                                        alt="" class="h-10 w-10 rounded-full flex-shrink-0 border shadow">
+                                        alt="" class="h-10 w-10 object-contain rounded-full flex-shrink-0 border shadow">
                                 </div>
                                 <div class="relative ml-3 text-sm bg-white py-1.5 px-4 shadow rounded-md max-w-[250px] sm:max-w-[275x] md:max-w-[300px] lg:max-w-lg xl:max-w-3xl"
                                     @mouseenter="showDateOpen = true" @mouseleave="showDateOpen = false">
@@ -410,7 +430,7 @@
                             <div class="relative w-full">
                                 <input type="text"
                                     class="flex w-full border rounded-full text-sm focus:outline-none focus:border-gray-300 pl-4 h-10 pe-6"
-                                    x-model="chatMessage" @keydown.enter.window="if (chatMessage) { 
+                                    x-model="chatMessage" @keydown.enter.window="if (chatMessage.trim().length > 0) { 
                                     if (role === 'provider') { 
                                         $wire.sendMessage(chatMessage, '{{ $conversation->customer_id }}'); 
                                     } else if (role === 'customer') { 
@@ -424,7 +444,7 @@
                             <button
                                 class="w-fit flex items-center justify-center enabled:hover:bg-gray-100 rounded-full text-gray-400 p-1.5 flex-shrink-0 disabled:cursor-not-allowed"
                                 :disabled="!chatMessage" @click="
-                                if (chatMessage) { 
+                                if (chatMessage.trim().length > 0) { 
                                     if (role === 'provider') { 
                                         $wire.sendMessage(chatMessage, '{{ $conversation->customer_id }}'); 
                                     } else if (role === 'customer') { 

@@ -586,11 +586,11 @@
                         x-bind:disabled="
                         role === 'customer' 
                             ? (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
-                                (!item_name_post || !item_origin_post || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post)) || disabled
+                                (!item_name_post || item_name_post.trim().length === 0 || !item_origin_post || item_origin_post.trim().length === 0 || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post)) || disabled
                             : (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
-                                (!item_name_post || !item_origin_post || item_type_post.length === 0)) 
+                                (!item_name_post || item_name_post.trim().length === 0  || !item_origin_post || item_origin_post.trim().length === 0 || item_type_post.length === 0)) 
                                 || (transaction_details && 
-                                (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place)) || disabled"
+                                (!max_orders || !cutoff_date_orders || !transaction_fee || transaction_fee.trim().length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place || meetup_place.trim().length === 0)) || disabled"
                         @click="
                         if (role === 'customer') {
                             disabled = true;

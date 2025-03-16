@@ -2,7 +2,7 @@
     <div @keydown.escape.window="makeTransactionModalOpen = false; document.body.style.overflow = 'auto';" class="bg-white px-4 pt-6 pb-4 sm:px-8 rounded-lg w-11/12 lg:w-2/3 xl:w-1/2 font-poppins relative overflow-y-auto max-h-[80vh] sm:max-h-[95vh]"
     x-data="{
         item_name_post: '{{ $post->item_name }}', 
-        item_origin_post: '{{ $post->item_origin }}', 
+        item_origin_post: $wire.entangle('item_origin'), 
         item_type_post: {{ $post->item_type }},
         item_subtype_post: $wire.entangle('subtype'),
         subtag_item: '',
@@ -48,7 +48,7 @@
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="item_origin_post" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Origin</label>
-                        <input type="text" id="item_origin_post" x-model="item_origin_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What are store's name and location?" disabled/>
+                        <input type="text" id="item_origin_post" x-model="item_origin_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What are store's name and location?"/>
                     </div>
                     <div>
                         <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Type</p>
@@ -296,7 +296,7 @@
         </div>
         <div class="mt-5 flex justify-end gap-2">
             <button x-text="item_details ? 'Cancel' : 'Return'" @click="if (item_details) {makeTransactionModalOpen = false; document.body.style.overflow = 'auto';} else if (transaction_details) { item_details = true; transaction_details = false; }" class="font-medium w-20 py-1 sm:py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black"></button>
-            <button x-data="{ disabled: false }" x-text="item_details ? 'Next' : 'Post'" @click="if (item_details) { item_details = false; transaction_details = true; } else if (transaction_details) { disabled = true; $wire.makePost(item_name_post, item_origin_post, item_type_post, item_subtype_post, mode_of_payment_post); }" x-bind:disabled="item_details ? (!item_name_post || !item_origin_post || item_type_post.length === 0) : (!max_orders || !cutoff_date_orders || !transaction_fee || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place) || disabled"  class="font-medium w-20 py-1 sm:py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md"></button>
+            <button x-data="{ disabled: false }" x-text="item_details ? 'Next' : 'Post'" @click="if (item_details) { item_details = false; transaction_details = true; } else if (transaction_details) { disabled = true; $wire.makePost(item_name_post, item_origin_post, item_type_post, item_subtype_post, mode_of_payment_post); }" x-bind:disabled="item_details ? (!item_name_post || !item_origin_post || item_origin_post.trim().length === 0 || item_type_post.length === 0) : (!max_orders || !cutoff_date_orders || !transaction_fee || transaction_fee.trim().length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place || meetup_place.trim().length === 0) || disabled"  class="font-medium w-20 py-1 sm:py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md"></button>
         </div>
         <div wire:loading.delay wire:target="makePost" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">

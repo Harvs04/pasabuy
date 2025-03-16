@@ -141,8 +141,8 @@
                     <div class="flex flex-col w-full gap-1">
                         <label for="password" class="font-medium">Password</label>
                         <div class="relative w-full" >
-                            <input :type="showPassword ? 'text' : 'password'" id="password" x-model="password" wire:model="password" @input="if (password.length > 0) { delete errors.password; }" @change="if (password.length === 0) { errors.password = true; } "  class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-                                x-bind:class="{'border-red-500': errors.password || (password.length > 0 && password.length < 8) || password.length > 40}" > 
+                            <input :type="showPassword ? 'text' : 'password'" id="password" x-model="password" wire:model="password" @input="if (password.trim().length > 0) { delete errors.password; delete errors.password_format; }" @change="if (password.length === 0) { errors.password = true; } "  class="w-full h-12 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#898989] rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                                x-bind:class="{'border-red-500': errors.password || errors.password_format || (password.length > 0 && password.length < 8) || password.length > 40}" > 
                                 <!-- Show/Hide Password Icon -->
                             <button type="button" @click="showPassword = !showPassword" class="absolute top-1/2 right-3 transform -translate-y-1/2 text-slate-400 focus:outline-none">
                                 <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
@@ -157,8 +157,9 @@
                             </button>
                         </div>
                         <p x-show="errors.password" class="text-red-500 text-sm mt-1">Password is required.</p>
-                        <p x-show="password.length > 0 && password.length < 8" class="text-red-500 text-sm mt-1">Password must be at least 8 characters long.</p>
-                        <p x-show="password.length > 40" class="text-red-500 text-sm mt-1">Password must be between 8 and 40 characters long.</p>
+                        <p x-show="errors.password_format" class="text-red-500 text-sm mt-1">Your selected password is invalid.</p>
+                        <p x-show="password.trim().length > 0 && password.trim().length < 8" class="text-red-500 text-sm mt-1">Password must be at least 8 characters long.</p>
+                        <p x-show="password.trim().length > 40" class="text-red-500 text-sm mt-1">Password must be between 8 and 40 characters long.</p>
                     </div>
                     <div class="flex flex-col w-full gap-1">
                         <label for="repeat_password" class="font-medium">Confirm Password</label>
@@ -194,7 +195,8 @@
                                 if (email.length > 50 || email.length < 10) errors.length = true;
                                 if ((/[.]/.test(email.split('@')[0]) || !email.endsWith('@up.edu.ph')) && email) errors.format = true;
                                 if (!role.trim()) errors.role = true;
-                                if (!password.trim()) errors.password = true;
+                                if (password.length > 0 && password.trim().length === 0) errors.password_format = true;
+                                if (password.length === 0) errors.password = true;
                                 if (password.length > 40 || password.length < 8) errors.length = true;
                                 if (!repeat_password.trim()) errors.repeat_password = true;
                                 if (repeat_password !== password) errors.match = true;
