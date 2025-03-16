@@ -58,7 +58,7 @@
                                        @if ($notif->actor_id !== $notif->poster_id)
                                           <span class="font-normal">added {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'an order' }}.</span>
                                        @else
-                                          <span class="font-normal">You've added {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'an order' }}.</span>
+                                          <span class="font-normal">You have added {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'an order' }}.</span>
                                        @endif
                                     @elseif ($notif->type === 'cancelled order')
                                        <span class="font-normal">cancelled {{ $notif->order_count > 1 ? $notif->order_count . ' orders' : 'an order' }}.</span>
@@ -79,9 +79,9 @@
                                     @elseif ($notif->type === 'transaction cancelled')
                                        <span class="font-normal">cancelled the transaction.</span>
                                     @elseif ($notif->type === 'new item request')
-                                       <span class="font-normal">You've created a new item request.</span>
+                                       <span class="font-normal">You have created a new item request.</span>
                                     @elseif ($notif->type === 'new transaction')
-                                       <span class="font-normal">You've created a new transaction.</span>
+                                       <span class="font-normal">You have created a new transaction.</span>
                                     @endif
                                  </span>
                                  <span class="text-xs">{{ $notif->created_at->Timezone('Singapore')->format('F j, Y \\a\\t h:i A') }}</span>
