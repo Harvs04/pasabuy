@@ -128,7 +128,6 @@
                   </div>
                </caption>
                <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-b">
-                  <p x-text="'Selected: ' + selected.length"></p>
                      <tr>
                         <th scope="col" class="pl-6 py-3 text-center">
                            <input type="checkbox" 
