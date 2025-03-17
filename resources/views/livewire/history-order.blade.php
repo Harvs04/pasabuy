@@ -483,9 +483,6 @@
                 <div class="transaction-rating p-4 bg-white rounded-lg shadow-sm border border-gray-100">
                     <div class="flex flex-col sm:flex-row mid:flex-col items-start sm:items-center mid:items-start justify-between mb-3">
                         <h3 class="text-lg font-semibold text-gray-700">Rating</h3>
-                        <span class="mt-1 sm:mt-0 mid:mt-1 px-2 py-1 bg-gray-100 text-gray-700 text-sm rounded-md {{ $has_rating ? 'block' : 'hidden' }}">
-                            ID: #{{ $has_rating ? $rating_instance->id : '' }}
-                        </span>
                     </div>
                     @if($has_rating)
                         <!-- Star Rating Display -->
@@ -510,11 +507,11 @@
                         
                         <!-- Remarks Section -->
                         <div class="mb-3">
-                            <h4 class="text-sm font-medium text-gray-600 mb-1">Customer Remarks:</h4>
+                            <h4 class="text-sm font-medium text-gray-600 mb-1"><i>Customer Remarks:</i></h4>
                             @if(empty($rating_instance->remarks))
                                 <p class="text-gray-500 italic">No remarks provided</p>
                             @else
-                                <div class="p-3 bg-gray-50 rounded-md text-gray-700">
+                                <div class="p-3 bg-gray-100 rounded-md text-gray-700">
                                     <p>{{ $rating_instance->remarks }}</p>
                                 </div>
                             @endif
@@ -622,7 +619,7 @@
             <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738989291/1_fn3fqa.png" alt="Rating_Image"
                 class="w-36 h-36 sm:w-48 sm:h-48 object-cover">
 
-            <p class="text-sm text-center">We want to hear from you!</p>
+            <p class="text-center">We want to hear from you!</p>
 
             <!-- Star Rating -->
             <div class="flex justify-center mb-4">
