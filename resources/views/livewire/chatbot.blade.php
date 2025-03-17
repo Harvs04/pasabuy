@@ -67,7 +67,7 @@
                             <div class="flex items-center gap-2 mt-2">
                                 <p class="ml-auto rounded-md w-fit px-1.5 py-0.5 bg-green-800 text-white max-w-60"> {{ rtrim($convo, '1') }} </p>
                                 <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white text-[#014421] border border-[#014421] flex-shrink-0">
-                                    <img src="{{ $user->profile_pic_url }}" alt="" class="rounded-full">
+                                    <img src="{{ $user->profile_pic_url }}" alt="" class="w-8 h-8 object-contain rounded-full">
                                 </div>
                             </div>
                         @elseif (substr($convo, -1) === '0')
