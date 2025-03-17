@@ -1,5 +1,15 @@
 <div class="font-poppins bg-gray-50"
     x-data="{ openBurger: false, isChangeRoleModalOpen: false, cancelOrderModalOpen: false, rateTransactionModalOpen: false, confirmIndeces: [], cancelIndeces: [], search: '', all: false, selected: [], changeTransactionStatus: false, confirmModalOpen: false, statusChange: '', transactionStatus: '{{ $transaction->status }}' }"
+    x-init="
+    allOrders = {{ json_encode($orders->map(function($order) {
+        return [
+            'id' => $order->id,
+            'provider' => strtolower(App\Models\User::where('id', $order->provider_id)->first()->name),
+            'order' => strtolower($order->order),
+            'status' => strtolower($order->item_status)
+        ];
+    })) }}
+"
     x-cloak>
 
     @if(session('start_success'))
@@ -184,7 +194,19 @@
                     <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-b">
                         <tr>
                             <th scope="col" class="pl-6 sm:pl-3 pr-3 py-3 text-center">
-                                <input type="checkbox" x-model="all" @change="selected = all ? {{ $orders->pluck('id') }} : []">
+                                <input type="checkbox" 
+                                        x-model="all" 
+                                        @change="
+                                    selected = all ? 
+                                        allOrders
+                                            .filter(order => 
+                                                search === '' || 
+                                                [order.provider, order.order, order.status]
+                                                    .some(value => value.includes(search.toLowerCase()))
+                                            )
+                                            .map(order => order.id) 
+                                        : []
+                                ">
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
                                 Order
@@ -455,7 +477,7 @@
             <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738989291/1_fn3fqa.png" alt="Rating_Image"
                 class="w-36 h-36 sm:w-48 sm:h-48 object-cover">
 
-            <p class="text-sm text-center">We want to hear from you!</p>
+            <p class="text-center">We want to hear from you!</p>
 
             <!-- Star Rating -->
             <div class="flex justify-center mb-4">
@@ -538,7 +560,6 @@
     </div>
 
 </div>
-
 
 <script>
 setTimeout(() => {

@@ -1,4 +1,14 @@
-<div class="font-poppins bg-gray-50" x-data="{ openBurger: false, search: '', all: false, selected: [], startIndeces: [], cancelIndeces: [], startTransactionModalOpen: false, cancelTransactionModalOpen: false, isChangeRoleModalOpen: false, deleteTransactionModalOpen: false, deleteIndex: null }" x-cloak>
+<div class="font-poppins bg-gray-50" x-data="{ openBurger: false, search: '', all: false, selected: [], startIndeces: [], cancelIndeces: [], startTransactionModalOpen: false, cancelTransactionModalOpen: false, isChangeRoleModalOpen: false, deleteTransactionModalOpen: false, deleteIndex: null }" x-cloak
+   x-init="
+        allTransactions = {{ json_encode($transactions->map(function($transaction) {
+            return [
+                'id' => $transaction->id,
+                'item_name' => strtolower($transaction->item_name),
+                'item_origin' => strtolower($transaction->item_origin),
+                'status' => strtolower($transaction->status)
+            ];
+        })) }}
+    ">
 
    @if(session('change_role_success'))
       <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
@@ -118,9 +128,22 @@
                   </div>
                </caption>
                <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-b">
+                  <p x-text="'Selected: ' + selected.length"></p>
                      <tr>
                         <th scope="col" class="pl-6 py-3 text-center">
-                           <input type="checkbox" x-model="all" @change="selected = all ? {{ $transactions->pluck('id') }} : []">
+                           <input type="checkbox" 
+                                    x-model="all" 
+                                    @change="
+                              selected = all ? 
+                                    allTransactions
+                                       .filter(transaction => 
+                                          search === '' || 
+                                          [transaction.item_name, transaction.item_origin, transaction.status]
+                                                .some(value => value.includes(search.toLowerCase()))
+                                       )
+                                       .map(transaction => transaction.id) 
+                                    : []
+                           ">
                         </th>
                         <th scope="col" class="pr-6 pl-3 py-3 text-center">
                            Transaction status
