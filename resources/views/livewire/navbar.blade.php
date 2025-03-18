@@ -44,7 +44,7 @@
                      <div class="mt-4">
                         @forelse ($user->notification_as_poster as $notif)
                            <div class="flex flex-row gap-3 p-1 hover:bg-gray-100 hover:rounded text-sm items-start">
-                              <img class="size-9 md:size-12 rounded-full" src="{{ App\Models\User::where('id', $notif->actor_id)->first()->profile_pic_url }}" alt="user photo"> 
+                              <img class="size-9 md:size-12 flex-shrink-0 object-contain rounded-full border" src="{{ App\Models\User::where('id', $notif->actor_id)->first()->profile_pic_url }}" alt="user photo"> 
                               <div class="flex flex-col">
                                  <span class="font-medium leading-tight">
                                     @if ($notif->actor_id !== $notif->poster_id)
