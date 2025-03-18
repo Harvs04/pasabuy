@@ -154,7 +154,7 @@
                         </div>
                         <div class="w-full flex flex-col">
                             <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Image</p>
-                            <input type="file" id="item_image_post" x-model="item_image_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2" />
+                            <input type="file" accept="image/png, image/jpeg" id="item_image_post" wire:model="item_image" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2" />
                         </div>
                     </div>
                 </div>

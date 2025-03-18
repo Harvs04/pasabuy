@@ -6,14 +6,22 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Notification;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Validate;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class MakeTransaction extends Component
 {
+    use WithFileUploads;
+
     public $post;
 
     public $item_name;
     public $item_origin;
-    public $item_image;
+
+    #[Validate('image|max:1024')]
+    public $item_image; 
+    public $default_image = false;
     public $item_type;
     public $subtype = [];
 
@@ -28,12 +36,24 @@ class MakeTransaction extends Component
     public function mount()
     {
         $this->item_origin = $this->post->item_origin;
+        if ($this->post->item_image === "https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png") {
+            $this->default_image = true;
+        }
+        $this->item_image = $this->post->item_image;
     }
 
     public function makePost($item_name, $item_origin, $item_type, $subtype, $mode_of_payment)
     {
         try {
             $user = Auth::user();
+
+            if (!$this->default) {
+                $imageUrl = Cloudinary::uploadFile($this->item_image->getRealPath())->getSecurePath();
+            } else {
+                // Default image if no file was uploaded
+                $imageUrl = 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png';
+            }
+
             $new_post = [
                 'type' => 'transaction',
                 'user_id' => $user->id,
@@ -42,7 +62,7 @@ class MakeTransaction extends Component
                 'item_origin' => $item_origin,
                 'item_type' => json_encode($item_type),
                 'sub_type' => $this->subtype ? json_encode($subtype) : null,
-                'item_image' => $this->item_image ?: 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png',
+                'item_image' => $imageUrl,
                 'delivery_date' => $this->delivery_date,
                 'arrival_time' => $this->arrival_time,
                 'mode_of_payment' => json_encode($mode_of_payment),
