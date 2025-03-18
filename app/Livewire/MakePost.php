@@ -8,15 +8,22 @@ use App\Models\Notification;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Log;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Validate;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class MakePost extends Component
 {   
+    use WithFileUploads;
+
     public User $user;
     public $type;
     public $item_name;
     public $item_origin;
     public $item_type = [];
     public $subtype = [];
+    
+    #[Validate('image|max:1024')]
     public $item_image;
     public $mode_of_payment = [];
     public $delivery_date;
@@ -40,6 +47,14 @@ class MakePost extends Component
         try {
             $this->type = ($this->user->role === 'customer') ? 'item_request' : 'transaction';
 
+            // Ensure the image is an actual uploaded file
+            if ($this->item_image) {
+                $imageUrl = Cloudinary::uploadFile($this->item_image->getRealPath())->getSecurePath();
+            } else {
+                // Default image if no file was uploaded
+                $imageUrl = 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png';
+            }
+
             $data = [
                 'type' => $this->type,
                 'user_id' => $this->user->id,
@@ -48,7 +63,7 @@ class MakePost extends Component
                 'item_origin' => $this->item_origin,
                 'item_type' => json_encode($this->item_type),
                 'sub_type' => empty($this->subtype) ? null : json_encode($this->subtype),
-                'item_image' => $this->item_image ?: 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png',
+                'item_image' => $imageUrl,
                 'delivery_date' => $this->delivery_date,
                 'arrival_time' => $this->arrival_time ?: null,
                 'mode_of_payment' => json_encode($this->mode_of_payment),
@@ -71,6 +86,7 @@ class MakePost extends Component
             session()->flash('create_post_success', 'Post created successfully!');
             return $this->redirect(route('dashboard'), true);
         } catch (\Throwable $th) {
+            dd($th);
             session()->flash('create_post_error', 'Failed to create post. Please try again.');
             return $this->redirect(route('dashboard'), true);
         }
