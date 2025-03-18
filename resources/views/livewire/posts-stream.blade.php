@@ -74,7 +74,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold">Item name:</p> 
-                                        <p class="">{{ $post->item_name }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->item_name }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-row gap-2 items-start text-sm">
@@ -83,7 +83,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold">Item origin:</p> 
-                                        <p class="">{{ $post->item_origin }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->item_origin }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-row gap-2 items-start text-sm">
@@ -121,7 +121,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold whitespace-nowrap">Mode of payment:</p> 
-                                        <p>{{ implode(', ', json_decode($post->mode_of_payment)) }}</p>
+                                        <p class="font-medium sm:font-normal">{{ implode(', ', json_decode($post->mode_of_payment)) }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-row gap-2 items-start text-sm">
@@ -130,7 +130,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold whitespace-nowrap">Delivery date:</p> 
-                                        <p>{{ $post->delivery_date->format('F j, Y') }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->delivery_date->format('F j, Y') }}</p>
                                     </div>
                                 </div>
                                 @if($post->additional_notes !== null)
@@ -140,7 +140,7 @@
                                         </svg>
                                         <div class="flex flex-row flex-wrap gap-1 overflow-hidden">
                                             <p class="hidden sm:block font-semibold whitespace-nowrap">Additional notes:</p>
-                                            <p class="break-all pr-1">{{ $post->additional_notes }}</p>
+                                            <p class="break-all pr-1 font-medium sm:font-normal">{{ $post->additional_notes }}</p>
                                         </div>
                                     </div>
                                 @endif
@@ -156,7 +156,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold">Item name:</p> 
-                                        <p class="">{{ $post->item_name }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->item_name }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-row gap-2 items-start text-sm">
@@ -165,11 +165,11 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold">Item origin:</p> 
-                                        <p class="">{{ $post->item_origin }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->item_origin }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-row gap-2 items-start text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 flex-shrink-0">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
                                     </svg>
@@ -226,7 +226,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold">Taking orders until:</p> 
-                                        <p class="">{{ $post->cutoff_date->format('F j, Y') }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->cutoff_date->format('F j, Y') }}</p>
                                     </div>
                                     <p x-show="openOrdersUntil" class="absolute -top-8 rounded-lg bg-gray-200 text-xs text-gray-700 px-2 py-1.5">Orders are only catered until this date</p>
                                 </div>
@@ -236,7 +236,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold whitespace-nowrap">Transaction fee:</p> 
-                                        <p>{{ $post->transaction_fee }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->transaction_fee }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-row gap-2 items-start text-sm">
@@ -245,7 +245,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold whitespace-nowrap">Mode of payment:</p> 
-                                        <p>{{ implode(', ', json_decode($post->mode_of_payment)) }}</p>
+                                        <p class="font-medium sm:font-normal">{{ implode(', ', json_decode($post->mode_of_payment)) }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -257,7 +257,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold whitespace-nowrap">Delivery date:</p> 
-                                        <p>{{ $post->delivery_date->format('F j, Y') }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->delivery_date->format('F j, Y') }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-row gap-2 items-start text-sm">
@@ -266,7 +266,7 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold whitespace-nowrap">Arrival time:</p> 
-                                        <p>{{ DateTime::createFromFormat('H:i:s', $post->arrival_time)->format('g:i a') }}</p>
+                                        <p class="font-medium sm:font-normal">{{ DateTime::createFromFormat('H:i:s', $post->arrival_time)->format('g:i a') }}</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-row gap-2 items-start text-sm">
@@ -276,16 +276,19 @@
                                     </svg>
                                     <div class="flex flex-row gap-2 items-start">
                                         <p class="hidden sm:block font-semibold whitespace-nowrap">Meetup place:</p> 
-                                        <p>{{ $post->meetup_place }}</p>
+                                        <p class="font-medium sm:font-normal">{{ $post->meetup_place }}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @endif
-                        <!-- LIKE, COMMENT, SAVE -->
-                        <div>
-                            <livewire:comments :$post />
-                        </div>
+                    @endif
+                    @if ($post->item_image !== "https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png")
+                        <img src="{{ $post->item_image }}" alt="product_image" class="w-1/3 ml-2 my-4 object-cover rounded-lg" />
+                    @endif
+                    <!-- LIKE, COMMENT, SAVE -->
+                    <div>
+                        <livewire:comments :$post />
+                    </div>
                 </div>
             @endforeach
             <p class="text-center text-sm text-gray-400">-- End of results --</p>
