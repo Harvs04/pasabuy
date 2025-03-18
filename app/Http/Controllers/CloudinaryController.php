@@ -37,7 +37,6 @@ class CloudinaryController extends Controller
     public function store(Request $request)
     {
         $uploaded = Cloudinary::uploadFile($request->file('file')->getRealPath())->getSecurePath(); 
-        // dd($uploaded);
         $this->user->profile_pic_url = $uploaded;
         $this->user->save();
         session()->flash('dp_change', 'Profile picture changed successfully!');
