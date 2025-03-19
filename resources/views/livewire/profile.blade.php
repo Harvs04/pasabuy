@@ -127,10 +127,31 @@
             }, 3000); // 3 seconds
         </script>
         @endif
+        @if(session('error'))
+        <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <div class="text-center text-sm">
+                    {{ session('error') }}
+                </div>
+            </div>
+            <!-- Close Button -->
+            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+                &times;
+            </button>
+        </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.flash').style.display = 'none';
+            }, 3000); // 3 seconds
+        </script>
+        @endif
 
         <div class="flex flex-row items-center gap-3 md:gap-5" style="margin-top: 3.5rem;">
             <!-- SPINNER -->
-            <div wire:loading.delay wire:target="changeRole, saveInfoChanges, savePassChanges, deleteAccount, logOut, store"
+            <div wire:loading.delay wire:target="changeRole, saveInfoChanges, savePassChanges, deleteAccount, logOut, uploadImage"
                 class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
                     class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">
@@ -174,14 +195,14 @@
                                     <p class="text-lg lg:text-base xl:text-lg font-medium md:font-semibold break-words">
                                         {{ $user->name }} </p>
                                     <p class="text-sm"> {{ $user->constituent }} </p>
-                                    <button class="py-1 px-2 mt-2 bg-[#014421] hover:bg-green-900 text-white text-xs rounded-md" @click="openUpload = true"> Change picture </button>
+                                    <button class="py-1 px-2 mt-2 bg-[#014421] hover:bg-green-900 text-white text-xs rounded-md" @click="openUpload = true; document.body.style.overflow = 'hidden';"> Change picture </button>
                                 </div>
                             </div>
                         </div>
                         <div @keydown.escape.window="openUpload = false; document.body.style.overflow = 'auto';"
                             x-show="openUpload" x-transition:enter.duration.25ms
                             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                            <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
+                            <div class="bg-white p-6 rounded-lg w-11/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
                                 <div class="flex flex-row items-center gap-2 sm:gap-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#014421" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-plus"><path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg>
                                     <p class="text-xl font-semibold text-[#014421]">Profile image upload</p>
@@ -194,23 +215,20 @@
                                     </button>
                                 </div>
                                 <p class="text-sm mt-2 sm:ml-2"></p>
-                                <form action="{{ route('cloudinary.store') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
-                                    <input 
-                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                                        id="file_input" 
-                                        type="file" 
-                                        name="file"
-                                        accept="image/png, image/jpeg"
-                                    >   
-                                    <div class="mt-5 flex justify-end gap-2">
-                                        <button type="button" @click="openUpload = false; document.body.style.overflow = 'auto';"
-                                            class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                                        <button type="submit" x-data="{ disabled: false }" :disabled="disabled"
-                                            class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                                @if ($image_upload)
+                                    <div class="flex justify-center items-center w-full my-4">
+                                        <img src="{{ $image_upload->temporaryUrl() }}" alt="profile_preview" class="h-40 w-40 object-cover rounded-full border shadow">
                                     </div>
-                                </form>
+                                @endif
+                                <label class="block mb-2 text-sm font-medium text-gray-700" for="file_input">Upload file</label>
+                                <input type="file" accept="image/png, image/jpeg" id="file_input" wire:model="image_upload"
+                                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2" />
+                                <div class="mt-5 flex justify-end gap-2">
+                                    <button @click="openUpload = false; document.body.style.overflow = 'auto';"
+                                        class="px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                                    <button x-data="{ disabled: false }" :disabled="disabled" @click="disabled = true; $wire.uploadImage();"
+                                        class="px-3 py-1.5 text-sm enabled:bg-[#014421] text-white rounded-md enabled:hover:bg-green-800 disabled:bg-gray-400" x-bind:disabled="{{ $image_upload === null }}">Upload</button>
+                                </div>
                             </div>
                         </div>
                         <!-- PASABUY INFO -->
