@@ -6,9 +6,14 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Validate;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Profile extends Component
 {
+    use WithFileUploads;
+
     public User $user;
     public $contact = "";
     public $constituent = "";
@@ -18,6 +23,9 @@ class Profile extends Component
     public $wrong_password = "";
     public $open_modal = "";
     public $new_password = "";
+
+    #[Validate('image|max:1024')]
+    public $image_upload;
     public $types = [
         'Student' => 'student',
         'Faculty Member' => 'faculty',
@@ -172,9 +180,27 @@ class Profile extends Component
         $user = $this->user;
         $user->role = $user->role === "customer" ? 'provider' : 'customer';
         $user->save();
-        ;
         session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
         return $this->redirect(route('profile', ['name' => $user->name]), true);
+    }
+
+    public function uploadImage()
+    {
+        try {
+            if ($this->image_upload) {
+
+                $imageUrl = Cloudinary::uploadFile($this->image_upload->getRealPath())->getSecurePath();
+                $this->user->profile_pic_url = $imageUrl;
+                $this->user->save();
+                session()->flash('dp_change', 'Profile picture changed successfully!');
+                return redirect(route('profile', ['name' => $this->user->name]));
+
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            session()->flash('error', 'An error has occurred. Try again.');
+            return redirect(route('profile', ['name' => $this->user->name]));
+        }
     }
 
     public function saveInfoChanges()
