@@ -175,6 +175,35 @@ class Profile extends Component
         $this->user = User::where('id', Auth::user()->id)->firstOrFail();
     }
 
+    public function updatePasabuyPoints()
+    {
+        // Get today's date as a string
+        $today = now()->Timezone('Singapore')->format('Y-m-d');
+        $user = User::where('id', Auth::user()->id)->first();
+
+        if ($user->pasabuy_points === 100) {
+            return;
+        }
+        
+        // Check if points have already been added today using session
+        if (!session()->has('pasabuy_points_added_on') || session('pasabuy_points_added_on') !== $today) {
+            // Get current user
+            
+            // Add points
+            $user->pasabuy_points += 1;
+            $user->save();
+            
+            // Mark that points were added today
+            session(['pasabuy_points_added_on' => $today]);
+            
+            // For feedback to the user
+            session()->flash('message', 'You received 1 Pasabuy point!');
+            return true;
+        }
+        
+        return false;
+    }
+
     public function changeRole()
     {
         $user = $this->user;
@@ -256,6 +285,11 @@ class Profile extends Component
 
     public function render()
     {
+        $currentTime = now();
+        if ($currentTime->Timezone('Singapore')->format('H:i') === '16:00') {
+            $this->updatePasabuyPoints();
+        }
+
         $user = Auth::user();
         return view('livewire.profile', ['user' => $user]);
     }
