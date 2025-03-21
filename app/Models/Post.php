@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Post extends Model
 {
@@ -35,6 +36,28 @@ class Post extends Model
         'delivery_date' => 'date',
         'cutoff_date' => 'date'
     ];
+
+    // remove later
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Before saving the model, update status if it's a transaction
+        static::saving(function ($post) {
+            if ($post->type === 'transaction') {
+                $post->updateTransactionStatus();
+            }
+        });
+    }
+
+    // Method to update transaction status based on cutoff date
+    public function updateTransactionStatus()
+    {
+        if ($this->cutoff_date && Carbon::parse($this->cutoff_date)->isAfter(Carbon::now())) {
+            $this->status = 'ongoing';
+            $this->save();
+        }
+    }
 
     public function orders()
     {
