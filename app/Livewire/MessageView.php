@@ -47,7 +47,7 @@ class MessageView extends Component
 
         } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
-            return $this->redirect(route('message.view', ['convo_id', $this->convo->id]), true);  
+            return $this->redirect(route('message.view', ['convo_id' => $this->convo_id]), true);  
         }
     }
 
