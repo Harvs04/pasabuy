@@ -19,9 +19,10 @@ class MakeTransaction extends Component
     public $item_name;
     public $item_origin;
 
+    public $temp_image;
+
     #[Validate('image|max:1024')]
     public $item_image; 
-    public $default_image = false;
     public $item_type;
     public $subtype = [];
 
@@ -36,10 +37,7 @@ class MakeTransaction extends Component
     public function mount()
     {
         $this->item_origin = $this->post->item_origin;
-        if ($this->post->item_image === "https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png") {
-            $this->default_image = true;
-        }
-        $this->item_image = $this->post->item_image;
+        $this->temp_image = $this->post->item_image;
     }
 
     public function makePost($item_name, $item_origin, $item_type, $subtype, $mode_of_payment)
@@ -47,11 +45,11 @@ class MakeTransaction extends Component
         try {
             $user = Auth::user();
 
-            if (!$this->default) {
+            if ($this->item_image) {
                 $imageUrl = Cloudinary::uploadFile($this->item_image->getRealPath())->getSecurePath();
             } else {
                 // Default image if no file was uploaded
-                $imageUrl = 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png';
+                $imageUrl = $this->temp_image;
             }
 
             $new_post = [
@@ -71,13 +69,13 @@ class MakeTransaction extends Component
                 'cutoff_date' => $this->cutoff_date_orders,
                 'meetup_place' => $this->meetup_place
             ];
+
+            // dd($new_post);
             $post = Post::create($new_post);
 
             // update status of item request:
             $this->post->status = 'converted';
             $this->post->save();
-
-            ;
 
             // notif for the poster of item request
             Notification::create([
