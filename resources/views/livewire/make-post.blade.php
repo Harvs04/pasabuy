@@ -562,16 +562,12 @@
                                 if (item_details) { 
                                     createPostModalOpen = false;
                                     document.body.style.overflow = 'auto';
-                                    if (window.innerWidth > 640) {
-                                        openBurger = true;
-                                    } 
                                 } else if (transaction_details) { 
                                     item_details = true; 
                                     transaction_details = false;
                                 }
                             } else {
                                 if (window.innerWidth > 640) {
-                                    openBurger = true;
                                     createPostModalOpen = false;
                                     document.body.style.overflow = 'auto';
                                 } else {
