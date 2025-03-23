@@ -287,7 +287,7 @@
                     @endif
                     <!-- LIKE, COMMENT, SAVE -->
                     <div>
-                        <livewire:comments :$post />
+                        <livewire:comments lazy :$post />
                     </div>
                 </div>
             @endforeach
