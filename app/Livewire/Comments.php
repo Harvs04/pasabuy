@@ -69,6 +69,14 @@ class Comments extends Component
         $this->db_comments = Comment::where('post_id', $post_id)->get();
     }
 
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div>
+            <span class="">Loading...</span>
+        </div>
+        HTML;
+    }
 
     public function addComment($post_id)
     {   
