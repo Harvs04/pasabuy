@@ -4,7 +4,7 @@
          x-transition:enter="scale-in-br" 
          x-transition:leave="scale-out-br"
          @click.outside="openBot = false; firstOpen = false; firstClose = true;"
-         class="fixed bottom-20 right-6 w-2/3 sm:w-80 bg-white max-h-[calc(100svh-20rem)] h-3/5 border border-slate-200 rounded-l-xl rounded-t-xl shadow z-50"
+         class="fixed bottom-20 right-6 w-4/5 sm:w-80 bg-white max-h-[calc(100svh-20rem)] h-3/5 border border-slate-200 rounded-l-xl rounded-t-xl shadow z-50"
     >
         <div class="flex items-center w-full h-10 bg-[#014421] rounded-t-xl px-3 text-white">
             <div class="flex items-center gap-2">
