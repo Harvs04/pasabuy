@@ -39,14 +39,14 @@
                   </button>
    
                   <!-- NOTIFICATION FIELD -->
-                  <div wire:poll.visible x-show="openNotification" class="break-words w-full sm:w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:-right-4 top-[62px] bg-white rounded-md shadow border px-3 py-4">
+                  <div wire:poll.visible x-show="openNotification" x-data="{ notifDetailsOpen: false }" class="break-words w-full sm:w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:-right-4 top-[62px] bg-white rounded-md shadow border px-3 py-4">
                      <h1 class="text-lg md:text-xl font-semibold text-gray-800 ml-1">Notifications</h1>
                      <div class="mt-4">
                         @forelse ($user->notification_as_poster as $notif)
-                           <div class="flex flex-row gap-3 p-1 hover:bg-gray-100 hover:rounded text-sm items-start">
+                           <button class="flex flex-row gap-3 p-1 hover:bg-gray-100 hover:rounded text-sm justify-start items-start w-full" @click="notifDetailsOpen = true; document.body.style.overflow = 'hidden'; @wire.openNotif('{{ $notif->id }}');">
                               <img class="size-9 md:size-12 flex-shrink-0 object-contain rounded-full border" src="{{ App\Models\User::where('id', $notif->actor_id)->first()->profile_pic_url }}" alt="user photo"> 
-                              <div class="flex flex-col">
-                                 <span class="font-medium leading-tight">
+                              <div class="flex flex-col items-start">
+                                 <span class="font-medium leading-tight text-start">
                                     @if ($notif->actor_id !== $notif->poster_id)
                                        {{ App\Models\User::find($notif->actor_id)->name }}
                                     @endif
@@ -86,7 +86,12 @@
                                  </span>
                                  <span class="text-xs">{{ $notif->created_at->Timezone('Singapore')->format('F j, Y \\a\\t h:i A') }}</span>
                               </div>
-                           </div>
+                           </button>
+                           @teleport('body')
+                              <div x-show="notifDetailsOpen">
+                                 {{ $post_id }}
+                              </div>
+                           @endteleport
                         @empty
                            <p class="text-sm text-center">
                               Seems empty. Try ordering items or making transactions.

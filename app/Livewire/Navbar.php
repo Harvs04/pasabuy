@@ -12,6 +12,7 @@ class Navbar extends Component
 
     public User $user;
     public $currentUrl;
+    public $post_id;
 
     public function mount()
     {
@@ -42,6 +43,12 @@ class Navbar extends Component
 
         return redirect(request()->header('Referer'));
     }
+
+    public function openNotif($id)
+    {
+        $this->post_id = $id;
+    }
+    
 
     public function signOut() 
     {
