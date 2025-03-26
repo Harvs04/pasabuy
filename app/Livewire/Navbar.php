@@ -12,7 +12,7 @@ class Navbar extends Component
 
     public User $user;
     public $currentUrl;
-    public $post_id;
+    public $notif_id;
 
     public function mount()
     {
@@ -46,7 +46,7 @@ class Navbar extends Component
 
     public function openNotif($id)
     {
-        $this->post_id = $id;
+        $this->notif_id = $id;
     }
     
 
