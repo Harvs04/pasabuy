@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Models\Post;
+use App\Models\Notification;
 
 class Navbar extends Component
 {
@@ -13,6 +15,7 @@ class Navbar extends Component
     public User $user;
     public $currentUrl;
     public $notif_id;
+    public $post_in_notif;
 
     public function mount()
     {
@@ -47,6 +50,14 @@ class Navbar extends Component
     public function openNotif($id)
     {
         $this->notif_id = $id;
+        $this->fetchNotif();
+    }
+
+
+    public function fetchNotif()
+    {
+        $notif = Notification::where('id', $this->notif_id)->first();
+        $this->post_in_notif = Post::where('id', $notif->post_id)->first();
     }
     
 
