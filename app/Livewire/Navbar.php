@@ -14,8 +14,10 @@ class Navbar extends Component
 
     public User $user;
     public $currentUrl;
+    public $notif_instance;
     public $notif_id;
     public $post_in_notif;
+    public $actor;
 
     public function mount()
     {
@@ -56,8 +58,9 @@ class Navbar extends Component
 
     public function fetchNotif()
     {
-        $notif = Notification::where('id', $this->notif_id)->first();
-        $this->post_in_notif = Post::where('id', $notif->post_id)->first();
+        $this->notif_instance = Notification::where('id', $this->notif_id)->first();
+        $this->actor = User::where('id', $this->notif_instance->actor_id)->first();
+        $this->post_in_notif = Post::where('id', $this->notif_instance->post_id)->first();
     }
     
 
