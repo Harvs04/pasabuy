@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\Notification;
+use App\Models\LikePost;
 
 class Navbar extends Component
 {
@@ -16,6 +17,8 @@ class Navbar extends Component
     public $currentUrl;
     public $notif_instance;
     public $notif_id;
+    public $notif_type;
+    public $like_count;
     public $post_in_notif;
     public $actor;
 
@@ -35,7 +38,6 @@ class Navbar extends Component
         $user->role === 'customer' ? $user->role = 'provider' : $user->role = 'customer'; 
         $user->save();
 
-        ;
         session()->flash('change_role_success', "You are now logged in as " . ucwords($user->role) . ".");
         
         if (str_contains($this->currentUrl, 'transactions')) {
@@ -59,8 +61,10 @@ class Navbar extends Component
     public function fetchNotif()
     {
         $this->notif_instance = Notification::where('id', $this->notif_id)->first();
+        $this->notif_type = $this->notif_instance->type;
         $this->actor = User::where('id', $this->notif_instance->actor_id)->first();
         $this->post_in_notif = Post::where('id', $this->notif_instance->post_id)->first();
+        $this->like_count = LikePost::where('post_id', $this->post_in_notif->id)->get()->count();
     }
     
 
