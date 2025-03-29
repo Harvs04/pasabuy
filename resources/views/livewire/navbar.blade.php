@@ -1,4 +1,4 @@
-<div>
+<div class="">
    <nav class="fixed top-0 z-30 w-full bg-[#014421] border-b font-poppins" x-data="{ openNotification: false }">
       <div class="px-3 py-1.5 lg:px-5 lg:pl-3">
          <div class="flex items-center justify-between relative">
@@ -93,22 +93,26 @@
                            </p>
                         @endforelse
                         @teleport('body')
-                           <div x-show="notifDetailsOpen">
+                           <div x-show="notifDetailsOpen" class="font-poppins">
                               <div x-transition:enter.duration.25ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
-                                 <div @click.outside="notifDetailsOpen = false; document.body.style.overflow = 'auto';" @keydown.escape.window="notifDetailsOpen = false; document.body.style.overflow = 'auto';" class="bg-white p-6 rounded-lg w-11/12 md:w-2/3 lg:w-1/2 2xl:w-1/3 relative">
-                                    <div class="flex flex-row items-center gap-2">
-                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="size-5">
-                                          <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-                                       </svg>
-                                       <p class="text-xl font-semibold text-[#014421]">Notification</p>
-                                       <button @click="notifDetailsOpen = false; document.body.style.overflow = 'auto';" class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                                 <div @click.outside="notifDetailsOpen = false; document.body.style.overflow = 'auto';" @keydown.escape.window="notifDetailsOpen = false; document.body.style.overflow = 'auto';" class="bg-white rounded-lg w-11/12 md:w-2/3 lg:w-1/2 2xl:w-1/3 relative max-h-[500px] overflow-y-auto">
+                                    <div class="py-4 flex flex-row items-center gap-2 border-b">
+                                       <div class="flex justify-center w-full" wire:loading="fetchNotif">                        
+                                          <div role="status" class="w-1/2 rounded-sm shadow-sm animate-pulse md:p-2 mx-auto">
+                                             <div class="flex items-center">
+                                                   <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                                             </div>
+                                          </div>
+                                       </div>   
+                                       <p wire:loading.class="hidden" class="text-center text-lg md:text-xl font-semibold mx-auto w-full">{{ ucwords($notif_instance->type ?? 'N/A') }}</p>
+                                       <button @click="notifDetailsOpen = false; document.body.style.overflow = 'auto';" class="absolute top-3 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                                           </svg>
                                        </button>
                                     </div>
                                     <div class="text-center w-full" wire:loading="fetchNotif">                        
-                                       <div role="status" class="w-full p-4 border-gray-200 rounded-sm shadow-sm animate-pulse md:p-6 dark:border-gray-500">
+                                       <div role="status" class="w-full px-3 md:px-6 py-4 border-gray-200 rounded-sm shadow-sm animate-pulse dark:border-gray-500">
                                           <div class="flex items-center mb-4">
                                              <svg class="w-10 h-10 me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
@@ -132,19 +136,16 @@
                                        </div>
                                     </div>
                                     <div class="text-center w-full" wire:loading.class="hidden">                        
-                                       <div role="status" class="w-full p-4 border-gray-200 rounded-sm shadow-sm md:p-6 dark:border-gray-500">
+                                       <div role="status" class="w-full px-3 md:px-6 py-4 border-gray-200 rounded-sm shadow-sm dark:border-gray-500">
                                           <div class="flex items-center mb-4">
-                                             <img src="{{ $actor->profile_pic_url ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif' }}" alt="" class="w-10 h-10 border rounded-full object-contain me-3 text-gray-200 dark:text-gray-700">
-                                             <div>
-                                                   <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2"></div>
-                                                   <div class="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-500"></div>
+                                             <img src="{{ $actor->profile_pic_url ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif' }}" alt="actor_image" class="w-10 h-10 border rounded-full object-contain me-3 text-gray-200 dark:text-gray-700">
+                                             <div class="text-start">
+                                                   <div class="text-gray-800 text-sm font-semibold">{{ $actor->name ?? '...' }}</div>
+                                                   <div class="text-gray-700 text-xs">{{ $notif_instance && $notif_instance->created_at ? $notif_instance->created_at->timezone('Singapore')->format('j F Y \a\t H:i') : '...' }}</div>
                                              </div>
                                           </div>
-                                          <div class="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded-sm dark:bg-gray-500">
-                                             <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                                                   <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z"/>
-                                                   <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
-                                             </svg>
+                                          <div class="flex items-center justify-center mb-4 bg-gray-100 rounded-sm">
+                                             <img src="{{ $post_in_notif->item_image ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png' }}" alt="post_image" class="w-1/3 object-cover">
                                           </div>
                                           <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-500 w-full mb-4"></div>
                                           <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-500 mb-2.5"></div>
@@ -152,9 +153,6 @@
                                           <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-500"></div>
                                           <span class="sr-only">Loading...</span>
                                        </div>
-                                    </div>
-                                    <div wire:loading.class="hidden">
-                                       ITEM NAME# {{ $post_in_notif->item_name ?? 'N/A'}}
                                     </div>
                                  </div>
                               </div>
