@@ -16,6 +16,7 @@ class OrderItemModal extends Component
     public $post;
     public $orders = [];
     public $notes = '';
+    public $order_ids = [];
 
     public function addOrder()
     {   
@@ -29,6 +30,8 @@ class OrderItemModal extends Component
                     'order' => $order,
                     'additional_notes' => $this->notes ? $this->notes : null
                 ]);
+
+                array_push($this->order_ids, $newOrder->id);
 
                 // checking if a converstation already exists
                 $conversation = Conversation::
@@ -65,13 +68,12 @@ class OrderItemModal extends Component
             }
 
             $transaction->save();
-            ;
-
 
             // make a notification
             Notification::create([
                 'type' => 'new order',
                 'post_id' => $this->post->id,
+                'order_id' => $this->order_ids,
                 'actor_id' => $user->id,
                 'poster_id' => $this->post->user_id,
                 'order_count' => count($this->orders)
@@ -81,6 +83,7 @@ class OrderItemModal extends Component
             Notification::create([
                 'type' => 'new order',
                 'post_id' => $this->post->id,
+                'order_id' => $this->order_ids,
                 'actor_id' => $user->id,
                 'poster_id' => $user->id,
                 'order_count' => count($this->orders)
