@@ -14,9 +14,15 @@ class Notification extends Model
     protected $fillable = [
         'type',
         'post_id',
+        'order_id',
         'actor_id',
         'poster_id',
         'order_count'
+    ];
+    
+
+    protected $casts = [
+        'order_id' => 'array',
     ];
 
     public function user(): BelongsTo
