@@ -5,10 +5,11 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\Auth; 
 use Livewire\Component;
 use App\Models\User;
-use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\Notification;
 use App\Models\LikePost;
+use App\Models\Conversation;
+use App\Models\Order;
 
 class Navbar extends Component
 {
@@ -21,6 +22,8 @@ class Navbar extends Component
     public $like_count;
     public $post_in_notif;
     public $actor;
+    public $order;
+    public $convo_id;
 
     public function mount()
     {
@@ -64,7 +67,9 @@ class Navbar extends Component
         $this->notif_type = $this->notif_instance->type;
         $this->actor = User::where('id', $this->notif_instance->actor_id)->first();
         $this->post_in_notif = Post::where('id', $this->notif_instance->post_id)->first();
+        $this->order = Order::where('id', $this->notif_instance->order_id)->first();
         $this->like_count = LikePost::where('post_id', $this->post_in_notif->id)->get()->count();
+        $this->convo_id = Conversation::where('provider_id', $this->order->provider_id)->where('customer_id', $this->order->customer_id)->first()->id;
     }
     
 
