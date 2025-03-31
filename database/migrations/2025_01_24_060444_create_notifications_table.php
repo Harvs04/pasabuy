@@ -16,6 +16,7 @@ return new class extends Migration
             $table->enum('type', ['like' ,'comment', 'new order', 'new item request', 'new transaction', 'cancelled order', 'converted post', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable', 'transaction cancelled']);
             $table->uuid('post_id');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->json('order_id')->nullable();
             $table->uuid('actor_id');
             $table->foreign('actor_id')->references('id')->on('users')->onDelete('cascade');
             $table->uuid('poster_id');
