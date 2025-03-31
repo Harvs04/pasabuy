@@ -638,7 +638,7 @@
                         </div>
 
             <!-- Image at the Top Center -->
-            <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738989291/1_fn3fqa.png" alt="Rating_Image"
+            <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1743413568/1_fn4u76.png" alt="Rating_Image"
                 class="w-36 h-36 sm:w-48 sm:h-48 object-cover">
 
             <p class="text-center">We want to hear from you!</p>

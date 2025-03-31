@@ -86,7 +86,7 @@
                                 <p class="text-lg font-semibold">Order tracking: {{ $order->item_status }}</p>
                                 <button x-show="status === 'Delivered'" type="button"
                                     @click="rateTransactionModalOpen = true; document.body.style.overflow = 'hidden';"
-                                    class="px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:bg-gray-300 disabled:cursor-not-allowed ml-auto">
+                                    class="{{ $user->role === 'provider' ? 'hidden' : 'block' }} px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center sm:justify-start bg-[#014421] enabled:hover:bg-green-800 rounded-lg text-center disabled:bg-gray-300 disabled:cursor-not-allowed ml-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white sm:me-2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -616,7 +616,7 @@
             </div>
 
             <!-- Image at the Top Center -->
-            <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738989291/1_fn3fqa.png" alt="Rating_Image"
+            <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1743413568/1_fn4u76.png" alt="Rating_Image"
                 class="w-36 h-36 sm:w-48 sm:h-48 object-cover">
 
             <p class="text-center">We want to hear from you!</p>
@@ -647,7 +647,7 @@
 
                 <button x-data="{ disabled: false }"
                     @click="rateTransactionModalOpen = false; disabled = true; document.body.style.overflow = 'auto'; $wire.rateTransaction();"
-                    :disabled="rating === 0 || !remarks || disabled"
+                    x-bind:disabled="rating === 0 || !remarks || disabled"
                     class="px-3 py-1 text-sm enabled:bg-[#014421] text-white rounded-md enabled:hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-gray-300">Submit</button>
             </div>
 
