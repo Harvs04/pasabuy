@@ -41,8 +41,10 @@ class OrderView extends Component
             Notification::create([
                 'type' => 'item confirmed',
                 'post_id' => $this->order->post_id,
+                'order_id' => [$this->order->id],
                 'actor_id' => $this->order->customer_id,
-                'poster_id' => $this->order->provider_id
+                'poster_id' => $this->order->provider_id,
+                'order_count' => 1
             ]);
 
             $customer = User::where('id', $this->order->customer_id)->first();
@@ -81,8 +83,10 @@ class OrderView extends Component
                         Notification::create([
                             'type' => 'transaction cancelled',
                             'post_id' => $this->t_id,
+                            'order_id' => [$order->id],
                             'actor_id' => Auth::user()->id,
-                            'poster_id' => User::where('id', $order->customer_id)->first()->id
+                            'poster_id' => User::where('id', $order->customer_id)->first()->id,
+                            'order_count' => 1
                         ]);
                     }
                 }
@@ -113,8 +117,10 @@ class OrderView extends Component
             Notification::create([
                 'type' => 'cancelled order',
                 'post_id' => $this->t_id,
+                'order_id' => [$this->order->id],
                 'actor_id' => $this->order->customer_id,
-                'poster_id' => $this->order->provider_id
+                'poster_id' => $this->order->provider_id,
+                'order_count' => 1
             ]);
 
             session()->flash('cancel_success', 'Order cancelled!');
@@ -144,13 +150,16 @@ class OrderView extends Component
             Notification::create([
                 'type' => 'item rated',
                 'post_id' => $this->t_id,
+                'order_id' => [$this->order->id],
                 'actor_id' => $this->order->customer_id,
-                'poster_id' => $this->order->provider_id
+                'poster_id' => $this->order->provider_id,
+                'order_count' => 1
             ]);
 
             session()->flash('item_rated_success', 'Transaction rated!');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
+            dd($th);
             session()->flash('error', 'An error occurred. Please try again.');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         }
