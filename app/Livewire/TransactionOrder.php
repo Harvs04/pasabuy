@@ -41,8 +41,10 @@ class TransactionOrder extends Component
                 Notification::create([
                     'type' => 'item bought',
                     'post_id' => $this->order->post_id,
+                    'order_id' => $this->order->id,
                     'actor_id' => $this->order->provider_id,
-                    'poster_id' => $this->order->customer_id
+                    'poster_id' => $this->order->customer_id,
+                    'order_count' => 1
                 ]);
 
             } else if ($delivered) {
@@ -52,8 +54,10 @@ class TransactionOrder extends Component
                 Notification::create([
                     'type' => 'item waiting',
                     'post_id' => $this->order->post_id,
+                    'order_id' => [$this->order->id],
                     'actor_id' => $this->order->provider_id,
-                    'poster_id' => $this->order->customer_id
+                    'poster_id' => $this->order->customer_id,
+                    'order_count' => 1
                 ]);
             }
 
@@ -97,8 +101,10 @@ class TransactionOrder extends Component
                         Notification::create([
                             'type' => 'transaction cancelled',
                             'post_id' => $this->t_id,
+                            'order_id' => [$order->id],
                             'actor_id' => Auth::user()->id,
-                            'poster_id' => User::where('id', $order->customer_id)->first()->id
+                            'poster_id' => User::where('id', $order->customer_id)->first()->id,
+                            'order_count' => 1
                         ]);
                     }
                 }
@@ -127,8 +133,10 @@ class TransactionOrder extends Component
             Notification::create([
                 'type' => 'item unavailable',
                 'post_id' => $this->t_id,
+                'order_id' => [$this->order->id],
                 'actor_id' => Auth::user()->id,
-                'poster_id' => $this->order->customer_id
+                'poster_id' => $this->order->customer_id,
+                'order_count' => 1
             ]);
 
             session()->flash('delete_success', 'Order status set to unavailable!');

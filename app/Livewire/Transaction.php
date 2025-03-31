@@ -49,6 +49,7 @@ class Transaction extends Component
                 Notification::create([
                     'type' => 'item bought',
                     'post_id' => $customerOrders->first()->post_id,
+                    'order_id' => $customerOrders->pluck('id'),
                     'actor_id' => $this->user->id,
                     'poster_id' => $customer_id,
                     'order_count' => $customerOrders->count()
@@ -93,6 +94,7 @@ class Transaction extends Component
                 Notification::create([
                     'type' => 'item waiting',
                     'post_id' => $customerOrders->first()->post_id,
+                    'order_id' => $customerOrders->pluck('id'),
                     'actor_id' => $this->user->id,
                     'poster_id' => $customer_id,
                     'order_count' => $customerOrders->count()
@@ -137,6 +139,7 @@ class Transaction extends Component
                 Notification::create([
                     'type' => 'item unavailable',
                     'post_id' => $customerOrders->first()->post_id,
+                    'order_id' => $customerOrders->pluck('id'),
                     'actor_id' => $this->user->id,
                     'poster_id' => $customer_id,
                     'order_count' => $customerOrders->count()
@@ -173,8 +176,10 @@ class Transaction extends Component
                         Notification::create([
                             'type' => 'transaction cancelled',
                             'post_id' => $this->id,
+                            'order_id' => [$order->id],
                             'actor_id' => Auth::user()->id,
-                            'poster_id' => User::where('id', $order->customer_id)->first()->id
+                            'poster_id' => User::where('id', $order->customer_id)->first()->id,
+                            'order_count' => 1
                         ]);
                     }
                 }

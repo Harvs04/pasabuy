@@ -52,8 +52,10 @@ class HistoryOrder extends Component
             Notification::create([
                 'type' => 'item rated',
                 'post_id' => $this->order->post_id,
+                'order_id' => $this->order->id,
                 'actor_id' => $this->order->customer_id,
-                'poster_id' => $this->order->provider_id
+                'poster_id' => $this->order->provider_id,
+                'order_count' => 1
             ]);
 
             

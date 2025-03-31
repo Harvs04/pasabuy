@@ -48,8 +48,10 @@ class Transactions extends Component
                         Notification::create([
                             'type' => 'transaction cancelled',
                             'post_id' => $id,
+                            'order_id' => $orders,
                             'actor_id' => $this->user->id,
-                            'poster_id' => $customerId
+                            'poster_id' => $customerId,
+                            'order_count' => count($orders)
                         ]);
                     }
 

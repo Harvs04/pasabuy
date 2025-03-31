@@ -48,6 +48,7 @@ class OrderList extends Component
             Notification::create([
                 'type' => 'item confirmed',
                 'post_id' => $order->post_id,
+                'order_id' => $ids,
                 'actor_id' => $this->user->id,
                 'poster_id' => $order->provider_id,
                 'order_count' => count($ids)
@@ -102,8 +103,10 @@ class OrderList extends Component
             Notification::create([
                 'type' => 'item rated',
                 'post_id' => $t_id,
+                'order_id' => [$id],
                 'actor_id' => $this->user->id,
-                'poster_id' => $order->provider_id
+                'poster_id' => $order->provider_id,
+                'order_count' => 1
             ]);
 
             session()->flash('item_rated_success', 'Transaction rated!');
@@ -147,6 +150,7 @@ class OrderList extends Component
             Notification::create([
                 'type' => 'cancelled order',
                 'post_id' => $order->post_id,
+                'order_id' => [$order->id],
                 'actor_id' => $this->user->id,
                 'poster_id' => $order->provider_id,
                 'order_count' => count($ids)
