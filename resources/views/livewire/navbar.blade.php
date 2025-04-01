@@ -406,7 +406,7 @@
                                                             </div>
                                                             
                                                             <!-- Actions -->
-                                                            <div class="flex flex-col sm:flex-row sm:justify-between gap-3">
+                                                            <div class="flex flex-col text-sm sm:flex-row sm:justify-between gap-3">
                                                                <a href="{{ route('message.view', ['convo_id' => $convo_id]) }}" class="w-full py-2 px-4 bg-white border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
                                                                   {{ $user->role === 'provider' ? 'Contact Customer' : 'Contact Provider'}}
                                                                </a>
