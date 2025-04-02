@@ -372,7 +372,7 @@
                                                          </div>
                                                       </div>
                                                    @endif
-                                                @elseif(in_array(($notif_instance->type ?? ''), ['new order','cancelled order', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))      
+                                                @elseif(in_array(($notif_instance->type ?? ''), ['new order','cancelled order', 'transaction cancelled', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))      
                                                    <div class="">
                                                       <!-- Content -->
                                                       <div class="px-4 py-2">
@@ -388,8 +388,8 @@
                                                                </div>
                                                                @if (($notif_instance->order_count ?? '') > 1)
                                                                   @foreach ($notif_instance->order_id ?? '' as $order_id)
-                                                                     <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-amber-100' ) }} rounded-lg p-4 mb-4">
-                                                                        <p class="text-gray-700 text-base font-medium mb-2">Order #{{ $order_id ?? '1234' }} has been <span class="font-semibold underline">{{ $notif_type === 'cancelled order' ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type ?? '' === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
+                                                                     <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-amber-100' ) }} rounded-lg p-4 mb-4">
+                                                                        <p class="text-gray-700 text-base font-medium mb-2">Order #{{ $order_id ?? '1234' }} has been <span class="font-semibold underline">{{ in_array($notif_type, ['cancelled order', 'transaction cancelled']) ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type ?? '' === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
                                                                         <p class="">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
                                                                         <p class="">Order: <span class="font-medium">{{ App\Models\Order::where('id', $order_id)->first()->order ?? 'mystery item' }}</span></p>
                                                                         <p class="">Payment status: <span class="font-medium">{{ App\Models\Order::where('id', $order_id)->first()->is_paid ?? 'Unknown status' === 0 ? 'Pending payment' : 'Paid' }}</span></p>
@@ -397,8 +397,8 @@
                                                                      </div>
                                                                   @endforeach
                                                                @else                                                   
-                                                                  <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-amber-100' ) }} rounded-lg p-4 mb-4">
-                                                                     <p class="text-gray-700 text-base font-medium mb-2">Order #{{ $notif_instance->order_id[0] ?? '1234' }} has been <span class="font-semibold underline">{{ $notif_type === 'cancelled order' ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type ?? '' === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
+                                                                  <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-amber-100' ) }} rounded-lg p-4 mb-4">
+                                                                     <p class="text-gray-700 text-base font-medium mb-2">Order #{{ $notif_instance->order_id[0] ?? '1234' }} has been <span class="font-semibold underline">{{ in_array($notif_type, ['cancelled order', 'transaction cancelled']) ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type ?? '' === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
                                                                      <p class="">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
                                                                      <p class="">Order: <span class="font-medium">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->order ?? 'mystery item' }}</span></p>
                                                                      <p class="">Payment status: <span class="font-medium">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->is_paid ?? 'Unknown status' === 0 ? 'Pending payment' : 'Paid' }}</span></p>
