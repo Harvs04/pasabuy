@@ -138,20 +138,26 @@
                                     <div class="text-center w-full" wire:loading.class="hidden">                        
                                        <div role="status" class="w-full px-3 md:px-6 py-2 border-gray-200 rounded-sm shadow-sm dark:border-gray-500 max-h-[500px] overflow-auto">
                                           <div class="flex items-center">
-                                             @if (in_array($notif_instance->type ?? 'N/A', ['like', 'comment']))
+                                             @if (in_array($notif_instance->type ?? 'N/A', ['like', 'comment', 'new item request', 'new transaction']))
                                                 <img src="{{ $user->profile_pic_url ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif' }}" alt="user_image" class="w-10 h-10 border rounded-full object-contain me-3 text-gray-200 dark:text-gray-700">
                                                 <div class="text-start">
                                                    <div class="text-gray-800 text-sm font-semibold">{{ $user->name ?? '...' }}</div>
                                                    <div class="text-gray-700 text-xs">{{ $post_in_notif && $post_in_notif->created_at ? $post_in_notif->created_at->timezone('Singapore')->format('j F Y \a\t H:i') : '...' }}</div>
                                                 </div>
+                                             @elseif(($notif_instance->type ?? 'N/A') === 'converted post')
+                                                <img src="{{ $actor->profile_pic_url ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif' }}" alt="user_image" class="w-10 h-10 border rounded-full object-contain me-3 text-gray-200 dark:text-gray-700">
+                                                <div class="text-start">
+                                                   <div class="text-gray-800 text-sm font-semibold">{{ $actor->name ?? '...' }}</div>
+                                                   <div class="text-gray-700 text-xs">{{ $post_in_notif && $post_in_notif->created_at ? $post_in_notif->created_at->timezone('Singapore')->format('j F Y \a\t H:i') : '...' }}</div>
+                                                </div>
                                              @endif                  
                                           </div>
                                           <div class="py-2 flex flex-col border-b mb-2">
-                                             <div class="flex items-center justify-center mb-2 bg-gray-100 rounded-sm {{ in_array($notif_instance->type ?? 'N/A', ['like', 'comment']) ? 'block' : 'hidden' }}">
+                                             <div class="flex items-center justify-center mb-2 bg-gray-100 rounded-sm {{ in_array($notif_instance->type ?? 'N/A', ['like', 'comment', 'new item request', 'new transaction', 'converted post']) ? 'block' : 'hidden' }}">
                                                 <img src="{{ $post_in_notif->item_image ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png' }}" alt="post_image" class="w-1/3 object-cover">                                                                                             
                                              </div>
                                              <div class="text-start">
-                                                @if (in_array(($notif_instance->type ?? ''), ['like', 'comment']))
+                                                @if (in_array(($notif_instance->type ?? ''), ['like', 'comment', 'new item request', 'new transaction', 'converted post']))
                                                    @if(($post_in_notif->type ?? '') === 'item_request')
                                                       <div class="flex flex-col gap-2">
                                                          <p class="text-[#014421] text-base font-semibold underline">Item Details:</p>
@@ -366,7 +372,7 @@
                                                          </div>
                                                       </div>
                                                    @endif
-                                                @elseif(in_array(($notif_instance->type ?? ''), ['cancelled order', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))      
+                                                @elseif(in_array(($notif_instance->type ?? ''), ['new order','cancelled order', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))      
                                                    <div class="">
                                                       <!-- Content -->
                                                       <div class="px-4 py-2">
@@ -382,21 +388,48 @@
                                                                </div>
                                                                @if (($notif_instance->order_count ?? '') > 1)
                                                                   @foreach ($notif_instance->order_id ?? '' as $order_id)
-                                                                     <div class="{{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-yellow-100' ) }} rounded-lg p-4 mb-4">
-                                                                        <p class="font-medium text-gray-700 mb-2">Order #{{ $order_id ?? '1234' }} has been <span class="font-semibold underline">{{ explode(' ', $notif_type ?? '')[1] }}</span>.</p>
-                                                                        <p class="text-gray-600 text-sm">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
-                                                                        <p class="text-gray-600 text-sm">Order: <span class="font-medium">{{ App\Models\Order::where('id', $order_id)->first()->order ?? 'mystery item' }}</span></p>
-                                                                        <p class="text-gray-600 text-sm">Payment status: <span class="font-medium">{{ App\Models\Order::where('id', $order_id)->first()->is_paid ?? 'Unknown status' === 0 ? 'Pending payment' : 'Paid' }}</span></p>
-                                                                        <p class="text-gray-600 text-sm">Other notes: <span class="italic">{{ App\Models\Order::where('id', $order_id)->first()->additional_notes ?? 'Some notes' }}</span></p>
+                                                                     <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-amber-100' ) }} rounded-lg p-4 mb-4">
+                                                                        <p class="text-gray-700 text-base font-medium mb-2">Order #{{ $order_id ?? '1234' }} has been <span class="font-semibold underline">{{ $notif_type === 'cancelled order' ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type ?? '' === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
+                                                                        <p class="">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
+                                                                        <p class="">Order: <span class="font-medium">{{ App\Models\Order::where('id', $order_id)->first()->order ?? 'mystery item' }}</span></p>
+                                                                        <p class="">Payment status: <span class="font-medium">{{ App\Models\Order::where('id', $order_id)->first()->is_paid ?? 'Unknown status' === 0 ? 'Pending payment' : 'Paid' }}</span></p>
+                                                                        <p class="">Other notes: <span class="font-medium">{{ App\Models\Order::where('id', $order_id)->first()->additional_notes ?? 'Some notes' }}</span></p>
                                                                      </div>
                                                                   @endforeach
                                                                @else                                                   
-                                                                  <div class="{{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-yellow-100' ) }} rounded-lg p-4 mb-4">
-                                                                     <p class="font-medium text-gray-700 mb-2">Order #{{ $notif_instance->order_id[0] ?? '1234' }} has been <span class="font-semibold underline">{{ $notif_type === 'cancelled order' ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : explode(' ', $notif_type ?? '')[1]) }}.</span></p>
-                                                                     <p class="text-gray-600 text-sm">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
-                                                                     <p class="text-gray-600 text-sm">Order: <span class="font-medium">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->order ?? 'mystery item' }}</span></p>
-                                                                     <p class="text-gray-600 text-sm">Payment status: <span class="font-medium">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->is_paid ?? 'Unknown status' === 0 ? 'Pending payment' : 'Paid' }}</span></p>
-                                                                     <p class="text-gray-600 text-sm">Other notes: <span class="italic">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->additional_notes ?? 'Some notes' }}</span></p>
+                                                                  <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-amber-100' ) }} rounded-lg p-4 mb-4">
+                                                                     <p class="text-gray-700 text-base font-medium mb-2">Order #{{ $notif_instance->order_id[0] ?? '1234' }} has been <span class="font-semibold underline">{{ $notif_type === 'cancelled order' ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type ?? '' === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
+                                                                     <p class="">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
+                                                                     <p class="">Order: <span class="font-medium">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->order ?? 'mystery item' }}</span></p>
+                                                                     <p class="">Payment status: <span class="font-medium">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->is_paid ?? 'Unknown status' === 0 ? 'Pending payment' : 'Paid' }}</span></p>
+                                                                     <p class="">Other notes: <span class="font-medium">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->additional_notes ?? 'Some notes' }}</span></p>
+                                                                     <span class="mt-2 flex items-center gap-1 {{ $notif_type === 'item rated' ? 'block' : 'hidden' }}">
+                                                                        @php
+                                                                           $rating_instance = App\Models\Rating::where('order_id', $notif_instance->order_id[0])->first();
+                                                                        @endphp
+                                                                        <p class="">Star rating:</p>
+                                                                        @if($rating_instance)
+                                                                        <div class="flex items-center">
+                                                                           <div class="flex">
+                                                                              @for ($i = 1; $i <= 5; $i++)
+                                                                                    @if ($i <= $rating_instance->star_rating)
+                                                                                       <!-- Filled Star -->
+                                                                                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-yellow-400">
+                                                                                          <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                                                                       </svg>
+                                                                                    @else
+                                                                                       <!-- Empty Star -->
+                                                                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-300">
+                                                                                          <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                                       </svg>
+                                                                                    @endif
+                                                                              @endfor
+                                                                           </div>
+                                                                        </div>
+                                                                        @endif
+                                                                        <p><span class="font-medium">{{ $rating_instance->star_rating ?? '' }}/5</span></p>
+                                                                     </span>
+                                                                     <p class="text-gray-600 text-sm {{ $notif_type === 'item rated' ? 'block' : 'hidden' }}">Remarks: <span class="font-medium"> {{ $rating_instance->remarks ?? '' }}</span></p>
                                                                   </div>
                                                                @endif
                                                                
@@ -426,18 +459,18 @@
                                              </div>
                                           </div>
                                           <!-- TEXT CONTENT -->
-                                          <div class="mb-2">                              
+                                          <div class="mb-2 text-gray-800 text-start text-sm font-semibold">                              
                                              @if (($notif_instance->type ?? 'N/A') === 'comment')
-                                                <p class="text-gray-800 text-start text-sm font-medium">Comment</p>
+                                                <p class="">Comment</p>
                                              @elseif (($notif_instance->type ?? 'N/A') === 'like')
-                                                <p class="text-gray-800 text-start text-sm font-medium">{{ $like_count > 1 ? $like_count . ' Reactors' : $like_count . ' Reactor' }}</p>
+                                                <p class="">{{ $like_count > 1 ? $like_count . ' Reactors' : $like_count . ' Reactor' }}</p>
                                              @endif
                                           </div>
-                                          <div class="flex items-start rounded-sm {{ in_array(($notif_instance->type ?? ''), ['like', 'comment']) ? 'block' : 'hidden' }}">
+                                          <div class="flex items-start rounded-sm mb-2 {{ in_array(($notif_instance->type ?? ''), ['like', 'comment']) ? 'block' : 'hidden' }}">
                                              <img src="{{ $actor->profile_pic_url ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif' }}" alt="actor_image" class="w-10 h-10 border rounded-full object-contain me-3 text-gray-200 dark:text-gray-700">
                                              <div class="flex flex-col text-start text-sm">
                                                 <div class="{{ $notif_type === 'comment' ? 'bg-gray-100 px-2.5 py-1.5' : ''}} w-fit rounded-xl">                                                
-                                                   <p class="text-gray-800 font-semibold">{{ $actor->name ?? '' }}</p>
+                                                   <p class="text-gray-800 font-medium">{{ $actor->name ?? '' }}</p>
                                                    <p class="text-gray-700 {{ $notif_type === 'like' ? 'block' : 'hidden' }}">
                                                       @if($like_count - 1 > 0)
                                                          and {{ $like_count - 1 }} {{ $like_count - 1 == 1 ? 'other person' : 'others' }} liked your post.
