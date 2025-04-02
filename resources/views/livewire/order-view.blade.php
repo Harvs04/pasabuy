@@ -556,7 +556,7 @@
     <div @keydown.escape.window="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';"
         x-data="{ confirm: '', errors: {} }" x-show="cancelOrderModalOpen" x-transition:enter.duration.25ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
-        <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
+        <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative" @click.outside="cancelOrderModalOpen = false; document.body.style.overflow = 'auto';">
             <div class="flex flex-col items-center gap-2 sm:gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="#ff4545" class="size-12">
@@ -681,40 +681,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
             </button>
-        </div>
-    </div>
-
-
-
-    <!-- UPDATE STATUS MODAL -->
-    <div @keydown.escape.window="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
-        x-show="changeStatusModalOpen" x-transition:enter.duration.25ms
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
-            <div class="flex flex-row items-center gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="#014421" class="size-6 md:size-7">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
-                <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
-                    class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="#000000" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <p class="text-sm mt-2 sm:ml-2">Do you wish to save your changes?</p>
-
-            <div class="mt-5 flex justify-end gap-2">
-                <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
-                    class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                <button x-data="{ disabled: false }" :disabled="disabled"
-                    @click="disabled = true; changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';"
-                    class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
-            </div>
         </div>
     </div>
 
