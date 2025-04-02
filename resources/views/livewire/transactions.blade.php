@@ -117,7 +117,7 @@
                         <button  class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
                            x-bind:disabled="selected.length === 0 || selected.some(id => {
                               const transactionStatuses = {{ json_encode($transactions->pluck('status', 'id')) }};
-                              return transactionStatuses[id] !== 'open' && transactionStatuses[id] !== 'full' || transactionStatuses[id] === 'cancelled';
+                              return transactionStatuses[id] !== 'open' && transactionStatuses[id] !== 'full' && transactionStatuses[id] !== 'ongoing' || transactionStatuses[id] === 'cancelled';
                            })"
                            @click="cancelTransactionModalOpen = true; document.body.style.overflow = 'hidden'; cancelIndeces = selected;"
                         >
