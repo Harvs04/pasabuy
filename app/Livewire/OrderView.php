@@ -76,17 +76,24 @@ class OrderView extends Component
                 if (count($transaction->orders) > 0) {
                     $this->user->pasabuy_points -= 5;
                     $this->user->save();
-                    foreach($transaction->orders as $order) {
-                        $order->item_status = 'Cancelled';
-                        $order->save();
-    
+                    $ordersGroupedByCustomer = $transaction->orders->groupBy('customer_id');
+
+                    foreach ($ordersGroupedByCustomer as $customerId => $orders) {
+                        foreach ($orders as $order) {
+                            if ($order->item_status === 'Pending') {
+                                $order->item_status = 'Cancelled';
+                                $order->save();
+                            }
+                        }
+
+                        // Send only one notification per customer
                         Notification::create([
                             'type' => 'transaction cancelled',
                             'post_id' => $this->t_id,
-                            'order_id' => [$order->id],
+                            'order_id' => $orders->pluck('id')->toArray(),
                             'actor_id' => Auth::user()->id,
-                            'poster_id' => User::where('id', $order->customer_id)->first()->id,
-                            'order_count' => 1
+                            'poster_id' => $customerId,
+                            'order_count' => count($orders)
                         ]);
                     }
                 }

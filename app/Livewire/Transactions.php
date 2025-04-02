@@ -48,7 +48,7 @@ class Transactions extends Component
                         Notification::create([
                             'type' => 'transaction cancelled',
                             'post_id' => $id,
-                            'order_id' => $orders,
+                            'order_id' => $orders->pluck('id')->toArray(),
                             'actor_id' => $this->user->id,
                             'poster_id' => $customerId,
                             'order_count' => count($orders)
