@@ -21,6 +21,12 @@ class OrderItemModal extends Component
     public function addOrder()
     {   
         try {
+            $this->post = Post::where('id', $this->post->id)->firstOrFail();
+            if (count($this->post->orders) + count($this->orders) > $this->post->max_orders) {
+                session()->flash('order_add_error', 'Failed to add order. Please try again later.');
+                return $this->redirect(route('dashboard'), true);
+            }
+
             $user = Auth::user();
             foreach($this->orders as $order) {
                 $newOrder = Order::create([
