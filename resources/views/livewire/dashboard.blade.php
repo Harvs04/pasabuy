@@ -382,23 +382,21 @@
                   <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text-sm sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
-            <div class="px-3 md:px-4 py-3 bg-white border sm:rounded-md">
-               <div class="flex flex-row items-center gap-3 md:gap-4">    
-                  <a href="{{ route('profile', ['name' => $user->name]) }}">
-                     <img class="w-9 md:w-10 h-9 md:h-10 rounded-full object-cover" 
-                           src="{{ $user->profile_pic_url }}" 
-                           alt="user_photo">
-                  </a>
-                  <button 
-                        @click="createPostModalOpen = true; document.body.style.overflow = 'hidden';" 
-                        class="text-gray-600 text-start text-sm px-3 sm:px-4 py-2 border bg-gray-50 rounded-full w-11/12 sm:w-full">
-                        @if ($user->role === 'customer')
-                           Looking for items? Click here.
-                        @else
-                           Making a transaction? Click here.
-                        @endif
-                  </button>
-               </div>
+            <div class="flex items-center gap-3 px-3 py-3 bg-white border sm:rounded-md">  
+               <a href="{{ route('profile', ['name' => $user->name]) }}" class="flex-shrink-0">
+                  <img class="w-9 h-9 md:w-10 md:h-10 object-cover rounded-full border" 
+                        src="{{ $user->profile_pic_url }}" 
+                        alt="user_photo">
+               </a>
+               <button 
+                     @click="createPostModalOpen = true; document.body.style.overflow = 'hidden';" 
+                     class="text-gray-600 text-start text-sm px-3 py-2 border bg-gray-50 rounded-full w-full">
+                     @if ($user->role === 'customer')
+                        Looking for items? Click here.
+                     @else
+                        Making a transaction? Click here.
+                     @endif
+               </button>
             </div>
             <div class="">
                 <!-- POSTS STREAM -->
