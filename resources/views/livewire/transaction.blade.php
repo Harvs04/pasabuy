@@ -4,7 +4,7 @@
         allOrders = {{ json_encode($orders->map(function($order) {
             return [
                 'id' => $order->id,
-                'provider' => strtolower(App\Models\User::where('id', $order->provider_id)->first()->name),
+                'customer' => strtolower(App\Models\User::where('id', $order->customer_id)->first()->name),
                 'order' => strtolower($order->order),
                 'status' => strtolower($order->item_status)
             ];
@@ -190,7 +190,7 @@
                                         allOrders
                                             .filter(order => 
                                                 search === '' || 
-                                                [order.provider, order.order, order.status]
+                                                [order.customer, order.order, order.status]
                                                     .some(value => value.includes(search.toLowerCase()))
                                             )
                                             .map(order => order.id) 
@@ -243,38 +243,36 @@
                                 @endif
                             </td>
                             <td 
-    class="px-1 py-4 align-middle text-center"
-    x-data="{ waitingInfo: false, status: '{{ $order->item_status }}' }">
+                                class="px-1 py-4 align-middle text-center"
+                                x-data="{ waitingInfo: false, status: '{{ $order->item_status }}' }">
 
-    <span class="
-        {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'bg-green-900 text-green-300' : '' }}
-        {{ in_array($order->item_status, ['Pending', 'Waiting']) ? 'bg-yellow-900 text-yellow-300' : '' }}
-        {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
-        {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
-        w-fit text-xs font-medium px-2.5 py-0.5 rounded-full inline-flex text-center relative
-    ">
-    {{ $order->item_status === 'Waiting' ? "Delivered - " . ucwords($order->item_status) : ucwords($order->item_status) }}
+                                <span class="
+                                    {{ in_array($order->item_status, ['Acquired', 'Delivered', 'Rated']) ? 'bg-green-900 text-green-300' : '' }}
+                                    {{ in_array($order->item_status, ['Pending', 'Waiting']) ? 'bg-yellow-900 text-yellow-300' : '' }}
+                                    {{ $order->item_status == 'Unavailable' ? 'bg-gray-800 text-gray-300' : '' }}
+                                    {{ $order->item_status == 'Cancelled' ? 'bg-red-900 text-red-300' : '' }}
+                                    w-fit text-xs font-medium px-2.5 py-0.5 rounded-full inline-flex text-center relative
+                                ">
+                                {{ $order->item_status === 'Waiting' ? "Delivered - " . ucwords($order->item_status) : ucwords($order->item_status) }}
 
-        <!-- Info Icon -->
-        <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true"
-            @mouseleave="waitingInfo = false" xmlns="http://www.w3.org/2000/svg"
-            class="w-3.5 h-3.5 ml-1 cursor-pointer inline-block" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
-        </svg>
+                                    <!-- Info Icon -->
+                                    <svg x-show="status === 'Waiting'" @mouseenter="waitingInfo = true"
+                                        @mouseleave="waitingInfo = false" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-3.5 h-3.5 ml-1 cursor-pointer inline-block" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                    </svg>
 
-        <!-- Tooltip -->
-        <div x-show="waitingInfo && status === 'Waiting'"
-            class="absolute bottom-full mb-1 -right-12 bg-white text-gray-600 p-2 text-xs shadow-lg rounded-md z-10 
-                    whitespace-wrap sm:whitespace-nowrap max-w-max"
-            x-cloak>
-            Waiting for the customer to confirm the delivery.
-        </div>
-    </span>
-</td>
-
-
+                                    <!-- Tooltip -->
+                                    <div x-show="waitingInfo && status === 'Waiting'"
+                                        class="absolute bottom-full mb-1 -right-12 bg-white text-gray-600 p-2 text-xs shadow-lg rounded-md z-10 
+                                                whitespace-wrap sm:whitespace-nowrap max-w-max"
+                                        x-cloak>
+                                        Waiting for the customer to confirm the delivery.
+                                    </div>
+                                </span>
+                            </td>
                             <td class="px-6 py-4 align-middle">
                                 <span class="flex flex-row gap-2 items-center justify-center">
                                     <a href="{{ route('transaction-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
