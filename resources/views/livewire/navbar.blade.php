@@ -152,7 +152,7 @@
                                                 </div>
                                              @endif                  
                                           </div>
-                                          <div class="py-2 flex flex-col border-b mb-2">
+                                          <div class="py-2 flex flex-col {{ in_array(($notif_instance->type ?? ''), ['like', 'comment', 'new item request', 'new transaction', 'converted post']) ? 'border-b' : '' }} mb-2">
                                              <div class="flex items-center justify-center mb-2 bg-gray-100 rounded-sm {{ in_array($notif_instance->type ?? 'N/A', ['like', 'comment', 'new item request', 'new transaction', 'converted post']) ? 'block' : 'hidden' }}">
                                                 <img src="{{ $post_in_notif->item_image ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png' }}" alt="post_image" class="w-1/3 object-cover">                                                                                             
                                              </div>
@@ -440,19 +440,21 @@
                                                             
                                                             <!-- Actions -->
                                                             <div class="flex flex-col text-sm sm:flex-row sm:justify-between gap-3">
-                                                               <a href="{{ route('message.view', ['convo_id' => $convo_id]) }}" class="w-full py-2 px-4 bg-white border border-gray-300 rounded-md text-gray-700 text-center font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
-                                                                  {{ $user->role === 'provider' ? 'Contact Customer' : 'Contact Provider'}}
-                                                               </a>
+                                                               @if (in_array(($notif_instance->type ?? ''), ['cancelled order', 'transaction cancelled', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))
+                                                                  <a href="{{ route('message.view', ['convo_id' => $convo_id ]) }}" class="w-full py-2 px-4 bg-white border border-gray-300 rounded-md text-gray-700 text-center font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
+                                                                     {{ $user->role === 'provider' ? 'Contact Customer' : 'Contact Provider'}}
+                                                                  </a>
+                                                               @endif
                                                                @if (($notif_instance->order_count ?? '') == 1)                                                               
-                                                               <a href="{{ $user->role === 'customer' ? route('my-orders-order.view', ['transaction_id' => $notif_instance->post_id, 'order_id' => $notif_instance->order_id[0] ]) : route('transaction-order.view', ['transaction_id' => $notif_instance->post_id, 'order_id' => $notif_instance->order_id[0] ]) }}" class="w-full text-center py-2 px-4 bg-gray-500 border border-transparent rounded-md text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
+                                                               <a href="{{ $user->role === 'customer' ? route('my-orders-order.view', ['transaction_id' => $notif_instance->post_id, 'order_id' => $notif_instance->order_id[0] ]) : route('transaction-order.view', ['transaction_id' => $notif_instance->post_id, 'order_id' => $notif_instance->order_id[0] ]) }}" class="w-full ml-auto text-center py-2 px-4 bg-gray-500 border border-transparent rounded-md text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
                                                                   View Order Details
                                                                </a>
                                                                @else
-                                                               <a href="{{ $user->role === 'customer' ? route('my-orders.view', ['id' => $notif_instance->post_id]) : route('transaction.view', ['id' => $notif_instance->post_id]) }}" class="w-full text-center py-2 px-4 bg-gray-500 border border-transparent rounded-md text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
+                                                               <a href="{{ $user->role === 'customer' ? route('my-orders.view', ['id' => $notif_instance->post_id]) : route('transaction.view', ['id' => $notif_instance->post_id]) }}" class="w-full ml-auto text-center py-2 px-4 bg-gray-500 border border-transparent rounded-md text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
                                                                   View Order Details
                                                                </a>
                                                                @endif
-                                                            </div>
+                                                            </div>    
                                                       </div>                                                                                           
                                                    </div>
                                                 @endif
