@@ -65,16 +65,7 @@ class OrderItemModal extends Component
                     ]);
                 }
             }
-
-            $transaction = Post::where('id', $this->post->id)->firstOrFail();
-            // $transaction->order_count += count($this->orders);
-
-            if (count($transaction->orders) === $transaction->max_orders) {
-                $transaction->status = 'full';
-            }
-
-            $transaction->save();
-
+            
             // make a notification
             Notification::create([
                 'type' => 'new order',
