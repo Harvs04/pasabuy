@@ -71,7 +71,9 @@ class Navbar extends Component
         $this->like_count = LikePost::where('post_id', $this->post_in_notif->id)->get()->count();
 
         if (!in_array($this->notif_type, ['like', 'comment', 'new item request', 'new transaction', 'converted post'])) {
-            $this->convo_id = Conversation::where('provider_id', $this->order->provider_id)->where('customer_id', $this->order->customer_id)->first()->id;
+            if ($this->notif_instance->actor_id !== $this->notif_instance->poster_id) {        
+                $this->convo_id = Conversation::where('provider_id', $this->order->provider_id)->where('customer_id', $this->order->customer_id)->first()->id;
+            }
         }
     }
     
