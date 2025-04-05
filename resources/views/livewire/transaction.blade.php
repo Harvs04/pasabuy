@@ -116,7 +116,7 @@
         style="margin-top: 4.3rem;">
         <div class="p-4 w-full">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ f_customer: '', f_order: '', f_pstatus: '', f_ostatus: '' }">
                     <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                         <div class="flex flex-row gap-2 items-center">
                             <a href="{{ route('transactions') }}"
@@ -199,48 +199,80 @@
                                 ">
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
-                                <div class="flex items-center justify-center gap-1">
+                                <div class="flex items-start justify-center gap-1">
                                 <p>
                                     Customer
                                 </p>
-                                <button>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                <button @click="f_customer = f_customer === '' ? 'asc' : (f_customer === 'asc' ? 'desc' : f_customer === 'desc' ? 'asc' : '')">
+                                    <svg x-show="f_customer === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_customer === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_customer === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                     </svg>
                                 </button>
                             </div>
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
-                                <div class="flex items-center justify-center gap-1">
+                                <div class="flex items-start justify-center gap-1">
                                 <p>
                                     Order
                                 </p>
-                                <button>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                <button @click="f_order = f_order === '' ? 'asc' : (f_order === 'asc' ? 'desc' : f_order === 'desc' ? 'asc' : '')">
+                                    <svg x-show="f_order === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_order === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_order === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                     </svg>
                                 </button>
                             </div>
                             </th>
                             <th scope="col" class="px-1 py-0 text-center">
-                                <div class="flex items-center justify-center gap-1">
+                                <div class="flex items-start justify-center gap-1">
                                 <p>
                                     Payment status
                                 </p>
-                                <button>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                <button @click="f_pstatus = f_pstatus === '' ? 'asc' : (f_pstatus === 'asc' ? 'desc' : f_pstatus === 'desc' ? 'asc' : '')">
+                                    <svg x-show="f_pstatus === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_pstatus === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_pstatus === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                     </svg>
                                 </button>
                             </div>
                             <th scope="col" class="px-1 py-0 text-center">
-                                <div class="flex items-center justify-center gap-1">
+                                <div class="flex items-start justify-center gap-1">
                                 <p>
                                     Order status
                                 </p>
-                                <button>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                <button @click="f_ostatus = f_ostatus === '' ? 'asc' : (f_ostatus === 'asc' ? 'desc' : f_ostatus === 'desc' ? 'asc' : '')">
+                                    <svg x-show="f_ostatus === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_ostatus === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_ostatus === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                     </svg>
                                 </button>
                             </div>

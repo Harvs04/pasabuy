@@ -46,7 +46,7 @@
     <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;":class="{'lg:ml-64 xl:ml-96': openBurger, 'md:ml-0': !openBurger}">
       <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" >
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ f_status: '', f_provider: '', f_itemname: '', f_itemorigin: '', f_ordercount: '', f_meetupplace: '' }">
                <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                   <p class="text-lg mid:text-xl font-semibold">
                      List of transactions containing your orders:
@@ -68,61 +68,121 @@
                <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-b">
                      <tr>
                         <th scope="col" class="px-6 py-3 text-center">
-                           <div class="flex items-center justify-center gap-1">
+                           <div class="flex items-start justify-center gap-1">
                               <p>
                                  Transaction status
                               </p>
-                              <button>
-                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                              <button @click="f_status = f_status === '' ? 'asc' : (f_status === 'asc' ? 'desc' : f_status === 'desc' ? 'asc' : '')">
+                                 <svg x-show="f_status === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                                 <!-- UP -->
+                                 <svg x-show="f_status === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                 </svg>
+                                 <!-- DOWN -->
+                                 <svg x-show="f_status === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                  </svg>
                               </button>
                            </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           <div class="flex items-center justify-center gap-1">
+                           <div class="flex items-start justify-center gap-1">
+                              <p>
+                                 Provider
+                              </p>
+                              <button @click="f_provider = f_provider === '' ? 'asc' : (f_provider === 'asc' ? 'desc' : f_provider === 'desc' ? 'asc' : '')">
+                                 <svg x-show="f_provider === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                                 <!-- UP -->
+                                 <svg x-show="f_provider === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                 </svg>
+                                 <!-- DOWN -->
+                                 <svg x-show="f_provider === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                 </svg>
+                              </button>
+                           </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                           <div class="flex items-start justify-center gap-1">
                               <p>
                                  Item name
                               </p>
-                              <button>
-                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                              <button @click="f_itemname = f_itemname === '' ? 'asc' : (f_itemname === 'asc' ? 'desc' : f_itemname === 'desc' ? 'asc' : '')">
+                                 <svg x-show="f_itemname === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                                 <!-- UP -->
+                                 <svg x-show="f_itemname === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                 </svg>
+                                 <!-- DOWN -->
+                                 <svg x-show="f_itemname === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                  </svg>
                               </button>
                            </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           <div class="flex items-center justify-center gap-1">
+                           <div class="flex items-start justify-center gap-1">
                               <p>
                                  Item origin
                               </p>
-                              <button>
-                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                              <button @click="f_itemorigin = f_itemorigin === '' ? 'asc' : (f_itemorigin === 'asc' ? 'desc' : f_itemorigin === 'desc' ? 'asc' : '')">
+                                 <svg x-show="f_itemorigin === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                                 <!-- UP -->
+                                 <svg x-show="f_itemorigin === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                 </svg>
+                                 <!-- DOWN -->
+                                 <svg x-show="f_itemorigin === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                  </svg>
                               </button>
                            </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           <div class="flex items-center justify-center gap-1">
+                           <div class="flex items-start justify-center gap-1">
                               <p>
                                  Order count
                               </p>
-                              <button>
-                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                              <button @click="f_ordercount = f_ordercount === '' ? 'asc' : (f_ordercount === 'asc' ? 'desc' : f_ordercount === 'desc' ? 'asc' : '')">
+                                 <svg x-show="f_ordercount === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                                 <!-- UP -->
+                                 <svg x-show="f_ordercount === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                 </svg>
+                                 <!-- DOWN -->
+                                 <svg x-show="f_ordercount === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                  </svg>
                               </button>
                            </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           <div class="flex items-center justify-center gap-1">
+                           <div class="flex items-start justify-center gap-1">
                               <p>
                                  Meetup place
                               </p>
-                              <button>
-                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                              <button @click="f_meetupplace = f_meetupplace === '' ? 'asc' : (f_meetupplace === 'asc' ? 'desc' : f_meetupplace === 'desc' ? 'asc' : '')">
+                                 <svg x-show="f_meetupplace === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                                 <!-- UP -->
+                                 <svg x-show="f_meetupplace === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                 </svg>
+                                 <!-- DOWN -->
+                                 <svg x-show="f_meetupplace === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                  </svg>
                               </button>
                            </div>
@@ -156,6 +216,9 @@
    
                            </th>
                            <td class="px-6 py-4 text-center">
+                                 {{ App\Models\User::where('id', $transaction->user_id)->first()->name }}
+                           </td>
+                           <td class="px-6 py-4 text-center">
                                  {{ $transaction->item_name }}
                            </td>
                            <td class="px-6 py-4 text-center">
@@ -183,7 +246,7 @@
                         </tr>
                      @empty
                            <tr>
-                                 <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                 <td colspan="7" class="px-6 py-4 text-center text-gray-500">
                                     No transactions yet.
                                  </td>
                            </tr>

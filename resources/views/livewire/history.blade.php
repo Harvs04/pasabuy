@@ -101,7 +101,7 @@
                               @endif
                            </td>
                            <td class="px-6 py-4 text-center">
-                              <div class="flex items-center justify-center gap-1 w-fit mx-auto
+                              <div class="flex items-start justify-center gap-1 w-fit mx-auto
                                  {{ $order->item_status === 'Delivered' ? 'bg-green-900 text-green-300' : '' }}
                                  {{ $order->item_status === 'Rated' ? 'bg-yellow-700 text-yellow-300' : '' }}
                                  {{ in_array($order->item_status, ['Cancelled', 'Unavailable']) ? 'bg-red-900 text-red-300' : '' }}
