@@ -41,7 +41,7 @@ class TransactionOrder extends Component
                 Notification::create([
                     'type' => 'item bought',
                     'post_id' => $this->order->post_id,
-                    'order_id' => $this->order->id,
+                    'order_id' => [$this->order->id],
                     'actor_id' => $this->order->provider_id,
                     'poster_id' => $this->order->customer_id,
                     'order_count' => 1
