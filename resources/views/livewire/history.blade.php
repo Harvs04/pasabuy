@@ -54,7 +54,7 @@
                      </div>
                   </div>
                </caption>
-               <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-50 border-y">
+               <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-y">
                      <tr>
                         <th scope="col" class="px-6 py-3 text-center">
                            Order

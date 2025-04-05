@@ -507,7 +507,7 @@
                         
                         <!-- Remarks Section -->
                         <div class="mb-3">
-                            <h4 class="text-sm font-medium text-gray-600 mb-1"><i>Customer Remarks:</i></h4>
+                            <h4 class="text-sm font-medium text-gray-600 mb-1"><i>{{ $user->role === 'customer' ? 'Your Remarks' : 'Customer Remarks:'}}</i></h4>
                             @if(empty($rating_instance->remarks))
                                 <p class="text-gray-500 italic">No remarks provided</p>
                             @else
