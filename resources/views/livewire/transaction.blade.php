@@ -6,7 +6,8 @@
                 'id' => $order->id,
                 'customer' => strtolower(App\Models\User::where('id', $order->customer_id)->first()->name),
                 'order' => strtolower($order->order),
-                'status' => strtolower($order->item_status)
+                'status' => strtolower($order->item_status),
+                'is_paid' => $order->is_paid == 1 ? 'paid' : 'pending'
             ];
         })) }}
     "
@@ -190,7 +191,7 @@
                                         allOrders
                                             .filter(order => 
                                                 search === '' || 
-                                                [order.customer, order.order, order.status]
+                                                [order.customer, order.order, order.status, order.is_paid]
                                                     .some(value => value.includes(search.toLowerCase()))
                                             )
                                             .map(order => order.id) 
@@ -198,15 +199,51 @@
                                 ">
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
-                                Customer name
+                                <div class="flex items-center justify-center gap-1">
+                                <p>
+                                    Customer
+                                </p>
+                                <button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                </button>
+                            </div>
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
-                                Order
+                                <div class="flex items-center justify-center gap-1">
+                                <p>
+                                    Order
+                                </p>
+                                <button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                </button>
+                            </div>
                             </th>
                             <th scope="col" class="px-1 py-0 text-center">
-                                Payment status
+                                <div class="flex items-center justify-center gap-1">
+                                <p>
+                                    Payment status
+                                </p>
+                                <button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                </button>
+                            </div>
                             <th scope="col" class="px-1 py-0 text-center">
-                                Order status
+                                <div class="flex items-center justify-center gap-1">
+                                <p>
+                                    Order status
+                                </p>
+                                <button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                </button>
+                            </div>
                             </th>
                             <th scope="col" class="px-6 py-4 text-center">
                                 <span class="">Action</span>
@@ -220,6 +257,7 @@
                                 ['{{ strtolower(App\Models\User::where("id", $order->customer_id)->first()->name) }}',
                                 '{{ strtolower($order->order) }}', 
                                 '{{ strtolower($order->item_status) }}',
+                                '{{ $order->is_paid == 1 ? 'paid' : 'pending' }}'
                                 ].some(value => value.includes(search.toLowerCase()))
                             "    
                         >

@@ -6,7 +6,8 @@
             'id' => $order->id,
             'provider' => strtolower(App\Models\User::where('id', $order->provider_id)->first()->name),
             'order' => strtolower($order->order),
-            'status' => strtolower($order->item_status)
+            'status' => strtolower($order->item_status),
+            'is_paid' => $order->is_paid == 1 ? 'Paid' : 'Pending',
         ];
     })) }}
 "
@@ -158,7 +159,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="text" id="search-filter-list-orders" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search names, orders, and status...">
+                                <input type="text" id="search-filter-list-orders" @input="change = true" x-model="search" class="block w-full p-2 ps-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:border-[#014421]" placeholder="Search orders, status, etc..." required>
                             </div>
                             <div class="inline-block h-[35px] w-[0.5px] self-stretch bg-gray-200"></div>
                             <div class="flex items-center gap-2 h-fit text-gray-700">
@@ -201,7 +202,7 @@
                                         allOrders
                                             .filter(order => 
                                                 search === '' || 
-                                                [order.provider, order.order, order.status]
+                                                [order.provider, order.order, order.status, order.is_paid]
                                                     .some(value => value.includes(search.toLowerCase()))
                                             )
                                             .map(order => order.id) 
@@ -209,13 +210,51 @@
                                 ">
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
-                                Order
+                                <div class="flex items-center justify-center gap-1">
+                                    <p>
+                                        Order
+                                    </p>
+                                    <button>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </th>
                             <th scope="col" class="px-1 py-0 text-center">
-                                Payment status
+                                <div class="flex items-center justify-center gap-1">
+                                    <p>
+                                        Payment status
+                                    </p>
+                                    <button>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                        </svg>
+                                    </button>
+                                </div>
                             <th scope="col" class="px-1 py-0 text-center">
-                                Order status
+                                <div class="flex items-center justify-center gap-1">
+                                    <p>
+                                        Order status
+                                    </p>
+                                    <button>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </th>
+                            <th scope="col" class="px-1 py-0 text-center">
+                                <div class="flex items-center justify-center gap-1">
+                                <p>
+                                    Other notes
+                                </p>
+                                <button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                </button>
+                            </div>
                             <th scope="col" class="px-6 py-4 text-center">
                                 <span class="">Action</span>
                             </th>
@@ -228,6 +267,7 @@
                                 ['{{ strtolower(App\Models\User::where("id", $order->provider_id)->first()->name) }}',
                                 '{{ strtolower($order->order) }}', 
                                 '{{ strtolower($order->item_status) }}',
+                                '{{ $order->is_paid == 1 ? 'paid' : 'pending' }}'
                                 ].some(value => value.includes(search.toLowerCase()))
                             "    
                         >
@@ -278,6 +318,9 @@
                                     </div>
                                 </span>
                             </td>
+                            <td class="px-1 py-4 text-center">
+                                <p>{{ $order->notes ? $order->notes : 'N/A' }}</p>
+                            </td>
                             <td class="px-6 py-4 align-middle">
                                 <span class="flex flex-row gap-4 items-center justify-center">
                                     <a href="{{ route('my-orders-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
@@ -300,7 +343,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                                 No orders yet.
                             </td>
                         </tr>
@@ -349,6 +392,15 @@
                                 Transaction status:
                             </span>
                             <p class="text-gray-600 font-normal break-words">{{ ucwords($transaction->status) }}</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 flex-shrink-0">
+                                <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="font-medium whitespace-nowrap">
+                                Provider:
+                            </span>
+                            <p class="text-gray-600 font-normal break-words">{{ ucwords(App\Models\User::where('id', $transaction->user_id)->first()->name) }}</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-2 text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
