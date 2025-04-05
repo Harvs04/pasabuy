@@ -68,19 +68,64 @@
                <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-b">
                      <tr>
                         <th scope="col" class="px-6 py-3 text-center">
-                           Transaction status
+                           <div class="flex items-center justify-center gap-1">
+                              <p>
+                                 Transaction status
+                              </p>
+                              <button>
+                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                              </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           Item name
+                           <div class="flex items-center justify-center gap-1">
+                              <p>
+                                 Item name
+                              </p>
+                              <button>
+                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                              </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           Item origin
+                           <div class="flex items-center justify-center gap-1">
+                              <p>
+                                 Item origin
+                              </p>
+                              <button>
+                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                              </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           Order count
+                           <div class="flex items-center justify-center gap-1">
+                              <p>
+                                 Order count
+                              </p>
+                              <button>
+                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                              </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           Meetup place
+                           <div class="flex items-center justify-center gap-1">
+                              <p>
+                                 Meetup place
+                              </p>
+                              <button>
+                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                 </svg>
+                              </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
                            <span class="">Action</span>
@@ -94,6 +139,7 @@
                                 ['{{ strtolower($transaction->item_name) }}',
                                 '{{ strtolower($transaction->meetup_place) }}', 
                                 '{{ strtolower($transaction->item_origin) }}',
+                                '{{ strtolower(string: $transaction->status) }}'
                                 ].some(value => value.includes(search.toLowerCase()))
                             "  
                         >

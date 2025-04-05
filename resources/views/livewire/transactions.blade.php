@@ -171,6 +171,7 @@
                                 ['{{ strtolower($transaction->item_name) }}',
                                 '{{ strtolower($transaction->status) }}', 
                                 '{{ strtolower($transaction->item_origin) }}',
+                                '{{ strtolower($transaction->meetup_place) }}',
                                 ].some(value => value.includes(search.toLowerCase()))
                             "    
                         >
