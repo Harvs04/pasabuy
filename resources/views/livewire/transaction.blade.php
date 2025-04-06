@@ -116,7 +116,7 @@
         style="margin-top: 4.3rem;">
         <div class="p-4 w-full">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ f_customer: '', f_order: '', f_pstatus: '', f_ostatus: '' }">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ f_customer: $wire.entangle('f_customer'), f_order: $wire.entangle('f_order'), f_pstatus: $wire.entangle('f_pstatus'), f_ostatus: $wire.entangle('f_ostatus'),  f_notes: $wire.entangle('f_notes') }">
                     <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                         <div class="flex flex-row gap-2 items-center">
                             <a href="{{ route('transactions') }}"
@@ -203,7 +203,7 @@
                                 <p>
                                     Customer
                                 </p>
-                                <button @click="f_customer = f_customer === '' ? 'asc' : (f_customer === 'asc' ? 'desc' : f_customer === 'desc' ? 'asc' : '')">
+                                <button @click="$wire.set('f_customer', $wire.f_customer === '' ? 'asc' : $wire.f_customer === 'asc' ? 'desc' : 'asc'); f_order = ''; f_pstatus = ''; f_ostatus = ''; f_notes = ''">
                                     <svg x-show="f_customer === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                     </svg>
@@ -223,7 +223,7 @@
                                 <p>
                                     Order
                                 </p>
-                                <button @click="f_order = f_order === '' ? 'asc' : (f_order === 'asc' ? 'desc' : f_order === 'desc' ? 'asc' : '')">
+                                <button @click="$wire.set('f_order', $wire.f_order === '' ? 'asc' : $wire.f_order === 'asc' ? 'desc' : 'asc'); f_customer = ''; f_pstatus = ''; f_ostatus = ''; f_notes = ''">
                                     <svg x-show="f_order === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                     </svg>
@@ -243,7 +243,7 @@
                                 <p>
                                     Payment status
                                 </p>
-                                <button @click="f_pstatus = f_pstatus === '' ? 'asc' : (f_pstatus === 'asc' ? 'desc' : f_pstatus === 'desc' ? 'asc' : '')">
+                                <button @click="$wire.set('f_pstatus', $wire.f_pstatus === '' ? 'asc' : $wire.f_pstatus === 'asc' ? 'desc' : 'asc'); f_order = ''; f_customer = ''; f_ostatus = ''; f_notes = ''">
                                     <svg x-show="f_pstatus === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                     </svg>
@@ -262,7 +262,7 @@
                                 <p>
                                     Order status
                                 </p>
-                                <button @click="f_ostatus = f_ostatus === '' ? 'asc' : (f_ostatus === 'asc' ? 'desc' : f_ostatus === 'desc' ? 'asc' : '')">
+                                <button @click="$wire.set('f_ostatus', $wire.f_ostatus === '' ? 'asc' : $wire.f_ostatus === 'asc' ? 'desc' : 'asc'); f_order = ''; f_pstatus = ''; f_customer = ''; f_notes = ''">
                                     <svg x-show="f_ostatus === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                     </svg>
@@ -277,12 +277,32 @@
                                 </button>
                             </div>
                             </th>
+                            <th scope="col" class="px-1 py-0 text-center">
+                                <div class="flex items-start justify-center gap-1">
+                                <p>
+                                    Other notes
+                                </p>
+                                <button @click="$wire.set('f_notes', $wire.f_notes === '' ? 'asc' : $wire.f_notes === 'asc' ? 'desc' : 'asc'); f_order = ''; f_pstatus = ''; f_ostatus = ''; f_customer = ''">
+                                    <svg x-show="f_notes === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_notes === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_notes === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </button>
+                            </div>
+                            </th>
                             <th scope="col" class="px-6 py-4 text-center">
                                 <span class="">Action</span>
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody wire:loading.class="hidden">
                         @forelse ($orders as $order)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
                             x-show="search === '' || 
@@ -343,6 +363,9 @@
                                     </div>
                                 </span>
                             </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ $order->additional_notes ? $order->additional_notes : '---'}}
+                            </td>
                             <td class="px-6 py-4 align-middle">
                                 <span class="flex flex-row gap-2 items-center justify-center">
                                     <a href="{{ route('transaction-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
@@ -365,7 +388,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">
                                 No orders yet.
                             </td>
                         </tr>

@@ -9,12 +9,21 @@ use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
-class Transaction extends Component
+
+ class Transaction extends Component
 {
     use WithPagination;
     public $id;
     public $user;
+
+    // sorting table
+    public $f_customer = '';
+    public $f_order = ''; 
+    public $f_pstatus = ''; 
+    public $f_ostatus = ''; 
+    public  $f_notes = '';
 
     public function __construct()
     {
@@ -204,7 +213,33 @@ class Transaction extends Component
     public function render()
     {  
         $transaction = Post::where('id', $this->id)->first();
-        $orders = Order::where('post_id', $transaction->id)->orderByDesc('created_at')->paginate(10);
+
+        // Using a subquery approach
+        $orders = Order::where('post_id', $transaction->id);
+
+        // Apply the sorting
+        if (!empty($this->f_customer)) {
+            $orders = $orders->join('users', 'orders.customer_id', '=', 'users.id')
+            ->orderBy('users.name', $this->f_customer)
+            ->select('orders.*'); 
+
+        } elseif (!empty($this->f_order)) {
+            $orders = $orders->orderBy('order', $this->f_order);
+
+        } elseif (!empty($this->f_pstatus)) {
+            $orders = $orders->orderBy('is_paid', $this->f_pstatus);
+
+        } elseif (!empty($this->f_ostatus)) {
+            $orders = $orders->orderBy('item_status', $this->f_ostatus);
+
+        } elseif (!empty($this->f_notes)) {
+            $orders = $orders->orderBy('additional_notes', $this->f_notes);
+
+        }
+
+        // Execute the query
+        $orders = $orders->get();
+
         return view('livewire.transaction', ['transaction' => $transaction, 'orders' => $orders]);
     }
 }
