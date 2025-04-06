@@ -18,6 +18,12 @@ class OrderList extends Component
     public $star_rating = 0;
     public $remarks = '';
 
+    // sorting table
+    public $f_order = '';
+    public $f_pstatus = '';
+    public $f_tstatus = '';
+    public $f_notes = '';
+
     public function __construct()
     {
         $this->user = User::where('id', Auth::user()->id)->first();
@@ -168,7 +174,27 @@ class OrderList extends Component
     public function render()
     {
         $transaction = Post::where('id', $this->id)->first();
-        $orders = Order::where('post_id', $transaction->id)->where('customer_id', $this->user->id)->orderByDesc('created_at')->paginate(10);
+        
+        $orders = Order::where('post_id', $transaction->id)
+            ->where('customer_id', $this->user->id);
+
+        if (!empty($this->f_order)) {
+            $orders = $orders->orderBy('order', $this->f_order);
+        }
+
+        if (!empty($this->f_pstatus)) {
+            $orders = $orders->orderBy('is_paid', $this->f_pstatus);
+        }
+
+        if (!empty($this->f_tstatus)) {
+            $orders = $orders->orderBy('item_status', $this->f_tstatus);
+        }
+
+        if (!empty($this->f_notes)) {
+            $orders = $orders->orderBy('additional_notes', $this->f_notes);
+        }
+
+        $orders = $orders->get();
         return view('livewire.order-list', ['transaction' => $transaction, 'orders' => $orders]);
     }
 }
