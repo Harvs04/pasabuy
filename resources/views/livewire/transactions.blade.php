@@ -82,7 +82,7 @@
    <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;":class="{'lg:ml-64 xl:ml-96': openBurger, 'md:ml-0': !openBurger}">
       <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ f_tstatus: '', f_itemname: '', f_itemorigin: '', f_ordercount: '', f_meetupplace: '' }">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ f_tstatus: $wire.entangle('f_tstatus'), f_itemname: $wire.entangle('f_itemname'), f_itemorigin: $wire.entangle('f_itemorigin'), f_ordercount: $wire.entangle('f_ordercount'), f_meetupplace: $wire.entangle('f_meetupplace') }">
                <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                   <p class="text-lg mid:text-xl font-semibold">
                      Your transactions
@@ -149,7 +149,7 @@
                               <p>
                                  Transaction status
                               </p>
-                              <button @click="f_tstatus = f_tstatus === '' ? 'asc' : (f_tstatus === 'asc' ? 'desc' : f_tstatus === 'desc' ? 'asc' : '')">
+                              <button @click="$wire.set('f_tstatus', $wire.f_tstatus === '' ? 'asc' : $wire.f_tstatus === 'asc' ? 'desc' : 'asc'); f_itemname = ''; f_itemorigin = ''; f_ordercount = ''; f_meetupplace = ''">
                                  <svg x-show="f_tstatus === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                  </svg>
@@ -169,7 +169,7 @@
                               <p>
                                  Item name
                               </p>
-                              <button @click="f_itemname = f_itemname === '' ? 'asc' : (f_itemname === 'asc' ? 'desc' : f_itemname === 'desc' ? 'asc' : '')">
+                              <button @click="$wire.set('f_itemname', $wire.f_itemname === '' ? 'asc' : $wire.f_itemname === 'asc' ? 'desc' : 'asc'); f_tstatus = ''; f_itemorigin = ''; f_ordercount = ''; f_meetupplace = ''">
                                  <svg x-show="f_itemname === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                  </svg>
@@ -189,7 +189,7 @@
                               <p>
                                  Item origin
                               </p>
-                              <button @click="f_itemorigin = f_itemorigin === '' ? 'asc' : (f_itemorigin === 'asc' ? 'desc' : f_itemorigin === 'desc' ? 'asc' : '')">
+                              <button @click="$wire.set('f_itemorigin', $wire.f_itemorigin === '' ? 'asc' : $wire.f_itemorigin === 'asc' ? 'desc' : 'asc'); f_itemname = ''; f_tstatus = ''; f_ordercount = ''; f_meetupplace = ''">
                                  <svg x-show="f_itemorigin === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                  </svg>
@@ -209,7 +209,7 @@
                               <p>
                                  Order count
                               </p>
-                              <button @click="f_ordercount = f_ordercount === '' ? 'asc' : (f_ordercount === 'asc' ? 'desc' : f_ordercount === 'desc' ? 'asc' : '')">
+                              <button @click="$wire.set('f_ordercount', $wire.f_ordercount === '' ? 'asc' : $wire.f_ordercount === 'asc' ? 'desc' : 'asc'); f_itemname = ''; f_itemorigin = ''; f_tstatus = ''; f_meetupplace = ''">
                                  <svg x-show="f_ordercount === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                  </svg>
@@ -229,7 +229,7 @@
                               <p>
                                  Meetup place
                               </p>
-                              <button @click="f_meetupplace = f_meetupplace === '' ? 'asc' : (f_meetupplace === 'asc' ? 'desc' : f_meetupplace === 'desc' ? 'asc' : '')">
+                              <button @click="$wire.set('f_meetupplace', $wire.f_meetupplace === '' ? 'asc' : $wire.f_meetupplace === 'asc' ? 'desc' : 'asc'); f_itemname = ''; f_itemorigin = ''; f_ordercount = ''; f_tstatus = ''">
                                  <svg x-show="f_meetupplace === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                  </svg>
@@ -249,7 +249,7 @@
                         </th>
                      </tr>
                </thead>
-               <tbody>
+               <tbody wire:loading.class="hidden">
                      @forelse ($transactions as $transaction)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
                            x-show="search === '' || 

@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Post;
 use App\Models\Notification;
-use App\Models\User;
 use Livewire\WithPagination;
 
 class Transactions extends Component
@@ -14,6 +13,13 @@ class Transactions extends Component
 
     use WithPagination;
     public $user;
+    
+    public $f_tstatus = '';
+    // sorting table
+    public $f_itemname = ''; 
+    public $f_itemorigin = ''; 
+    public $f_ordercount = ''; 
+    public $f_meetupplace = '';
 
     public function updateTransaction($ids, $type) 
     {
@@ -73,7 +79,29 @@ class Transactions extends Component
     public function render()
     {
         $this->user = Auth::user();
-        $transactions = Post::where('user_id', $this->user->id)->where('type', 'transaction')->orderByDesc('created_at')->get();
+        $transactions = Post::where('user_id', $this->user->id)->where('type', 'transaction');
+
+        // Apply filters if they are set
+        if ($this->f_tstatus) {
+            $transactions = $transactions->orderBy('status', $this->f_tstatus);
+
+        } elseif (!empty($this->f_itemname)) {
+            $transactions = $transactions->orderBy('item_name', $this->f_itemname);
+            
+
+        } elseif (!empty($this->f_itemorigin)) {
+            $transactions = $transactions->orderBy('item_origin', $this->f_itemorigin);
+
+        } elseif (!empty($this->f_ordercount)) {
+            $transactions = $transactions->withCount('orders')
+            ->orderBy('orders_count', $this->f_ordercount);
+
+        } elseif (!empty($this->f_meetupplace)) {
+            $transactions = $transactions->orderBy('meetup_place', $this->f_meetupplace);
+
+        }
+
+        $transactions = $transactions->get();
         return view('livewire.transactions', ['user' => $this->user, 'transactions' => $transactions]);
     }
 }
