@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->enum('type', ['like' ,'comment', 'new order', 'new item request', 'new transaction', 'cancelled order', 'converted post', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable', 'transaction cancelled']);
+            $table->enum('type', ['like' ,'comment', 'new order', 'new item request', 'new transaction', 'cancelled order', 'converted post', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable', 'transaction started', 'transaction cancelled']);
             $table->uuid('post_id');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->json('order_id')->nullable();
