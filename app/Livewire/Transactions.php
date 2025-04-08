@@ -34,6 +34,24 @@ class Transactions extends Component
                 $transaction->status = $type;
                 $transaction->save();
 
+                $ordersGroupedByCustomer = $transaction->orders->groupBy('customer_id');
+                foreach ($ordersGroupedByCustomer as $customerId => $orders) {
+                    foreach ($orders as $order) {
+                        $order->item_status = 'Pending';
+                        $order->save();
+                    }
+
+                    // Send only one notification per customer
+                    Notification::create([
+                        'type' => 'transaction started',
+                        'post_id' => $id,
+                        'order_id' => $orders->pluck('id')->toArray(),
+                        'actor_id' => $this->user->id,
+                        'poster_id' => $customerId,
+                        'order_count' => count($orders)
+                    ]);
+                }
+
                 if (count($transaction->orders) > 0 && $type === 'cancelled') {
 
                     if ($transaction->status === 'ongoing') {

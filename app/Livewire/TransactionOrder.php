@@ -87,35 +87,45 @@ class TransactionOrder extends Component
             $transaction->status = $type;
             $transaction->save();
 
-            if ($type === 'cancelled') {
+            $ordersGroupedByCustomer = $transaction->orders->groupBy('customer_id');
 
-                $this->user->cancelled_transactions += 1;
-
-                if (count($transaction->orders) > 0) {
-                    $this->user->pasabuy_points -= 5;
-                    $this->user->save();
-
-                    $ordersGroupedByCustomer = $transaction->orders->groupBy('customer_id');
-
-                    foreach ($ordersGroupedByCustomer as $customerId => $orders) {
-                        foreach ($orders as $order) {
-                            if ($order->item_status === 'Pending') {
-                                $order->item_status = 'Cancelled';
-                                $order->save();
-                            }
-                        }
-
-                        // Send only one notification per customer
-                        Notification::create([
-                            'type' => 'transaction cancelled',
-                            'post_id' => $this->t_id,
-                            'order_id' => $orders->pluck('id')->toArray(),
-                            'actor_id' => Auth::user()->id,
-                            'poster_id' => $customerId,
-                            'order_count' => count($orders)
-                        ]);
+            foreach ($ordersGroupedByCustomer as $customerId => $orders) {
+                foreach ($orders as $order) {
+                    if ($type === 'cancelled' && $order->item_status === 'Pending') {
+                        $order->item_status = 'Cancelled';                        
+                    } else if ($type === 'ongoing') {
+                        $order->item_status = 'Pending';                        
                     }
+                    $order->save();
                 }
+
+                if ($type === 'cancelled') {
+                    // Send only one notification per customer
+                    Notification::create([
+                        'type' => 'transaction cancelled',
+                        'post_id' => $this->t_id,
+                        'order_id' => $orders->pluck('id')->toArray(),
+                        'actor_id' => Auth::user()->id,
+                        'poster_id' => $customerId,
+                        'order_count' => count($orders)
+                    ]);
+                } else if ($type === 'ongoing') {
+                    // Send only one notification per customer
+                    Notification::create([
+                        'type' => 'transaction started',
+                        'post_id' => $this->t_id,
+                        'order_id' => $orders->pluck('id')->toArray(),
+                        'actor_id' => Auth::user()->id,
+                        'poster_id' => $customerId,
+                        'order_count' => count($orders)
+                    ]);
+                }
+            }
+
+            if ($type === 'cancelled') {
+                $this->user->cancelled_transactions += 1;
+                $this->user->pasabuy_points -= 5;
+                $this->user->save();
             }
 
             session()->flash('start_success', 'Transaction status updated!');

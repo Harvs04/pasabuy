@@ -328,7 +328,7 @@
                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                   </svg>
                   <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                  <p class="text-sm text-center">You will be <span class="text-[#014421] font-medium underline">starting</span> the transaction which will prevent other people from ordering more items.</p>
+                  <p class="text-sm text-center">You will be <span class="text-[#014421] font-semibold underline">starting</span> the transaction which will prevent other people from ordering more items.</p>
                   <div class="p-2 border rounded-lg w-full">
                      <ul class="list-disc pl-5" 
                            x-data="{ orders: {{ json_encode($transactions->pluck('item_name', 'id')) }} }">
@@ -367,7 +367,7 @@
                <div class="flex flex-col items-center gap-2 sm:gap-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff002b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-x"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/><path d="m17 13 5 5m-5 0 5-5"/></svg>
                   <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                  <p class="text-sm text-center">You will be <span class="text-red-600 font-medium underline">cancelling</span> the following transaction/s:</p>
+                  <p class="text-sm text-center">You will be <span class="text-red-600 font-semibold underline">cancelling</span> the following transaction/s:</p>
                   <div class="p-2 border rounded-lg w-full">
                      <ul class="list-disc pl-5" 
                            x-data="{ orders: {{ json_encode($transactions->pluck('item_name', 'id')) }} }">
