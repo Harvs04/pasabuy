@@ -72,7 +72,7 @@ class Comments extends Component
     public function placeholder()
     {
         return <<<'HTML'
-        <div class="w-full px-2 py-4 border">
+        <div class="w-full px-2 py-4 border-t">
             <div class="w-full animate-pulse flex justify-between">
                 <div class="w-24">
                     <div class="w-full h-2 bg-gray-500 rounded-full"></div>
