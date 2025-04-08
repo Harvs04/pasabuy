@@ -76,6 +76,8 @@
                                        <span class="font-normal">has rated the transaction.</span>
                                     @elseif ($notif->type === 'item deleted')
                                        <span class="font-normal">deleted your order.</span>
+                                    @elseif ($notif->type === 'transaction started')
+                                       <span class="font-normal">started the transaction.</span>
                                     @elseif ($notif->type === 'transaction cancelled')
                                        <span class="font-normal">cancelled the transaction.</span>
                                     @elseif ($notif->type === 'new item request')
@@ -372,7 +374,7 @@
                                                          </div>
                                                       </div>
                                                    @endif
-                                                @elseif(in_array(($notif_instance->type ?? ''), ['new order','cancelled order', 'transaction cancelled', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))      
+                                                @elseif(in_array(($notif_instance->type ?? ''), ['new order','cancelled order', 'transaction started', 'transaction cancelled', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))      
                                                    <div class="">
                                                       <!-- Content -->
                                                       <div class="px-4 py-2">
@@ -388,8 +390,9 @@
                                                                </div>
                                                                @if (($notif_instance->order_count ?? '') > 1)
                                                                   @foreach ($notif_instance->order_id ?? '' as $order_id)
-                                                                     <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item waiting', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-gray-100' ) }} rounded-lg p-4 mb-4">
-                                                                        <p class="text-gray-700 text-base font-medium mb-2">Order #{{ $order_id ?? '1234' }} has been <span class="font-semibold underline">{{ in_array($notif_type, ['cancelled order', 'transaction cancelled']) ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
+                                                                     <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item waiting', 'item delivered', 'item rated', 'transaction started']) ? 'bg-green-100' : 'bg-gray-100' ) }} rounded-lg p-4 mb-4">
+                                                                        <p class="text-gray-700 text-base font-medium mb-2 {{ ($notif_type ?? '') === 'transaction started' ? 'block' : 'hidden' }}">Provider <span class="font-semibold">{{ $actor->name ?? 'Anonymous' }}</span> is on the way to buy your orders.</p>
+                                                                        <p class="text-gray-700 text-base font-medium mb-2 {{ ($notif_type ?? '') !== 'transaction started' ? 'block' : 'hidden' }}">Order #{{ $order_id ?? '1234' }} has been <span class="font-semibold underline">{{ in_array($notif_type, ['cancelled order', 'transaction cancelled']) ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
                                                                         <p class="">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
                                                                         <p class="">Order: <span class="font-medium">{{ App\Models\Order::where('id', $order_id)->first()->order ?? 'mystery item' }}</span></p>
                                                                         <p class="">Payment status: <span class="font-medium">{{ (App\Models\Order::where('id', $order_id)->first()->is_paid ?? 'Unknown status') == 0 ? 'Pending payment' : 'Paid' }}</span></p>
@@ -398,7 +401,8 @@
                                                                   @endforeach
                                                                @else                                                   
                                                                   <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item waiting', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-gray-100' ) }} rounded-lg p-4 mb-4">
-                                                                     <p class="text-gray-700 text-base font-medium mb-2">Order #{{ $notif_instance->order_id[0] ?? '1234' }} has been <span class="font-semibold underline">{{ in_array($notif_type, ['cancelled order', 'transaction cancelled']) ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
+                                                                     <p class="text-gray-700 text-base font-medium mb-2 {{ ($notif_type ?? '') === 'transaction started' ? 'block' : 'hidden' }}">Provider <span class="font-semibold">{{ $actor->name ?? 'Anonymous' }}</span> is on the way to buy your orders.</p>
+                                                                     <p class="text-gray-700 text-base font-medium mb-2 {{ ($notif_type ?? '') !== 'transaction started' ? 'block' : 'hidden' }}">Order #{{ $notif_instance->order_id[0] ?? '1234' }} has been <span class="font-semibold underline">{{ in_array($notif_type, ['cancelled order', 'transaction cancelled']) ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
                                                                      <p class="">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
                                                                      <p class="">Order: <span class="font-medium">{{ App\Models\Order::where('id', $notif_instance->order_id[0])->first()->order ?? 'mystery item' }}</span></p>
                                                                      <p class="">Payment status: <span class="font-medium">{{ (App\Models\Order::where('id', $notif_instance->order_id[0])->first()->is_paid ?? 'Unknown status') == 0 ? 'Pending payment' : 'Paid' }}</span></p>
