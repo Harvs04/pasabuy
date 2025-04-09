@@ -443,7 +443,7 @@
                         <div class="">
                             <button
                                 class="w-fit flex items-center justify-center enabled:hover:bg-gray-100 rounded-full text-gray-400 p-1.5 flex-shrink-0 disabled:cursor-not-allowed"
-                                :disabled="!chatMessage" @click="
+                                x-bind:disabled="chatMessage.trim().length === 0" @click="
                                 if (chatMessage.trim().length > 0) { 
                                     if (role === 'provider') { 
                                         $wire.sendMessage(chatMessage, '{{ $conversation->customer_id }}'); 
