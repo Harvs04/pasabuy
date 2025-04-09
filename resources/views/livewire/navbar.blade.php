@@ -39,11 +39,11 @@
                   </button>
    
                   <!-- NOTIFICATION FIELD -->
-                  <div x-show="openNotification" x-data="{ notifDetailsOpen: false }" class="break-words w-full sm:w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:-right-4 top-[62px] bg-white rounded-md shadow border px-3 py-4">
-                     <h1 class="text-lg md:text-xl font-semibold text-gray-800 ml-1">Notifications</h1>
+                  <div x-show="openNotification" x-data="{ notifDetailsOpen: false }" class="break-words w-full sm:w-96 overflow-y-auto max-h-[600px] absolute -right-0 md:-right-4 top-[62px] bg-white rounded-md shadow border px-2 py-4">
+                     <h1 class="text-lg md:text-xl font-semibold text-gray-800 ml-2">Notifications</h1>
                      <div class="mt-4">
                         @forelse ($user->notification_as_poster as $notif)
-                           <button class="flex flex-row gap-3 p-1 hover:bg-gray-100 hover:rounded text-sm justify-start items-start w-full" @click="notifDetailsOpen = true; openNotification = false; document.body.style.overflow = 'hidden'; $wire.openNotif('{{ $notif->id }}');">
+                           <button class="flex flex-row gap-2 p-2 hover:bg-gray-100 hover:rounded text-sm justify-start items-start w-full" @click="notifDetailsOpen = true; openNotification = false; document.body.style.overflow = 'hidden'; $wire.openNotif('{{ $notif->id }}');">
                               <img class="size-9 md:size-12 flex-shrink-0 object-contain rounded-full border" src="{{ App\Models\User::where('id', $notif->actor_id)->first()->profile_pic_url }}" alt="user photo"> 
                               <div class="flex flex-col items-start">
                                  <span class="font-medium leading-tight text-start">
@@ -138,7 +138,7 @@
                                        </div>
                                     </div>
                                     <div class="text-center w-full" wire:loading.class="hidden">                        
-                                       <div role="status" class="w-full px-3 md:px-6 py-2 border-gray-200 rounded-sm shadow-sm dark:border-gray-500 max-h-[500px] overflow-auto">
+                                       <div role="status" class="w-full px-3 md:px-6 border-gray-200 rounded-sm shadow-sm dark:border-gray-500 max-h-[500px] overflow-auto {{ in_array($notif_instance->type ?? 'N/A', ['like', 'comment', 'new item request', 'new transaction', 'converted post']) ? 'py-3' : '' }}">
                                           <div class="flex items-center">
                                              @if (in_array($notif_instance->type ?? 'N/A', ['like', 'comment', 'new item request', 'new transaction']))
                                                 <img src="{{ $user->profile_pic_url ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif' }}" alt="user_image" class="w-10 h-10 border rounded-full object-contain me-3 text-gray-200 dark:text-gray-700">
@@ -154,14 +154,14 @@
                                                 </div>
                                              @endif                  
                                           </div>
-                                          <div class="py-2 flex flex-col {{ in_array(($notif_instance->type ?? ''), ['like', 'comment', 'new item request', 'new transaction', 'converted post']) ? 'border-b' : '' }} mb-2">
+                                          <div class="flex flex-col {{ in_array(($notif_instance->type ?? ''), ['like', 'comment', 'new item request', 'new transaction', 'converted post']) ? 'border-b mb-2 py-2' : 'py-1' }}">
                                              <div class="flex items-center justify-center mb-2 bg-gray-100 rounded-lg {{ in_array($notif_instance->type ?? 'N/A', ['like', 'comment', 'new item request', 'new transaction', 'converted post']) ? 'block' : 'hidden' }}">
                                                 <img src="{{ $post_in_notif->item_image ?? 'https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png' }}" alt="post_image" class="w-1/3 object-cover">                                                                                             
                                              </div>
                                              <div class="text-start">
                                                 @if (in_array(($notif_instance->type ?? ''), ['like', 'comment', 'new item request', 'new transaction', 'converted post']))
                                                    @if(($post_in_notif->type ?? '') === 'item_request')
-                                                      <div class="flex flex-col gap-2">
+                                                      <div class="ml-2 flex flex-col gap-2">
                                                          <p class="text-[#014421] text-base font-semibold underline">Item Details:</p>
                                                          <div class="flex flex-col gap-2 md:gap-3 ml-2">
                                                             <div class="flex flex-row gap-2 items-start text-sm">
@@ -243,7 +243,7 @@
                                                          </div>
                                                       </div>
                                                    @elseif(($post_in_notif->type ?? '') === 'transaction')
-                                                      <div class="flex flex-col gap-2">
+                                                      <div class="ml-2 flex flex-col gap-2">
                                                          <p class="text-[#014421] text-base font-semibold underline">Item Details:</p>
                                                          <div class="flex flex-col gap-2 md:gap-3 ml-2">
                                                             <div class="flex flex-row gap-2 items-start text-sm">
@@ -390,7 +390,7 @@
                                                                </div>
                                                                @if (($notif_instance->order_count ?? '') > 1)
                                                                   @foreach ($notif_instance->order_id ?? '' as $order_id)
-                                                                     <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item waiting', 'item delivered', 'item rated', 'transaction started']) ? 'bg-green-100' : 'bg-gray-100' ) }} rounded-lg p-4 mb-4">
+                                                                     <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item waiting', 'item delivered', 'item rated', 'transaction started']) ? 'bg-green-100' : 'bg-gray-100' ) }} rounded-lg p-3 mb-2">
                                                                         <p class="text-gray-700 text-base font-medium mb-2 {{ ($notif_type ?? '') === 'transaction started' ? 'block' : 'hidden' }}">Provider <span class="font-semibold">{{ $actor->name ?? 'Anonymous' }}</span> is on the way to buy your orders.</p>
                                                                         <p class="text-gray-700 text-base font-medium mb-2 {{ ($notif_type ?? '') !== 'transaction started' ? 'block' : 'hidden' }}">Order #{{ $order_id ?? '1234' }} has been <span class="font-semibold underline">{{ in_array($notif_type, ['cancelled order', 'transaction cancelled']) ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
                                                                         <p class="">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
@@ -400,7 +400,7 @@
                                                                      </div>
                                                                   @endforeach
                                                                @else                                                   
-                                                                  <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item waiting', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-gray-100' ) }} rounded-lg p-4 mb-4">
+                                                                  <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item waiting', 'item delivered', 'item rated']) ? 'bg-green-100' : 'bg-gray-100' ) }} rounded-lg p-3 mb-2">
                                                                      <p class="text-gray-700 text-base font-medium mb-2 {{ ($notif_type ?? '') === 'transaction started' ? 'block' : 'hidden' }}">Provider <span class="font-semibold">{{ $actor->name ?? 'Anonymous' }}</span> is on the way to buy your orders.</p>
                                                                      <p class="text-gray-700 text-base font-medium mb-2 {{ ($notif_type ?? '') !== 'transaction started' ? 'block' : 'hidden' }}">Order #{{ $notif_instance->order_id[0] ?? '1234' }} has been <span class="font-semibold underline">{{ in_array($notif_type, ['cancelled order', 'transaction cancelled']) ? 'cancelled' : ($notif_type === 'item waiting' ? 'marked as delivered' : ($notif_type === 'new order' ? 'added' : explode(' ', $notif_type ?? '')[1])) }}</span>.</p>
                                                                      <p class="">Item name: <span class="font-medium">{{ $post_in_notif->item_name ?? 'mystery item' }}</span></p>
@@ -438,23 +438,23 @@
                                                                @endif
                                                                
                                                                <p class="text-sm text-gray-600 {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'block' : 'hidden' }}">
-                                                                  This order has been removed from the fulfillment queue. The inventory has been returned to stock automatically.
+                                                                  This order has been removed from the active orders list.
                                                                </p>
                                                             </div>
                                                             
                                                             <!-- Actions -->
                                                             <div class="flex flex-col text-sm sm:flex-row sm:justify-between gap-3">
-                                                               @if (in_array(($notif_instance->type ?? ''), ['cancelled order', 'transaction cancelled', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))
-                                                                  <a href="{{ route('message.view', ['convo_id' => $convo_id ]) }}" class="w-full py-2 px-4 bg-white border border-gray-300 rounded-md text-gray-700 text-center font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
+                                                               @if (in_array(($notif_instance->type ?? ''), ['cancelled order', 'transaction started', 'transaction cancelled', 'item bought', 'item waiting', 'item confirmed', 'item delivered', 'item rated', 'item unavailable']))
+                                                                  <a href="{{ route('message.view', ['convo_id' => $convo_id ]) }}" class="w-full py-2 px-4 bg-white border border-gray-300 rounded-md text-gray-700 text-center font-medium hover:bg-gray-50 sm:w-auto">
                                                                      {{ $user->role === 'provider' ? 'Contact Customer' : 'Contact Provider'}}
                                                                   </a>
                                                                @endif
                                                                @if (($notif_instance->order_count ?? '') == 1)                                                               
-                                                               <a href="{{ $user->role === 'customer' ? route('my-orders-order.view', ['transaction_id' => $notif_instance->post_id, 'order_id' => $notif_instance->order_id[0] ]) : route('transaction-order.view', ['transaction_id' => $notif_instance->post_id, 'order_id' => $notif_instance->order_id[0] ]) }}" class="w-full ml-auto text-center py-2 px-4 bg-gray-500 border border-transparent rounded-md text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
+                                                               <a href="{{ $user->role === 'customer' ? route('my-orders-order.view', ['transaction_id' => $notif_instance->post_id, 'order_id' => $notif_instance->order_id[0] ]) : route('transaction-order.view', ['transaction_id' => $notif_instance->post_id, 'order_id' => $notif_instance->order_id[0] ]) }}" class="w-full ml-auto text-center py-2 px-4 bg-gray-600 border border-transparent rounded-md text-white font-medium hover:bg-gray-700 sm:w-auto">
                                                                   View Order Details
                                                                </a>
                                                                @else
-                                                               <a href="{{ $user->role === 'customer' ? route('my-orders.view', ['id' => $notif_instance->post_id]) : route('transaction.view', ['id' => $notif_instance->post_id]) }}" class="w-full ml-auto text-center py-2 px-4 bg-gray-500 border border-transparent rounded-md text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto">
+                                                               <a href="{{ $user->role === 'customer' ? route('my-orders.view', ['id' => $notif_instance->post_id]) : route('transaction.view', ['id' => $notif_instance->post_id]) }}" class="w-full ml-auto text-center py-2 px-4 bg-gray-600 border border-transparent rounded-md text-white font-medium hover:bg-gray-700 sm:w-auto">
                                                                   View Order Details
                                                                </a>
                                                                @endif
