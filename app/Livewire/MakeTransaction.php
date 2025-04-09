@@ -80,7 +80,7 @@ class MakeTransaction extends Component
             // notif for the poster of item request
             Notification::create([
                 'type' => 'converted post',
-                'post_id' => $this->post->id,
+                'post_id' => $post->id,
                 'actor_id' => $user->id,
                 'poster_id' => $this->post->user_id
             ]);
