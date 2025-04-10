@@ -330,10 +330,24 @@
                   <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                   <p class="text-sm text-center">You will be <span class="text-[#014421] font-semibold underline">starting</span> the transaction which will prevent other people from ordering more items.</p>
                   <div class="p-2 border rounded-lg w-full">
-                     <ul class="list-disc pl-5" 
-                           x-data="{ orders: {{ json_encode($transactions->pluck('item_name', 'id')) }} }">
+                     <p class="font-medium mb-2">Transaction/s:</p>
+                     <ul class="list-disc pl-10" 
+                        x-data="{
+                           orders: {{ json_encode(
+                              $transactions->mapWithKeys(fn($t) => [
+                                    $t->id => [
+                                       'name' => $t->item_name,
+                                       'origin' => $t->item_origin,
+                                       'order_count' => $t->orders->count(),
+                                    ]
+                              ])
+                           ) }}
+                        }">
                            <template x-for="id in selected" :key="id">
-                              <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                              <li class="text-sm" x-show="orders[id]">
+                                 <span x-text="orders[id].name + ' - ' + orders[id].origin"></span>
+                                 <span class="text-gray-400 text-xs italic ml-1" x-text="'(' + orders[id].order_count + ' orders' + ')'"></span>
+                              </li>
                            </template>
                      </ul>
                   </div>
@@ -369,10 +383,24 @@
                   <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                   <p class="text-sm text-center">You will be <span class="text-red-600 font-semibold underline">cancelling</span> the following transaction/s:</p>
                   <div class="p-2 border rounded-lg w-full">
-                     <ul class="list-disc pl-5" 
-                           x-data="{ orders: {{ json_encode($transactions->pluck('item_name', 'id')) }} }">
+                     <p class="font-medium mb-2">Transaction/s:</p>
+                     <ul class="list-disc pl-10" 
+                        x-data="{
+                           orders: {{ json_encode(
+                              $transactions->mapWithKeys(fn($t) => [
+                                    $t->id => [
+                                       'name' => $t->item_name,
+                                       'origin' => $t->item_origin,
+                                       'order_count' => $t->orders->count(),
+                                    ]
+                              ])
+                           ) }}
+                        }">
                            <template x-for="id in selected" :key="id">
-                              <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                              <li class="text-sm" x-show="orders[id]">
+                                 <span x-text="orders[id].name + ' - ' + orders[id].origin"></span>
+                                 <span class="text-gray-400 text-xs italic ml-1" x-text="'(' + orders[id].order_count + ' orders' + ')'"></span>
+                              </li>
                            </template>
                      </ul>
                   </div>
