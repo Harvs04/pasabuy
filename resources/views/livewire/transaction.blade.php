@@ -1,5 +1,5 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, transactionStatus: '{{ $transaction->status }}', isChangeRoleModalOpen: false, deleteOrderModalOpen: false, deleteIndex: null, search: '', all: false, selected: [], acquireOrderModalOpen: false, deliveredOrderModalOpen: false, unavailOrderModalOpen: false, acquiredIndeces: [], deliveredIndeces: [], unavailableIndeces: [], openTransactionDots: false, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '' }"
+    x-data="{ openBurger: false, transactionStatus: '{{ $transaction->status }}', startTransactionModalOpen: false, cancelTransactionModalOpen: false, isChangeRoleModalOpen: false, deleteOrderModalOpen: false, deleteIndex: null, search: '', all: false, selected: [], acquireOrderModalOpen: false, deliveredOrderModalOpen: false, unavailOrderModalOpen: false, acquiredIndeces: [], deliveredIndeces: [], unavailableIndeces: [], openTransactionDots: false, changeTransactionStatus: false, changeStatusModalOpen: false, statusChange: '' }"
     x-init="
         allOrders = {{ json_encode($orders->map(function($order) {
             return [
@@ -426,11 +426,11 @@
                         <button
                             class="enabled:hover:bg-green-600 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
                             x-show="['open', 'full'].includes(transactionStatus)"
-                            @click="changeStatusModalOpen = true; statusChange = 'ongoing';">Start</button>
+                            @click="startTransactionModalOpen = true; statusChange = 'ongoing';">Start</button>
                         <button
                             class="enabled:hover:bg-red-500 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
                             x-show="['ongoing', 'open', 'full'].includes(transactionStatus)"
-                            @click="changeStatusModalOpen = true; statusChange = 'cancelled';">Cancel</button>
+                            @click="cancelTransactionModalOpen = true; statusChange = 'cancelled';">Cancel</button>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row mid:flex-col gap-4">
@@ -516,20 +516,33 @@
             </div>
         </div>
     </div>
-
-    <!-- MODAL -->
-    <div @keydown.escape.window="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
-        x-show="changeStatusModalOpen" x-transition:enter.duration.25ms
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg w-9/12 sm:w-4/6 md:w-5/12 xl:w-4/12 relative">
-            <div class="flex flex-row items-center gap-2 sm:gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="#014421" class="size-6 md:size-7">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    
+    <!-- START TRANSACTION MODAL -->
+    <div @keydown.escape.window="startTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+        x-data="{ confirm: '', errors: {} }" x-show="startTransactionModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
+        <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
+            <div class="flex flex-col items-center gap-2 sm:gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                 </svg>
-                <p class="text-xl font-semibold text-[#014421]">Confirmation</p>
-                <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
+                <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
+                <p class="text-sm text-center">You will be <span class="text-[#014421] font-semibold underline">starting</span> the transaction which will prevent other people from ordering more items.</p>
+                <div class="p-2 border rounded-lg w-full">
+                    <p class="font-medium mb-2">Current order/s:</p>
+                    <ul class="list-disc pl-10" 
+                    >
+                        @foreach ($orders as $order)
+                        @if ($order->status !== 'cancelled')            
+                            <li class="text-sm">
+                                <span>{{ $order->order }}</span>
+                                <span class="text-gray-400 text-xs italic ml-1">{{ '(Customer: ' . App\Models\User::where('id', $order->customer_id)->first()->name . ')'}}</span>
+                            </li>
+                        @endif
+                        @endforeach
+                    </ul>
+                </div>
+                <button @click="startTransactionModalOpen = false; document.body.style.overflow = 'auto';"
                     class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="#000000" class="size-6">
@@ -537,14 +550,56 @@
                     </svg>
                 </button>
             </div>
-            <p class="text-sm mt-2 sm:ml-2">Do you wish to save your changes?</p>
-
-            <div class="mt-5 flex justify-end gap-2">
-                <button @click="changeStatusModalOpen = false; document.body.style.overflow = 'auto';"
+            <div class="mt-5 flex gap-2">
+                <button @click="startTransactionModalOpen = false; document.body.style.overflow = 'auto';"
                     class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
                 <button x-data="{ disabled: false }" :disabled="disabled"
                     @click="disabled = true; changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';"
-                    class="px-2 sm:px-3 py-1 sm:py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">Confirm</button>
+                    class="px-2 sm:px-3 py-1.5 text-sm bg-[#014421] text-white rounded-md hover:bg-green-800">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CANCEL TRANSACTION MODAL -->
+    <div @keydown.escape.window="cancelTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+        x-data="{ confirm: '', errors: {} }" x-show="cancelTransactionModalOpen" x-transition:enter.duration.25ms
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
+        <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
+            <div class="flex flex-col items-center gap-2 sm:gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff002b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-x"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/><path d="m17 13 5 5m-5 0 5-5"/></svg>
+                <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
+                <p class="text-sm text-center">Cancelling this transaction will also <span class="text-red-600 font-semibold underline">cancel</span> the following order/s:</p>
+                <div class="p-2 border rounded-lg w-full">
+                    <p class="font-medium mb-2">Current order/s:</p>
+                    <ul class="list-disc pl-10">
+                        @foreach ($orders as $order)
+                        @if ($order->status !== 'cancelled')            
+                            <li class="text-sm">
+                                <span>{{ $order->order }}</span>
+                                <span class="text-gray-400 text-xs italic ml-1">{{ '(Customer: ' . App\Models\User::where('id', $order->customer_id)->first()->name . ')'}}</span>
+                            </li>
+                        @endif
+                        @endforeach
+                    </ul>
+                </div>
+                <button @click="cancelTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="#000000" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-5 flex gap-2">
+                <button @click="cancelTransactionModalOpen = false; document.body.style.overflow = 'auto';"
+                    class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
+                <button x-data="{ disabled: false }" :disabled="disabled"
+                    @click="disabled = true; changeStatusModalOpen = false; document.body.style.overflow = 'auto'; $wire.updateStatus(statusChange); statusChange = '';"
+                    class="px-2 sm:px-3 py-1.5 text-sm bg-red-700 text-white rounded-md hover:bg-red-600">
+                    Confirm
+                </button>
             </div>
         </div>
     </div>
@@ -559,12 +614,25 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                 </svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-medium underline">acquired</span>:</p>
+                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-semibold underline">acquired</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <ul class="list-disc pl-5" 
-                        x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
+                    <p class="font-medium mb-2">Order/s:</p>
+                    <ul class="list-disc pl-10" 
+                        x-data="{
+                           orders: {{ json_encode(
+                              $orders->mapWithKeys(fn($t) => [
+                                    $t->id => [
+                                       'order' => $t->order,
+                                       'customer' => App\Models\User::where('id', $t->customer_id)->first()->name,
+                                    ]
+                              ])
+                           ) }}
+                        }">
                         <template x-for="id in selected" :key="id">
-                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                            <li class="text-sm" x-show="orders[id]">
+                                <span x-text="orders[id].order"></span>
+                                <span class="text-gray-400 text-xs italic ml-1" x-text="'(Customer: ' + orders[id].customer + ')'"></span>
+                            </li>
                         </template>
                     </ul>
                 </div>
@@ -596,12 +664,25 @@
             <div class="flex flex-col items-center gap-2 sm:gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#014421" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-check"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-medium underline">delivered</span>:</p>
+                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-semibold underline">delivered</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <ul class="list-disc pl-5" 
-                        x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
+                    <p class="font-medium mb-2">Order/s:</p>
+                    <ul class="list-disc pl-10" 
+                        x-data="{
+                           orders: {{ json_encode(
+                              $orders->mapWithKeys(fn($t) => [
+                                    $t->id => [
+                                       'order' => $t->order,
+                                       'customer' => App\Models\User::where('id', $t->customer_id)->first()->name,
+                                    ]
+                              ])
+                           ) }}
+                        }">
                         <template x-for="id in selected" :key="id">
-                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                            <li class="text-sm" x-show="orders[id]">
+                                <span x-text="orders[id].order"></span>
+                                <span class="text-gray-400 text-xs italic ml-1" x-text="'(Customer: ' + orders[id].customer + ')'"></span>
+                            </li>
                         </template>
                     </ul>
                 </div>
@@ -633,12 +714,25 @@
             <div class="flex flex-col items-center gap-2 sm:gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff002b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-x"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/><path d="m17 13 5 5m-5 0 5-5"/></svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-red-600 font-medium underline">unavailable</span>:</p>
+                <p class="text-sm text-center">You will be setting the following order/s as <span class="text-red-600 font-semibold underline">unavailable</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <ul class="list-disc pl-5" 
-                        x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
+                    <p class="font-medium mb-2">Order/s:</p>
+                    <ul class="list-disc pl-10" 
+                        x-data="{
+                           orders: {{ json_encode(
+                              $orders->mapWithKeys(fn($t) => [
+                                    $t->id => [
+                                       'order' => $t->order,
+                                       'customer' => App\Models\User::where('id', $t->customer_id)->first()->name,
+                                    ]
+                              ])
+                           ) }}
+                        }">
                         <template x-for="id in selected" :key="id">
-                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                            <li class="text-sm" x-show="orders[id]">
+                                <span x-text="orders[id].order"></span>
+                                <span class="text-gray-400 text-xs italic ml-1" x-text="'(Customer: ' + orders[id].customer + ')'"></span>
+                            </li>
                         </template>
                     </ul>
                 </div>

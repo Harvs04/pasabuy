@@ -60,7 +60,7 @@
    @endif
 
    @teleport('body')
-      <div wire:loading.delay wire:target="updateTransaction, switchRole"
+      <div wire:loading.delay wire:target="updateTransaction"
          class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
                class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
