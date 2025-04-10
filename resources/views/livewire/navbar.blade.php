@@ -388,6 +388,9 @@
                                                                         <p class="text-xs text-gray-500">{{ $notif_instance->created_at->timezone('Singapore')->format('j F Y \a\t H:i') ?? '' }}</p>
                                                                   </div>
                                                                </div>
+                                                               <p class="text-sm font-medium mb-2 text-gray-700 {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'block' : 'hidden' }}">
+                                                                  {{ ($notif_instance->order_count ?? '') == 1 ? 'This order has' : 'These orders have'}} been removed from the active orders list.
+                                                               </p>
                                                                @if (($notif_instance->order_count ?? '') > 1)
                                                                   @foreach ($notif_instance->order_id ?? '' as $order_id)
                                                                      <div class="text-gray-700 text-sm {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable', 'transaction cancelled']) ? 'bg-red-100' : (in_array(($notif_instance->type ?? ''), ['item bought', 'item confirmed', 'item waiting', 'item delivered', 'item rated', 'transaction started']) ? 'bg-green-100' : 'bg-gray-100' ) }} rounded-lg p-3 mb-2">
@@ -436,10 +439,6 @@
                                                                      <p class="text-gray-600 text-sm {{ $notif_type === 'item rated' ? 'block' : 'hidden' }}">Remarks: <span class="font-medium"> {{ $rating_instance->remarks ?? '' }}</span></p>
                                                                   </div>
                                                                @endif
-                                                               
-                                                               <p class="text-sm text-gray-600 {{ in_array(($notif_instance->type ?? ''), ['cancelled order', 'item unavailable']) ? 'block' : 'hidden' }}">
-                                                                  This order has been removed from the active orders list.
-                                                               </p>
                                                             </div>
                                                             
                                                             <!-- Actions -->
