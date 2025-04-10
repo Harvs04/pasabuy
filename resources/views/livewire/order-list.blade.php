@@ -268,25 +268,7 @@
                                     </button>
                                 </div>
                             </th>
-                            <th scope="col" class="px-1 py-0 text-center">
-                                <div class="flex items-start justify-center gap-1">
-                                <p>
-                                    Other notes
-                                </p>
-                                <button @click="$wire.set('f_notes', $wire.f_notes === '' ? 'asc' : $wire.f_notes === 'asc' ? 'desc' : 'asc'); f_order = ''; f_pstatus = ''; f_tstatus = '';">
-                                    <svg x-show="f_notes === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                    </svg>
-                                    <!-- UP -->
-                                    <svg x-show="f_notes === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                                    </svg>
-                                    <!-- DOWN -->
-                                    <svg x-show="f_notes === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                </button>
-                            </div>
+                            
                             <th scope="col" class="px-6 py-4 text-center">
                                 <span class="">Action</span>
                             </th>
@@ -350,9 +332,6 @@
                                     </div>
                                 </span>
                             </td>
-                            <td class="px-1 py-4 text-center">
-                                <p>{{ $order->additional_notes ? $order->additional_notes : '---' }}</p>
-                            </td>
                             <td class="px-6 py-4 align-middle">
                                 <span class="flex flex-row gap-4 items-center justify-center">
                                     <a href="{{ route('my-orders-order.view', ['transaction_id' => $order->post_id, 'order_id' => $order->id ]) }}"
@@ -375,7 +354,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
                                 No orders yet.
                             </td>
                         </tr>
