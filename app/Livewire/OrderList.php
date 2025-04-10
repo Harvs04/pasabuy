@@ -156,7 +156,7 @@ class OrderList extends Component
             Notification::create([
                 'type' => 'cancelled order',
                 'post_id' => $order->post_id,
-                'order_id' => [$order->id],
+                'order_id' => $ids,
                 'actor_id' => $this->user->id,
                 'poster_id' => $order->provider_id,
                 'order_count' => count($ids)
