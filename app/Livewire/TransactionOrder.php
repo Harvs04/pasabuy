@@ -14,6 +14,7 @@ class TransactionOrder extends Component
 
     public $t_id;
     public $order;
+    public $orders;
     public $user;
     public $convo_id;
 
@@ -87,7 +88,7 @@ class TransactionOrder extends Component
             $transaction->status = $type;
             $transaction->save();
 
-            $ordersGroupedByCustomer = $transaction->orders->groupBy('customer_id');
+            $ordersGroupedByCustomer = $transaction->orders->where('item_status', 'Pending')->groupBy('customer_id');
 
             foreach ($ordersGroupedByCustomer as $customerId => $orders) {
                 foreach ($orders as $order) {
@@ -168,6 +169,7 @@ class TransactionOrder extends Component
     public function render()
     {
         $transaction = Post::where('id', $this->t_id)->first();
+        $this->orders = $transaction->orders;
         $user = User::where('id', $this->order->provider_id)->first();
         return view('livewire.transaction-order', ['transaction' => $transaction, 'user' => $user]);
     }

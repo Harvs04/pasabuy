@@ -171,7 +171,7 @@ use Illuminate\Support\Facades\DB;
             $transaction->status = $type;
             $transaction->save();
 
-            $ordersGroupedByCustomer = $transaction->orders->groupBy('customer_id');
+            $ordersGroupedByCustomer = $transaction->orders->where('item_status', 'Pending')->groupBy('customer_id');
 
             foreach ($ordersGroupedByCustomer as $customerId => $orders) {
                 foreach ($orders as $order) {
