@@ -172,7 +172,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-check"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
                                     <p class="hidden lg:block">Confirm</p>
                                 </button>
-                                <button x-bind:disabled="selected.length !== 1 || transactionStatus === 'cancelled' || !selected.every(id => {
+                                <button x-bind:disabled="selected.length === 0 || transactionStatus === 'cancelled' || !selected.every(id => {
                                     const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
                                     return orderStatuses[id] === 'Delivered';
                                 })" class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
@@ -567,7 +567,7 @@
                     class="px-3 py-1 text-sm border rounded-md hover:bg-slate-200">Cancel</button>
 
                 <button x-data="{ disabled: false }"
-                    @click="rateTransactionModalOpen = false; disabled = true; document.body.style.overflow = 'auto'; $wire.rateTransaction('{{ $transaction->id }}', selected[0]);"
+                    @click="rateTransactionModalOpen = false; disabled = true; document.body.style.overflow = 'auto'; $wire.rateTransaction('{{ $transaction->id }}', selected);"
                     x-bind:disabled="rating === 0 || !remarks || disabled"
                     class="px-3 py-1 text-sm enabled:bg-[#014421] text-white rounded-md enabled:hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-gray-300">Submit</button>
             </div>

@@ -78,7 +78,7 @@ class OrderList extends Component
         }
     }
 
-    public function rateTransaction($t_id, $id)
+    public function rateTransaction($t_id, $ids)
     {
         try {
             $transaction = Post::where('id', $t_id)->first();
@@ -87,33 +87,35 @@ class OrderList extends Component
                 return $this->redirect(route('my-orders.view', ['id' =>  $t_id]), true);
             }
 
-            $order = Order::where('id', $id)->first();
-            if (!$order) {
-                session()->flash('error', 'An error occurred. Please try again.');
-                return $this->redirect(route('my-orders.view', ['id' =>  $t_id]), true);
+            foreach ($ids as $id) {
+                $order = Order::where('id', $id)->first();
+                if (!$order) {
+                    session()->flash('error', 'An error occurred. Please try again.');
+                    return $this->redirect(route('my-orders.view', ['id' =>  $t_id]), true);
+                }
+    
+                $order->item_status = 'Rated';
+                $order->save();
+    
+                $rating = [
+                    'post_id' => $t_id,
+                    'order_id' => $id,
+                    'provider_id' => $order->provider_id,
+                    'customer_id' => $this->user->id,
+                    'star_rating' => $this->star_rating, 
+                    'remarks' => $this->remarks
+                ];
+
+                Rating::create($rating);
+                Notification::create([
+                    'type' => 'item rated',
+                    'post_id' => $t_id,
+                    'order_id' => [$id],
+                    'actor_id' => $this->user->id,
+                    'poster_id' => $order->provider_id,
+                    'order_count' => 1
+                ]);
             }
-
-            $order->item_status = 'Rated';
-            $order->save();
-
-            $rating = [
-                'post_id' => $t_id,
-                'order_id' => $id,
-                'provider_id' => $order->provider_id,
-                'customer_id' => $this->user->id,
-                'star_rating' => $this->star_rating, 
-                'remarks' => $this->remarks
-            ];
-
-            Rating::create($rating);
-            Notification::create([
-                'type' => 'item rated',
-                'post_id' => $t_id,
-                'order_id' => [$id],
-                'actor_id' => $this->user->id,
-                'poster_id' => $order->provider_id,
-                'order_count' => 1
-            ]);
 
             session()->flash('item_rated_success', 'Transaction rated!');
             return $this->redirect(route('my-orders.view', ['id' =>  $t_id]), true);
