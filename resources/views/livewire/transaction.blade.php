@@ -533,7 +533,7 @@
                     <ul class="list-disc pl-10" 
                     >
                         @foreach ($orders as $order)
-                        @if ($order->status !== 'cancelled')            
+                        @if ($order->item_status === 'Pending')            
                             <li class="text-sm">
                                 <span>{{ $order->order }}</span>
                                 <span class="text-gray-400 text-xs italic ml-1">{{ '(Customer: ' . App\Models\User::where('id', $order->customer_id)->first()->name . ')'}}</span>
@@ -575,7 +575,7 @@
                     <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
                     <ul class="list-disc pl-10">
                         @foreach ($orders as $order)
-                        @if ($order->status !== 'cancelled')            
+                        @if ($order->item_status === 'Pending')            
                             <li class="text-sm">
                                 <span>{{ $order->order }}</span>
                                 <span class="text-gray-400 text-xs italic ml-1">{{ '(Customer: ' . App\Models\User::where('id', $order->customer_id)->first()->name . ')'}}</span>
