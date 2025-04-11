@@ -30,7 +30,7 @@
     <div class="sm:transition-all sm:duration-300 sm:transform relative flex flex-row" style="margin-top: 4.3rem;" :class="{'lg:ml-64 xl:ml-96': openBurger, 'md:ml-0': !openBurger}">
     <div class="p-4 w-full">
          <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500" x-data="{ role: '{{ $user->role }}', f_order: $wire.entangle('f_order'), f_provider: $wire.entangle('f_provider'), f_customer: $wire.entangle('f_customer'), f_ostatus: $wire.entangle('f_ostatus'), f_deliverydate: $wire.entangle('f_deliverydate') }">
                <caption class="p-5 text-lg mid:text-xl text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                   @if ($user->role === 'customer')
                      <p class="font-semibold">Order history</p>
@@ -57,30 +57,100 @@
                <thead class="text-xs sm:text-sm text-gray-700 uppercase bg-gray-200 border-y">
                      <tr>
                         <th scope="col" class="px-6 py-3 text-center">
-                           Order
+                           <div class="flex items-start justify-center gap-1">
+                                <p>
+                                    Order
+                                </p>
+                                <button @click="$wire.set('f_order', $wire.f_order === '' ? 'asc' : $wire.f_order === 'asc' ? 'desc' : 'asc'); f_customer = ''; f_provider = ''; f_ostatus = ''; f_deliverydate = '';">
+                                    <svg x-show="f_order === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_order === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_order === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           @if ($user->role === 'customer')
-                              Provider
-                           @elseif ($user->role === 'provider')
-                              Customer                           
-                           @endif
+                        <div class="flex items-start justify-center gap-1">
+                                <p>
+                                 @if ($user->role === 'customer')
+                                    Provider
+                                 @elseif ($user->role === 'provider')
+                                    Customer                           
+                                 @endif
+                                </p>
+                                <button @click="role === 'customer' ? 
+                                    $wire.set('f_provider', $wire.f_provider === '' ? 'asc' : $wire.f_provider === 'asc' ? 'desc' : 'asc') : 
+                                    $wire.set('f_customer', $wire.f_customer === '' ? 'asc' : $wire.f_customer === 'asc' ? 'desc' : 'asc'); 
+                                    f_order = '';
+                                    f_ostatus = ''; 
+                                    f_deliverydate = '';">
+                                    <svg x-show="f_provider === '' && f_customer === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_provider === 'asc' || f_customer === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_provider === 'desc' || f_customer === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           Order status
+                           <div class="flex items-start justify-center gap-1">
+                                <p>
+                                    Order status
+                                </p>
+                                <button @click="$wire.set('f_ostatus', $wire.f_ostatus === '' ? 'asc' : $wire.f_ostatus === 'asc' ? 'desc' : 'asc'); f_customer = ''; f_provider = ''; f_order = ''; f_deliverydate = '';">
+                                    <svg x-show="f_ostatus === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_ostatus === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_ostatus === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                           Date delivered
+                           <div class="flex items-start justify-center gap-1">
+                                <p>
+                                    Date delivered
+                                </p>
+                                <button @click="$wire.set('f_deliverydate', $wire.f_deliverydate === '' ? 'asc' : $wire.f_deliverydate === 'asc' ? 'desc' : 'asc'); f_customer = ''; f_provider = ''; f_order = ''; f_ostatus = '';">
+                                    <svg x-show="f_deliverydate === ''" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                    <!-- UP -->
+                                    <svg x-show="f_deliverydate === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                    <!-- DOWN -->
+                                    <svg x-show="f_deliverydate === 'desc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </button>
+                           </div>
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
                            <span class="">Actions</span>
                         </th>
                      </tr>
                </thead>
-               <tbody>
-                     @php
-                        $list = $user->role === 'customer' ? $user->orders()->whereIn('item_status', ['Delivered', 'Rated', 'Cancelled', 'Unavailable'])->get() : $user->deliveries()->whereIn('item_status', ['Delivered', 'Rated', 'Cancelled', 'Unavailable'])->get();
-                     @endphp
+               <tbody wire:loading.class="hidden">
                      @forelse ($list as $order)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-100"
                            x-show="search === '' || 
