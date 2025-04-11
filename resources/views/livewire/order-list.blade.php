@@ -493,11 +493,11 @@
                     </span>
                 </p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-medium">Order/s:</p>
-                    <ul class="list-disc pl-5" 
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Your order/s:</p>
+                    <ul class="list-disc pl-10" 
                         x-data="{ orders: {{ json_encode($orders->pluck('order', 'id')) }} }">
                         <template x-for="id in selected" :key="id">
-                            <li class="text-sm" x-text="orders[id]" x-show="orders[id]"></li>
+                            <li class="text-gray-600 textsm italic ml-1" x-text="orders[id]" x-show="orders[id]"></li>
                         </template>
                     </ul>
                 </div>

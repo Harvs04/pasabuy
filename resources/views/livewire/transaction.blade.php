@@ -529,7 +529,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">You will be <span class="text-[#014421] font-semibold underline">starting</span> the transaction which will prevent other people from ordering more items.</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current order/s:</p>
                     <ul class="list-disc pl-10" 
                     >
                         @foreach ($orders as $order)
@@ -572,7 +572,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">Cancelling this transaction will also <span class="text-red-600 font-semibold underline">cancel</span> the following order/s:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current order/s:</p>
                     <ul class="list-disc pl-10">
                         @foreach ($orders as $order)
                         @if ($order->item_status === 'Pending')            
@@ -616,7 +616,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-semibold underline">acquired</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current order/s:</p>
                     <ul class="list-disc pl-10" 
                         x-data="{
                            orders: {{ json_encode(
@@ -666,7 +666,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-semibold underline">delivered</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current order/s:</p>
                     <ul class="list-disc pl-10" 
                         x-data="{
                            orders: {{ json_encode(
@@ -716,7 +716,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">You will be setting the following order/s as <span class="text-red-600 font-semibold underline">unavailable</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current order/s:</p>
                     <ul class="list-disc pl-10" 
                         x-data="{
                            orders: {{ json_encode(
