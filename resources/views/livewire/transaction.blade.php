@@ -116,7 +116,7 @@
         style="margin-top: 4.3rem;">
         <div class="p-4 w-full">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t" x-data="{ f_customer: $wire.entangle('f_customer'), f_order: $wire.entangle('f_order'), f_pstatus: $wire.entangle('f_pstatus'), f_ostatus: $wire.entangle('f_ostatus'),  f_notes: $wire.entangle('f_notes') }">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-t relative" x-data="{ f_customer: $wire.entangle('f_customer'), f_order: $wire.entangle('f_order'), f_pstatus: $wire.entangle('f_pstatus'), f_ostatus: $wire.entangle('f_ostatus'),  f_notes: $wire.entangle('f_notes') }">
                     <caption class="px-5 pt-5 pb-3 text-left rtl:text-right text-gray-800 bg-white overflow-hidden">
                         <div class="flex flex-row gap-2 items-center">
                             <a href="{{ route('transactions') }}"
@@ -145,7 +145,17 @@
                             </div>
                             <div class="inline-block h-[35px] w-[0.5px] self-stretch bg-gray-200"></div>
                             <div class="flex items-center gap-2 h-fit text-gray-700">
-                                <p class="font-medium">Set order status:</p>
+                                <div class="flex gap-1 items-start" x-data="{ openInstruction: false }">
+                                    <p class="font-medium">Set order status:</p>
+                                    <button @click="openInstruction = true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                                        </svg>
+                                    </button>
+                                    <div x-show="openInstruction" @click.outside="openInstruction = false" class="absolute right-20 top-16 bg-gray-200 text-gray-700 text-xs rounded-md border shadow-sm p-1.5">
+                                        <p>You must first start the transaction before updating orders. To start, click the <span class="underline font-medium">three dots</span> found in <span class="underline font-medium">Transaction details</span> and choose start.</p>
+                                    </div>
+                                </div>
                                 <button class="flex items-center gap-1 px-2.5 py-1.5 bg-transparent enabled:hover:bg-gray-100 disabled:cursor-not-allowed rounded-md"
                                     x-bind:disabled="selected.length === 0 || ['cancelled', 'open', 'full'].includes(transactionStatus) || !selected.every(id => {
                                         const orderStatuses = {{ json_encode($orders->pluck('item_status', 'id')) }};
