@@ -429,7 +429,7 @@
                             @click="startTransactionModalOpen = true; statusChange = 'ongoing';">Start</button>
                         <button
                             class="enabled:hover:bg-red-600 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
-                            x-show="['ongoing', 'open', 'full'].includes(transactionStatus)"
+                            x-show="['open', 'full'].includes(transactionStatus)"
                             @click="cancelTransactionModalOpen = true; statusChange = 'cancelled';">Cancel</button>
                     </div>
                 </div>
