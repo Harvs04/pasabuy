@@ -424,11 +424,11 @@
                     <div x-show="openTransactionDots" @click.outside="openTransactionDots = false"
                         class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
                         <button
-                            class="enabled:hover:bg-green-600 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            class="enabled:hover:bg-green-700 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
                             x-show="['open', 'full'].includes(transactionStatus)"
                             @click="startTransactionModalOpen = true; statusChange = 'ongoing';">Start</button>
                         <button
-                            class="enabled:hover:bg-red-500 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
+                            class="enabled:hover:bg-red-600 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
                             x-show="['ongoing', 'open', 'full'].includes(transactionStatus)"
                             @click="cancelTransactionModalOpen = true; statusChange = 'cancelled';">Cancel</button>
                     </div>
@@ -529,7 +529,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">You will be <span class="text-[#014421] font-semibold underline">starting</span> the transaction which will prevent other people from ordering more items.</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-medium mb-2">Current order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
                     <ul class="list-disc pl-10" 
                     >
                         @foreach ($orders as $order)
@@ -572,7 +572,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">Cancelling this transaction will also <span class="text-red-600 font-semibold underline">cancel</span> the following order/s:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-medium mb-2">Current order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
                     <ul class="list-disc pl-10">
                         @foreach ($orders as $order)
                         @if ($order->status !== 'cancelled')            
@@ -616,7 +616,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-semibold underline">acquired</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-medium mb-2">Order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
                     <ul class="list-disc pl-10" 
                         x-data="{
                            orders: {{ json_encode(
@@ -666,7 +666,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">You will be setting the following order/s as <span class="text-[#014421] font-semibold underline">delivered</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-medium mb-2">Order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
                     <ul class="list-disc pl-10" 
                         x-data="{
                            orders: {{ json_encode(
@@ -716,7 +716,7 @@
                 <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                 <p class="text-sm text-center">You will be setting the following order/s as <span class="text-red-600 font-semibold underline">unavailable</span>:</p>
                 <div class="p-2 border rounded-lg w-full">
-                    <p class="font-medium mb-2">Order/s:</p>
+                    <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Current Order/s:</p>
                     <ul class="list-disc pl-10" 
                         x-data="{
                            orders: {{ json_encode(

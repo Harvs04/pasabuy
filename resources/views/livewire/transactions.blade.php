@@ -330,7 +330,7 @@
                   <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                   <p class="text-sm text-center">You will be <span class="text-[#014421] font-semibold underline">starting</span> the transaction which will prevent other people from ordering more items.</p>
                   <div class="p-2 border rounded-lg w-full">
-                     <p class="font-medium mb-2">Transaction/s:</p>
+                     <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Transaction/s:</p>
                      <ul class="list-disc pl-10" 
                         x-data="{
                            orders: {{ json_encode(
@@ -383,7 +383,7 @@
                   <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
                   <p class="text-sm text-center">You will be <span class="text-red-600 font-semibold underline">cancelling</span> the following transaction/s:</p>
                   <div class="p-2 border rounded-lg w-full">
-                     <p class="font-medium mb-2">Transaction/s:</p>
+                     <p class="font-semibold text-gray-700 mb-3 border-b pb-2 ml-1">Transaction/s:</p>
                      <ul class="list-disc pl-10" 
                         x-data="{
                            orders: {{ json_encode(
