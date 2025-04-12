@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\Rating;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Conversation;
+use App\Models\Report;
 
 class OrderView extends Component
 {
@@ -20,6 +21,9 @@ class OrderView extends Component
 
     public $star_rating = 0;
     public $remarks;
+    public $complaint = '';
+
+    public $exists;
 
     public function __construct()
     {
@@ -123,7 +127,27 @@ class OrderView extends Component
             session()->flash('item_rated_success', 'Transaction rated!');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         } catch (\Throwable $th) {
-            dd($th);
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+        }
+    }
+
+    public function reportUser($complaint_type) {
+        try {
+
+            $report = [
+                'sender_id' => $this->user->id,
+                'reported_id' => $this->order->provider_id,
+                'post_id' => $this->t_id,
+                'order_id' => $this->order->id,
+                'type' => $complaint_type,
+                'complaint' => $this->complaint
+            ];
+            Report::create($report);
+
+            session()->flash('report_user_success', 'Report added!');
+            return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+        } catch (\Throwable $th) {
             session()->flash('error', 'An error occurred. Please try again.');
             return $this->redirect(route('my-orders-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
         }
@@ -133,6 +157,7 @@ class OrderView extends Component
     {
         $transaction = Post::where('id', $this->t_id)->first();
         $user = User::where('id', $this->order->customer_id)->first();
+        $this->exists = Report::where('sender_id', $this->user->id)->where('reported_id', $transaction->user_id)->where('post_id', $this->t_id)->exists();
         return view('livewire.order-view', ['transaction' => $transaction, 'user' => $user]);
     }
 }

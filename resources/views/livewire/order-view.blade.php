@@ -1,26 +1,26 @@
 <div class="font-poppins bg-gray-50"
-    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, cancelOrderModalOpen:false, saveChangesModalOpen: false, rateTransactionModalOpen: false, reportModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Waiting', 'Delivered','Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, thirdClicked: {{ in_array($order->item_status, ['Rated']) ? 'true' : 'false' }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}', changeStatusModalOpen: false, statusChange : '' }"
+    x-data="{ openBurger: false, isPaid: {{ $order->is_paid ? 'true' : 'false' }}, paymentStatus: '', isChangeRoleModalOpen: false, cancelOrderModalOpen:false, saveChangesModalOpen: false, rateTransactionModalOpen: false, reportModalOpen: false, status: '{{ $order->item_status }}', firstClicked: {{ in_array($order->item_status, ['Acquired', 'Waiting', 'Delivered','Rated']) ? 'true' : 'false' }}, secondClicked: {{ in_array($order->item_status, ['Delivered', 'Rated']) ? 'true' : 'false'  }}, thirdClicked: {{ in_array($order->item_status, ['Rated']) ? 'true' : 'false' }}, updateMode: false, openTransactionDots: false, transactionStatus: '{{ $transaction->status }}', changeStatusModalOpen: false, statusChange : '', exists: $wire.entangle('exists') }"
     x-cloak>
 
     @if(session('start_success'))
-    <div
-        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-        <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
+        <div
+            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
 
-            <div class="text-center text-sm">
-                {{ session('start_success') }}
+                <div class="text-center text-sm">
+                    {{ session('start_success') }}
+                </div>
             </div>
+            <!-- Close Button -->
+            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+                &times;
+            </button>
         </div>
-        <!-- Close Button -->
-        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-            &times;
-        </button>
-    </div>
     @elseif(session('item_rated_success'))
     <div
         class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
@@ -60,23 +60,42 @@
         </button>
     </div>
     @elseif(session('error'))
-    <div
-        class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
-        <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-            <div class="text-center text-sm">
-                {{ session('error') }}
+        <div
+            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <div class="text-center text-sm">
+                    {{ session('error') }}
+                </div>
             </div>
+            <!-- Close Button -->
+            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+                &times;
+            </button>
         </div>
-        <!-- Close Button -->
-        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
-            &times;
-        </button>
-    </div>
+    @elseif(session('report_user_success'))
+        <div
+            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#014421] border-t border-white text-white px-1.5 py-1 w-4/6 mid:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+
+                <div class="text-center text-sm">
+                    {{ session('report_user_success') }}
+                </div>
+            </div>
+            <!-- Close Button -->
+            <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+                &times;
+            </button>
+        </div>
     @endif
 
     <livewire:navbar />
@@ -84,7 +103,7 @@
 
     <!-- LOADING STATE -->
     @teleport('body')
-    <div wire:loading.delay wire:target="updateStatus, cancelOrder, confirmDelivery, rateTransaction"
+    <div wire:loading.delay wire:target="updateStatus, cancelOrder, confirmDelivery, rateTransaction, reportUser"
         class="fixed inset-0 bg-white bg-opacity-50 z-50 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
             class="w-12 h-12 text-gray-200 animate-spin fill-[#014421]"
@@ -404,7 +423,7 @@
                                         <!-- Dynamic Text -->
                                         <span class="hidden sm:block">Message</span>
                                     </a>
-                                    <button @click="reportModalOpen = true; document.body.style.overflow = 'hidden';" class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-red-700 hover:bg-red-600 rounded-lg text-center">
+                                    <button @click="reportModalOpen = true; document.body.style.overflow = 'hidden';" x-bind:disabled="exists" class="ml-auto px-3 py-1.5 text-xs md:text-sm font-medium text-white inline-flex items-center justify-center bg-red-700 enabled:hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed rounded-lg text-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-white sm:me-2">
                                             <path fill-rule="evenodd" d="M3 2.25a.75.75 0 0 1 .75.75v.54l1.838-.46a9.75 9.75 0 0 1 6.725.738l.108.054A8.25 8.25 0 0 0 18 4.524l3.11-.732a.75.75 0 0 1 .917.81 47.784 47.784 0 0 0 .005 10.337.75.75 0 0 1-.574.812l-3.114.733a9.75 9.75 0 0 1-6.594-.77l-.108-.054a8.25 8.25 0 0 0-5.69-.625l-2.202.55V21a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 3 2.25Z" clip-rule="evenodd" />
                                         </svg>
@@ -693,50 +712,49 @@
     </div>
 
     <!-- REPORT MODAL -->
-    @teleport('body')
     <div @keydown.escape.window="reportModalOpen = false; document.body.style.overflow = 'auto';"
         x-data="{ confirm: '', errors: {} }" x-show="reportModalOpen" x-transition:enter.duration.25ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-poppins">
         <div class="bg-white py-4 px-2 md:px-6 md:py-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative" @click.outside="reportModalOpen = false; document.body.style.overflow = 'auto';">
-            <div class="flex flex-col items-center gap-2 sm:gap-3" x-data="{ reportPageOne: true, reportPageTwo: false, reportType: '', reportText: '' }">
+            <div class="flex flex-col items-center gap-2 sm:gap-3" x-data="{ reportPageOne: true, reportPageTwo: false, reportType: '', reportText: $wire.entangle('complaint') }">
                 <svg class="size-7 md:size-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#dc2626" d="M14.55 12.22a4.92 4.92 0 0 0 1.7-3.72a5 5 0 0 0-10 0A4.92 4.92 0 0 0 8 12.22a8 8 0 0 0-4.7 7.28a1 1 0 0 0 2 0a6 6 0 0 1 12 0a1 1 0 0 0 2 0a8 8 0 0 0-4.75-7.28Zm-3.3-.72a3 3 0 1 1 3-3a3 3 0 0 1-3 3Zm8.5-5a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1ZM19 11.79a1.05 1.05 0 0 0-.29.71a1 1 0 0 0 .29.71a1.15 1.15 0 0 0 .33.21a.94.94 0 0 0 .76 0a.9.9 0 0 0 .54-.54a.84.84 0 0 0 .08-.38a1 1 0 0 0-1.71-.71Z"/></svg>
                 <p class="text-lg sm:text-xl font-medium text-black">Report user</p>
                 <div class="w-full text-gray-600" x-show="reportPageOne">
                     <p class="text-sm md:text-base text-center font-medium text-gray-700">Why are you reporting this user?</p>
                     <div class="w-full rounded-md flex flex-col gap-0.5 text-medium text-sm md:text-base mt-2">
-                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'spam';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
+                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'Spam';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
                             <p>Spam</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 md:size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4b5563" class="size-5 md:size-6">
                                 <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'illegal items';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
+                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'Selling illegal items';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
                             <p>Selling illegal items</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 md:size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4b5563" class="size-5 md:size-6">
                                 <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'harassment';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
+                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'Bullying, harassment, or abuse';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
                             <p>Bullying, harassment, or abuse</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 md:size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4b5563" class="size-5 md:size-6">
                                 <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'scam';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
+                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'Scam or false information';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
                             <p>Scam or false information</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 md:size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4b5563" class="size-5 md:size-6">
                                 <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'fake identity';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
+                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'Fake identity';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
                             <p>Fake identity</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 md:size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4b5563" class="size-5 md:size-6">
                                 <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'others';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
+                        <button @click="reportPageOne = false; reportPageTwo = true; reportType = 'Others';" class="w-full flex items-center justify-between hover:bg-gray-100 p-1.5 md:p-2 rounded md:rounded-md">
                             <p>Others</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 md:size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4b5563" class="size-5 md:size-6">
                                 <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
                             </svg>
                         </button>
@@ -744,13 +762,19 @@
                 </div>
                 <div x-show="reportPageTwo" class="w-full flex flex-col gap-0.5">
                     <p class="text-sm md:text-base text-center font-medium text-gray-700">We want to hear what happened.</p>
-                    <textarea rows="5" class="w-full border rounded-md p-1.5 mt-2 resize-none text-sm md:text-base" ></textarea>
+                    <div class="flex gap-1 items-center mt-4 mb-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+                            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+                        </svg>
+                        <label class="text-sm md:text-base text-start font-medium text-gray-700" for="report_field" x-text="reportType"></label>
+                    </div>
+                    <textarea x-model="reportText" id="report_field" rows="5" placeholder="Enter your complaint here..." class="w-full border rounded-md p-2 resize-none text-sm text-gray-700"></textarea>
                     <div class="mt-5 flex gap-2">
                         <button @click="reportPageOne = true; reportPageTwo = false; reportType = '';"
                             class="px-2.5 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Back</button>
-                        <button x-data="{ disabled: false }" :disabled="disabled"
-                            @click="disabled = true; reportModalOpen = false;"
-                            class="px-2.5 sm:px-3 py-1.5 text-sm bg-red-700 text-white rounded-md hover:bg-red-600">
+                        <button x-data="{ disabled: false }" :disabled="disabled || reportText.trim().length === 0"
+                            @click="disabled = true; $wire.reportUser(reportType);"
+                            class="px-2.5 sm:px-3 py-1.5 text-sm enabled:bg-red-700 text-white rounded-md enabled:hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed">
                             Submit
                         </button>
                     </div>
@@ -765,7 +789,6 @@
             </div>
         </div>
     </div>
-    @endteleport
 
 </div>
 
