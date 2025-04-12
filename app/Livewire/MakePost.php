@@ -82,11 +82,9 @@ class MakePost extends Component
                 'poster_id' => $this->user->id
             ]);
 
-            ;
             session()->flash('create_post_success', 'Post created successfully!');
             return $this->redirect(route('dashboard'), true);
         } catch (\Throwable $th) {
-            dd($th);
             session()->flash('create_post_error', 'Failed to create post. Please try again.');
             return $this->redirect(route('dashboard'), true);
         }
