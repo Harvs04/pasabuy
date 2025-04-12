@@ -157,7 +157,7 @@ class OrderView extends Component
     {
         $transaction = Post::where('id', $this->t_id)->first();
         $user = User::where('id', $this->order->customer_id)->first();
-        $this->exists = Report::where('sender_id', $this->user->id)->where('reported_id', $transaction->user_id)->where('post_id', $this->t_id)->exists();
+        $this->exists = Report::where('sender_id', $this->user->id)->where('reported_id', $this->order->provider_id)->where('post_id', $this->t_id)->exists();
         return view('livewire.order-view', ['transaction' => $transaction, 'user' => $user]);
     }
 }
