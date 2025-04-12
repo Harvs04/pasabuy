@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Conversation;
+use App\Models\Report;
 
 class TransactionOrder extends Component
 {
@@ -17,6 +18,10 @@ class TransactionOrder extends Component
     public $orders;
     public $user;
     public $convo_id;
+
+
+    public $complaint = '';
+    public $exists;
 
     public function __construct()
     {
@@ -166,11 +171,33 @@ class TransactionOrder extends Component
         }
     }
 
+    public function reportUser($complaint_type) {
+        try {
+
+            $report = [
+                'sender_id' => $this->user->id,
+                'reported_id' => $this->order->customer_id,
+                'post_id' => $this->t_id,
+                'order_id' => $this->order->id,
+                'type' => $complaint_type,
+                'complaint' => $this->complaint
+            ];
+            Report::create($report);
+
+            session()->flash('report_user_success', 'Report added!');
+            return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);
+        }
+    }
+
     public function render()
     {
         $transaction = Post::where('id', $this->t_id)->first();
         $this->orders = $transaction->orders;
         $user = User::where('id', $this->order->provider_id)->first();
+        $this->exists = Report::where('sender_id', $this->user->id)->where('reported_id', $this->order->customer_id)->where('post_id', $this->t_id)->exists();
         return view('livewire.transaction-order', ['transaction' => $transaction, 'user' => $user]);
     }
 }
