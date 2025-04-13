@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Post;
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,10 @@ class PostsStream extends Component
     public User $user;
     public $posts;
     public $type;
+    public $complaint = '';
+    public $post_id;
+    public $reported_id;
+    public $exists;
 
     public function __construct()
     {
@@ -39,8 +44,29 @@ class PostsStream extends Component
         HTML;
     }
 
+    public function reportUser($post_id, $reported_id, $complaint_type) {
+        try {
+
+            $report = [
+                'sender_id' => $this->user->id,
+                'reported_id' => $reported_id,
+                'post_id' => $post_id,
+                'type' => $complaint_type,
+                'complaint' => $this->complaint
+            ];
+            Report::create($report);
+
+            session()->flash('report_user_success', 'Report added!');
+            return $this->redirect(route('dashboard'), true);
+        } catch (\Throwable $th) {
+            session()->flash('error', 'An error occurred. Please try again.');
+            return $this->redirect(route('dashboard'), true);
+        }
+    }
+
     public function render()
     {
+        $this->exists = Report::where('sender_id', $this->user->id)->where('reported_id', $this->reported_id)->where('post_id', $this->post_id)->exists();
         return view('livewire.posts-stream');
     }
 }
