@@ -84,6 +84,10 @@
                                        <span class="font-normal">You have created a new item request.</span>
                                     @elseif ($notif->type === 'new transaction')
                                        <span class="font-normal">You have created a new transaction.</span>
+                                    @elseif ($notif->type === 'report added')
+                                       <span class="font-normal">Your report has been submitted to the admin and will be reviewed.</span>
+                                    @elseif ($notif->type === 'report resolved')
+                                       <span class="font-normal">We have a verdict about your reported user.</span>
                                     @endif
                                  </span>
                                  <span class="text-xs">{{ $notif->created_at->Timezone('Singapore')->format('F j, Y \\a\\t h:i A') }}</span>
@@ -460,6 +464,68 @@
                                                             </div>    
                                                       </div>                                                                                           
                                                    </div>
+                                                @elseif(($notif_type ?? 'N/A') === 'report added')
+                                                <div class="flex flex-col p-4 bg-red-50 rounded-lg border border-red-100 mt-1.5">
+                                                   @php  
+                                                      $report = App\Models\Report::where('id', ($notif_instance->order_id ?? ''))->first();
+                                                      $post = App\Models\Post::where('id', ($report->post_id ?? ''))->first();
+                                                      $reported = App\Models\User::where('id', $report->reported_id)->first();
+                                                   @endphp
+                                                   
+                                                   <div class="flex items-center mb-3">
+                                                      <div class="mr-3">
+                                                            <div class="bg-red-100 p-2 rounded-full">
+                                                               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                                               </svg>
+                                                            </div>
+                                                      </div>
+                                                      <div class="flex-1">
+                                                            <p class="font-medium text-gray-700">Your report about user <span class="font-medium underline">{{ $reported->name }}</span> has been submitted!</p>
+                                                            <div class="text-xs text-gray-500 mt-1">{{ $notif_instance->created_at->Timezone('Singapore')->format('M d, Y · h:i A') }}</div>
+                                                      </div>
+                                                   </div>
+                                                   <p class="text-sm text-gray-600 mb-2">We'll review this report and take appropriate action.</p>
+                                                   
+                                                   <div class="bg-white p-3 rounded-md mb-3">
+                                                      @if($report && $report->type)
+                                                         <div class="flex flex-col gap-1.5 items-start">
+                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                               {{ ucfirst($report->type) }}
+                                                            </span>
+                                                            <span class="text-sm text-gray-700">{{ $report->complaint }}</span>
+                                                         </div>
+                                                      @endif
+                                                   </div>
+                                                   
+                                                   <div class="flex items-center justify-between">
+                                                      <div class="flex items-center">
+                                                            <div class="relative">
+                                                               <img src="{{ $user->profile_pic_url }}" alt="Your profile" class="w-8 md:w-10 h-8 md:h-10 rounded-full object-cover border-2 border-white shadow-sm">
+                                                               <div class="absolute -bottom-1 -right-1 bg-green-500 rounded-full w-3 h-3 border-2 border-white"></div>
+                                                            </div>
+                                                            <p class="ml-2 text-xs font-medium text-gray-600">You</p>
+                                                      </div>
+                                                      
+                                                      <div class="flex items-center justify-center">
+                                                            <div class="h-px w-16 bg-gray-300"></div>
+                                                            <div class="mx-2">
+                                                               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                                               </svg>
+                                                            </div>
+                                                            <div class="h-px w-16 bg-gray-300"></div>
+                                                      </div>
+                                                      
+                                                      <div class="flex items-center">
+                                                            <p class="mr-2 text-xs font-medium text-gray-600">Reported</p>
+                                                            <div class="relative">
+                                                               <img src="{{ $reported->profile_pic_url }}" alt="{{ $reported->name }}'s profile" class="w-8 md:w-10 h-8 md:h-10 rounded-full object-cover border-2 border-white shadow-sm">
+                                                               <div class="absolute -bottom-1 -right-1 bg-red-500 rounded-full w-3 h-3 border-2 border-white"></div>
+                                                            </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
                                                 @endif
                                              </div>
                                           </div>
