@@ -31,7 +31,7 @@
             </div>
         @else
             @foreach($posts as $post)
-                <div class="bg-white border sm:rounded-md text-gray-800 text-sm relative" x-data="{ openComment: false, openList: false, show: true, reportModalOpen: false, post_id: $wire.entangle('post_id'), reported_id: $wire.entangle('reported_id'), exists: $wire.entangle('exists') }">
+                <div class="bg-white border sm:rounded-md text-gray-800 text-sm relative" x-data="{ openComment: false, openList: false, show: true, reportModalOpen: false, post_id: $wire.entangle('post_id'), reported_id: $wire.entangle('reported_id') }">
                     <div x-show="show" class="pt-3 px-3 pb-2">
                         <div class="flex flex-row items-start gap-3">
                             <img class="w-9 h-9 md:w-10 md:h-10 object-cover rounded-full" src="{{ App\Models\User::where('id', $post->user_id)->first()->profile_pic_url }}" alt="user_photo">
@@ -80,28 +80,25 @@
                                         @endif
                                     </span>
                                 </span>
-                                <button @click="openList = true; $wire.set('post_id', '{{ $post->id }}'); $wire.set('reported_id', '{{ $post->user_id }}');" class="p-1.5 hover:bg-gray-100 rounded-full">
+                                <button @click="openList = true; post_id = '{{ $post->id }}'; reported_id = '{{ $post->user_id }}';" class="p-1.5 hover:bg-gray-100 rounded-full">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                                 </button>
                             </div>
     
                             <!-- LIST OF ACTIONS -->
-                            <div class="flex flex-col absolute top-12 right-4 border rounded-md" x-show="openList" @click.outside="openList = false">
+                            <div class="flex flex-col items-start absolute top-12 right-4 border rounded-md" x-show="openList" @click.outside="openList = false">
                                 <button class="flex gap-1.5 items-center p-2 hover:bg-gray-100 rounded-sm" @click="show = false; openList = false;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
                                     </svg>
-                                    <p class="text-start">Hide post</p>
+                                    <p class="text-start text-sm">Hide post</p>
                                 </button>
                                 @if ($user->id !== $post->user_id)
-                                    <button wire:loading.class="hidden" class="flex items-center gap-1.5 py-2 px-3 enabled:hover:bg-red-500 enabled:hover:text-white disabled:cursor-not-allowed rounded-sm" @click="reportModalOpen = true; document.body.style.overflow = 'hidden';" x-bind:disabled="exists">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <button class="flex items-center gap-1.5 py-2 px-3 enabled:hover:bg-red-500 enabled:hover:text-white disabled:cursor-not-allowed rounded-sm w-full" @click="reportModalOpen = true; document.body.style.overflow = 'hidden';">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />
                                         </svg>
-                                        <p class="text-start">Report</p>    
-                                    </button>
-                                    <button wire:loading class="flex items-center gap-1.5 py-2 px-3 rounded-sm">
-                                        <p class="">Loading...</p>    
+                                        <p class="text-start text-sm">Report</p>    
                                     </button>
                                 @endif
                             </div>

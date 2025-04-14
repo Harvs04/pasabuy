@@ -17,7 +17,6 @@ class PostsStream extends Component
     public $complaint = '';
     public $post_id;
     public $reported_id;
-    public $exists;
 
     public function __construct()
     {
@@ -66,7 +65,6 @@ class PostsStream extends Component
 
     public function render()
     {
-        $this->exists = Report::where('sender_id', $this->user->id)->where('reported_id', $this->reported_id)->where('post_id', $this->post_id)->exists();
         return view('livewire.posts-stream');
     }
 }
