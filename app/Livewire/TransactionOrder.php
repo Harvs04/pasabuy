@@ -182,7 +182,16 @@ class TransactionOrder extends Component
                 'type' => $complaint_type,
                 'complaint' => $this->complaint
             ];
-            Report::create($report);
+            $new_report = Report::create($report);
+
+            $notif = [
+                'type' => 'report added',
+                'post_id' => $this->t_id,
+                'order_id' => $new_report->id,
+                'actor_id' => $this->user->id,
+                'poster_id' => $this->user->id,
+            ];
+            Notification::create($notif);
 
             session()->flash('report_user_success', 'Report added!');
             return $this->redirect(route('transaction-order.view', ['transaction_id' => $this->t_id, 'order_id' => $this->order->id]), true);

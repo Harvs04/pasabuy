@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Post;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class PostsStream extends Component
@@ -53,11 +54,22 @@ class PostsStream extends Component
                 'type' => $complaint_type,
                 'complaint' => $this->complaint
             ];
-            Report::create($report);
+            $new_report = Report::create($report);
+            // dd(['id' => $new_report->id]);
 
+            $notif = [
+                'type' => 'report added',
+                'post_id' => $post_id,
+                'order_id' => $new_report->id,
+                'actor_id' => $this->user->id,
+                'poster_id' => $this->user->id,
+            ];
+            Notification::create($notif);
+            // dd('notif na');
             session()->flash('report_user_success', 'Report added!');
             return $this->redirect(route('dashboard'), true);
         } catch (\Throwable $th) {
+            dd($th);
             session()->flash('error', 'An error occurred. Please try again.');
             return $this->redirect(route('dashboard'), true);
         }
