@@ -262,6 +262,9 @@ Route::get('/upload', function() {
 })->name('upload');
 
 
+// ADMIN
+
+
 Route::resource('cloudinary', CloudinaryController::class);
 
 Route::fallback([PageController::class, 'notfound']);
