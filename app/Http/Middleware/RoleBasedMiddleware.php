@@ -17,6 +17,11 @@ class RoleBasedMiddleware
     public function handle($request, Closure $next)
     {
         if (Auth::check()) {
+
+            if (Auth::user()->role === 'admin') {
+                return response()->view('admin.admin-dashboard');
+            }
+            
             return response()->view('dashboard');
         }
 
