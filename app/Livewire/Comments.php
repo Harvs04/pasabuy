@@ -75,12 +75,12 @@ class Comments extends Component
         <div class="w-full px-2 py-4 border-t">
             <div class="w-full animate-pulse flex justify-between">
                 <div class="w-24">
-                    <div class="w-full h-2 bg-gray-500 rounded-full"></div>
+                    <div class="w-full h-2 bg-gray-300 rounded-full"></div>
                 </div>
                 <div class="w-10/12 flex gap-4">
-                    <div class="w-1/3 h-2 bg-gray-500 rounded-full"></div>
-                    <div class="w-1/3 h-2 bg-gray-500 rounded-full"></div>
-                    <div class="w-1/3 h-2 bg-gray-500 rounded-full"></div>
+                    <div class="w-1/3 h-2 bg-gray-300 rounded-full"></div>
+                    <div class="w-1/3 h-2 bg-gray-300 rounded-full"></div>
+                    <div class="w-1/3 h-2 bg-gray-300 rounded-full"></div>
                 </div>
             </div>
         </div>

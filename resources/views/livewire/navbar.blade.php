@@ -87,7 +87,7 @@
                                     @elseif ($notif->type === 'report added')
                                        <span class="font-normal">Your report has been submitted to the admin and will be reviewed.</span>
                                     @elseif ($notif->type === 'report resolved')
-                                       <span class="font-normal">We have a verdict about your reported user.</span>
+                                       <span class="font-normal">Your report has been resolved.</span>
                                     @endif
                                  </span>
                                  <span class="text-xs">{{ $notif->created_at->Timezone('Singapore')->format('F j, Y \\a\\t h:i A') }}</span>
@@ -465,7 +465,7 @@
                                                       </div>                                                                                           
                                                    </div>
                                                 @elseif(($notif_type ?? 'N/A') === 'report added')
-                                                <div class="flex flex-col p-4 bg-red-50 rounded-lg border border-red-100 mt-1.5">
+                                                <div class="flex flex-col p-4 bg-red-50 rounded-lg border border-red-200 mt-1.5">
                                                    @php  
                                                       $report = App\Models\Report::where('id', ($notif_instance->order_id ?? ''))->first();
                                                       $post = App\Models\Post::where('id', ($report->post_id ?? ''))->first();
@@ -527,7 +527,7 @@
                                                    </div>
                                                 </div>
                                                 @elseif(($notif_type ?? 'N/A') === 'report resolved')
-                                                   <div class="flex flex-col p-4 bg-green-50 rounded-lg border border-green-100 mt-1.5">
+                                                   <div class="flex flex-col p-4 bg-green-50 rounded-lg border border-green-200 mt-1.5">
                                                       @php  
                                                             $report = App\Models\Report::where('id', ($notif_instance->order_id ?? ''))->first();
                                                             $post = App\Models\Post::where('id', ($report->post_id ?? ''))->first();
