@@ -526,6 +526,57 @@
                                                       </div>
                                                    </div>
                                                 </div>
+                                                @elseif(($notif_type ?? 'N/A') === 'report resolved')
+                                                   <div class="flex flex-col p-4 bg-green-50 rounded-lg border border-green-100 mt-1.5">
+                                                      @php  
+                                                            $report = App\Models\Report::where('id', ($notif_instance->order_id ?? ''))->first();
+                                                            $post = App\Models\Post::where('id', ($report->post_id ?? ''))->first();
+                                                            $reported = App\Models\User::where('id', $report->reported_id)->first();
+                                                      @endphp
+                                                      
+                                                      <div class="flex items-center mb-3">
+                                                            <div class="mr-3">
+                                                               <div class="bg-green-100 p-2 rounded-full">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                                                  </svg>
+                                                               </div>
+                                                            </div>
+                                                            <div class="flex-1">
+                                                               <p class="font-medium text-gray-700">Your report about <span class="font-medium underline">{{ $reported->name }}</span> has been resolved!</p>
+                                                               <div class="text-xs text-gray-500 mt-1">{{ $notif_instance->created_at->timezone('Singapore')->format('M d, Y · h:i A') }}</div>
+                                                            </div>
+                                                      </div>
+                                                      
+                                                      <p class="text-sm text-gray-600 mb-2">Thank you for helping keep our community safe.</p>
+                                                      
+                                                      <div class="bg-white p-3 rounded-md mb-3">
+                                                            <div class="flex flex-col gap-1.5 items-start">
+                                                               <div class="flex items-center justify-between w-full">
+                                                                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                        Resolved
+                                                                  </span>
+                                                                  @if($report && $report->type)
+                                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                                           {{ ucfirst($report->type) }}
+                                                                        </span>
+                                                                  @endif
+                                                               </div>
+                                                               @if($report && $report->resolution_note)
+                                                                  <div class="mt-2 w-full">
+                                                                        <p class="text-xs text-gray-500 mb-1">Resolution notes:</p>
+                                                                        <p class="text-sm text-gray-700 bg-gray-50 p-2 rounded">{{ $report->resolution_note }}</p>
+                                                                  </div>
+                                                               @endif
+                                                               @if($report && $report->complaint)
+                                                                  <div class="mt-2 w-full">
+                                                                        <p class="text-xs text-gray-500 mb-1">Original complaint:</p>
+                                                                        <p class="text-sm text-gray-700 bg-gray-50 p-2 rounded">{{ $report->complaint }}</p>
+                                                                  </div>
+                                                               @endif
+                                                            </div>
+                                                      </div>
+                                                   </div>
                                                 @endif
                                              </div>
                                           </div>
