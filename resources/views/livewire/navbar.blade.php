@@ -24,7 +24,7 @@
             <div class="flex items-center gap-2" x-data="{ open: false }">
                <div @click.outside="openNotification = false">
                   <!-- NOTIFICATIONS --> 
-                  <button @click="openNotification = !openNotification; $wire.updateIsSeen();" class="relative mt-1 p-1.5 hover:bg-green-900 hover:rounded-full">
+                  <button @click="openNotification = !openNotification; $wire.updateIsSeen();" class="relative mt-1 p-1.5 hover:bg-green-900 hover:rounded-full {{ $user->role === 'admin' ? 'hidden' : 'block' }}">
                      <div class="relative flex items-center">
                         <!-- Notification Bell Icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" class="size-7 sm:size-8 transform scale-90">
@@ -635,7 +635,7 @@
                      </div>
                      <ul class="py-1">
                         <li>
-                        <button type="button" @click="isChangeRoleModalOpen = true; document.body.style.overflow = 'hidden';" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Switch to {{ $user->role === 'customer' ? 'Provider' : 'Customer' }} </button>
+                        <button type="button" @click="isChangeRoleModalOpen = true; document.body.style.overflow = 'hidden';" class="{{ $user->role !== 'admin' ? 'block' : 'hidden' }} w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Switch to {{ $user->role === 'customer' ? 'Provider' : 'Customer' }} </button>
                         </li>
                         <li>
                         <button type="button" @click="$wire.signOut()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white" role="menuitem">Log out</button>
