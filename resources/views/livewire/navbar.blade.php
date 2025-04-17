@@ -6,14 +6,14 @@
             <div class="flex items-center justify-start rtl:justify-end w-4/6">
                <div class="flex flex-row gap-2 items-center ml-2 sm:ml-5">
                   <!-- BURGER MENU --> 
-                  <button @click="openBurger = !openBurger" class="relative p-1.5 -m-1.5 hover:bg-green-900 hover:rounded-full">
+                  <button @click="openBurger = !openBurger" class="relative p-1.5 -m-1.5 hover:bg-green-900 hover:rounded-full {{ $user->role === 'admin' ? 'hidden' : 'block' }}">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" class="size-6 sm:size-8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                      </svg>
                   </button>
    
                   <!-- LOGO -->
-                  <a href={{ route('dashboard') }}  class="flex ms-2 sm:ms-4 gap-2">
+                  <a href={{ route('dashboard') }}  class="flex {{ $user->role === 'admin' ? '' : 'ms-2 sm:ms-4' }} gap-2">
                      <img src="https://res.cloudinary.com/dflz6bik9/image/upload/v1738234575/Pasabuy-logo-no-name_knwf3t.png" class="h-14" alt="FlowBite Logo" />
                      <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">PASABUY</span>
                   </a>
