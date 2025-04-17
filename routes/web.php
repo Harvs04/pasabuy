@@ -263,7 +263,53 @@ Route::get('/upload', function() {
 
 
 // ADMIN
+Route::get('/admin/user-list', function() {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
 
+    if (Auth::user()->role !== 'admin') {
+        return view('missing');
+    }
+
+    return view('admin.user-list');
+})->name('user-list');
+
+Route::get('/admin/post-list', function() {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    if (Auth::user()->role !== 'admin') {
+        return view('missing');
+    }
+
+    return view('admin.post-list');
+})->name('post-list');
+
+Route::get('/admin/order-list', function() {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    if (Auth::user()->role !== 'admin') {
+        return view('missing');
+    }
+
+    return view('admin.order-list');
+})->name('order-list');
+
+Route::get('/admin/report-list', function() {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    if (Auth::user()->role !== 'admin') {
+        return view('missing');
+    }
+
+    return view('admin.report-list');
+})->name('report-list');
 
 Route::resource('cloudinary', CloudinaryController::class);
 
