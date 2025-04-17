@@ -15,7 +15,7 @@ class UserList extends Component
     public function __construct()
     {
         $this->user = Auth::user();
-        $this->users = User::all();
+        $this->users = User::whereIn('role', ['customer', 'provider'])->get();
     }
     public function render()
     {
