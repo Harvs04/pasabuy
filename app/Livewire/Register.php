@@ -191,13 +191,17 @@ class Register extends Component
             $score++;
         }
 
-        ;
 
-        if ($score >= 3) {
+        if ($score == 4) {
             // check if the email already exists
             $search = User::where('email', $this->up_email)->first();
             if ($search) {
-                session()->flash('register_error', 'Your registration was disapproved because your email is already used.');
+                session()->flash('register_error', 'Your registration was disapproved because your email is already in use.');
+                return $this->redirect(route('login', true));
+            }
+            $contact = User::where('contact_number', $this->contact_number)->first();
+            if ($contact) {
+                session()->flash('register_error_contact', 'Your registration was disapproved because your contact number is already in use.');
                 return $this->redirect(route('login', true));
             }
             User::create([
