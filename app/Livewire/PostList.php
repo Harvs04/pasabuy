@@ -17,6 +17,24 @@ class PostList extends Component
         $this->posts = Post::all();
     }
 
+    public function deletePost($post_id)
+    {   
+        try {
+            $postToDelete = Post::where('id', $post_id)->first();
+            if ($postToDelete) {
+                $postToDelete->delete();
+                session()->flash('post_deleted', 'post deleted successfully.');
+                return $this->redirect(route('post-list'));
+            } else {
+                session()->flash('error', 'post not found.');
+                return $this->redirect(route('post-list'));
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the post: ' . $e->getMessage());
+            return $this->redirect(route('post-list'));
+        } 
+    }
+
     public function render()
     {
         return view('livewire.post-list');
