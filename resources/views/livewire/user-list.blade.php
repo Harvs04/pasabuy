@@ -446,14 +446,11 @@
 
                 <!-- USER DETAILS MODAL -->
                 @teleport('body')
-                    <div x-show="userDetailsOpen" x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 transform scale-95"
-                        x-transition:enter-end="opacity-100 transform scale-100"
-                        x-transition:leave="transition ease-in duration-200"
-                        x-transition:leave-start="opacity-100 transform scale-100"
-                        x-transition:leave-end="opacity-0 transform scale-95"
-                        @keydown.escape.window="userDetailsOpen = false"
-                        class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                    <div x-show="userDetailsOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+                    x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                        @keydown.escape.window="userDetailsOpen = false">
 
                         <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 font-poppins"
                             @click.outside="userDetailsOpen = false">
@@ -590,14 +587,12 @@
 
                 <!-- DELETE USER MODAL -->
                 @teleport('body')
-                    <div x-show="deleteUserModalOpen" x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 transform scale-95"
-                        x-transition:enter-end="opacity-100 transform scale-100"
-                        x-transition:leave="transition ease-in duration-200"
-                        x-transition:leave-start="opacity-100 transform scale-100"
-                        x-transition:leave-end="opacity-0 transform scale-95"
+                    <div x-show="deleteUserModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+                    x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                         @keydown.escape.window="deleteUserModalOpen = false"
-                        class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                        >
                         <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 font-poppins"
                             @click.outside="deleteUserModalOpen = false"
                             x-data="{ deleteConfirmation: '' }">
