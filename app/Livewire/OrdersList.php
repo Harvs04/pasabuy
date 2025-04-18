@@ -38,16 +38,6 @@ class OrdersList extends Component
             foreach ($notifications as $notification) {
                 if ($notification->order_count === 1) {
                     $notification->delete();
-                } else {
-                    $orderIds = $notification->order_id; // Get current array
-            
-                    // Remove the specific order_id
-                    $orderIds = array_filter($orderIds, function ($id) use ($order_id) {
-                        return $id != $order_id;
-                    });
-                    $notification->order_id = array_values($orderIds); // Reindex
-                    $notification->order_count -= 1;
-                    $notification->save();
                 }
             }
 
