@@ -618,12 +618,12 @@
                             <!-- User Information -->
                             <div class="flex items-center p-4 mb-6 bg-gray-50 rounded-lg">
                                 <div class="flex-shrink-0 h-12 w-12">
-                                    <img class="h-12 w-12 rounded-full object-cover" :src="selectedUser.profile_pic_url"
-                                        :alt="selectedUser.name">
+                                    <img class="h-12 w-12 rounded-full object-cover" :src="selectedUser?.profile_pic_url"
+                                        :alt="selectedUser?.name">
                                 </div>
                                 <div class="ml-4 flex-grow">
-                                    <div class="text-base font-medium text-gray-900" x-text="selectedUser.name"></div>
-                                    <div class="text-sm text-gray-500" x-text="selectedUser.email"></div>
+                                    <div class="text-base font-medium text-gray-900" x-text="selectedUser?.name"></div>
+                                    <div class="text-sm text-gray-500" x-text="selectedUser?.email"></div>
                                 </div>
                             </div>
 
