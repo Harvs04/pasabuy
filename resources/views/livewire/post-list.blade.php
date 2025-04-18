@@ -67,14 +67,14 @@
     <div class="sm:transition-all sm:duration-300 sm:transform relative flex-grow flex items-center justify-center p-4"
         style="margin-top: 4.3rem;" wire:loading.class="hidden" wire:target="switchRole, applyFilter, clearFilter">
         <div class="flex flex-col items-center justify-center w-full max-w-5xl px-4">
-            <div class="flex items-center gap-2 text-center w-full md:w-9/12 p-4 rounded-md bg-white shadow-sm border">
-                <a href="{{ route('dashboard') }}" class="p-1.5 hover:bg-gray-100 rounded-full">
+            <div class="flex relative items-center justify-center gap-2 text-center w-full md:w-9/12 p-4 rounded-md bg-white shadow-sm border">
+                <a href="{{ route('dashboard') }}" class="absolute left-4 p-1.5 hover:bg-gray-100 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-4 md:size-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                     </svg>
                 </a>
-                <p class="text-black text-2xl font-medium">Post list</p>
+                <p class="text-black text-lg md:text-2xl font-medium">Post list</p>
             </div>
 
             <!-- Card List -->
