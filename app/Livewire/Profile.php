@@ -236,7 +236,14 @@ class Profile extends Component
     {
         // dd(['contact' => $this->contact, 'constituent' => $this->constituent, 'college' => $this->selectedCollege, 'degprog' => $this->degprog]);
         $user = $this->user;
-        if ($this->contact !== '') $user->contact_number = $this->contact;
+        if ($this->contact !== '') {
+            $userFind = User::where('contact_number', $this->contact)->exists();
+            if ($userFind) {
+                session()->flash('contact_error', 'Contact number already exists.');
+                return $this->redirect(route('profile', ['name' => $user->name]), true);
+            }
+            $user->contact_number = $this->contact;
+        }
         if ($this->constituent !== '') $user->constituent = $this->constituent;
         if ($this->constituent === 'staff') $user->degree_program = "";
         if ($this->selectedCollege !== '') $user->college = $this->selectedCollege;
