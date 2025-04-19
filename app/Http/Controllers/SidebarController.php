@@ -9,20 +9,28 @@ class SidebarController extends Controller
 {
     public function messages()
     {
-        if (Auth::check()) {
-            return response()->view('messages');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Unauthorized access.');
+        }
+
+        if (Auth::user()->role === 'admin') {
+            return view('forbidden');
         }
     
-        return redirect()->route('login')->with('error', 'Unauthorized access.');
+        return response()->view('messages');
     }
 
     public function saved()
     {
-        if (Auth::check()) {
-            return response()->view('saved');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Unauthorized access.');
+        }
+
+        if (Auth::user()->role === 'admin') {
+            return view('forbidden');
         }
     
-        return redirect()->route('login')->with('error', 'Unauthorized access.');
+        return response()->view('saved');
     }
 
     public function orders()
@@ -31,7 +39,7 @@ class SidebarController extends Controller
             return redirect()->route('login')->with('error', 'Unauthorized access.');
         }
 
-        if (Auth::user()->role === 'provider') {
+        if (Auth::user()->role !== 'customer') {
             return redirect()->route('dashboard')->with('error', 'Unauthorized access.');
         }
         
@@ -44,7 +52,7 @@ class SidebarController extends Controller
             return redirect()->route('login')->with('error', 'Unauthorized access.');
         }
 
-        if (Auth::user()->role === 'customer') {
+        if (Auth::user()->role !== 'provider') {
             return redirect()->route('dashboard')->with('error', 'Unauthorized access.');
         }
         
@@ -53,10 +61,14 @@ class SidebarController extends Controller
 
     public function history()
     {
-        if (Auth::check()) {
-            return response()->view('history');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Unauthorized access.');
         }
-    
-        return redirect()->route('login')->with('error', 'Unauthorized access.');
+        
+        if (Auth::user()->role === 'admin') {
+            return view('forbidden');
+        }
+        
+        return response()->view('history');
     }
 }

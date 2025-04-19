@@ -45,6 +45,10 @@ Route::get('/messages/{convo_id}', function($convo_id){
         return redirect()->route('login');
     }
 
+    if (Auth::user()->role === 'admin') {
+        return view('forbidden');
+    }
+
     $convo = Conversation::where('id', $convo_id)->first();
     if (!$convo) {
         return view('missing');
@@ -218,6 +222,10 @@ Route::get('my-history/{order_id}', function($order_id) {
         return redirect()->route('login');
     }
 
+    if (Auth::user()->role === 'admin') {
+        return view('forbidden');
+    }
+
     $order = Order::where('id', $order_id)->first();
     
     if (!$order) {
@@ -251,6 +259,10 @@ Route::get('profile/{name}', function($name) {
     }
 
     if (Auth::user()->name !== $name) {
+        return view('forbidden');
+    }
+
+    if (Auth::user()->role === 'admin') {
         return view('forbidden');
     }
 
