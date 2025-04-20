@@ -623,14 +623,14 @@
                      </button>
                   </div>
                   <div class="absolute right-1 sm:right-0 top-10 z-40 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user" x-show="open" @click.outside="open = false">
-                     <div class="px-4 py-3 hover:bg-gray-100 hover:rounded-t-md">
+                     <div class="px-4 py-3 hover:bg-gray-100 hover:rounded-t-md {{ $user->role !== 'admin' ? 'block' : 'hidden' }}" >
                         <a href="{{ route('profile', ['name' => $user->name]) }}">
-                        <p class="text-sm text-gray-900 ">
-                           {{ $user-> name }}
-                        </p>
-                        <p class="text-sm font-medium text-gray-900 truncate ">
-                           {{ $user->email }}
-                        </p>
+                           <p class="text-sm text-gray-900 ">
+                              {{ $user-> name }}
+                           </p>
+                           <p class="text-sm font-medium text-gray-900 truncate ">
+                              {{ $user->email }}
+                           </p>
                         </a>
                      </div>
                      <ul class="py-1">
