@@ -234,7 +234,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <span
-                                        class="font-medium {{ $user->pasabuy_points >= 100 ? 'text-green-600' : 'text-red-600' }}">
+                                        class="font-medium {{ $user->pasabuy_points >= 80 ? 'text-green-600' : 'text-red-600' }}">
                                         {{ $user->pasabuy_points }} pts
                                     </span>
                                 </td>
