@@ -323,6 +323,18 @@ Route::get('/admin/report-list', function() {
     return view('admin.report-list');
 })->name('report-list');
 
+Route::get('/admin/feedback-list', function() {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    if (Auth::user()->role !== 'admin') {
+        return view('missing');
+    }
+
+    return view('admin.rating-list');
+})->name('feedback-list');
+
 Route::resource('cloudinary', CloudinaryController::class);
 
 Route::fallback([PageController::class, 'notfound']);
