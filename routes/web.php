@@ -299,6 +299,18 @@ Route::get('/admin/post-list', function() {
     return view('admin.post-list');
 })->name('post-list');
 
+Route::get('/admin/comment-list', function() {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    if (Auth::user()->role !== 'admin') {
+        return view('missing');
+    }
+
+    return view('admin.comment-list');
+})->name('comment-list');
+
 Route::get('/admin/order-list', function() {
     if (!Auth::check()) {
         return redirect()->route('login');
