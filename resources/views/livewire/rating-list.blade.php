@@ -327,7 +327,7 @@
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                         @keydown.escape.window="deleteFeedbackModalOpen = false"
                         >
-                        <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 font-poppins"
+                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 font-poppins"
                             @click.outside="deleteFeedbackModalOpen = false"
                             x-data="{ deleteConfirmation: '' }">
                             <!-- Header -->

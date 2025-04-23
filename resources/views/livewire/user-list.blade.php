@@ -452,7 +452,7 @@
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                         @keydown.escape.window="userDetailsOpen = false">
 
-                        <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 font-poppins"
+                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 font-poppins"
                             @click.outside="userDetailsOpen = false">
                             <!-- Header with user info -->
                             <div class="flex items-center justify-between mb-4">
@@ -593,7 +593,7 @@
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                         @keydown.escape.window="deleteUserModalOpen = false"
                         >
-                        <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 font-poppins"
+                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 font-poppins"
                             @click.outside="deleteUserModalOpen = false"
                             x-data="{ deleteConfirmation: '' }">
                             <!-- Header -->

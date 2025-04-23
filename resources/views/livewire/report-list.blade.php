@@ -308,7 +308,7 @@
                         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                         @keydown.escape.window="reportEditModalOpen = false; reportDetailsModalOpen = true;">
 
-                        <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 font-poppins"
+                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 font-poppins"
                             @click.outside="reportEditModalOpen = false; reportDetailsModalOpen = true;"
                             x-data="{ status: '', points_add: 0, points_minus: 0 }">
                             <div class="flex justify-between items-center mb-4">
