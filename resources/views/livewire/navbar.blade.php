@@ -600,7 +600,7 @@
                                                          liked your post.
                                                       @endif
                                                    </p>
-                                                   <p class="text-gray-700 {{ $notif_type === 'comment' ? 'block' : 'hidden' }}">{{ App\Models\Comment::where('post_id', $post_in_notif->id ?? '')->where('user_id', $actor->id ?? '')->where('created_at', $notif_instance->created_at ?? '')->first()->comment ?? '' }}</p>                              
+                                                   <p class="text-xs text-gray-700 italic {{ $notif_type === 'comment' ? 'block' : 'hidden' }}">{{ App\Models\Comment::where('post_id', $post_in_notif->id ?? '')->where('user_id', $actor->id ?? '')->where('created_at', $notif_instance->created_at ?? '')->first()->comment ?? '--- Deleted comment ---' }}</p>                              
                                                 </div>
                                              </div>
                                           </div>
