@@ -179,13 +179,15 @@
                 @if($db_comments->count() > 0) 
                     <div class="flex flex-col gap-2">
                         @foreach($db_comments as $comment)
-                            <div class="flex flex-row items-start gap-3 md:gap-4" x-data="{ showDate: false }">
-                                <img class="w-8 md:w-9 h-8 md:h-9 rounded-full object-cover" 
-                                    src="{{ App\Models\User::where('id', $comment->user_id)->first()->profile_pic_url }}" 
-                                    alt="user_photo">
+                            <div class="flex flex-row items-start gap-3" x-data="{ showDate: false }">
+                                <a href="{{ $comment->user_id !== $user->id ? route('user-profile', ['id' => $comment->user_id]) : route('profile', ['name' => $user->name]) }}" class="border rounded-full">                                
+                                    <img class="w-8 md:w-9 h-8 md:h-9 rounded-full object-cover" 
+                                        src="{{ App\Models\User::where('id', $comment->user_id)->first()->profile_pic_url }}" 
+                                        alt="user_photo">
+                                </a>
                                 <div class="flex flex-col items-start w-full">
                                     <div class="flex flex-row gap-2 items-center relative">
-                                        <p class="font-medium">{{ $comment->commenter }} <span class="text-gray-600 text-xs">{{ $post->user_id === $comment->user_id ? '⋅ OP' : '' }}</span></p>
+                                        <a href="{{ $comment->user_id !== $user->id ? route('user-profile', ['id' => $comment->user_id]) : route('profile', ['name' => $user->name]) }}" class="font-medium">{{ $comment->commenter }} <span class="text-gray-600 text-xs">{{ $post->user_id === $comment->user_id ? '⋅ OP' : '' }}</span></a>
                                         <p class="text-xs hover:underline" 
                                             @mouseenter="showDate = true" 
                                             @mouseleave="showDate = false">

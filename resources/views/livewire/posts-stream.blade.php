@@ -16,7 +16,7 @@
     </div>
     @endteleport
 
-    <div class="flex flex-col gap-2 sm:gap-4" x-data="{ selectedPost: '' }">
+    <div class="flex flex-col sm:gap-4" x-data="{ selectedPost: '' }">
         @if($posts->count() === 0)
         <script>
         document.body.style.overflow = "hidden";
@@ -36,12 +36,14 @@
             x-data="{ openComment: false, openList: false, show: true, reportModalOpen: false, post_id: $wire.entangle('post_id'), reported_id: $wire.entangle('reported_id') }">
             <div x-show="show" class="pt-3 px-3 pb-2">
                 <div class="flex flex-row items-start gap-3">
-                    <img class="w-9 h-9 md:w-10 md:h-10 object-cover rounded-full"
-                        src="{{ App\Models\User::where('id', $post->user_id)->first()->profile_pic_url }}"
-                        alt="user_photo">
+                    <a href="{{ $post->user_id !== $user->id ? route('user-profile', ['id' => $post->user_id]) : route('profile', ['name' => $user->name]) }}">
+                        <img class="w-9 h-9 md:w-10 md:h-10 object-cover rounded-full"
+                            src="{{ App\Models\User::where('id', $post->user_id)->first()->profile_pic_url }}"
+                            alt="user_photo">
+                    </a>
                     <div class="flex flex-col">
                         <div class="flex flex-col sm:flex-row sm:items-center text-sm gap-0 sm:gap-1">
-                            <p class="font-semibold"> {{ $post->poster_name }} </p>
+                            <a href="{{ $post->user_id !== $user->id ? route('user-profile', ['id' => $post->user_id]) : route('profile', ['name' => $user->name]) }}" class="font-semibold">{{ $post->poster_name }}</a>
                             <p class="">{{  $post->type === 'item_request' ? 'is looking for:' : 'is buying:' }} </p>
                         </div>
                         <p class="text-xs">
@@ -54,14 +56,14 @@
                                 @endphp
                                 @for ($i = 1; $i <= 5; $i++) @if ($i <=floor($averageRating)) <!-- Solid Star for full
                                     rating -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 xl:w-6 text-yellow-500"
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 text-yellow-500"
                                         viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd"
                                             d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
                                             clip-rule="evenodd" />
                                     </svg>
                                     @elseif ($i - $averageRating < 1) <!-- Half Star for fractional rating -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 xl:w-6 text-yellow-400"
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 text-yellow-400"
                                             viewBox="0 0 24 24" fill="currentColor">
                                             <defs>
                                                 <linearGradient id="half">
@@ -75,7 +77,7 @@
                                         </svg>
                                         @else
                                         <!-- Outline Star for empty rating -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 xl:w-6 text-gray-300" fill="none"
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 text-gray-300" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
