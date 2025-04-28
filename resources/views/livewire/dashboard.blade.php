@@ -419,6 +419,16 @@
                   <p x-show="'{{ $user->role }}' === 'provider'" class="ml-2 text-sm sm:text-sm text-[#7b1113]">You do not have enough PASABUY points to create and perform transactions.</p>
                </div>
             @endif
+            <div class="{{ $user->role === 'customer' ? 'bg-green-50 border-green-500' : 'bg-blue-50 border-blue-500'}} border-l-4 p-2.5 rounded-r-md shadow-sm">
+               <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 {{ $user->role === 'customer' ? 'text-green-500' : 'text-blue-500' }} mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                  <p class="text-sm {{ $user->role === 'customer' ? 'text-green-800' : 'text-blue-800' }} font-medium">
+                        Good day! {{ $user->name }}, you are currently in <span class="font-semibold">{{ ucfirst($user->role) }}</span> view!
+                  </p>
+               </div>
+            </div>
             <div class="flex items-center gap-3 px-3 py-3 bg-white border sm:rounded-md">  
                <a href="{{ route('profile', ['name' => $user->name]) }}" class="flex-shrink-0">
                   <img class="w-9 h-9 md:w-10 md:h-10 object-cover rounded-full border" 

@@ -38,22 +38,15 @@
                 <div class="flex flex-col pt-2 px-4 w-full sm:w-80 md:w-80 lg:w-96 bg-white flex-shrink-0 border-r"
                     x-data="{ search: '' }">
                     <div class="self-start flex flex-row items-center justify-start h-12 w-full">
-                        <div class="flex items-center justify-center rounded-2xl h-10 w-10 sm:ml-2">
-                            <svg class="hidden sm:block w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
-                                </path>
+                        <a href="{{ route('dashboard') }}" class="p-1.5 mr-1 text-gray-700 hover:bg-gray-100 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
-                            <a href="{{ route('dashboard') }}" class="p-1 hover:bg-gray-100 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" class="block sm:hidden w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                                </svg>
-                            </a>
-                        </div>
+                        </a>
                         <div class="font-bold text-2xl">Messages</div>
+                        <span class="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium w-fit {{ $user->role === 'customer' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                            {{ ucfirst($user->role) }}
+                        </span>
                     </div>
                     <div class="mt-2 w-full">
                         <form class="flex items-center max-w-full mx-auto w-full">
@@ -150,6 +143,9 @@
                                         class="object-contain h-10 w-10 bg-gray-200 rounded-full border shadow">
                                 </div>
                                 <div class="text-sm font-semibold"> {{ $user->name }} </div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium w-fit {{ $user->role === 'customer' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                    {{ ucfirst($user->role) }}
+                                </span>
                             </a>
                         </div>
                     </div>
