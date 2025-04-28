@@ -269,6 +269,24 @@ Route::get('profile/{name}', function($name) {
     return view('profile', ['name' => $name]);
 })->name('profile');
 
+Route::get('/user-profile/{id}', function($id){
+
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    $user = App\Models\User::where('id', $id)->first();
+    if (!$user) {
+        return view('missing');
+    }
+
+    if (Auth::user()->role === 'admin') {
+        return view('forbidden');
+    }
+
+    return view('user-profile', ['id' => $id]);
+})->name('user-profile');
+
 Route::get('/upload', function() {
     return view('upload');
 })->name('upload');
