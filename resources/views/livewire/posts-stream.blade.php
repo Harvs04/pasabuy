@@ -49,7 +49,8 @@
                         <div class="flex gap-1.5 items-center {{ $post->type === 'item_request' ? 'hidden' : 'block' }}">
                             <div class="flex">
                                 @php
-                                $averageRating = round($user->ratings->avg('star_rating'), 1); // Rounded to 1 decimal place
+                                $poster = App\Models\User::where('id', $post->user_id)->first();
+                                $averageRating = round($poster->ratings->avg('star_rating'), 1); // Rounded to 1 decimal place
                                 @endphp
                                 @for ($i = 1; $i <= 5; $i++) @if ($i <=floor($averageRating)) <!-- Solid Star for full
                                     rating -->
@@ -84,7 +85,7 @@
                             </div>
                             <div class="flex gap-0.5">
                                 <p class="text-gray-600 text-xs">{{ $averageRating . "/5" }}</p>
-                                <p class="text-gray-600 text-xs">({{ count($user->ratings) }})</p>
+                                <p class="text-gray-600 text-xs">({{ count($poster->ratings) }})</p>
                             </div>
                         </div>
                     </div>
