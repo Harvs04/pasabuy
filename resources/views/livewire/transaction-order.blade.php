@@ -496,15 +496,15 @@
                         </svg>
                     </button>
                     <div x-show="openTransactionDots" @click.outside="openTransactionDots = false"
-                        class="text-gray-700 absolute right-2 top-10 text-sm w-20 bg-white shadow rounded mx-2 z-10 flex flex-col">
+                        class="text-gray-700 absolute right-2 top-10 text-sm w-fit bg-white shadow-md rounded mx-2 z-10 flex flex-col">
                         <button
                             class="enabled:hover:bg-green-700 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
                             x-show="['open', 'full'].includes(transactionStatus)"
-                            @click="startTransactionModalOpen = true;">Start</button>
+                            @click="startTransactionModalOpen = true;">End taking orders</button>
                         <button
                             class="enabled:hover:bg-red-600 enabled:hover:text-white bg-white py-2 px-3 text-start rounded disabled:cursor-not-allowed"
                             x-show="['open', 'full'].includes(transactionStatus)"
-                            @click="cancelTransactionModalOpen = true;">Cancel</button>
+                            @click="cancelTransactionModalOpen = true;">Cancel transaction</button>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row mid:flex-col gap-4">
