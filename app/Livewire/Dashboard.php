@@ -45,7 +45,9 @@ class Dashboard extends Component
             $query->where(function ($query) {
                 $query->where('item_name', 'like', '%' . strtolower($this->search) . '%')
                       ->orWhere('item_origin', 'like', '%' . strtolower($this->search) . '%')
-                      ->orWhere('meetup_place', 'like', '%' . strtolower($this->search) . '%');
+                      ->orWhere('meetup_place', 'like', '%' . strtolower($this->search) . '%')
+                      ->orWhere('sub_type', 'like', '%' . strtolower($this->search) . '%')
+                      ->orWhere('poster_name', 'like', '%' . strtolower($this->search) . '%');
             });
         }
 
