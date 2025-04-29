@@ -1,5 +1,6 @@
-<div class="text-gray-800 mx-2 my-4" x-data="{ orders: '{{ count($user->orders) }}', transactions: '{{ count($user->transactions) }}', rating_count: '{{ count($user->ratings) }}' }">
-    
+<div class="text-gray-800 mx-2 my-4"
+    x-data="{ orders: '{{ count($user->orders) }}', transactions: '{{ count($user->transactions) }}', rating_count: '{{ count($user->ratings) }}' }">
+
     <div class="flex flex-col font-poppins" x-cloak>
         <!-- ALERT MESSAGES -->
         @if(session('change_role_success'))
@@ -97,9 +98,9 @@
             </button>
         </div>
         <script>
-            setTimeout(() => {
-                document.querySelector('.flash').style.display = 'none';
-            }, 3000); // 3 seconds
+        setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+        }, 3000); // 3 seconds
         </script>
         @endif
         @if(session('dp_change'))
@@ -122,16 +123,19 @@
             </button>
         </div>
         <script>
-            setTimeout(() => {
-                document.querySelector('.flash').style.display = 'none';
-            }, 3000); // 3 seconds
+        setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+        }, 3000); // 3 seconds
         </script>
         @endif
         @if(session('contact_error'))
-        <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div
+            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
             <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <div class="text-center text-sm">
                     {{ session('contact_error') }}
@@ -143,16 +147,19 @@
             </button>
         </div>
         <script>
-            setTimeout(() => {
-                document.querySelector('.flash').style.display = 'none';
-            }, 3000); // 3 seconds
+        setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+        }, 3000); // 3 seconds
         </script>
         @endif
         @if(session('error'))
-        <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div
+            class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
             <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <div class="text-center text-sm">
                     {{ session('error') }}
@@ -164,15 +171,16 @@
             </button>
         </div>
         <script>
-            setTimeout(() => {
-                document.querySelector('.flash').style.display = 'none';
-            }, 3000); // 3 seconds
+        setTimeout(() => {
+            document.querySelector('.flash').style.display = 'none';
+        }, 3000); // 3 seconds
         </script>
         @endif
 
         <div class="flex flex-row items-center gap-3 md:gap-5" style="margin-top: 3.5rem;">
             <!-- SPINNER -->
-            <div wire:loading.delay wire:target="changeRole, saveInfoChanges, savePassChanges, deleteAccount, logOut, uploadImage"
+            <div wire:loading.delay
+                wire:target="changeRole, saveInfoChanges, savePassChanges, deleteAccount, logOut, uploadImage"
                 class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101"
                     class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">
@@ -189,35 +197,39 @@
         <div class="flex justify-center">
             <div class="w-full sm:w-5/6 flex flex-col lg:flex-row gap-4">
                 <!-- PASABUY INFO & IMAGE -->
-                <div class="flex flex-col">
-                    <div class="flex flex-row items-center lg:items-start xl:items-center gap-2 mb-2">
-                        <a href={{ route('dashboard') }} class="p-1.5 hover:bg-gray-200 hover:rounded-full">
-                            <svg class="w-5 md:w-6"
-                                viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M8.75 18.75H33.75C34.0815 18.75 34.3995 18.8817 34.6339 19.1161C34.8683 19.3505 35 19.6685 35 20C35 20.3315 34.8683 20.6495 34.6339 20.8839C34.3995 21.1183 34.0815 21.25 33.75 21.25H8.75C8.41848 21.25 8.10054 21.1183 7.86612 20.8839C7.6317 20.6495 7.5 20.3315 7.5 20C7.5 19.6685 7.6317 19.3505 7.86612 19.1161C8.10054 18.8817 8.41848 18.75 8.75 18.75Z"
-                                    fill="black" />
-                                <path
-                                    d="M9.26751 20.0001L19.635 30.3651C19.8697 30.5998 20.0016 30.9182 20.0016 31.2501C20.0016 31.5821 19.8697 31.9004 19.635 32.1351C19.4003 32.3698 19.0819 32.5017 18.75 32.5017C18.4181 32.5017 18.0997 32.3698 17.865 32.1351L6.61501 20.8851C6.4986 20.769 6.40624 20.6311 6.34323 20.4792C6.28021 20.3273 6.24777 20.1645 6.24777 20.0001C6.24777 19.8357 6.28021 19.6729 6.34323 19.521C6.40624 19.3692 6.4986 19.2312 6.61501 19.1151L17.865 7.86511C18.0997 7.6304 18.4181 7.49854 18.75 7.49854C19.0819 7.49854 19.4003 7.6304 19.635 7.86511C19.8697 8.09983 20.0016 8.41817 20.0016 8.75011C20.0016 9.08205 19.8697 9.4004 19.635 9.63511L9.26751 20.0001Z"
-                                    fill="black" />
-                            </svg>
-                        </a>
-                        <p class="text-xl sm:text-2xl font-medium sm:font-semibold">User Profile</p>
-                    </div>
+                <div class="w-full md:w-1/3 flex flex-col">
                     <div class="flex flex-col gap-4">
                         <!-- IMAGE -->
                         <div class="rounded-md bg-white shadow w-full p-4">
+                            <div
+                                class="flex flex-row items-center lg:items-start xl:items-center gap-2 mb-4 pb-2 border-b">
+                                <a href={{ route('dashboard') }} class="p-1.5 hover:bg-gray-200 hover:rounded-full">
+                                    <svg class="w-5 md:w-6" viewBox="0 0 40 40" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M8.75 18.75H33.75C34.0815 18.75 34.3995 18.8817 34.6339 19.1161C34.8683 19.3505 35 19.6685 35 20C35 20.3315 34.8683 20.6495 34.6339 20.8839C34.3995 21.1183 34.0815 21.25 33.75 21.25H8.75C8.41848 21.25 8.10054 21.1183 7.86612 20.8839C7.6317 20.6495 7.5 20.3315 7.5 20C7.5 19.6685 7.6317 19.3505 7.86612 19.1161C8.10054 18.8817 8.41848 18.75 8.75 18.75Z"
+                                            fill="black" />
+                                        <path
+                                            d="M9.26751 20.0001L19.635 30.3651C19.8697 30.5998 20.0016 30.9182 20.0016 31.2501C20.0016 31.5821 19.8697 31.9004 19.635 32.1351C19.4003 32.3698 19.0819 32.5017 18.75 32.5017C18.4181 32.5017 18.0997 32.3698 17.865 32.1351L6.61501 20.8851C6.4986 20.769 6.40624 20.6311 6.34323 20.4792C6.28021 20.3273 6.24777 20.1645 6.24777 20.0001C6.24777 19.8357 6.28021 19.6729 6.34323 19.521C6.40624 19.3692 6.4986 19.2312 6.61501 19.1151L17.865 7.86511C18.0997 7.6304 18.4181 7.49854 18.75 7.49854C19.0819 7.49854 19.4003 7.6304 19.635 7.86511C19.8697 8.09983 20.0016 8.41817 20.0016 8.75011C20.0016 9.08205 19.8697 9.4004 19.635 9.63511L9.26751 20.0001Z"
+                                            fill="black" />
+                                    </svg>
+                                </a>
+                                <p class="text-xl sm:text-2xl font-medium sm:font-semibold">User Profile</p>
+                            </div>
                             <div class="w-full flex flex-col xl:flex-row justify-start items-center gap-4">
                                 <img src="{{ $user->profile_pic_url }}"
-                                    class="h-14 w-14 xl:h-20 xl:w-20 object-cover rounded-full border shadow" alt="user_photo" />
+                                    class="h-14 w-14 xl:h-20 xl:w-20 object-cover rounded-full border shadow"
+                                    alt="user_photo" />
                                 <div class="flex flex-col justify-center items-center xl:items-start">
-                                    <p class="text-lg lg:text-base xl:text-lg font-medium md:font-semibold break-words">
+                                    <p
+                                        class="text-lg lg:text-base xl:text-lg text-gray-800 font-medium md:font-semibold break-words">
                                         {{ $user->name }} </p>
-                                    <p class="text-sm"> {{ $user->constituent }} </p>
+                                    <p class="text-sm text-gray-600"> {{ $user->email }} </p>
+                                    <p class="text-sm text-gray-600"> {{ $user->constituent }} </p>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- PASABUY INFO -->
                         <div class="flex justify-start rounded-md bg-white shadow w-full gap-4">
                             <div class="w-full xl:w-5/6 flex flex-col py-6 px-8 lg:px-5 lg:py-4 xl:py-6 xl:px-8">
@@ -237,7 +249,8 @@
                                         <div x-show="open"
                                             class="absolute left-0 mt-2 z-50 border rounded-lg bg-gray-100 text-gray-800 shadow p-2 w-64">
                                             <p class="text-sm">
-                                                If your PASABUY point is below 80, you will not be able to order items or do
+                                                If your PASABUY point is below 80, you will not be able to order items
+                                                or do
                                                 transactions.
                                             </p>
                                         </div>
@@ -274,7 +287,7 @@
                                             <p class="">Rating:</p>
                                             <div class="flex flex-row">
                                                 @php
-                                                    $averageRating = round($user->ratings->avg('star_rating'), 1); // Rounded to 1 decimal place
+                                                $averageRating = round($user->ratings->avg('star_rating'), 1); 
                                                 @endphp
                                                 @for ($i = 1; $i <= 5; $i++) @if ($i <=floor($averageRating)) <!-- Solid
                                                     Star for full rating -->
@@ -285,8 +298,8 @@
                                                             d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
                                                             clip-rule="evenodd" />
                                                     </svg>
-                                                    @elseif ($i - $averageRating < 1) <!-- Half Star for fractional rating
-                                                        -->
+                                                    @elseif ($i - $averageRating < 1) <!-- Half Star for fractional
+                                                        rating -->
                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                             class="w-5 xl:w-6 text-yellow-400" viewBox="0 0 24 24"
                                                             fill="currentColor">
@@ -303,8 +316,9 @@
                                                         @else
                                                         <!-- Outline Star for empty rating -->
                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-5 xl:w-6 text-gray-300" fill="none" viewBox="0 0 24 24"
-                                                            stroke="currentColor" stroke-width="1.5">
+                                                            class="w-5 xl:w-6 text-gray-300" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor"
+                                                            stroke-width="1.5">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                                                         </svg>
@@ -316,141 +330,93 @@
                                         </div>
                                         <p>Successful Deliveries: {{ $user->successful_deliveries }}</p>
                                         <p>Cancelled transactions: {{ $user->cancelled_transactions }}</p>
-                                        <button 
-                                            @click="wordcloudOpen = !wordcloudOpen" 
-                                            :disabled="rating_count == 0"
-                                            class="flex items-center gap-2 w-fit py-2 px-4 mt-1 xl:mt-3 enabled:bg-[#014421] enabled:hover:bg-green-900 text-white disabled:bg-gray-300 disabled:cursor-not-allowed text-sm rounded-md font-medium"
-                                        >
-                                        <svg 
-                                                xmlns="http://www.w3.org/2000/svg" 
-                                                fill="none" 
-                                                viewBox="0 0 24 24" 
-                                                stroke-width="1.5" 
-                                                stroke="currentColor" 
-                                                class="size-5"
-                                            >
-                                                <path 
-                                                    stroke-linecap="round" 
-                                                    stroke-linejoin="round" 
-                                                    d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"
-                                                />
+                                        <button @click="wordcloudOpen = !wordcloudOpen" :disabled="rating_count == 0"
+                                            class="flex items-center gap-2 w-fit py-2 px-4 mt-1 xl:mt-3 enabled:bg-[#014421] enabled:hover:bg-green-900 text-white disabled:bg-gray-300 disabled:cursor-not-allowed text-sm rounded-md font-medium">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z" />
                                             </svg>
-                                            <span x-text="!wordcloudOpen ? 'View word cloud' : 'Hide word cloud'"></span>                                    
+                                            <span
+                                                x-text="!wordcloudOpen ? 'View word cloud' : 'Hide word cloud'"></span>
                                         </button>
 
                                         @php
                                         $remarks = $user->ratings->pluck('remarks')->implode(' ');
                                         $wordCloudUrl = 'https://quickchart.io/wordcloud?' . http_build_query([
-                                            'text' => $remarks,
-                                            'format' => 'png',
-                                            'width' => 450,
-                                            'height' => 450,
-                                            'backgroundColor' => '#ffffff',
-                                            'fontFamily' => 'Arial',
-                                            'fontWeight' => 'bold',
-                                            'fontScale' => 45,
-                                            'scale' => 'sqrt',
-                                            'padding' => 4,
-                                            'rotation' => 0,
-                                            'maxNumWords' => 100,
-                                            'minWordLength' => 3,
-                                            'case' => 'lower',
-                                            'colors' => json_encode(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']),
-                                            'removeStopwords' => false,
-                                            'cleanWords' => true,
-                                            'language' => 'en',
-                                            'useWordList' => false,
+                                        'text' => $remarks,
+                                        'format' => 'png',
+                                        'width' => 450,
+                                        'height' => 450,
+                                        'backgroundColor' => '#ffffff',
+                                        'fontFamily' => 'Arial',
+                                        'fontWeight' => 'bold',
+                                        'fontScale' => 45,
+                                        'scale' => 'sqrt',
+                                        'padding' => 4,
+                                        'rotation' => 0,
+                                        'maxNumWords' => 100,
+                                        'minWordLength' => 3,
+                                        'case' => 'lower',
+                                        'colors' => json_encode(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']),
+                                        'removeStopwords' => false,
+                                        'cleanWords' => true,
+                                        'language' => 'en',
+                                        'useWordList' => false,
                                         ]);
-                                    @endphp
-                                    <img x-show="wordcloudOpen" src="{{ $wordCloudUrl }}" alt="provider_wordcloud" class="w-2/3 max-w-[250px] sm:w-1/2 lg:w-full border rounded-lg">
+                                        @endphp
+                                        <img x-show="wordcloudOpen" src="{{ $wordCloudUrl }}" alt="provider_wordcloud"
+                                            class="w-2/3 max-w-[250px] sm:w-1/2 lg:w-full border rounded-lg">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-start rounded-md bg-white shadow w-full gap-4"
-                            x-data="{ deleteAccountModalOpen: false }">
-                            <div class="flex flex-col py-6 px-8 lg:px-5 lg:py-4 xl:py-6 xl:px-8">
-                                <p class="text-lg font-medium md:font-semibold">Account Management</p>
-                                <button class="w-fit mt-1" x-data="{ disabled: false }" :disabled="disabled"
-                                    @click="disabled = true; $wire.logOut();">
-                                    <div
-                                        class="flex items-center justify-center gap-2 w-fit font-medium px-2 py-1 text-sm bg-white text-[#014421] border border-[#014421] rounded-md hover:bg-gray-100">
-                                        <svg class="w-4 sm:w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
-                                        </svg>
-                                        <p class="">Log Out</p>
-                                    </div>
-                                </button>
-                                <hr class="my-5 lg:my-3 xl:my-5">
-                                <div class="flex flex-col gap-2">
-                                    <p
-                                        class="text-sm inline-flex w-fit items-center rounded-full bg-rose-200 px-3 py-1 text-[#7b1113]">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        Proceed with caution
-                                    </p>
-                                    <p class="text-sm">This action will completely delete your data in our database.</p>
-                                    <button @click="deleteAccountModalOpen = true; document.body.style.overflow = 'hidden';"
-                                        x-bind:disabled="orders > 0 || transactions > 0"
-                                        class="w-fit font-medium px-2 sm:px-3 py-1 text-sm enabled:bg-white enabled:text-[#7b1113] enabled:border enabled:border-[#7b1113] rounded-md enabled:hover:bg-rose-300 disabled:bg-gray-300 disabled:text-white disabled:cursor-not-allowed">Delete
-                                        Account</button>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3 bg-white rounded-lg shadow py-4 px-6">
+                    <h2 class="text-lg md:text-xl text-gray-800 font-medium md:font-semibold mb-2">Customer Feedbacks</h2>
+
+                    <!-- Feedback Grid - 2 per row on larger screens, 1 on mobile -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:max-h-[calc(100svh-11rem)] md:overflow-y-auto">
+                        <!-- Feedback Card 1 -->
+                        @foreach ($user->ratings as $rating)
+                        @php
+                        $post = App\Models\Post::where('id', $rating->post_id)->first();
+                        $customer = App\Models\User::where('id', $rating->customer_id)->first();
+                        @endphp
+                        <div class="bg-gray-100 rounded-lg shadow p-4 hover:bg-gray-200">
+                            <div class="flex items-center mb-3">
+                                <div
+                                    class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
+                                    <img src="{{ $customer->profile_pic_url }}" alt="customer_pic" class="rounded-full">
                                 </div>
-                            </div>
-                            <!-- DELETE ACCOUNT MODAL -->
-                            <div @keydown.escape.window="deleteAccountModalOpen = false; document.body.style.overflow = 'auto';"
-                                x-data="{ confirm: '', errors: {} }" x-show="deleteAccountModalOpen"
-                                x-transition:enter.duration.25ms
-                                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                                <div class="bg-white p-6 rounded-lg w-5/6 md:w-1/2 lg:w-1/3 relative">
-                                    <div class="flex flex-col items-center gap-2 sm:gap-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="#ff4545" class="size-12">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                        </svg>
-                                        <p class="text-lg sm:text-xl font-medium text-black">Are you sure?</p>
-                                        <p class="text-sm">Deleting your account will remove all of your information from
-                                            our database. This cannot be undone.</p>
-                                        <p class="text-xs sm:text-sm text-gray-600 self-start">To confirm this action, type
-                                            "CONFIRM"</p>
-                                        <input type="text" x-model="confirm"
-                                            class="self-start w-1/2 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:outline-none focus:border-black block p-2.5"
-                                            x-bind:class="{'border-red-500': errors.confirm}" />
-                                        <button
-                                            @click="deleteAccountModalOpen = false; document.body.style.overflow = 'auto';"
-                                            class="absolute top-4 right-4 p-2 hover:bg-gray-100 hover:rounded-full">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="2" stroke="#000000" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M6 18 18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div class="mt-5 flex gap-2">
-                                        <button
-                                            @click="deleteAccountModalOpen = false; delete errors.confirm; confirm = ''; document.body.style.overflow = 'auto';"
-                                            class="px-2 sm:px-3 py-1.5 text-sm border rounded-md hover:bg-slate-200 ml-auto">Cancel</button>
-                                        <button x-data="{ disabled: false }" :disabled="disabled" @click="
-                                      if (confirm === 'CONFIRM') {
-                                          disabled = true;
-                                          $wire.deleteAccount();
-                                      } else {
-                                          errors.confirm = true;
-                                      }
-                                  " class="px-2 sm:px-3 py-1.5 text-sm bg-red-800 text-white rounded-md hover:bg-[#7b1113]">
-                                            Confirm
-                                        </button>
-    
+                                <div class="ml-3">
+                                    <h3 class="font-semibold text-gray-800">{{ $customer->name }}</h3>
+                                    <div class="flex">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($i <= $rating->star_rating)
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="#facc15"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                                </svg>
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="#4b5563"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                                </svg>
+                                            @endif
+                                        @endfor                                        
                                     </div>
                                 </div>
                             </div>
+                            <p class="text-gray-600 text-sm">Item: {{ $post->item_name }}</p>
+                            <p class="text-gray-600 text-sm">{{ $rating->remarks }}</p>
+                            <p class="text-gray-400 text-xs mt-2">
+                                {{ $rating->created_at->Timezone('Singapore')->format('M d, Y \a\t h:i a') }}</p>
                         </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
