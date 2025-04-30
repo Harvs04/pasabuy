@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 
 class Register extends Component
 {
@@ -165,34 +166,34 @@ class Register extends Component
 
     public function verifyQuestions()
     {
-        // Initialize score to 0
-        $score = 0;
+        // // Initialize score to 0
+        // $score = 0;
 
-        // Assuming these are the user's answers for the questions
-        $question_one_answer = $this->question_one;
-        $question_two_answer = $this->question_two;
-        $question_three_answer = $this->question_three;
-        $question_four_answer = $this->question_four; // This can be handled similarly if you want
+        // // Assuming these are the user's answers for the questions
+        // $question_one_answer = $this->question_one;
+        // $question_two_answer = $this->question_two;
+        // $question_three_answer = $this->question_three;
+        // $question_four_answer = $this->question_four; // This can be handled similarly if you want
 
-        // Check if the answers are correct and increase the score accordingly
-        if (strtolower(trim($question_one_answer)) === 'delay') {
-            $score++;
-        }
+        // // Check if the answers are correct and increase the score accordingly
+        // if (strtolower(trim($question_one_answer)) === 'delay') {
+        //     $score++;
+        // }
 
-        if (strtolower(trim($question_two_answer)) === 'ansci') {
-            $score++;
-        }
+        // if (strtolower(trim($question_two_answer)) === 'ansci') {
+        //     $score++;
+        // }
 
-        if (strtolower(trim($question_three_answer)) === '5') {
-            $score++;
-        }
+        // if (strtolower(trim($question_three_answer)) === '5') {
+        //     $score++;
+        // }
 
-        if (strtolower(trim($question_four_answer)) === 'dltb') {
-            $score++;
-        }
+        // if (strtolower(trim($question_four_answer)) === 'dltb') {
+        //     $score++;
+        // }
 
 
-        if ($score == 4) {
+        // if ($score == 4) {
             // check if the email already exists
             $search = User::where('email', $this->up_email)->first();
             if ($search) {
@@ -204,7 +205,8 @@ class Register extends Component
                 session()->flash('register_error_contact', 'Your registration was disapproved because your contact number is already in use.');
                 return $this->redirect(route('login', true));
             }
-            User::create([
+
+            event(new Registered(User::create([
                 'name' => $this->first_name . ' ' . $this->last_name,
                 'contact_number' => $this->contact_number,
                 'constituent' => $this->constituent,
@@ -214,14 +216,25 @@ class Register extends Component
                 'role' => $this->role,
                 'password' => Hash::make($this->password),
                 'profile_pic_url' => 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif'
-            ]);
+            ])));
+            // User::create([
+            //     'name' => $this->first_name . ' ' . $this->last_name,
+            //     'contact_number' => $this->contact_number,
+            //     'constituent' => $this->constituent,
+            //     'college' => $this->college,
+            //     'degree_program' => $this->degree_program,
+            //     'email' => $this->up_email,
+            //     'role' => $this->role,
+            //     'password' => Hash::make($this->password),
+            //     'profile_pic_url' => 'https://res.cloudinary.com/dflz6bik9/image/upload/v1735137073/ypf6wlmswbndekosiest.avif'
+            // ]);
 
-            session()->flash('register_success', 'Your registration was approved! You may log in to continue.');
+            session()->flash('register_success', 'Kindly check your email to verify your account!');
             return $this->redirect(route('login', true));
-        } else {
-            session()->flash('register_error', 'Your registration was disapproved during evaluation. Try again.');
-            return $this->redirect(route('login', true));
-        }
+        // } else {
+        //     session()->flash('register_error', 'Your registration was disapproved during evaluation. Try again.');
+        //     return $this->redirect(route('login', true));
+        // }
         
     }
 
