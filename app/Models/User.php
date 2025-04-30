@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasUuids;
 
@@ -34,7 +33,8 @@ class User extends Authenticatable
         'cancelled_transactions',
         'password',
         'google_id',
-        'profile_pic_url'
+        'profile_pic_url',
+        'email_verified_at'
     ];
 
     /**
@@ -52,6 +52,9 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    protected $casts = [
+        'email_verified_at' => 'datetime'
+    ];
 
      public function like_posts(): HasMany
      {
