@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Conversation;
 use App\Models\Order;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Auth\Events\Verified;
+use App\Models\User;
 
 // google auth
 Route::controller(SocialiteController::class)->group(function(){
@@ -32,6 +36,49 @@ Route::get('/login', function(){
 Route::get('/register', function() {
     return view('register');
 })->name('signup');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (Request $request) {
+    // Find the user by ID
+    $user = User::find($request->route('id'));
+
+    if (!$user) {
+        return redirect('/login')->with('error', 'User not found.');
+    }
+
+    // Check if already verified
+    if ($user->hasVerifiedEmail()) {
+        return redirect('/dashboard')->with('status', 'Email already verified.');
+    }
+
+    // Verify the signature manually since we're not using the EmailVerificationRequest
+    if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+        return redirect('/login')->with('error', 'Invalid verification link.');
+    }
+
+    // Mark email as verified
+    $user->markEmailAsVerified();
+
+    // Dispatch verified event
+    if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail) {
+        event(new Verified($user));
+    }
+
+    // Login the user
+    Auth::login($user);
+
+    return redirect('/dashboard')->with('status', 'Email verified successfully!');
+    
+})->middleware('signed')->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();  
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::middleware(['auth', RoleBasedMiddleware::class])->group(function () {
     Route::get('/dashboard', function () {
