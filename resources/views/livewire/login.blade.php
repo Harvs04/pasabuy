@@ -111,6 +111,23 @@
             &times;
         </button>
     </div>
+    @elseif(session('duplicate'))
+    <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+
+
+            <div class="text-center text-sm">
+                {{ session('duplicate') }}
+            </div>
+        </div>
+        <!-- Close Button -->
+        <button onclick="this.parentElement.style.display='none'" class="text-white font-bold p-2 ml-auto">
+            &times;
+        </button>
+    </div>
     @elseif(session('register_error'))
         <div class="flash fixed top-8 left-1/2 transform -translate-x-1/2 z-50 bg-[#7b1113] border-t border-white text-white px-1.5 py-1 w-4/6 md:w-fit max-w-md flex justify-center items-center rounded-lg shadow-sm sm:shadow-md">
             <div class="flex items-center gap-2">

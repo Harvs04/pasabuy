@@ -23,6 +23,13 @@ class SocialiteController extends Controller
             $googleUser = Socialite::driver('google')->user();
             // Check if the domain is 'up.edu.ph'
             if ($googleUser->user['hd'] === 'up.edu.ph') {
+
+                $sameEmailUser = User::where('email', $googleUser->email)->first();
+
+                if ($sameEmailUser) {
+                    return redirect()->route('login')->with('duplicate', 'This email account is already registered!');
+                }
+
                 $user = User::where('google_id', $googleUser->id)->first();
                 
                 if ($user) {
