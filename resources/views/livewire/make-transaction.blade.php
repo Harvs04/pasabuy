@@ -18,7 +18,8 @@
         firstPicker: null,
         secondPicker: null,
         item_details: true,
-        transaction_details: false
+        transaction_details: false,
+        errors: {}
     }">
         <div class="flex flex-row items-start sm:items-center gap-2 sm:gap-3 w-11/12">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="mt-1 sm:mt-0 size-6">
@@ -34,11 +35,11 @@
         <p class="mt-2 ml-1 sm:ml-0 text-sm sm:text-base">Item request created by <span class="font-medium">{{ App\Models\User::find($post->user_id)->name }}</span>.</p>
         <div class="mt-2 flex flex-col gap-2 w-full border p-4 border-gray-300 bg-white rounded-md">
             <div class="flex flex-col md:flex-row gap-2 items-start md:items-center">
-                <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'underline' : 'hidden md:block md:no-underline'">Item Details</p>
+                <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'underline font-semibold' : 'hidden md:block md:no-underline'">Item Details</p>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden md:block md:size-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
-                <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'hidden md:block md:no-underline' : 'block underline'">Transaction Details</p>
+                <p class="text-lg sm:text-xl font-medium text-[#014421]" :class="item_details ? 'hidden md:block md:no-underline' : 'block underline font-semibold'">Transaction Details</p>
             </div>
             <div x-show="item_details && !transaction_details" class="">
                 <div class="mt-4 flex flex-col gap-4">
@@ -48,7 +49,8 @@
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="item_origin_post" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Origin</label>
-                        <input type="text" id="item_origin_post" x-model="item_origin_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"  placeholder="What are store's name and location?"/>
+                        <input type="text" id="item_origin_post" x-model="item_origin_post" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" :class="{'border-red-500' : errors.item_origin_post}" @input="errors.item_origin_post = item_origin_post.trim().length >= 51" placeholder="What are store's name and location?"/>
+                        <p x-show="errors.item_origin_post" class="text-sm text-red-500 mt-1">Maximum characters limit reached!</p>
                     </div>
                     <div>
                         <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Type</p>
@@ -99,8 +101,8 @@
                         <div class="w-full flex flex-col" x-data="{ duplicate: false, max_count: false }">
                             <label for="subtag" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item subtag</label>
                             <div class="relative w-full">
-                                <input type="text" id="subtag" x-model="subtag_item" class="w-full pe-12 bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" x-bind:class="{'border-red-500': duplicate || max_count}" @input="duplicate = false; max_count = false;" placeholder="e.g., fruits, baguio, imported"
-                                @keydown.enter.prevent="if (subtag_item !== '') {
+                                <input type="text" id="subtag" x-model="subtag_item" class="w-full pe-12 bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" :class="{'border-red-500' : errors.subtag_item}" x-bind:class="{'border-red-500': duplicate || max_count}" @input="duplicate = false; max_count = false; errors.subtag_item = subtag_item.trim().length >= 21;" placeholder="e.g., fruits, baguio, imported"
+                                @keydown.enter.prevent="if (subtag_item !== '' && !errors.subtag_item) {
                                     if (item_subtype_post.length < 5) {
                                         if (item_subtype_post.includes(subtag_item.trim())) {
                                             duplicate = true;
@@ -115,8 +117,10 @@
                                     }
                                 }" 
                                 />
-                                <button class="absolute top-1/2 right-2 transform -translate-y-1/2 px-1.5 py-1.5 text-gray-400 text-xs md:text-sm rounded-full hover:bg-gray-200" 
-                                @click="if (subtag_item !== '') {
+                                <p x-show="errors.subtag_item" class="text-sm text-red-500 mt-1">Maximum characters limit reached!</p>
+                                <button class="absolute top-1/2 right-2 transform -translate-y-1/2 px-1.5 py-1.5 text-gray-400 text-xs md:text-sm rounded-full enabled:hover:bg-gray-200 disabled:cursor-not-allowed" 
+                                x-bind:disabled="duplicate || max_count || errors.subtag_item"
+                                @click="if (subtag_item !== '' && !errors.subtag_item) {
                                     if (item_subtype_post.length < 5) {
                                         if (item_subtype_post.includes(subtag_item.trim())) {
                                             duplicate = true;
@@ -165,7 +169,8 @@
                     <div class="flex flex-col sm:flex-row gap-2 md:gap-4" @click="openDropdown = false">
                         <div class="w-full flex flex-col">
                             <label for="transaction_max_orders" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Orders to cater</label>
-                            <input type="number" id="transaction_max_orders" x-model="max_orders" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" min="1" max="10000" placeholder="How many orders can you handle?"/>
+                            <input type="number" id="transaction_max_orders" x-model="max_orders" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" :class="{'border-red-500' : errors.order_count }" min="1" max="10000" @input="errors.order_count = max_orders >= 10001" placeholder="How many orders can you handle?"/>
+                            <p x-show="errors.order_count" class="text-sm text-red-500 mt-1">Maximum orders reached!</p>
                         </div>
                         <div class="w-full">
                             <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Cutoff for ordering</p>
@@ -173,7 +178,6 @@
                                 <input id="datepicker-cutoff-convert"
                                         @change="
                                             delivery_date_post = '';
-                                            console.log($event.target.value);
                                             let selectedDate = new Date($event.target.value);
                                             selectedDate.setHours(selectedDate.getHours() + 8);  // Adjusting for GMT+8
                                             $wire.set('cutoff_date_orders', selectedDate.toISOString().split('T')[0], false);
@@ -194,7 +198,8 @@
                     <div class="flex flex-col sm:flex-row gap-2 md:gap-4 mt-2 md:mt-4">
                         <div class="w-full flex flex-col">
                             <label for="transaction_fee" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Transaction fee</label>
-                            <input type="text" id="transaction_fee" x-model="transaction_fee" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" @click="openDropdown = false" placeholder="How much? e.g., 50% down payment" />
+                            <input type="text" id="transaction_fee" x-model="transaction_fee" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" :class="{'border-red-500' : errors.t_fee}" @input="errors.t_fee = transaction_fee.trim().length >= 51" @click="openDropdown = false" placeholder="How much? e.g., 50% down payment" />
+                            <p x-show="errors.t_fee" class="text-sm text-red-500 mt-1">Maximum characters limits reached!</p>
                         </div>
                         <div class="w-full">
                             <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 " @click="openDropdown = !openDropdown">Mode of payment</p>
@@ -249,7 +254,6 @@
                                 <input id="datepicker-delivery-convert"
                                         :disabled="!cutoff_date_orders"
                                         @change="
-                                            console.log($event.target.value);
                                             let selectedDate = new Date($event.target.value);
                                             selectedDate.setHours(selectedDate.getHours() + 8);  // Adjusting for GMT+8
                                             $wire.set('delivery_date', selectedDate.toISOString().split('T')[0], false);
@@ -289,14 +293,15 @@
                     <!-- MEETUP PLACE -->
                     <div class="flex flex-col mt-2 md:mt-4" @click="openDropdown = false">
                         <label for="transaction_meetup_place" class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Meetup place</label>
-                        <input type="text" id="transaction_meetup_place" x-model="meetup_place" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" placeholder="Where do you deliver the items?"/>  
+                        <input type="text" id="transaction_meetup_place" x-model="meetup_place" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5" :class="{'border-red-500' : errors.meetup}" @input="errors.meetup = meetup_place.trim().length >= 101" placeholder="Where do you deliver the items?"/>  
+                        <p x-show="errors.meetup" class="text-sm text-red-500 mt-1">Maximum characters limit reached!</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="mt-5 flex justify-end gap-2">
             <button x-text="item_details ? 'Cancel' : 'Return'" @click="if (item_details) {makeTransactionModalOpen = false; document.body.style.overflow = 'auto';} else if (transaction_details) { item_details = true; transaction_details = false; }" class="font-medium w-20 py-1 sm:py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black"></button>
-            <button x-data="{ disabled: false }" x-text="item_details ? 'Next' : 'Post'" @click="if (item_details) { item_details = false; transaction_details = true; } else if (transaction_details) { disabled = true; $wire.makePost(item_name_post, item_origin_post, item_type_post, item_subtype_post, mode_of_payment_post); }" x-bind:disabled="item_details ? (!item_name_post || !item_origin_post || item_origin_post.trim().length === 0 || item_type_post.length === 0) : (!max_orders || !cutoff_date_orders || !transaction_fee || transaction_fee.trim().length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place || meetup_place.trim().length === 0) || disabled"  class="font-medium w-20 py-1 sm:py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md"></button>
+            <button x-data="{ disabled: false }" x-text="item_details ? 'Next' : 'Post'" @click="if (item_details) { item_details = false; transaction_details = true; } else if (transaction_details) { disabled = true; $wire.makePost(item_name_post, item_origin_post, item_type_post, item_subtype_post, mode_of_payment_post); }" x-bind:disabled="item_details ? (!item_name_post || !item_origin_post || item_origin_post.trim().length === 0 || errors.item_origin_post || item_type_post.length === 0) : (!max_orders || errors.order_count || !cutoff_date_orders || !transaction_fee || errors.t_fee || transaction_fee.trim().length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place || meetup_place.trim().length === 0 || errors.meetup) || disabled"  class="font-medium w-20 py-1 sm:py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md"></button>
         </div>
         <div wire:loading.delay wire:target="makePost" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">
