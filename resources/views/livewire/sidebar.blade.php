@@ -2,10 +2,10 @@
     class="fixed top-0 left-0 z-20 w-64 xl:w-96 h-screen pt-20 bg-white border-r border-gray-200 shadow-lg"
     aria-label="Sidebar" x-show="openBurger" x-transition:enter="transition ease-out duration-300 transform"
     x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
-    x-transition:leave="transition ease-in duration-100 transform" x-transition:leave-start="translate-x-0"
+    x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-x-0"
     x-transition:leave-end="-translate-x-full" @click.outside="if (openBurger) { openBurger = false; }">
     <div class="h-full px-3 pb-4 overflow-y-auto">
-        <a href="{{ route('profile', ['name' => $user->name]) }}" class="flex items-center p-4 bg-white hover:bg-gray-100 rounded-lg shadow-sm mb-2">
+        <a href="{{ route('profile', ['name' => $user->name]) }}" class="flex items-center p-1.5 xl:p-4 bg-white hover:bg-gray-100 rounded-lg shadow-sm mb-2">
             <!-- User Profile Image -->
             <div class="flex-shrink-0">
                 <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-200"
@@ -16,14 +16,13 @@
             <div class="ml-4 flex-grow">
                 <div class="flex items-center justify-between">
                     <h3 class="font-medium text-gray-900">{{ $user->name }}</h3>
-
-                    <!-- Role Badge -->
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                {{ $user->role === 'customer' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
-                        {{ ucfirst($user->role) }}
-                    </span>
                 </div>
                 <p class="text-sm text-gray-500">{{ $user->email }}</p>
+                <!-- Role Badge -->
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                {{ $user->role === 'customer' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                    {{ ucfirst($user->role) }}
+                </span>
             </div>
         </a>
         <ul class="space-y-2 text-[15px]">
