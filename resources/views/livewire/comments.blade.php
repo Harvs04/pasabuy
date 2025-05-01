@@ -173,7 +173,7 @@
     <div x-show="openComment">
         <hr class="my-2">
         <div class="py-1">
-            <div class="" x-data="{ comment: '', comments: $wire.entangle('comments')  }">
+            <div class="" x-data="{ comment: '', comments: $wire.entangle('comments'), errors: {}  }">
                 
                 <!-- COMMENTS STREAM -->
                 @if($db_comments->count() > 0) 
@@ -217,7 +217,7 @@
                             id="comment"
                             x-model="comment"
                             wire:model="comment"
-                            class="block w-full p-2 ps-3 pe-8 text-sm text-gray-700 border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:border-[#014421] resize-none overflow-hidden"
+                            class="block w-full p-2 ps-3 pe-8 text-sm text-gray-700 border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:border-[#014421] resize-none overflow-hidden"
                             placeholder="Write comment..."
                             oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"
                             rows="1"
@@ -226,7 +226,7 @@
                             @keydown.enter.prevent="if (!shiftPressed && comment.trim().length > 0) { comments.push(comment); $wire.addComment('{{ $post->id }}'); comment = ''; } else if (shiftPressed && comment) { $event.target.value = $event.target.value + '\n'; } "
                             >
                         </textarea>
-                        <button class="ml-auto absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" @click="if (comment.trim().length > 0) { comments.push(comment); $wire.addComment('{{ $post->id }}'); comment = ''; } " :class="{ 'cursor-not-allowed': !comment || comment.trim().length === 0 }">
+                        <button class="ml-auto absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" @click="if (comment.trim().length > 0) { comments.push(comment); $wire.addComment('{{ $post->id }}'); comment = ''; } " :class="{ 'cursor-not-allowed': !comment || comment.trim().length === 0, 'hover:text-gray-700' : comment && comment.trim().length > 0 }">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
