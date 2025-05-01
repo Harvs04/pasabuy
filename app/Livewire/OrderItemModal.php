@@ -43,6 +43,7 @@ class OrderItemModal extends Component
                 $conversation = Conversation::
                             where('provider_id', $this->post->user_id)
                             ->where('customer_id', $user->id)
+                            ->where('post_id', $this->post->id)
                             ->first();
 
                 // if there's no conversation:
