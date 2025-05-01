@@ -51,7 +51,8 @@
                     firstPicker: null,
                     secondPicker: null,
                     item_details: true,
-                    transaction_details: false
+                    transaction_details: false,
+                    errors: {}
                     }">
                 @if($user->role === 'customer')
                 <div class="w-full border p-4 border-gray-300 bg-white rounded-md">
@@ -59,18 +60,22 @@
                         <div class="w-full flex flex-col">
                             <label for="item_name_post"
                                 class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Item Name</label>
-                            <input type="text" id="item_name_post" x-model="item_name_post"
-                                @input="item_name_post = item_name_post.replace(/'/g, '᾽')"
+                            <input type="text" id="item_name_   " x-model="item_name_post"
+                                @input="item_name_post = item_name_post.replace(/'/g, '᾽'); errors.item_name_post = item_name_post.trim().length >= 21;"
                                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                                :class="{'border-red-500': errors.item_name_post}"
                                 placeholder="What items are you looking for?" />
+                            <p x-show="errors.item_name_post" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
                         </div>
                         <div class="w-full flex flex-col">
                             <label for="item_origin_post"
                                 class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Item Origin</label>
                             <input type="text" id="item_origin_post" x-model="item_origin_post"
-                                @input="item_origin_post = item_origin_post.replace(/'/g, '᾽')"
+                                @input="item_origin_post = item_origin_post.replace(/'/g, '᾽'); errors.item_origin_post = item_origin_post.trim().length >= 50;"
                                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                                :class="{'border-red-500': errors.item_origin_post}"
                                 placeholder="Where will your items come from?" />
+                                <p x-show="errors.item_origin_post" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
                         </div>
                     </div>
                     <div class="mt-4" @click="openDropdown = false">
@@ -202,7 +207,6 @@
        type="date" 
        onkeydown="return false;"
        @change="
-            console.log($event.target.value);
             let selectedDate = new Date($event.target.value);
             selectedDate.setHours(selectedDate.getHours() + 8);  // Adjusting for GMT+8
             $wire.set('delivery_date', selectedDate.toISOString().split('T')[0], false);
@@ -216,22 +220,24 @@
                     <div class="flex flex-col mt-4" @click="openDropdown = false">
                         <label for="notes" class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Other
                             notes</label>
-                        <textarea id="notes" rows="4" x-model="notes_post"
+                        <textarea id="notes" rows="4" x-model="notes_post" @input="errors.notes = notes_post.trim().length >= 101;"
                             class="w-full resize-none bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                            :class="{'border-red-500': errors.notes}"
                             placeholder="Enter any additional notes or special requests for your item here..."></textarea>
+                            <p x-show="errors.notes" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
                     </div>
                 </div>
                 @elseif($user->role === 'provider')
                 <div class="flex flex-col gap-2 w-full border p-4 border-gray-300 bg-white rounded-md">
                     <div class="flex flex-col md:flex-row gap-2 items-start md:items-center">
                         <p class="text-lg sm:text-xl font-medium text-[#014421]"
-                            :class="item_details ? 'underline' : 'hidden md:block md:no-underline'">Item Details</p>
+                            :class="item_details ? 'underline font-semibold' : 'hidden md:block md:no-underline'">Item Details</p>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="hidden md:block md:size-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                         </svg>
                         <p class="text-lg sm:text-xl font-medium text-[#014421]"
-                            :class="item_details ? 'hidden md:block md:no-underline' : 'block underline'">Transaction
+                            :class="item_details ? 'hidden md:block md:no-underline' : 'block underline font-semibold'">Transaction
                             Details</p>
                     </div>
                     <div x-show="item_details && !transaction_details" class="">
@@ -240,18 +246,22 @@
                                 <label for="item_name_post"
                                     class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Name</label>
                                 <input type="text" id="item_name_post" x-model="item_name_post"
-                                    @input="item_name_post = item_name_post.replace(/'/g, '᾽')"
+                                    @input="item_name_post = item_name_post.replace(/'/g, '᾽'); errors.item_name_post = item_name_post.trim().length >= 21;"
                                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                                    :class="{'border-red-500': errors.item_name_post}"
                                     placeholder="What items are you going to buy?" />
+                                    <p x-show="errors.item_name_post" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
                             </div>
                             <div class="w-full flex flex-col">
                                 <label for="item_origin_post"
                                     class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item
                                     Origin</label>
                                 <input type="text" id="item_origin_post" x-model="item_origin_post"
-                                    @input="item_origin_post = item_origin_post.replace(/'/g, '᾽')"
+                                    @input="item_origin_post = item_origin_post.replace(/'/g, '᾽'); errors.item_origin_post = item_origin_post.trim().length >= 51;"
                                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                                    :class="{'border-red-500': errors.item_origin_post}"
                                     placeholder="What are store's name and location?" />
+                                    <p x-show="errors.item_origin_post" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
                             </div>
                             <div>
                                 <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Item Type</p>
@@ -314,9 +324,9 @@
                                         subtag</label>
                                     <div class="relative w-full">
                                         <input type="text" id="subtag" x-model="subtag_item"
-                                            class="w-full pe-12 bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
-                                            x-bind:class="{'border-red-500': duplicate || max_count}"
-                                            @input="duplicate = false; max_count = false;"
+                                            class="relative w-full pe-12 bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                                            x-bind:class="{'border-red-500': duplicate || max_count || errors.subtag_item}"
+                                            @input="duplicate = false; max_count = false; errors.subtag_item = subtag_item.trim().length >= 21;"
                                             placeholder="e.g., fruits, baguio, imported" @keydown.enter.prevent="if (subtag_item !== '') {
                                                 if (item_subtype_post.length < 5) {
                                                     if (item_subtype_post.includes(subtag_item.trim())) {
@@ -331,9 +341,11 @@
                                                     max_count = true;
                                                 }
                                             }" />
+                                            <p x-show="errors.subtag_item" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
                                         <button
-                                            class="absolute top-1/2 right-2 transform -translate-y-1/2 px-1.5 py-1.5 text-gray-400 text-xs md:text-sm rounded-full hover:bg-gray-200"
-                                            @click="if (subtag_item !== '') {
+                                            class="absolute top-1/2 right-2 transform -translate-y-1/2 px-1.5 py-1.5 text-gray-400 text-xs md:text-sm rounded-full enabled:hover:bg-gray-200 disabled:cursor-not-allowed"
+                                            x-bind:disabled="duplicate || max_count || errors.subtag_item || subtag_item.trim().length < 1"
+                                            @click="if (subtag_item !== '' || subtag_item.trim().length < 21) {
                                                 if (item_subtype_post.length < 5) {
                                                     if (item_subtype_post.includes(subtag_item.trim())) {
                                                         duplicate = true;
@@ -395,9 +407,12 @@
                                     <label for="transaction_max_orders"
                                         class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Orders to
                                         cater</label>
-                                    <input type="number" id="transaction_max_orders" x-model="max_orders"
+                                    <input type="number" id="transaction_max_orders" x-model="max_orders" @input="errors.max_orders = max_orders >= 10001; errors.zero_order = max_orders == 0;"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                                        :class="{'border-red-500': errors.max_orders || errors.zero_order}"
                                         min="1" max="10000" placeholder="How many orders can you handle?" />
+                                        <p x-show="errors.max_orders" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum orders limit reached!</p>
+                                        <p x-show="errors.zero_order" class="ml-0.5 mt-0.5 text-red-500 text-xs">Invalid order count!</p>
                                 </div>
                                 <div class="w-full">
                                     <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Cutoff for
@@ -405,7 +420,6 @@
                                     <div class="relative">
                                         <input id="datepicker-cutoff" @change="
                                             delivery_date_post = '';
-                                            console.log($event.target.value);
                                             let selectedDate = new Date($event.target.value);
                                             selectedDate.setHours(selectedDate.getHours() + 8);  // Adjusting for GMT+8
                                             $wire.set('delivery_date', selectedDate.toISOString().split('T')[0], false);
@@ -422,9 +436,11 @@
                                     <label for="transaction_fee"
                                         class="block mb-2 text-sm sm:text-base font-medium text-gray-900 ">Transaction
                                         fee</label>
-                                    <input type="text" id="transaction_fee" x-model="transaction_fee"
+                                    <input type="text" id="transaction_fee" x-model="transaction_fee" @input="errors.transaction_fee = transaction_fee.trim().length >= 51"
                                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                                        :class="{'border-red-500': errors.transaction_fee}"
                                         @click="openDropdown = false" placeholder="How much? e.g., 50% down payment" />
+                                        <p x-show="errors.transaction_fee" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
                                 </div>
                                 <div class="w-full">
                                     <p class="block mb-1 text-sm sm:text-base font-medium text-gray-900 "
@@ -511,7 +527,6 @@
             });
        "
        @change="
-            console.log($event.target.value);
             let selectedDate = new Date($event.target.value);
             selectedDate.setHours(selectedDate.getHours() + 8);  // Adjusting for GMT+8
             $wire.set('delivery_date', selectedDate.toISOString().split('T')[0], false);
@@ -548,9 +563,11 @@
                                 <label for="transaction_meetup_place"
                                     class="block mb-1 text-sm sm:text-base font-medium text-gray-900 ">Meetup
                                     place</label>
-                                <input type="text" id="transaction_meetup_place" x-model="meetup_place"
+                                <input type="text" id="transaction_meetup_place" x-model="meetup_place" @input="errors.meetup_place = meetup_place.trim().length >= 51"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:outline-none focus:border-[#014421] block p-2.5"
+                                    :class="{'border-red-500': errors.meetup_place}"
                                     placeholder="Where do you deliver the items?" />
+                                    <p x-show="errors.meetup_place" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
                             </div>
                         </div>
                     </div>
@@ -582,11 +599,11 @@
                         x-bind:disabled="
                         role === 'customer' 
                             ? (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
-                                (!item_name_post || item_name_post.trim().length === 0 || !item_origin_post || item_origin_post.trim().length === 0 || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post)) || disabled
+                                (!item_name_post || item_name_post.trim().length === 0 || item_name_post.trim().length >= 21 || !item_origin_post || item_origin_post.trim().length >= 51 || item_origin_post.trim().length === 0 || item_type_post.length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post || notes_post?.trim().length >= 101)) || disabled
                             : (('{{ $user->contact_number === null }}' || '{{ $user->college === null }}' || '{{ $user->degree_program === null }}') || points < 80 || item_details && 
-                                (!item_name_post || item_name_post.trim().length === 0  || !item_origin_post || item_origin_post.trim().length === 0 || item_type_post.length === 0)) 
+                                (!item_name_post || item_name_post.trim().length === 0 || item_name_post.trim().length >= 21 || !item_origin_post || item_origin_post.trim().length >= 51 || item_origin_post.trim().length === 0 || item_type_post.length === 0)) 
                                 || (transaction_details && 
-                                (!max_orders || !cutoff_date_orders || !transaction_fee || transaction_fee.trim().length === 0 || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place || meetup_place.trim().length === 0)) || disabled"
+                                (!max_orders || max_orders >= 10001 || max_orders == 0 || !cutoff_date_orders || !transaction_fee || transaction_fee.trim().length === 0 || transaction_fee.trim().length >= 51 || mode_of_payment_post.length === 0 || !delivery_date_post || !arrival_time || !meetup_place || meetup_place.trim().length === 0 || meetup_place.trim().length >= 51)) || disabled"
                         @click="
                         if (role === 'customer') {
                             disabled = true;

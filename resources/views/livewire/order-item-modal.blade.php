@@ -1,5 +1,5 @@
-<div class="bg-black bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center font-poppins" x-transition:enter.duration.25ms x-data="{ max_count_reached: false, order: '', orders: $wire.entangle('orders'), order_list_modal_open: false, notes: $wire.entangle('notes'),  order_info_modal_open: false, edit_order: false, edit_index: null }">
-    <div @click.outside="orderItemModalOpen = false; document.body.style.overflow = 'auto';" @keydown.escape.window="orderItemModalOpen = false; document.body.style.overflow = 'auto';" class="bg-white p-4 md:p-6 rounded-lg w-11/12 md:w-4/6 xl:w-5/12">
+<div class="bg-black bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center font-poppins" x-transition:enter.duration.25ms x-data="{ max_count_reached: false, order: '', orders: $wire.entangle('orders'), order_list_modal_open: false, notes: $wire.entangle('notes'),  order_info_modal_open: false, edit_order: false, edit_index: null, errors: {} }">
+    <div @click.outside="orderItemModalOpen = false; document.body.style.overflow = 'auto';" @keydown.escape.window="orderItemModalOpen = false; document.body.style.overflow = 'auto';" class="bg-white p-4 md:p-6 rounded-lg w-11/12 md:w-4/6 xl:w-5/12 max-h-[80vh] sm:max-h-[95vh] overflow-y-auto">
         <div class="flex flex-row items-center gap-2 sm:gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#014421" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
@@ -106,8 +106,9 @@
                 <div class="text-xs absolute -top-10 left-24 z-50 border rounded-lg bg-gray-100 text-gray-800 shadow px-2 py-1" x-show="order_info_modal_open">
                     To enter or make another order, click the + button after typing.
                 </div>
-                <button class="ml-auto p-1 text-gray-400 text-xs md:text-sm rounded-full hover:bg-gray-200" 
-                    @click="if (order && !edit_order && ('{{ $post->max_orders - count($post->orders) }}' > orders.length)) { orders.push(order); order = ''; } else if (order && edit_order) { orders[edit_index] = order; order = ''; edit_order = false; edit_index = null; } else if ({{ $post->max_orders }} - {{ count($post->orders) }} <= orders.length && order) { max_count_reached = true; }">
+                <button class="ml-auto p-1 text-gray-400 text-xs md:text-sm rounded-full enabled:hover:bg-gray-200 disabled:cursor-not-allowed" 
+                    x-bind:disabled="errors.order_length"
+                    @click="if (order && !edit_order && ('{{ $post->max_orders - count($post->orders) }}' > orders.length) && !errors.order_length) { orders.push(order); order = ''; } else if (order && edit_order) { orders[edit_index] = order; order = ''; edit_order = false; edit_index = null; } else if ({{ $post->max_orders }} - {{ count($post->orders) }} <= orders.length && order) { max_count_reached = true; }">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#1f2937" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -116,14 +117,15 @@
             <textarea
                 id="order"
                 x-model="order"
-                @input="max_count_reached = false"
+                @input="max_count_reached = false; errors.order_length = order.trim().length >= 51;"
                 class="block w-full p-2 ps-3 text-sm text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421] resize-none overflow-hidden"
-                :class="{ 'border-red-500': max_count_reached }"
+                :class="{ 'border-red-500': max_count_reached || errors.order_length }"
                 placeholder="Order name, quantity..."
                 rows="1"
-                @keydown.enter.prevent="if (order && !edit_order && ('{{ $post->max_orders - count($post->orders) }}' > orders.length)) { orders.push(order); order = ''; } else if (order && edit_order) { orders[edit_index] = order; order = ''; edit_order = false; edit_index = null; } else if ({{ $post->max_orders }} - {{ count($post->orders) }} <= orders.length && order) { max_count_reached = true; }">
+                @keydown.enter.prevent="if (order && !edit_order && ('{{ $post->max_orders - count($post->orders) }}' > orders.length) && !errors.order_length) { orders.push(order); order = ''; } else if (order && edit_order) { orders[edit_index] = order; order = ''; edit_order = false; edit_index = null; } else if ({{ $post->max_orders }} - {{ count($post->orders) }} <= orders.length && order) { max_count_reached = true; }">
             </textarea>
             <p x-show="max_count_reached" class="text-sm text-red-500 mt-1">Maximum orders reached!</p>
+            <p x-show="errors.order_length" class="text-sm text-red-500 mt-1">Maximum characters limit reached!</p>
 
             <div class="mt-2 flex flex-col gap-1">
                 <label for="additional_notes" class="block text-sm font-medium text-gray-800">Additional notes:</label>
@@ -131,16 +133,17 @@
                     id="additional_notes"
                     x-model="notes"
                     class="block w-full p-2 ps-3 text-sm text-gray-700 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:border-[#014421] resize-none overflow-hidden"
+                    :class="{'border-red-500': errors.notes_length}"
                     placeholder="Other notes, special requests..."
-                    @input="adjustHeight($event.target)"
-                    rows="1"
-                    @keydown.enter.window="adjustHeight($event.target)">
+                    @input="errors.notes_length = notes.trim().length >= 201"
+                    rows="3">
                 </textarea>
+                <p x-show="errors.notes_length" class="ml-0.5 mt-0.5 text-red-500 text-xs">Maximum characters limit reached!</p>
             </div>
         </div>
         <div class="mt-5 flex justify-end gap-2">
             <button @click="orderItemModalOpen = false; document.body.style.overflow = 'auto';" class="font-medium px-2 sm:px-3 py-1.5 text-sm bg-white text-black  rounded-md hover:bg-slate-200 border hover:border-slate-200 hover:text-black">Cancel</button>
-            <button x-data="{ disabled: false }" @click="disabled = true; $wire.addOrder();" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md" :disabled="orders.length === 0 || disabled">Confirm</button>
+            <button x-data="{ disabled: false }" @click="disabled = true; $wire.addOrder();" class="font-medium px-2 sm:px-3 py-1.5 text-sm  bg-[#014421] enabled:hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md" :disabled="orders.length === 0 || errors.order_length || errors.notes_length || disabled">Confirm</button>
         </div>
         <div wire:loading.delay wire:target="addOrder" class="fixed inset-0 bg-white bg-opacity-50 z-[51] flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" class="absolute top-1/2 left-1/2 w-12 h-12 text-gray-200 animate-spin fill-[#014421]">
@@ -150,9 +153,3 @@
         </div>
     </div>
 </div>
-<script>
-    function adjustHeight(textarea) {
-        textarea.style.height = ''; // Reset the height
-        textarea.style.height = textarea.scrollHeight + 'px'; // Adjust to fit content
-    }
-</script>
