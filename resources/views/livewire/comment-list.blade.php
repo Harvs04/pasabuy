@@ -199,7 +199,7 @@
                         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
                         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                         @keydown.escape.window="commentDetailsModalOpen = false">
-                        @if($post)
+                        
                         <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[80vh] overflow-y-auto"
                             x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
@@ -209,7 +209,7 @@
 
                             <!-- Popover Header -->
                             <div class="flex items-center justify-between p-4 border-b">
-                                <h3 class="text-xl font-medium">{{ $post->item_name }}</h3>
+                                <h3 class="text-xl font-medium" x-text="post.item_name"></h3>
                                 <button @click="commentDetailsModalOpen = false"
                                     class="text-gray-400 hover:text-gray-600">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,7 +224,7 @@
                                 <div class="flex flex-col md:flex-row gap-6">
                                     <!-- Left Column - Image -->
                                     <div class="md:w-1/3">
-                                        <img src="{{ $post->item_image ?? '' }}" alt="{{ $post->item_name ?? '' }}"
+                                        <img :src="post.item_image" :alt="post.item_name"
                                             class="w-full h-auto rounded-lg shadow-sm"
                                             onerror="this.src='/api/placeholder/400/400'; this.onerror=null;">
 
@@ -240,14 +240,12 @@
                                             @endphp
 
                                             <span
-                                                class="px-3 py-1 text-sm font-medium rounded-full {{ $statusClasses[$post->status] ?? 'bg-gray-100 text-gray-800' }}">
-                                                {{ ucwords($post->status) }}
+                                                class="px-3 py-1 text-sm font-medium rounded-full {{ $statusClasses[$post->status] ?? 'bg-gray-100 text-gray-800' }}" x-text="(post.status).toUpperCase()">
                                             </span>
                                             <span class="px-3 py-1 text-sm font-medium rounded-full {{ 
                                              $post->type === 'transaction' ? 'bg-indigo-100 text-indigo-800' : 'bg-green-100 text-green-800'
                                              }}" 
-                                                >
-                                                {{ $post->type === 'transaction' ? 'Transaction' : 'Item Request' }}
+                                                x-text="post.type === 'transaction' ? 'Transaction' : 'Item Request'">
                                             </span>
                                         </div>
                                     </div>
@@ -257,94 +255,83 @@
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
                                                 <h4 class="text-sm font-medium text-gray-500">Posted By</h4>
-                                                <p class="text-gray-900">{{ App\Models\User::where('id', $post->user_id)->first()->name }}</p>
+                                                <p class="text-gray-900" x-text="post.poster_name"></p>
                                             </div>
 
                                             <div>
                                                 <h4 class="text-sm font-medium text-gray-500">Item Origin</h4>
-                                                <p class="text-gray-900">{{ $post->item_origin }}</p>
+                                                <p class="text-gray-900" x-text="post.item_origin"></p>
                                             </div>
 
                                             <div>
                                                 <h4 class="text-sm font-medium text-gray-500">Item Type</h4>
                                                 <p class="text-gray-900"
-                                                    >{{ $post->item_type }}
+                                                    x-text="post.item_type"></p>
                                                 </p>
                                             </div>
                                             
-                                            @if ($post->sub_type)                                        
-                                            <div>
+                                                                                   
+                                            <div x-show="post.subtype">
                                                 <h4 class="text-sm font-medium text-gray-500">Sub Type</h4>
                                                 <p class="text-gray-900">
-                                                    {{ $post->sub_type }}
+                                                    <span x-text="post.subtype"></span>
                                                 </p>
                                             </div>
-                                            @endif
 
                                             <div>
                                                 <h4 class="text-sm font-medium text-gray-500">Delivery Date</h4>
                                                 <p class="text-gray-900"
-                                                    >
-                                                    {{ optional($post->delivery_date)?->timezone('Singapore')->format('M d, Y \a\t H:i a') ?? 'No delivery date' }}
+                                                    x-text="post.delivery_date ? new Date(post.delivery_date).toLocaleDateString('en-SG', { year: 'numeric', month: '2-digit', day: '2-digit' }) : 'No delivery date'">
                                                 </p>
                                             </div>
-
-                                            @if ($post->arrival_time)                                        
-                                            <div>
+                                    
+                                            <div x-show="post.arrival_time">
                                                 <h4 class="text-sm font-medium text-gray-500">Arrival Time</h4>
-                                                <p class="text-gray-900">{{ DateTime::createFromFormat('H:i:s', $post->arrival_time ?? '')->format('g:i a') }}</p>
+                                                <p class="text-gray-900" 
+                                                    x-text="new Date(`1970-01-01T${post.arrival_time}Z`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })">
+                                                </p>
+
                                             </div>
-                                            @endif
 
                                             <div>
                                                 <h4 class="text-sm font-medium text-gray-500">Payment Methods</h4>
                                                 <p class="text-gray-900"
-                                                >{{ $post->mode_of_payment }}</p>
+                                                x-text="post.mode_of_payment"></p>
                                                 </p>
                                             </div>
                                             
-                                            @if ($post->transaction_fee)                                    
-                                            <div>
+                                                                                
+                                            <div x-show="post.transaction_fee">
                                                 <h4 class="text-sm font-medium text-gray-500">Transaction Fee</h4>
-                                                <p class="text-gray-900" >{{ $post->transaction_fee }}</p>
+                                                <p class="text-gray-900" x-text="post.transaction_fee"></p>
                                             </div>
-                                            @endif
-
-                                            @if ($post->max_orders)                                        
-                                            <div>
+                                    
+                                            <div x-show="post.max_orders">
                                                 <h4 class="text-sm font-medium text-gray-500">Max Orders</h4>
-                                                <p class="text-gray-900">{{ $post->max_orders }}</p>
+                                                <p class="text-gray-900" x-text="post.max_orders"></p>
                                             </div>
-                                            @endif
-                                            
-                                            @if ($post->cutoff_date)                                        
-                                            <div>
+                                                                                
+                                            <div x-show="post.cutoff_date">
                                                 <h4 class="text-sm font-medium text-gray-500">Cutoff Date</h4>
                                                 <p class="text-gray-900"
-                                                    >
-                                                    {{ $post->cutoff_date->timezone('Singapore')->format('M d, Y \a\t H:i a') ?? 'No cutoff date' }}
+                                                    x-text="post.cutoff_date ? new Date(post.cutoff_date).toLocaleDateString('en-SG', { year: 'numeric', month: '2-digit', day: '2-digit' }) : 'No cutoff date'">                                                    
                                                 </p>
                                             </div>
-                                            @endif
                                         </div>
                                         
-                                        @if ($post->meetup_place)                                    
-                                        <div class="mt-4">
+                                                                            
+                                        <div x-show="post.meetup_place" class="mt-4">
                                             <h4 class="text-sm font-medium text-gray-500">Meetup Place</h4>
                                             <p class="text-gray-900"
-                                                >
-                                                {{ $post->meetup_place }}
+                                                x-text="post.meetup_place">
                                             </p>
                                         </div>
-                                        @endif
-                                        
-                                        @if ($post->additional_notes)                                        
-                                        <div class="mt-4">
+                                                                              
+                                        <div x-show="post.additional_notes" class="mt-4">
                                             <h4 class="text-sm font-medium text-gray-500">Additional Notes</h4>
                                             <p class="text-gray-900 whitespace-pre-line"
-                                                >{{ $post->additional_notes }}</p>
+                                                x-text="post.additional_notes"></p>
                                         </div>
-                                        @endif
 
                                         <!-- Action Buttons -->
                                         <div class="mt-6 flex gap-3 justify-end">
@@ -358,7 +345,7 @@
                                 </div>
                             </div>
                         </div>
-                        @endif
+                        
                     </div>
                     @endteleport
 
