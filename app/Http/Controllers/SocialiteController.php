@@ -27,7 +27,7 @@ class SocialiteController extends Controller
                 $sameEmailUser = User::where('email', $googleUser->email)->first();
 
                 if ($sameEmailUser && $sameEmailUser->google_id === null) {
-                    return redirect()->route('login')->with('duplicate', 'This email account is already registered!');
+                    return redirect()->route('login')->with('duplicate', 'This email address is already in use!');
                 }
 
                 $user = User::where('google_id', $googleUser->id)->first();
