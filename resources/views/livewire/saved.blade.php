@@ -244,7 +244,7 @@
                         <span class="font-medium">contact number</span>,
                         <span class="font-medium">constituent type</span>,
                         <span class="font-medium">college</span>, and
-                        <span class="font-medium">degree program</span>, in order to order items or make transactions.
+                        <span class="font-medium">degree program</span>, in order to place orders or make transactions.
                         <a href="{{ route('profile', ['name' => $user->name]) }}" class="font-medium underline">Update
                             here.</a>
                     </p>
