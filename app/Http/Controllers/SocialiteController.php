@@ -44,7 +44,8 @@ class SocialiteController extends Controller
                         'email' => $googleUser->email,
                         'role' => 'customer',
                         'google_id' => $googleUser->id,
-                        'profile_pic_url' => $googleUser->avatar
+                        'profile_pic_url' => $googleUser->avatar,
+                        'email_verified_at' => now()
                     ]);
         
                     if ($userData) {
