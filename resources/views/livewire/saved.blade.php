@@ -227,7 +227,7 @@
             <div class="flex flex-col gap-2 md:gap-4">
                 @if ($user->contact_number === null || $user->constituent === null || $user->college === null ||
                 $user->degree_program === null)
-                <div class="flex flex-col w-full border-red-800 md:border-l-4 p-2.5 md:rounded-r-md shadow md:shadow-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">
+                <div class="flex flex-col w-full border-red-800 border md:border-l-4 p-2.5 md:rounded-r-md md:shadow-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">
                     <div class="flex flex-row items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" viewBox="0 0 20 20"
                             fill="currentColor">
@@ -251,7 +251,7 @@
                 </div>
                 @endif
                 @if ($user->pasabuy_points < 80) <div
-                    class="flex flex-col w-full border-red-800 md:border-l-4 p-2.5 md:rounded-r-md shadow md:shadow-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">
+                    class="flex flex-col w-full border-red-800 border md:border-l-4 p-2.5 md:rounded-r-md md:shadow-md bg-rose-200 px-3 py-2.5 text-[#7b1113] gap-2">
                     <div class="flex flex-row items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" viewBox="0 0 20 20"
                             fill="currentColor">
@@ -269,12 +269,12 @@
                         not have enough PASABUY points to create and perform transactions.</p>
             </div>
             @endif
-            <div class="{{ $user->role === 'customer' ? 'bg-green-50 border-green-500' : 'bg-blue-50 border-blue-500'}} border-l-4 p-2.5 rounded-r-md shadow-sm">
+            <div class="{{ $user->role === 'customer' ? 'bg-green-50 border-green-800' : 'bg-blue-50 border-blue-500'}} border md:border md:border-l-4 p-2.5 md:rounded-r-md md:shadow-md">
                <div class="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 {{ $user->role === 'customer' ? 'text-green-500' : 'text-blue-500' }} mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
-                  <p class="text-sm {{ $user->role === 'customer' ? 'text-green-800' : 'text-blue-800' }} font-medium">
+                  <p class="text-sm {{ $user->role === 'customer' ? 'text-[#014421]' : 'text-blue-800' }} font-medium">
                         Good day! {{ $user->name }}, you are currently in <span class="font-semibold">{{ ucfirst($user->role) }}</span> view!
                   </p>
                </div>
