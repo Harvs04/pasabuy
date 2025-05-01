@@ -239,12 +239,22 @@
                                             ];
                                             @endphp
 
-                                            <span
-                                                class="px-3 py-1 text-sm font-medium rounded-full {{ $statusClasses[$post->status] ?? 'bg-gray-100 text-gray-800' }}" x-text="(post.status).toUpperCase()">
-                                            </span>
-                                            <span class="px-3 py-1 text-sm font-medium rounded-full {{ 
-                                             $post->type === 'transaction' ? 'bg-indigo-100 text-indigo-800' : 'bg-green-100 text-green-800'
-                                             }}" 
+                                            <span 
+                                            class="px-3 py-1 text-sm font-medium rounded-full" 
+                                            :class="{
+                                                'bg-green-100 text-green-800': post.status === 'open',
+                                                'bg-red-100 text-red-800': post.status === 'full',
+                                                'bg-yellow-100 text-yellow-800': post.status === 'ongoing',
+                                                'bg-blue-100 text-blue-800': post.status === 'completed',
+                                                'bg-gray-100 text-gray-800': post.status === 'cancelled'
+                                            }"
+                                            x-text="post.status"
+                                            ></span>
+
+                                            <span class="px-3 py-1 text-sm font-medium rounded-full"
+  :class="post.type === 'transaction' 
+           ? 'bg-indigo-100 text-indigo-800' 
+           : 'bg-green-100 text-green-800'"
                                                 x-text="post.type === 'transaction' ? 'Transaction' : 'Item Request'">
                                             </span>
                                         </div>
